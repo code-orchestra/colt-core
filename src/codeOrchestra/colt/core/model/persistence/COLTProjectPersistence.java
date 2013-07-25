@@ -22,7 +22,7 @@ public abstract class COLTProjectPersistence<P extends COLTProject> {
 
         // Root
         Element rootElement = projectDocument.createElement("coltProject");
-        rootElement.setAttribute("version", String.valueOf(getVersion()));
+        rootElement.setAttribute("persistenceVersion", String.valueOf(getVersion()));
         rootElement.setAttribute("handlerId", coltProject.getHandlerId());
         rootElement.setAttribute("name", coltProject.getName());
         projectDocument.appendChild(rootElement);
@@ -39,27 +39,14 @@ public abstract class COLTProjectPersistence<P extends COLTProject> {
         }
     }
 
-    public P load(String path) throws COLTProjectPersistException {
-        File projectFile = new File(path);
-        if (!projectFile.exists() || projectFile.isDirectory()) {
-            throw new COLTProjectPersistException("Can't a COLT project from " + path + " as path ");
-        }
-
-        Document projectDocument = null;
-        try {
-            projectDocument = XMLUtils.fileToDOM(projectFile);
-        } catch (Throwable t) {
-            throw new COLTProjectPersistException("Can't a COLT project from " + path, t);
-        }
-
+    public P load(Element projectElement, String path) throws COLTProjectPersistException {
         P coltProject = createProject();
 
-        Element projectElement = projectDocument.getDocumentElement();
         coltProject.setName(projectElement.getAttribute("name"));
         coltProject.setHandlerId(LiveCodingHandlerManager.getInstance().getCurrentHandler().getId());
         coltProject.setPath(path);
 
-        NodeList handlersElement = projectDocument.getElementsByTagName("handler");
+        NodeList handlersElement = projectElement.getElementsByTagName("handler");
         if (handlersElement == null || handlersElement.getLength() == 0) {
             throw new COLTProjectPersistException("Can't a COLT project from " + path + ": No metadata found");
         }
