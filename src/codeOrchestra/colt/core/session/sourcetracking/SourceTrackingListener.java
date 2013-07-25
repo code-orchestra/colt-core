@@ -6,5 +6,4 @@ package codeOrchestra.colt.core.session.sourcetracking;
 public interface SourceTrackingListener<S extends SourceFile> {
 
     void onFileChanged(S sourceFile);
-
 }
