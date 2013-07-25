@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.session;
 
 import codeOrchestra.colt.core.session.socket.ClientSocketHandler;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ public interface LiveCodingSessionManager {
     void startSession(String broadcastId, String clientId, Map<String, String> clientInfo, ClientSocketHandler clientSocketHandler);
 
     void stopSession(LiveCodingSession liveCodingSession);
+
+    List<LiveCodingSession> getCurrentConnections();
 
 }
