@@ -5,10 +5,10 @@ import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.util.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.transform.TransformerException;
-import java.io.File;
 
 /**
  * @author Alexander Eliseyev
@@ -27,6 +27,15 @@ public abstract class COLTProjectPersistence<P extends COLTProject> {
         rootElement.setAttribute("name", coltProject.getName());
         projectDocument.appendChild(rootElement);
 
+        // Aspects
+        Element aspectsElement = projectDocument.createElement("aspects");
+        for (COLTProjectPersistedAspect coltProjectPersistedAspect : coltProject.getAllPersistedAspects()) {
+            Element aspectElement = projectDocument.createElement(coltProjectPersistedAspect.getAspectName());
+            aspectElement.setAttribute("name", coltProjectPersistedAspect.getAspectName());
+            coltProjectPersistedAspect.persist(projectDocument, aspectElement, coltProject);
+        }
+        rootElement.appendChild(aspectsElement);
+
         // Handler-specific persistence
         Element handlerElement = projectDocument.createElement("handler");
         persistLanguageSpecific(projectDocument, handlerElement, coltProject);
@@ -42,16 +51,42 @@ public abstract class COLTProjectPersistence<P extends COLTProject> {
     public P load(Element projectElement, String path) throws COLTProjectPersistException {
         P coltProject = createProject();
 
+        // Root
         coltProject.setName(projectElement.getAttribute("name"));
         coltProject.setHandlerId(LiveCodingHandlerManager.getInstance().getCurrentHandler().getId());
         coltProject.setPath(path);
 
+        // Aspects
+        NodeList aspectsElements = projectElement.getElementsByTagName("aspects");
+        if (aspectsElements != null) {
+            Element aspectsElement = (Element) aspectsElements.item(0);
+            if (aspectsElement != null) {
+                NodeList aspectNodes = aspectsElement.getChildNodes();
+                if (aspectNodes != null) {
+                    for (int i = 0; i < aspectNodes.getLength(); i++) {
+                        Node item = aspectNodes.item(i);
+                        if (item instanceof Element) {
+                            Element aspectElement = (Element) item;
+                            String aspectName = aspectElement.getAttribute("name");
+
+                            COLTProjectPersistedAspect persistedAspectByName = coltProject.getPersistedAspectByName(aspectName);
+                            if (persistedAspectByName == null) {
+                                throw new COLTProjectPersistException("Can't a COLT project from " + path + ": No aspect loader for " + aspectName);
+                            }
+
+                            persistedAspectByName.load(aspectElement, coltProject);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Handler-specific loading
         NodeList handlersElement = projectElement.getElementsByTagName("handler");
         if (handlersElement == null || handlersElement.getLength() == 0) {
             throw new COLTProjectPersistException("Can't a COLT project from " + path + ": No metadata found");
         }
         Element handlerElement = (Element) handlersElement.item(0);
-
         loadLanguageSpecific(handlerElement, coltProject);
 
         return null;

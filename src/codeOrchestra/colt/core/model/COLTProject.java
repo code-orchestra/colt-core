@@ -1,5 +1,10 @@
 package codeOrchestra.colt.core.model;
 
+import codeOrchestra.colt.core.model.persistence.COLTProjectPersistedAspect;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Alexander Eliseyev
  */
@@ -12,9 +17,38 @@ public abstract class COLTProject {
 
     private boolean disposed;
 
+    // Default aspects
     public abstract COLTProjectPaths getProjectPaths();
     public abstract COLTProjectLiveSettings getProjectLiveSettings();
     public abstract COLTProjectBuildSettings getProjectBuildSettings();
+
+    protected abstract List<COLTProjectPersistedAspect> getLanguageSpecificAspects();
+
+    private List<COLTProjectPersistedAspect> getDefaultAspects() {
+        return new ArrayList<COLTProjectPersistedAspect>() {{
+            add(getProjectPaths());
+            add(getProjectLiveSettings());
+            add(getProjectBuildSettings());
+        }};
+    }
+
+    public List<COLTProjectPersistedAspect> getAllPersistedAspects() {
+        List<COLTProjectPersistedAspect> result = new ArrayList<COLTProjectPersistedAspect>();
+
+        result.addAll(getDefaultAspects());
+        result.addAll(getLanguageSpecificAspects());
+
+        return result;
+    }
+
+    public COLTProjectPersistedAspect getPersistedAspectByName(String name) {
+        for (COLTProjectPersistedAspect coltProjectCOLTProjectPersistedAspect : getDefaultAspects()) {
+            if (name.equals(coltProjectCOLTProjectPersistedAspect.getAspectName())) {
+                return coltProjectCOLTProjectPersistedAspect;
+            }
+        }
+        return null;
+    }
 
     public String getName() {
         return name;
