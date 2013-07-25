@@ -1,6 +1,8 @@
 package codeOrchestra.colt.core.session;
 
 import codeOrchestra.colt.core.session.socket.ClientSocketHandler;
+import codeOrchestra.colt.core.session.sourcetracking.SourceFile;
+import codeOrchestra.colt.core.session.sourcetracking.SourceTrackingListener;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +10,7 @@ import java.util.Map;
 /**
  * @author Alexander Eliseyev
  */
-public interface LiveCodingSessionManager {
+public interface LiveCodingSessionManager<S extends SourceFile> {
 
     LiveCodingSession getSession(String clientId);
 
@@ -19,5 +21,9 @@ public interface LiveCodingSessionManager {
     void stopSession(LiveCodingSession liveCodingSession);
 
     List<LiveCodingSession> getCurrentConnections();
+
+    void addSourceTrackingListener(SourceTrackingListener<S> sourceTrackingListener);
+
+    void removeSourceTrackingListener(SourceTrackingListener<S> sourceTrackingListener);
 
 }
