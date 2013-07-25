@@ -10,10 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 
 /**
  * @author Alexander Eliseyev
@@ -84,6 +81,17 @@ public final class XMLUtils {
         DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
         return docBuilder.parse(file);
 
+    }
+
+    public static Document streamToDocument(InputStream is) throws IOException {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String inline = "";
+        while ((inline = inputReader.readLine()) != null) {
+            sb.append(inline);
+        }
+
+        return stringToDOM(sb.toString());
     }
 
 }

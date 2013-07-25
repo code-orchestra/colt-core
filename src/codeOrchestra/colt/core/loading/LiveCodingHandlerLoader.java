@@ -7,6 +7,6 @@ import codeOrchestra.colt.core.LiveCodingLanguageHandler;
  */
 public interface LiveCodingHandlerLoader {
 
-    LiveCodingLanguageHandler load(String id);
+    LiveCodingLanguageHandler load(String id) throws LiveCodingHandlerLoadingException;
 
 }

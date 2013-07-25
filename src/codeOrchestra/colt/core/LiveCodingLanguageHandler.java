@@ -1,6 +1,5 @@
 package codeOrchestra.colt.core;
 
-import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.persistence.COLTProjectPersistence;
 
 /**
@@ -11,8 +10,6 @@ public interface LiveCodingLanguageHandler {
     String getId();
 
     String getName();
-
-    COLTProject loadProject(String path);
 
     COLTProjectPersistence[] getAvailablePersistenceHandlers();
 
