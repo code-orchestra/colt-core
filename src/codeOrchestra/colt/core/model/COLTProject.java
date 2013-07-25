@@ -20,12 +20,24 @@ public abstract class COLTProject {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getHandlerId() {
         return handlerId;
     }
 
+    public void setHandlerId(String handlerId) {
+        this.handlerId = handlerId;
+    }
+
     public String getPath() {
         return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public boolean isDisposed() {
@@ -35,4 +47,5 @@ public abstract class COLTProject {
     public void setDisposed(boolean disposed) {
         this.disposed = disposed;
     }
+
 }
