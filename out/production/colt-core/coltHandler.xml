@@ -1,0 +1,3 @@
+<coltHandlers>
+    <coltHandler id="test" class="codeOrchestra.test.TestHandler" />
+</coltHandlers>

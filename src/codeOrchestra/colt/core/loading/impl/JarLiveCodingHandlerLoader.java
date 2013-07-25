@@ -50,7 +50,13 @@ public class JarLiveCodingHandlerLoader implements LiveCodingHandlerLoader {
             throw new LiveCodingHandlerLoadingException("Can't load live coding handler descriptor from " + file.getPath(), e);
         }
 
-        LiveCodingHandlerDescriptor liveCodingHandlerDescriptor = LiveCodingHandlerDescriptor.fromXML(descriptorDocument);
+        LiveCodingHandlerDescriptor liveCodingHandlerDescriptor = null;
+        for (LiveCodingHandlerDescriptor descriptorFromXML : LiveCodingHandlerDescriptor.fromXML(descriptorDocument)) {
+            if (id.equals(descriptorFromXML.getId())) {
+                liveCodingHandlerDescriptor = descriptorFromXML;
+                break;
+            }
+        }
 
         Class<LiveCodingLanguageHandler> handlerClass;
         try {
