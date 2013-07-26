@@ -17,7 +17,7 @@ import java.net.URLClassLoader;
 /**
  * @author Alexander Eliseyev
  */
-public class JarLiveCodingHandlerLoader implements LiveCodingHandlerLoader {
+public class JarLiveCodingHandlerLoader extends AbstractLiveCodingHandlerLoader implements LiveCodingHandlerLoader {
 
     public static final String COLT_HANDLER_XML = "coltHandler.xml";
 
@@ -27,7 +27,7 @@ public class JarLiveCodingHandlerLoader implements LiveCodingHandlerLoader {
     }
 
     @Override
-    public LiveCodingLanguageHandler load(String id) throws LiveCodingHandlerLoadingException {
+    protected AbstractLiveCodingHandlerLoader.HandlerWrapper getHandlerMetadata(String id) throws LiveCodingHandlerLoadingException {
         File file  = new File(getJarHandlersLocation() + id + ".jar");
         if (!file.exists()) {
             throw new LiveCodingHandlerLoadingException("Can't reach the live coding handler at " + file.getPath());
@@ -50,30 +50,7 @@ public class JarLiveCodingHandlerLoader implements LiveCodingHandlerLoader {
             throw new LiveCodingHandlerLoadingException("Can't load live coding handler descriptor from " + file.getPath(), e);
         }
 
-        LiveCodingHandlerDescriptor liveCodingHandlerDescriptor = null;
-        for (LiveCodingHandlerDescriptor descriptorFromXML : LiveCodingHandlerDescriptor.fromXML(descriptorDocument)) {
-            if (id.equals(descriptorFromXML.getId())) {
-                liveCodingHandlerDescriptor = descriptorFromXML;
-                break;
-            }
-        }
-
-        Class<LiveCodingLanguageHandler> handlerClass;
-        try {
-            handlerClass = (Class<LiveCodingLanguageHandler>) cl.loadClass(liveCodingHandlerDescriptor.getHandlerClassName());
-        } catch (ClassNotFoundException e) {
-            throw new LiveCodingHandlerLoadingException("Can't load live coding handler descriptor from " + file.getPath(), e);
-        }
-
-        try {
-            return handlerClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new LiveCodingHandlerLoadingException("Can't load live coding handler descriptor from " + file.getPath(), e);
-        } catch (IllegalAccessException e) {
-            throw new LiveCodingHandlerLoadingException("Can't load live coding handler descriptor from " + file.getPath(), e);
-        }
+        return new HandlerWrapper(descriptorDocument, cl, file);
     }
-
-
 
 }
