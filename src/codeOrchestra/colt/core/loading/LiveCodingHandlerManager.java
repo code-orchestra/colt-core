@@ -1,6 +1,7 @@
 package codeOrchestra.colt.core.loading;
 
 import codeOrchestra.colt.core.LiveCodingLanguageHandler;
+import codeOrchestra.colt.core.loading.impl.IdeaDevLiveCodingHandlerLoader;
 
 /**
  * @author Alexander Eliseyev
@@ -19,12 +20,18 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
     private LiveCodingHandlerManager() {
     }
 
+    // TODO: change to JarLiveCodingHandlerLoader for production
+    private final LiveCodingHandlerLoader ideaDevLiveCodingHandlerLoader = new IdeaDevLiveCodingHandlerLoader();
+
     private LiveCodingLanguageHandler currentHandler;
 
+    private LiveCodingHandlerLoader getLoader() {
+        return ideaDevLiveCodingHandlerLoader;
+    }
+
     @Override
-    public LiveCodingLanguageHandler load(String id) {
-        // TODO: implement
-        return null;
+    public LiveCodingLanguageHandler load(String id) throws LiveCodingHandlerLoadingException {
+        return getLoader().load(id);
     }
 
     public void dispose() {

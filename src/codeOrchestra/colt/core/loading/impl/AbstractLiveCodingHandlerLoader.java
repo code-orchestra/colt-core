@@ -13,6 +13,8 @@ import java.io.File;
  */
 public abstract class AbstractLiveCodingHandlerLoader implements LiveCodingHandlerLoader {
 
+    public static final String COLT_HANDLER_XML = "coltHandler.xml";
+
     protected abstract HandlerWrapper getHandlerMetadata(String id) throws LiveCodingHandlerLoadingException;
 
     @Override
@@ -20,16 +22,8 @@ public abstract class AbstractLiveCodingHandlerLoader implements LiveCodingHandl
         HandlerWrapper handlerMetadata = getHandlerMetadata(id);
         File handlerLocation = handlerMetadata.getHandlerLocation();
 
-        LiveCodingHandlerDescriptor liveCodingHandlerDescriptor = null;
-        for (LiveCodingHandlerDescriptor descriptorFromXML : LiveCodingHandlerDescriptor.fromXML(handlerMetadata.getDescriptorDocument())) {
-            if (id.equals(descriptorFromXML.getId())) {
-                liveCodingHandlerDescriptor = descriptorFromXML;
-                break;
-            }
-        }
-        if (liveCodingHandlerDescriptor == null) {
-            throw new LiveCodingHandlerLoadingException("Can't locate live coding handler " + id + " from " + handlerLocation.getPath());
-        }
+        Document descriptorDocument = handlerMetadata.getDescriptorDocument();
+        LiveCodingHandlerDescriptor liveCodingHandlerDescriptor = getLiveCodingHandlerDescriptor(id, handlerLocation.getPath(), descriptorDocument);
 
         Class<LiveCodingLanguageHandler> handlerClass;
         try {
@@ -45,6 +39,20 @@ public abstract class AbstractLiveCodingHandlerLoader implements LiveCodingHandl
         } catch (IllegalAccessException e) {
             throw new LiveCodingHandlerLoadingException("Can't load live coding handler " + id + " from " + handlerLocation.getPath(), e);
         }
+    }
+
+    protected LiveCodingHandlerDescriptor getLiveCodingHandlerDescriptor(String id, String handlerLocation, Document descriptorDocument) throws LiveCodingHandlerLoadingException {
+        LiveCodingHandlerDescriptor liveCodingHandlerDescriptor = null;
+        for (LiveCodingHandlerDescriptor descriptorFromXML : LiveCodingHandlerDescriptor.fromXML(descriptorDocument)) {
+            if (id.equals(descriptorFromXML.getId())) {
+                liveCodingHandlerDescriptor = descriptorFromXML;
+                break;
+            }
+        }
+        if (liveCodingHandlerDescriptor == null) {
+            throw new LiveCodingHandlerLoadingException("Can't locate live coding handler " + id + " from " + handlerLocation);
+        }
+        return liveCodingHandlerDescriptor;
     }
 
     public static class HandlerWrapper {

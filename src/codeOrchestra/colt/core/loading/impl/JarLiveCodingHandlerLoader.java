@@ -1,9 +1,7 @@
 package codeOrchestra.colt.core.loading.impl;
 
-import codeOrchestra.colt.core.LiveCodingLanguageHandler;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerLoader;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerLoadingException;
-import codeOrchestra.colt.core.loading.descriptor.LiveCodingHandlerDescriptor;
 import codeOrchestra.util.XMLUtils;
 import org.w3c.dom.Document;
 
@@ -19,8 +17,6 @@ import java.net.URLClassLoader;
  */
 public class JarLiveCodingHandlerLoader extends AbstractLiveCodingHandlerLoader implements LiveCodingHandlerLoader {
 
-    public static final String COLT_HANDLER_XML = "coltHandler.xml";
-
     // TODO: make dynamic
     private static String getJarHandlersLocation() {
         return "/Users/eliseyev/TMP/colt_handlers/";
@@ -33,16 +29,16 @@ public class JarLiveCodingHandlerLoader extends AbstractLiveCodingHandlerLoader 
             throw new LiveCodingHandlerLoadingException("Can't reach the live coding handler at " + file.getPath());
         }
 
-        URL url = null;
+        URL url;
         try {
             url = file.toURL();
         } catch (MalformedURLException e) {
             throw new LiveCodingHandlerLoadingException("Can't reach the live coding handler at " + file.getPath(), e);
         }
-        URL[] urls = new URL[]{url};
-        ClassLoader cl = new URLClassLoader(urls);
+        URL[] urls = new URL[] { url };
+        ClassLoader classLoader = new URLClassLoader(urls);
 
-        InputStream resourceAsStream = cl.getResourceAsStream(COLT_HANDLER_XML);
+        InputStream resourceAsStream = classLoader.getResourceAsStream(COLT_HANDLER_XML);
         Document descriptorDocument;
         try {
             descriptorDocument = XMLUtils.streamToDocument(resourceAsStream);
@@ -50,7 +46,7 @@ public class JarLiveCodingHandlerLoader extends AbstractLiveCodingHandlerLoader 
             throw new LiveCodingHandlerLoadingException("Can't load live coding handler descriptor from " + file.getPath(), e);
         }
 
-        return new HandlerWrapper(descriptorDocument, cl, file);
+        return new HandlerWrapper(descriptorDocument, classLoader, file);
     }
 
 }
