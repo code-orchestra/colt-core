@@ -5,10 +5,10 @@ import codeOrchestra.colt.core.model.COLTProject;
 /**
  * @author Alexander Eliseyev
  */
-public interface ProjectListener {
+public interface ProjectListener<P extends COLTProject> {
 
-    void onProjectLoaded(COLTProject project);
+    void onProjectLoaded(P project);
 
-    void onProjectUnloaded(COLTProject project);
+    void onProjectUnloaded(P project);
 
 }
