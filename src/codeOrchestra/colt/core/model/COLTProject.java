@@ -24,6 +24,7 @@ public abstract class COLTProject {
 
     protected abstract List<COLTProjectPersistedAspect> getLanguageSpecificAspects();
 
+    /*
     private List<COLTProjectPersistedAspect> getDefaultAspects() {
         return new ArrayList<COLTProjectPersistedAspect>() {{
             add(getProjectPaths());
@@ -31,18 +32,19 @@ public abstract class COLTProject {
             add(getProjectBuildSettings());
         }};
     }
+    */
 
     public List<COLTProjectPersistedAspect> getAllPersistedAspects() {
         List<COLTProjectPersistedAspect> result = new ArrayList<COLTProjectPersistedAspect>();
 
-        result.addAll(getDefaultAspects());
+//        result.addAll(getDefaultAspects());
         result.addAll(getLanguageSpecificAspects());
 
         return result;
     }
 
     public COLTProjectPersistedAspect getPersistedAspectByName(String name) {
-        for (COLTProjectPersistedAspect coltProjectCOLTProjectPersistedAspect : getDefaultAspects()) {
+        for (COLTProjectPersistedAspect coltProjectCOLTProjectPersistedAspect : getAllPersistedAspects()) {
             if (name.equals(coltProjectCOLTProjectPersistedAspect.getAspectName())) {
                 return coltProjectCOLTProjectPersistedAspect;
             }
