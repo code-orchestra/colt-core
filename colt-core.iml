@@ -9,6 +9,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="groovyfx-0.3.1" level="project" />
     <orderEntry type="library" name="httpclient" level="project" />
+    <orderEntry type="library" name="jetty-6.1.26" level="project" />
   </component>
 </module>
 

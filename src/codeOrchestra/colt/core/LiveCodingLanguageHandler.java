@@ -4,6 +4,7 @@ import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.model.persistence.COLTProjectPersistence;
+import codeOrchestra.colt.core.rpc.COLTRemoteService;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
 
 /**
@@ -30,5 +31,7 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
     void removeProjectListener(ProjectListener<P> projectListener);
 
     Logger getLogger(String source);
+
+    COLTRemoteService getRPCService();
 
 }
