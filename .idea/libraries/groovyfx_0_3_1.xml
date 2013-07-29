@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="groovyfx-0.3.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/groovyfx-0.3.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
