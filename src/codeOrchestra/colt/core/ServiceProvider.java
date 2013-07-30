@@ -62,8 +62,5 @@ public class ServiceProvider {
         return null;
     }
 
-    public static void main(String[] args) {
-
-    }
 
 }
