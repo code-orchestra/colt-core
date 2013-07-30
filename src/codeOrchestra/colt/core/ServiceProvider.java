@@ -8,12 +8,20 @@ import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Alexander Eliseyev
  */
 public class ServiceProvider {
+
+    private static Map<String, COLTService> cache = new HashMap<String, COLTService>();
+
+    public static synchronized void dispose() {
+        cache.clear();
+    }
 
     public static List<Class<? extends COLTService>> KNOWN_SERVICES = new ArrayList<Class<? extends COLTService>>() {{
         add(LiveLauncher.class);
@@ -22,7 +30,11 @@ public class ServiceProvider {
         add(Logger.class);
     }};
 
-    public static <T extends COLTService> T get(Class<T> clazz) {
+    public static synchronized <T extends COLTService> T get(Class<T> clazz) {
+        if (cache.containsKey(clazz.getCanonicalName())) {
+            return (T) cache.get(clazz.getCanonicalName());
+        }
+
         Class<? extends COLTService> existingService = null;
         for (Class<? extends COLTService> knownService : KNOWN_SERVICES) {
             if (clazz.getSimpleName().equals(knownService.getSimpleName())) {
@@ -37,7 +49,9 @@ public class ServiceProvider {
         for (Method method : currentHandler.getClass().getMethods()) {
             if (method.getName().startsWith("get") && method.getReturnType().equals(existingService)) {
                 try {
-                    return (T) method.invoke(currentHandler);
+                    T service = (T) method.invoke(currentHandler);
+                    cache.put(existingService.getCanonicalName(), service);
+                    return service;
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 } catch (InvocationTargetException e) {
