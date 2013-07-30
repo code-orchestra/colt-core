@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.model;
 
 import codeOrchestra.colt.core.model.persistence.COLTProjectPersistedAspect;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,10 @@ public abstract class COLTProject {
             }
         }
         return null;
+    }
+
+    public File getBaseDir() {
+        return new File(path).getParentFile();
     }
 
     public String getName() {

@@ -37,4 +37,6 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     LiveLauncher<P> getLauncher();
 
+    LiveCodingManager<P> getLiveCodingManager();
+
 }
