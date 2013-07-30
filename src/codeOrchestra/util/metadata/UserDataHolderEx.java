@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package codeOrchestra.util;
+package codeOrchestra.util.metadata;
 
 /**
  * @author cdr

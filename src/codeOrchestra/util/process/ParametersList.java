@@ -16,7 +16,7 @@
 package codeOrchestra.util.process;
 
 import codeOrchestra.colt.core.logging.Logger;
-import codeOrchestra.util.ParamsGroup;
+import codeOrchestra.util.metadata.ParamsGroup;
 import codeOrchestra.util.StringUtils;
 
 import java.util.*;

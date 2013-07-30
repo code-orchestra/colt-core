@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package codeOrchestra.util;
+package codeOrchestra.util.metadata;
 
 import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.util.process.ParametersList;

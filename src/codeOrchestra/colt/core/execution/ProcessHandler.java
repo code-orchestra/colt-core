@@ -16,7 +16,7 @@
 package codeOrchestra.colt.core.execution;
 
 import codeOrchestra.colt.core.logging.Logger;
-import codeOrchestra.util.UserDataHolderBase;
+import codeOrchestra.util.metadata.UserDataHolderBase;
 import codeOrchestra.util.concurrency.ProcessCanceledException;
 import codeOrchestra.util.concurrency.Semaphore;
 import codeOrchestra.util.process.ProcessAdapter;
