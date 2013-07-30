@@ -2,7 +2,6 @@ package codeOrchestra.colt.core;
 
 import codeOrchestra.colt.core.launch.LiveLauncher;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
-import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
 
 import java.lang.reflect.InvocationTargetException;
@@ -27,7 +26,6 @@ public class ServiceProvider {
         add(LiveLauncher.class);
         add(LiveCodingManager.class);
         add(SourceFileFactory.class);
-        add(Logger.class);
     }};
 
     public static synchronized <T extends COLTService> T get(Class<T> clazz) {
@@ -47,7 +45,7 @@ public class ServiceProvider {
 
         LiveCodingLanguageHandler currentHandler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         for (Method method : currentHandler.getClass().getMethods()) {
-            if (method.getName().startsWith("get") && method.getReturnType().equals(existingService)) {
+            if (method.getName().startsWith("create") && method.getReturnType().equals(existingService)) {
                 try {
                     T service = (T) method.invoke(currentHandler);
                     cache.put(existingService.getCanonicalName(), service);

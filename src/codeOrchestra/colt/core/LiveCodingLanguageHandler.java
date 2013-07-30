@@ -31,17 +31,15 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     COLTRemoteService getRPCService();
 
-    // Services
-
     Logger getLogger(String source);
 
-    LiveLauncher<P> getLauncher();
+    // Services
 
-    LiveCodingManager<P> getLiveCodingManager();
+    LiveLauncher<P> createLauncher();
 
-    SourceFileFactory getSourceFileFactory();
+    LiveCodingManager<P> createLiveCodingManager();
 
+    SourceFileFactory createSourceFileFactory();
 
-//    ServiceProvider<P> getServiceProvider();
 
 }

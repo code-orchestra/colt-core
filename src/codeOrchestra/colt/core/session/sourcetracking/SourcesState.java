@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.session.sourcetracking;
 
+import codeOrchestra.colt.core.ServiceProvider;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.util.FileUtils;
 
@@ -34,7 +35,8 @@ public class SourcesState {
 
 	public void addFile(File file, File baseDir) {
 		state.put(file.getPath(), file.lastModified());
-		pathToWrapper.put(file.getPath(), LiveCodingHandlerManager.getInstance().getCurrentHandler().getSourceFileFactory().createSourceFile(file, baseDir));
+		SourceFileFactory sourceFileFactory = ServiceProvider.get(SourceFileFactory.class);
+        pathToWrapper.put(file.getPath(), sourceFileFactory.createSourceFile(file, baseDir));
 	}
 	
 	public List<SourceFile> getChangedFiles(SourcesState oldState) {
