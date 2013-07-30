@@ -2,6 +2,7 @@ package codeOrchestra.colt.core;
 
 import codeOrchestra.colt.core.launch.LiveLauncher;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
+import codeOrchestra.colt.core.rpc.COLTRemoteService;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,6 +27,7 @@ public class ServiceProvider {
         add(LiveLauncher.class);
         add(LiveCodingManager.class);
         add(SourceFileFactory.class);
+        add(COLTRemoteService.class);
     }};
 
     public static synchronized <T extends COLTService> T get(Class<T> clazz) {

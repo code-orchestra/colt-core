@@ -29,11 +29,11 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     void removeProjectListener(ProjectListener<P> projectListener);
 
-    COLTRemoteService getRPCService();
-
     Logger getLogger(String source);
 
     // Services
+
+    COLTRemoteService createRPCService();
 
     LiveLauncher<P> createLauncher();
 

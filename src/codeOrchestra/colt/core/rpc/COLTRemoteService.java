@@ -1,5 +1,7 @@
 package codeOrchestra.colt.core.rpc;
 
+import codeOrchestra.colt.core.COLTService;
+import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.core.rpc.security.InvalidShortCodeException;
 import codeOrchestra.colt.core.rpc.security.TooManyFailedCodeTypeAttemptsException;
@@ -7,7 +9,7 @@ import codeOrchestra.colt.core.rpc.security.TooManyFailedCodeTypeAttemptsExcepti
 /**
  * @author Alexander Eliseyev
  */
-public interface COLTRemoteService {
+public interface COLTRemoteService<P extends COLTProject> extends COLTService<P> {
   
   // Authorization methods
   
