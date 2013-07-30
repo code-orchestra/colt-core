@@ -1,6 +1,6 @@
 package codeOrchestra.colt.core.rpc;
 
-import codeOrchestra.colt.core.ServiceProvider;
+import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.logging.Logger;
 import com.googlecode.jsonrpc4j.JsonRpcServer;
 
@@ -35,7 +35,7 @@ public class COLTRemoteServiceServlet extends HttpServlet {
   }
 
   public void init(ServletConfig config) {
-    this.coltRemoteService = ServiceProvider.get(COLTRemoteService.class);
+    this.coltRemoteService = LiveCodingHandlerManager.getInstance().getCurrentHandler().getRPCService();
     this.jsonRpcServer = new JsonRpcServer(this.coltRemoteService, COLTRemoteService.class);
   }
 
