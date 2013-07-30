@@ -66,6 +66,12 @@ public abstract class Logger {
         log(message, scopeIds, timestamp, level, null);
     }
 
+    public void assertTrue(boolean condition, String message) {
+        if (!condition) {
+            error(message);
+        }
+    }
+
     public abstract void log(String message, List<String> scopeIds, long timestamp, Level level, String stackTrace);
 
 }

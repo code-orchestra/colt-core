@@ -1,10 +1,10 @@
 package codeOrchestra.colt.core.license.plimus;
 
-import java.io.IOException;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
+
+import java.io.IOException;
 
 /**
  * @author Alexander Eliseyev
