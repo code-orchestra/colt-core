@@ -3,7 +3,7 @@ package codeOrchestra.colt.core.session.socket;
 /**
  * @author Alexander Eliseyev
  */
-public interface ClientSocketHandler {
+public interface LiveClientSocketHandler {
 
     void handle(String str);
 

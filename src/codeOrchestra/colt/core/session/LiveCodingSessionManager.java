@@ -1,6 +1,6 @@
 package codeOrchestra.colt.core.session;
 
-import codeOrchestra.colt.core.session.socket.ClientSocketHandler;
+import codeOrchestra.colt.core.session.socket.LiveClientSocketHandler;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFile;
 import codeOrchestra.colt.core.session.sourcetracking.SourceTrackingListener;
 
@@ -16,7 +16,7 @@ public interface LiveCodingSessionManager<S extends SourceFile> {
 
     void sendLiveCodingMessage(String message);
 
-    void startSession(String broadcastId, String clientId, Map<String, String> clientInfo, ClientSocketHandler clientSocketHandler);
+    void startSession(String broadcastId, String clientId, Map<String, String> clientInfo, LiveClientSocketHandler clientSocketHandler);
 
     void stopSession(LiveCodingSession liveCodingSession);
 
