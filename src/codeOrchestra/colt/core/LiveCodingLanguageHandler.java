@@ -19,8 +19,6 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     COLTProjectPersistence<P>[] getAvailablePersistenceHandlers();
 
-    SourceFileFactory getSourceFileFactory();
-
     P getCurrentProject();
 
     void initHandler();
@@ -31,12 +29,19 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     void removeProjectListener(ProjectListener<P> projectListener);
 
-    Logger getLogger(String source);
-
     COLTRemoteService getRPCService();
+
+    // Services
+
+    Logger getLogger(String source);
 
     LiveLauncher<P> getLauncher();
 
     LiveCodingManager<P> getLiveCodingManager();
+
+    SourceFileFactory getSourceFileFactory();
+
+
+//    ServiceProvider<P> getServiceProvider();
 
 }

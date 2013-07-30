@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.logging;
 
+import codeOrchestra.colt.core.COLTService;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * @author Alexander Eliseyev
  */
-public abstract class Logger {
+public abstract class Logger implements COLTService {
 
     private static final List<String> DEFAULT_SCOPES = new ArrayList<String>() {{
         add("0");

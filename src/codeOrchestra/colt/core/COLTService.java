@@ -5,5 +5,5 @@ import codeOrchestra.colt.core.model.COLTProject;
 /**
  * @author Alexander Eliseyev
  */
-public interface LiveCodingManager<P extends COLTProject> extends COLTService<P> {
+public interface COLTService<P extends COLTProject> {
 }
