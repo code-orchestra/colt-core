@@ -19,6 +19,7 @@ import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.util.UserDataHolderBase;
 import codeOrchestra.util.concurrency.ProcessCanceledException;
 import codeOrchestra.util.concurrency.Semaphore;
+import codeOrchestra.util.process.ProcessAdapter;
 
 import java.io.OutputStream;
 import java.lang.reflect.InvocationHandler;

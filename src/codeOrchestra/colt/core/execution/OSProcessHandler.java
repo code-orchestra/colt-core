@@ -17,6 +17,7 @@ package codeOrchestra.colt.core.execution;
 
 import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.util.Consumer;
+import codeOrchestra.util.process.ProcessAdapter;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -1,6 +1,7 @@
 package codeOrchestra.colt.core.execution;
 
 import codeOrchestra.colt.core.logging.Logger;
+import codeOrchestra.util.process.ProcessAdapter;
 
 public class LoggingProcessListener extends ProcessAdapter {
 
