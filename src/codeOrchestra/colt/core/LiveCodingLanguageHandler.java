@@ -7,6 +7,8 @@ import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.model.persistence.COLTProjectPersistence;
 import codeOrchestra.colt.core.rpc.COLTRemoteService;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
 
 /**
  * @author Alexander Eliseyev
@@ -30,6 +32,10 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
     void removeProjectListener(ProjectListener<P> projectListener);
 
     Logger getLogger(String source);
+
+    // UI
+
+    void loadUI(Stage primaryStage, Parent root) throws Exception;
 
     // Services
 
