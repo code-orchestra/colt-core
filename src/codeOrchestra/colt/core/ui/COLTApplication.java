@@ -9,6 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -21,14 +24,16 @@ public class COLTApplication extends Application {
 
     public static COLTApplication instance;
 
-    private Group root;
+    private VBox root;
     private Node currentPluginNode;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         instance = this;
 
-        root = new Group();
+        root = new VBox();
+        root.setFillWidth(true);
+        root.setMaxHeight(Double.MAX_VALUE);
         primaryStage.setTitle("COLT 1.1");
         primaryStage.setScene(new Scene(root, 800, 700));
 
@@ -69,6 +74,7 @@ public class COLTApplication extends Application {
         }
 
         currentPluginNode = node;
+        VBox.setVgrow(currentPluginNode, Priority.ALWAYS);
         root.getChildren().add(node);
     }
 
