@@ -9,7 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 /**
  * @author Alexander Eliseyev
@@ -32,11 +35,15 @@ public class COLTApplication extends Application {
         Menu menu = new Menu("File");
         MenuItem menuLoad = new MenuItem("Load");
         menuLoad.setOnAction(t -> {
-            // TODO: file chooser
-            try {
-                COLTProjectManager.getInstance().load("/Users/eliseyev/TMP/OriginalProject/AwesomeProject.colt2");
-            } catch (COLTException e) {
-                throw new RuntimeException(e); // TODO: handle nicely
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt2"));
+            File file = fileChooser.showOpenDialog(primaryStage.getScene().getWindow());
+            if (file != null) {
+                try {
+                    COLTProjectManager.getInstance().load(file.getPath());
+                } catch (COLTException e) {
+                    throw new RuntimeException(e); // TODO: handle nicely
+                }
             }
         });
 
