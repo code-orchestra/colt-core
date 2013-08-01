@@ -35,7 +35,7 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
     }
 
     public void dispose() {
-        // TODO: implement
+        currentHandler = null;
     }
 
     public LiveCodingLanguageHandler getCurrentHandler() {
