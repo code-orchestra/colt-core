@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui;
 
 import codeOrchestra.colt.core.COLTException;
 import codeOrchestra.colt.core.COLTProjectManager;
+import codeOrchestra.colt.core.model.COLTProject;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -16,6 +17,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author Alexander Eliseyev
@@ -54,7 +57,22 @@ public class COLTApplication extends Application {
 
         MenuItem menuSave = new MenuItem("Save");
         menuSave.setOnAction(t -> {
-
+            COLTProject project = COLTProjectManager.getInstance().getCurrentProject();
+            if (project != null) {
+                String xml = project.toXmlString();
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt2"));
+                File file = fileChooser.showSaveDialog(primaryStage);
+                if (file != null) {
+                    try {
+                        FileWriter fileWriter = new FileWriter(file);
+                        fileWriter.write(xml);
+                        fileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         });
 
         menu.getItems().addAll(menuLoad, menuSave);
