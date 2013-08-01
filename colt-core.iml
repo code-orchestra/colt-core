@@ -17,7 +17,7 @@
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="groovy-2.1.6" level="application" />
+    <orderEntry type="library" name="groovy" level="application" />
   </component>
 </module>
 

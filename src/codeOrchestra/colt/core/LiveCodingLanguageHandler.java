@@ -7,6 +7,7 @@ import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.rpc.COLTRemoteService;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
 import groovy.util.slurpersupport.GPathResult;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
@@ -43,7 +44,7 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     // UI
 
-    void loadUI(Stage primaryStage, Parent root) throws Exception;
+    Node getPane() throws Exception;
 
     // Services
 

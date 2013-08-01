@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.loading;
 
 import codeOrchestra.colt.core.LiveCodingLanguageHandler;
 import codeOrchestra.colt.core.loading.impl.IdeaDevLiveCodingHandlerLoader;
+import codeOrchestra.colt.core.ui.COLTApplication;
 
 /**
  * @author Alexander Eliseyev
@@ -31,10 +32,28 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
 
     @Override
     public LiveCodingLanguageHandler load(String id) throws LiveCodingHandlerLoadingException {
-        return getLoader().load(id);
+        if (currentHandler != null) {
+            if (currentHandler.getId().equals(id)) {
+                return currentHandler;
+            }
+
+            dispose();
+        }
+
+        currentHandler = getLoader().load(id);
+        currentHandler.initHandler();
+
+        try {
+            COLTApplication.instance.setPluginPane(currentHandler.getPane());
+        } catch (Exception e) {
+            throw new LiveCodingHandlerLoadingException("Couldn't init the live coding handler UI", e);
+        }
+
+        return getCurrentHandler();
     }
 
     public void dispose() {
+        currentHandler.disposeHandler();
         currentHandler = null;
     }
 
