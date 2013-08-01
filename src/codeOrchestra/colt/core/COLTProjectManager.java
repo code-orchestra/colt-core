@@ -4,6 +4,9 @@ import codeOrchestra.colt.core.loading.LiveCodingHandlerLoadingException;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.COLTProjectHandlerIdParser;
+import codeOrchestra.util.FileUtils;
+
+import java.io.File;
 
 /**
  * @author Alexander Eliseyev
@@ -33,7 +36,7 @@ public class COLTProjectManager {
             unload();
         }
 
-        COLTProjectHandlerIdParser coltProjectHandlerIdParser = new COLTProjectHandlerIdParser(path);
+        COLTProjectHandlerIdParser coltProjectHandlerIdParser = new COLTProjectHandlerIdParser(FileUtils.read(new File(path)));
         String handlerId = coltProjectHandlerIdParser.getHandlerId();
         if (handlerId == null) {
             throw new COLTException("Can't figure out the handler ID for the project path " + path);

@@ -17,7 +17,7 @@ class COLTProjectHandlerIdParser {
     }
 
     String getHandlerId() {
-        return node.@type
+        return node.@projectType
     }
 
 }
