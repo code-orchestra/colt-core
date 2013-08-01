@@ -13,20 +13,18 @@ public abstract class AbstractLiveCodingLanguageHandler<P extends COLTProject> i
 
     private List<ProjectListener> projectListeners = new ArrayList<ProjectListener>();
 
-    private P currentProject;
+    @Override
+    public synchronized void fireProjectLoaded() {
+        for (ProjectListener projectListener : projectListeners) {
+            projectListener.onProjectLoaded(getCurrentProject());
+        }
+    }
 
-    protected AbstractLiveCodingLanguageHandler() {
-        addProjectListener(new ProjectListener<P>() {
-            @Override
-            public void onProjectLoaded(P project) {
-                currentProject = project;
-            }
-
-            @Override
-            public void onProjectUnloaded(P project) {
-                currentProject = null;
-            }
-        });
+    @Override
+    public synchronized void fireProjectClosed() {
+        for (ProjectListener projectListener : projectListeners) {
+            projectListener.onProjectUnloaded(getCurrentProject());
+        }
     }
 
     @Override
@@ -41,6 +39,6 @@ public abstract class AbstractLiveCodingLanguageHandler<P extends COLTProject> i
 
     @Override
     public P getCurrentProject() {
-        return currentProject;
+        return (P) COLTProjectManager.getInstance().getCurrentProject();
     }
 }
