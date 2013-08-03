@@ -104,10 +104,12 @@ public class COLTApplication extends Application {
         timeStarted = System.currentTimeMillis();
 
         // Intercept start by license check
+        /*
         StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
         if (startupInterceptType != StartupInterceptType.START) {
             System.exit(1);
         }
+        */
 
         // COLT-287
         System.setProperty ("jsse.enableSNIExtension", "false");
