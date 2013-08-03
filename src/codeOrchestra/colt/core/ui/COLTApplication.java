@@ -2,6 +2,9 @@ package codeOrchestra.colt.core.ui;
 
 import codeOrchestra.colt.core.COLTException;
 import codeOrchestra.colt.core.COLTProjectManager;
+import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
+import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
+import codeOrchestra.colt.core.license.COLTRunningKey;
 import codeOrchestra.colt.core.license.StartupInterceptType;
 import codeOrchestra.colt.core.license.StartupInterceptor;
 import codeOrchestra.colt.core.model.COLTProject;
@@ -113,6 +116,13 @@ public class COLTApplication extends Application {
 
         // COLT-287
         System.setProperty ("jsse.enableSNIExtension", "false");
+
+        COLTRunningKey.setRunning(true);
+
+        CodeOrchestraResourcesHttpServer.getInstance().init();
+        CodeOrchestraRPCHttpServer.getInstance().init();
+
+
 
         launch(args);
     }
