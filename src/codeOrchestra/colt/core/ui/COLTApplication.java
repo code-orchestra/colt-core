@@ -30,6 +30,8 @@ public class COLTApplication extends Application {
     private VBox root;
     private Node currentPluginNode;
 
+    public static long timeStarted;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         instance = this;
@@ -97,6 +99,11 @@ public class COLTApplication extends Application {
     }
 
     public static void main(String[] args) {
+        timeStarted = System.currentTimeMillis();
+
+        // COLT-287
+        System.setProperty ("jsse.enableSNIExtension", "false");
+
         launch(args);
     }
 

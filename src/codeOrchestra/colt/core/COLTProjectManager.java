@@ -4,6 +4,7 @@ import codeOrchestra.colt.core.loading.LiveCodingHandlerLoadingException;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.COLTProjectHandlerIdParser;
+import codeOrchestra.colt.core.rpc.COLTRemoteService;
 import codeOrchestra.util.FileUtils;
 
 import java.io.File;
@@ -48,8 +49,15 @@ public class COLTProjectManager {
             throw new COLTException("Can't load the handler for the project type " + handlerId);
         }
 
+        // Parse the project
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         currentProject = handler.parseProject(coltProjectHandlerIdParser.getNode());
+
+        // Start the RPC service
+        COLTRemoteService coltRemoteService = ServiceProvider.get(COLTRemoteService.class);
+        if (coltRemoteService != null) {
+            // TODO: publish the service
+        }
 
         handler.fireProjectLoaded();
     }
