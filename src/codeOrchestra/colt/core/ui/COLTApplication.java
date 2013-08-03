@@ -2,6 +2,8 @@ package codeOrchestra.colt.core.ui;
 
 import codeOrchestra.colt.core.COLTException;
 import codeOrchestra.colt.core.COLTProjectManager;
+import codeOrchestra.colt.core.license.StartupInterceptType;
+import codeOrchestra.colt.core.license.StartupInterceptor;
 import codeOrchestra.colt.core.model.COLTProject;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -100,6 +102,12 @@ public class COLTApplication extends Application {
 
     public static void main(String[] args) {
         timeStarted = System.currentTimeMillis();
+
+        // Intercept start by license check
+        StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
+        if (startupInterceptType != StartupInterceptType.START) {
+            System.exit(1);
+        }
 
         // COLT-287
         System.setProperty ("jsse.enableSNIExtension", "false");
