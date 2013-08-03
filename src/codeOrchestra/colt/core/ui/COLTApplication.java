@@ -123,7 +123,7 @@ public class COLTApplication extends Application {
         CodeOrchestraResourcesHttpServer.getInstance().init();
 
         CodeOrchestraRPCHttpServer.getInstance().init();
-        CodeOrchestraRPCHttpServer.getInstance().addServlet(new COLTRemoteServiceServlet(), "/coltService");
+        CodeOrchestraRPCHttpServer.getInstance().addServlet(COLTRemoteServiceServlet.getInstance(), "/coltService");
 
         launch(args);
     }
