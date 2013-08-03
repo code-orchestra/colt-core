@@ -8,6 +8,7 @@ import codeOrchestra.colt.core.license.COLTRunningKey;
 import codeOrchestra.colt.core.license.StartupInterceptType;
 import codeOrchestra.colt.core.license.StartupInterceptor;
 import codeOrchestra.colt.core.model.COLTProject;
+import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -120,11 +121,13 @@ public class COLTApplication extends Application {
         COLTRunningKey.setRunning(true);
 
         CodeOrchestraResourcesHttpServer.getInstance().init();
+
         CodeOrchestraRPCHttpServer.getInstance().init();
-
-
+        CodeOrchestraRPCHttpServer.getInstance().addServlet(new COLTRemoteServiceServlet(), "/coltService");
 
         launch(args);
     }
+
+    // TODO: do we need dispose app method here?
 
 }

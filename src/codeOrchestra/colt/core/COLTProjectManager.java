@@ -53,12 +53,6 @@ public class COLTProjectManager {
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         currentProject = handler.parseProject(coltProjectHandlerIdParser.getNode());
 
-        // Start the RPC service
-        COLTRemoteService coltRemoteService = ServiceProvider.get(COLTRemoteService.class);
-        if (coltRemoteService != null) {
-            // TODO: publish the service
-        }
-
         handler.fireProjectLoaded();
     }
 

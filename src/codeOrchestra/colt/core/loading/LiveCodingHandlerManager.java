@@ -1,7 +1,10 @@
 package codeOrchestra.colt.core.loading;
 
 import codeOrchestra.colt.core.LiveCodingLanguageHandler;
+import codeOrchestra.colt.core.ServiceProvider;
 import codeOrchestra.colt.core.loading.impl.IdeaDevLiveCodingHandlerLoader;
+import codeOrchestra.colt.core.rpc.COLTRemoteService;
+import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
 import codeOrchestra.colt.core.ui.COLTApplication;
 
 /**
@@ -41,6 +44,10 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
         }
 
         currentHandler = getLoader().load(id);
+
+        // Start the RPC service
+        COLTRemoteServiceServlet.getInstance().refreshService();
+
         currentHandler.initHandler();
 
         try {
