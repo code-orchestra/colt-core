@@ -135,6 +135,7 @@
                 }
                 blur();
             }).keydown(function (ev) {
+                    console.log(ev)
                     if (!focused || !current) return;
                     var caret = current.is('editable') ? current.getCaret() : null;
                     var value = current.getValue()[1];
@@ -388,9 +389,9 @@
                 element.focus(function () {
                     focus(true);
                 }).blur(function () {
-                    blur(true);
-                    if (options.addOnBlur) toBox();
-                });
+                        blur(true);
+                        if (options.addOnBlur) toBox();
+                    });
                 if (options.addKeys || options.stopEnter) {
                     element.keydown(function (ev) {
                         if (!focused) return;
@@ -677,11 +678,11 @@
                 element.css('cursor', 'pointer').hover(function () {
                     focus(element);
                 }).mousedown(function (ev) {
-                    ev.stopPropagation();
-                    ev.preventDefault();
-                    clearTimeout(hidetimer);
-                    doAdd = true;
-                }).mouseup(function () {
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        clearTimeout(hidetimer);
+                        doAdd = true;
+                    }).mouseup(function () {
                         if (doAdd) {
                             addCurrent();
                             currentInput.focus();
