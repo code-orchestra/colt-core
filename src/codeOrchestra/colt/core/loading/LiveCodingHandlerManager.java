@@ -51,7 +51,7 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
         currentHandler.initHandler();
 
         try {
-            COLTApplication.instance.setPluginPane(currentHandler.getPane());
+            COLTApplication.get().setPluginPane(currentHandler.getPane());
         } catch (Exception e) {
             throw new LiveCodingHandlerLoadingException("Couldn't init the live coding handler UI", e);
         }

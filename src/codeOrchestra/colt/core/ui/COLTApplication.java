@@ -21,6 +21,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialogs;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -31,16 +33,23 @@ import java.io.IOException;
  */
 public class COLTApplication extends Application {
 
-    public static COLTApplication instance;
+    private static COLTApplication instance;
+
+    public static COLTApplication get() {
+        return instance;
+    }
 
     private VBox root;
     private Node currentPluginNode;
+    private Stage primaryStage;
 
     public static long timeStarted;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         instance = this;
+
+        this.primaryStage = primaryStage;
 
         root = new VBox();
         root.setFillWidth(true);
@@ -92,6 +101,17 @@ public class COLTApplication extends Application {
         root.getChildren().add(menuBar);
 
         primaryStage.show();
+
+        Dialogs.create()
+                .owner(COLTApplication.get().getPrimaryStage())
+                .title("COLT License")
+                .message("COLT beta version requires an active internet connection to start.")
+                .showError();
+
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 
     public void setPluginPane(Node node) {
@@ -108,12 +128,10 @@ public class COLTApplication extends Application {
         timeStarted = System.currentTimeMillis();
 
         // Intercept start by license check
-        /*
         StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
         if (startupInterceptType != StartupInterceptType.START) {
             System.exit(1);
         }
-        */
 
         // COLT-287
         System.setProperty ("jsse.enableSNIExtension", "false");

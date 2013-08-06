@@ -1,6 +1,8 @@
 package codeOrchestra.colt.core.license;
 
+import codeOrchestra.colt.core.ui.COLTApplication;
 import codeOrchestra.util.StringUtils;
+import org.controlsfx.dialog.Dialogs;
 
 /**
  * @author Alexander Eliseyev
@@ -8,6 +10,7 @@ import codeOrchestra.util.StringUtils;
 public class StartupInterceptor {
 
     private final static StartupInterceptor instance = new StartupInterceptor();
+
     public static StartupInterceptor getInstance() {
         return instance;
     }
@@ -18,7 +21,11 @@ public class StartupInterceptor {
         // Report serial number every 10 seconds
         if (StringUtils.isNotEmpty(CodeOrchestraLicenseManager.getLegacySerialNumber())) {
             if (expirationStrategy.isTrialOnly() && !new ActivationReporter(CodeOrchestraLicenseManager.getLegacySerialNumber()).report()) {
-// TODO                MessageDialog.openError(Display.getDefault().getActiveShell(), "COLT License", "COLT beta version requires an active internet connection to start.");
+                Dialogs.create()
+                        .owner(COLTApplication.get().getPrimaryStage())
+                        .title("COLT License")
+                        .message("COLT beta version requires an active internet connection to start.")
+                        .showError();
                 return StartupInterceptType.EXIT_NO_CONNECTION;
             }
 
@@ -32,7 +39,9 @@ public class StartupInterceptor {
                         }
                         new ActivationReporter(CodeOrchestraLicenseManager.getLegacySerialNumber()).report();
                     }
-                };
+                }
+
+                ;
             }.start();
         }
 
@@ -43,7 +52,12 @@ public class StartupInterceptor {
                 return StartupInterceptType.EXIT_EXPIRED;
             } else {
                 if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
-// TODO                    MessageDialog.openError(Display.getDefault().getActiveShell(), "Evaluation License", "Something is wrong with the system clock\nCOLT was launched already on the currently set time.");
+                    Dialogs.create()
+                            .owner(COLTApplication.get().getPrimaryStage())
+                            .title("Evaluation License")
+                            .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
+                            .showError();
+
                     return StartupInterceptType.EXIT_UNKNOWN;
                 }
 
@@ -64,7 +78,12 @@ public class StartupInterceptor {
         if ((expirationStrategy.allowTrial() && CodeOrchestraLicenseManager.noSerialNumberPresent()) || (!expirationStrategy.allowsDemo() && expirationStrategy.isSubscriptionBased() && !CodeOrchestraLicenseManager.noSerialNumberPresent())) {
             if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
                 String title = expirationStrategy.isSubscriptionBased() ? "COLT Subscription" : "Evaluation License";
-// TODO                MessageDialog.openError(Display.getDefault().getActiveShell(), title, "Something is wrong with the system clock\nCOLT was launched already on the currently set time.");
+                Dialogs.create()
+                        .owner(COLTApplication.get().getPrimaryStage())
+                        .title(title)
+                        .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
+                        .showError();
+
                 return StartupInterceptType.EXIT_UNKNOWN;
             }
 
@@ -88,12 +107,16 @@ public class StartupInterceptor {
         // Demo version with subscription
         if (expirationStrategy.allowsDemo() && expirationStrategy.isSubscriptionBased()) {
             if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
-                String title = "COLT Subscription";
-// TODO:                MessageDialog.openError(Display.getDefault().getActiveShell(), title, "Something is wrong with the system clock\nCOLT was launched already on the currently set time.");
+                Dialogs.create()
+                        .owner(COLTApplication.get().getPrimaryStage())
+                        .title("COLT Subscription")
+                        .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
+                        .showError();
+
                 return StartupInterceptType.EXIT_UNKNOWN;
             }
 
-            boolean expired = false;
+            boolean expired;
             if (ExpirationHelper.getExpirationStrategy().hasExpired()) {
                 expired = !expirationStrategy.showLicenseExpiredDialog();
             } else {
