@@ -31,7 +31,8 @@ public class COLTRemoteServiceServlet extends HttpServlet {
     private JsonRpcServer jsonRpcServer;
 
     public void refreshService() {
-        coltRemoteService = ServiceProvider.get(COLTRemoteService.class);
+        this.coltRemoteService = ServiceProvider.get(COLTRemoteService.class);
+        this.jsonRpcServer = new JsonRpcServer(this.coltRemoteService, COLTRemoteService.class);
     }
 
     @Override
@@ -41,15 +42,14 @@ public class COLTRemoteServiceServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            jsonRpcServer.handle(req, resp);
+            if (jsonRpcServer != null) {
+                jsonRpcServer.handle(req, resp);
+            } else {
+                resp.setStatus(500);
+            }
         } catch (IOException e) {
             LOG.error(e);
         }
-    }
-
-    public void init(ServletConfig config) {
-        this.coltRemoteService = ServiceProvider.get(COLTRemoteService.class);
-        this.jsonRpcServer = new JsonRpcServer(this.coltRemoteService, COLTRemoteService.class);
     }
 
 }
