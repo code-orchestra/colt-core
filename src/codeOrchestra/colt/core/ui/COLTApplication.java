@@ -101,6 +101,26 @@ public class COLTApplication extends Application {
         root.getChildren().add(menuBar);
 
         primaryStage.show();
+
+        doAfterUIInit();
+    }
+
+    private void doAfterUIInit() {
+        // COLT-287
+        System.setProperty ("jsse.enableSNIExtension", "false");
+
+        // Intercept start by license check
+        StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
+        if (startupInterceptType != StartupInterceptType.START) {
+            System.exit(1);
+        }
+
+        COLTRunningKey.setRunning(true);
+
+        CodeOrchestraResourcesHttpServer.getInstance().init();
+
+        CodeOrchestraRPCHttpServer.getInstance().init();
+        CodeOrchestraRPCHttpServer.getInstance().addServlet(COLTRemoteServiceServlet.getInstance(), "/coltService");
     }
 
     public Stage getPrimaryStage() {
@@ -119,22 +139,6 @@ public class COLTApplication extends Application {
 
     public static void main(String[] args) {
         timeStarted = System.currentTimeMillis();
-
-        // Intercept start by license check
-        StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
-        if (startupInterceptType != StartupInterceptType.START) {
-            System.exit(1);
-        }
-
-        // COLT-287
-        System.setProperty ("jsse.enableSNIExtension", "false");
-
-        COLTRunningKey.setRunning(true);
-
-        CodeOrchestraResourcesHttpServer.getInstance().init();
-
-        CodeOrchestraRPCHttpServer.getInstance().init();
-        CodeOrchestraRPCHttpServer.getInstance().addServlet(COLTRemoteServiceServlet.getInstance(), "/coltService");
 
         launch(args);
     }
