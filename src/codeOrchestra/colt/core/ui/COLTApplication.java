@@ -101,13 +101,6 @@ public class COLTApplication extends Application {
         root.getChildren().add(menuBar);
 
         primaryStage.show();
-
-        Dialogs.create()
-                .owner(COLTApplication.get().getPrimaryStage())
-                .title("COLT License")
-                .message("COLT beta version requires an active internet connection to start.")
-                .showError();
-
     }
 
     public Stage getPrimaryStage() {
