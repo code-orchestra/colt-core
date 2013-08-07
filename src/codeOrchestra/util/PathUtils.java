@@ -8,8 +8,7 @@ import java.io.File;
 public class PathUtils {
 
     public static File getApplicationBaseDir() {
-        // TODO: implement!
-        return new File("");
+        return new File(System.getProperty("colt.base.dir"));
     }
 
 }
