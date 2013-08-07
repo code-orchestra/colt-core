@@ -1,5 +1,4 @@
 (function ($) {
-
     $.GrowingInput = function (element, options) {
 
         var value, lastValue, calc;

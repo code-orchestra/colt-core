@@ -6,20 +6,23 @@
     <title>Fileset</title>
 
     <link rel="stylesheet" href="fileset.css" type="text/css" media="screen" charset="utf-8"/>
-    <script src="jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../shared/jquery.js" type="text/javascript" charset="utf-8"></script>
     <script src="TextboxList.js" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
         $(function () {
-            var t = new $.TextboxList('#form_tags_input', {
+            var textbox = new $.TextboxList('#form_tags_input', {
                 bitsOptions: {
                     editable: {
-                        addKeys: [188]
+                        addKeys: [188, 32, 13]
                     }
                 },
                 editable: true
             });
-            t.add('src/**.*');
+            textbox.add('src/**.*')
+                   .add('/src/com.package.MyClass.as')
+                   .add('lib/*.swc')
+                   .add("/users/john/Documents/myLib/**.as");
 
         });
     </script>
@@ -32,6 +35,10 @@
 
         .textboxlist {
             width: 400px;
+        }
+
+        body {
+            margin: 0;
         }
     </style>
 </head>
