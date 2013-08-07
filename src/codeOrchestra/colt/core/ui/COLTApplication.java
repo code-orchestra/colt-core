@@ -9,6 +9,8 @@ import codeOrchestra.colt.core.license.StartupInterceptType;
 import codeOrchestra.colt.core.license.StartupInterceptor;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
+import codeOrchestra.colt.core.tasks.COLTTask;
+import codeOrchestra.colt.core.tasks.TasksManager;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Node;

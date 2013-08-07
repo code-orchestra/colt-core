@@ -9,6 +9,8 @@ public abstract class COLTTask<R> extends Task<R> {
 
     protected abstract String getName();
 
+    protected abstract void onOK(R result);
 
+    protected abstract void onFail();
 
 }
