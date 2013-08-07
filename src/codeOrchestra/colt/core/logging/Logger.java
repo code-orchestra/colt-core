@@ -4,6 +4,7 @@ import codeOrchestra.colt.core.COLTService;
 import codeOrchestra.colt.core.LiveCodingLanguageHandler;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.util.StringUtils;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +14,8 @@ import java.util.List;
  * @author Alexander Eliseyev
  */
 public abstract class Logger implements COLTService {
+
+    org.slf4j.Logger slf4jlogger = LoggerFactory.getLogger(Logger.class);
 
     private static Logger DEFAULT_LOGGER = new Logger() {
         @Override
@@ -25,6 +28,32 @@ public abstract class Logger implements COLTService {
             }
             sb.append(" ");
             sb.append(message);
+            if (stackTrace != null) {
+                sb.append(" ");
+                sb.append(stackTrace);
+            }
+
+            String fullMessage = sb.toString();
+
+            switch (level) {
+                case DEBUG:
+                    slf4jlogger.debug(fullMessage);
+                    break;
+                case ERROR:
+                case FATAL:
+                    slf4jlogger.error(fullMessage);
+                    break;
+                case TRACE:
+                case INFO:
+                case ALL:
+                    slf4jlogger.info(fullMessage);
+                    break;
+                case WARN:
+                    slf4jlogger.warn(fullMessage);
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
@@ -54,6 +83,14 @@ public abstract class Logger implements COLTService {
 
     public void error(String message, List<String> scopeIds, long timestamp, String stackTrace) {
         log(message, scopeIds, timestamp, Level.ERROR, stackTrace);
+    }
+
+    public void error(String message, Throwable t) {
+        if (t.getMessage() != null) {
+            log(message + ": " + t.getClass().getSimpleName() + " - " + t.getMessage(),  DEFAULT_SCOPES, System.currentTimeMillis(), Level.ERROR);
+        } else {
+            log(message + ": " + t.getClass().getSimpleName(),  DEFAULT_SCOPES, System.currentTimeMillis(), Level.ERROR);
+        }
     }
 
     public void error(String message) {
