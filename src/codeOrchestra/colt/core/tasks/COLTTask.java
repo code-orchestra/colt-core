@@ -1,12 +1,14 @@
 package codeOrchestra.colt.core.tasks;
 
-import javafx.scene.control.ProgressIndicator;
+import javafx.concurrent.Task;
 
 /**
  * @author Alexander Eliseyev
  */
-public interface COLTTask<R> {
+public abstract class COLTTask<R> extends Task<R> {
 
-    R doTask(ProgressIndicator progressIndicator);
+    protected abstract String getName();
+
+
 
 }

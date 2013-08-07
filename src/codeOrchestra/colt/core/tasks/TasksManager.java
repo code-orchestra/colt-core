@@ -1,5 +1,8 @@
 package codeOrchestra.colt.core.tasks;
 
+import javafx.scene.control.ProgressIndicator;
+import org.controlsfx.dialog.Dialogs;
+
 /**
  * @author Alexander Eliseyev
  */
@@ -14,9 +17,17 @@ public class TasksManager {
         return instance;
     }
 
-    public <R> R scheduleModalTask(COLTTask<R> task) {
+    private ProgressIndicator getProgressIndicator() {
         // TODO: implement
         return null;
+    }
+
+    public void scheduleSyncModalTask(COLTTask task) {
+        // TODO: Implement queue
+
+        Dialogs.create().title(task.getName()).lightweight().showWorkerProgress(task);
+        Thread taskThread = new Thread(task);
+        taskThread.start();
     }
 
     public <R> R scheduleBackgroundTask(COLTTask<R> task) {
