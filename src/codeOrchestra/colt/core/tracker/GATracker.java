@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.tracker;
 
 import com.dmurph.tracking.AnalyticsConfigData;
 import com.dmurph.tracking.JGoogleAnalyticsTracker;
+import com.dmurph.tracking.VisitorData;
 import com.dmurph.tracking.system.AWTSystemPopulator;
 
 /**
@@ -18,8 +19,10 @@ public class GATracker {
 
     private GATracker() {
         JGoogleAnalyticsTracker.setProxy(System.getenv("http_proxy"));
+        int UUID = 1;//TODO: make unique ID
+        VisitorData visitorData = VisitorData.newVisitor(UUID);
         //TODO: replace with production TrackingCode
-        AnalyticsConfigData config = new AnalyticsConfigData("UA-42969501-3");
+        AnalyticsConfigData config = new AnalyticsConfigData("UA-42969501-3", visitorData);
         AWTSystemPopulator.populateConfigData(config);
 
         tracker = new JGoogleAnalyticsTracker(config, JGoogleAnalyticsTracker.GoogleAnalyticsVersion.V_4_7_2);
