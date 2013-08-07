@@ -13,6 +13,10 @@ public class GATracker {
 
     private JGoogleAnalyticsTracker tracker;
 
+    private String hostName = "codeorchestra.com";
+    private String refPage = "/";
+
+
     public static GATracker getInstance() {
         return ourInstance;
     }
@@ -28,7 +32,12 @@ public class GATracker {
         tracker = new JGoogleAnalyticsTracker(config, JGoogleAnalyticsTracker.GoogleAnalyticsVersion.V_4_7_2);
     }
 
-    public JGoogleAnalyticsTracker getTracker() {
-        return tracker;
+    public void trackEvent(String argCategory, String argAction) {
+        tracker.trackEvent(argCategory, argAction);
+    }
+
+    public void trackPageView(String argPageURL, String argPageTitle) {
+        tracker.trackPageViewFromReferrer(argPageURL, argPageTitle, hostName, hostName, refPage);
+        refPage = argPageURL;
     }
 }
