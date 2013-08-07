@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.tracker;
 
+import codeOrchestra.util.FingerprintUtil;
 import com.dmurph.tracking.AnalyticsConfigData;
 import com.dmurph.tracking.JGoogleAnalyticsTracker;
 import com.dmurph.tracking.VisitorData;
@@ -13,7 +14,7 @@ public class GATracker {
 
     private JGoogleAnalyticsTracker tracker;
 
-    private String hostName = "codeorchestra.com";
+    private String hostName = "code-orchestra.github.io";
     private String refPage = "/";
 
 
@@ -23,7 +24,7 @@ public class GATracker {
 
     private GATracker() {
         JGoogleAnalyticsTracker.setProxy(System.getenv("http_proxy"));
-        int UUID = 1;//TODO: make unique ID
+        int UUID = FingerprintUtil.getNumericFingerPrint();
         VisitorData visitorData = VisitorData.newVisitor(UUID);
         //TODO: replace with production TrackingCode
         AnalyticsConfigData config = new AnalyticsConfigData("UA-42969501-3", visitorData);
