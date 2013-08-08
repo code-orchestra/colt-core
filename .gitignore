@@ -7,3 +7,7 @@
 .idea/workspace.xml
 out/*
 .DS_Store
+
+.gradle/1.7/taskArtifacts/cache.properties
+
+.gradle/1.7/taskArtifacts/cache.properties.lock
