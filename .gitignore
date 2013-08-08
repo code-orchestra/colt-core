@@ -3,8 +3,9 @@
 # Package Files #
 *.war
 *.ear
-
+.gradle
 .idea/workspace.xml
+build
 out/*
 .DS_Store
 
