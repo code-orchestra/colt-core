@@ -22,6 +22,10 @@ class LogWebView extends HBox {
     WebView webView = new WebView(contextMenuEnabled: false)
     private OL<LogMessage> logMessages
 
+    OL<LogMessage> getLogList() {
+        return logMessages
+    }
+
     void setLogList(OL<LogMessage> logMessages) {
         this.logMessages = logMessages
 

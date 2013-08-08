@@ -2,6 +2,7 @@ package codeOrchestra.colt.core;
 
 import codeOrchestra.colt.core.launch.LiveLauncher;
 import codeOrchestra.colt.core.logging.Logger;
+import codeOrchestra.colt.core.logging.LoggerService;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.rpc.COLTRemoteService;
@@ -40,7 +41,7 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     // Logger
 
-    Logger getLogger(String source);
+    LoggerService getLoggerService();
 
     // UI
 

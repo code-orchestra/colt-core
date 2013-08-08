@@ -2,6 +2,7 @@ package codeOrchestra.colt.core;
 
 import codeOrchestra.colt.core.launch.LiveLauncher;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
+import codeOrchestra.colt.core.logging.LoggerService;
 import codeOrchestra.colt.core.rpc.COLTRemoteService;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
 
@@ -46,6 +47,10 @@ public class ServiceProvider {
         }
 
         LiveCodingLanguageHandler currentHandler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
+        if (currentHandler == null) {
+            return null;
+        }
+
         for (Method method : currentHandler.getClass().getMethods()) {
             if (method.getName().startsWith("create") && method.getReturnType().equals(existingService)) {
                 try {

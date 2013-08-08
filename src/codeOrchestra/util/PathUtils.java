@@ -11,4 +11,8 @@ public class PathUtils {
         return new File(System.getProperty("colt.base.dir"));
     }
 
+    public static File getTemplatesDir() {
+        return new File(getApplicationBaseDir(), "templates");
+    }
+
 }

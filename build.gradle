@@ -1,0 +1,27 @@
+apply from: "http://dl.bintray.com/content/shemnon/javafx-gradle/0.3.0/javafx.plugin"
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.8
+
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src'
+        }
+    }
+}
+
+test {
+    scanForTestClasses = false
+    include '**/*Test.*'
+    exclude '**/*Abstract*.*'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.1.6'
+    compile fileTree(dir: 'lib', include: '*.jar')
+}
