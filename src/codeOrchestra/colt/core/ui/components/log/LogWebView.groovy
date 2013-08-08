@@ -15,6 +15,10 @@ class LogWebView extends ScrollPane {
 
     private OL<LogMessage> logMessages
 
+    OL<LogMessage> getLogList() {
+        return logMessages
+    }
+
     void setLogList(OL<LogMessage> logMessages) {
         this.logMessages = logMessages
         String htmlPage = this.class.getResource("html/log-webview.html").toExternalForm()

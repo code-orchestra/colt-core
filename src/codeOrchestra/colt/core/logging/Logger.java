@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.logging;
 
 import codeOrchestra.colt.core.COLTService;
 import codeOrchestra.colt.core.LiveCodingLanguageHandler;
+import codeOrchestra.colt.core.ServiceProvider;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.util.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ public abstract class Logger implements COLTService {
 
     org.slf4j.Logger slf4jlogger = LoggerFactory.getLogger(Logger.class);
 
-    private static Logger DEFAULT_LOGGER = new Logger() {
+    private static Logger HEADLESS_LOGGER = new Logger() {
         @Override
         public void log(String message, List<String> scopeIds, long timestamp, Level level, String stackTrace) {
             StringBuilder sb = new StringBuilder();
@@ -64,9 +65,35 @@ public abstract class Logger implements COLTService {
     public static synchronized Logger getLogger(String source) {
         LiveCodingLanguageHandler currentHandler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         if (currentHandler == null) {
-            return DEFAULT_LOGGER;
+            return HEADLESS_LOGGER;
         }
-        return currentHandler.getLogger(source);
+        return new DefaultLogger(currentHandler, source);
+    }
+
+    private static class DefaultLogger extends Logger {
+
+        private final LiveCodingLanguageHandler currentHandler;
+        private String source;
+
+        private DefaultLogger(LiveCodingLanguageHandler currentHandler, String source) {
+            this.currentHandler = currentHandler;
+            this.source = source;
+        }
+
+        private LoggerService getLoggerService() {
+            return this.currentHandler.getLoggerService();
+        }
+
+        @Override
+        public void log(String message, List<String> scopeIds, long timestamp, Level level, String stackTrace) {
+            LoggerService loggerService = getLoggerService();
+
+            if (loggerService == null) {
+                HEADLESS_LOGGER.log(message, scopeIds, timestamp, level);
+            } else {
+                loggerService.log(source, message, scopeIds, timestamp, level, stackTrace);
+            }
+        }
     }
 
     public static synchronized Logger getLogger(Class clazz) {
