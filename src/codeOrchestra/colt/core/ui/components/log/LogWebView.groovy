@@ -41,11 +41,6 @@ class LogWebView extends VBox {
                 void resize(int height) {
                     //println "height = $height"
                 }
-
-                @Override
-                void scroll(int pos) {
-
-                }
             }
 
             clear()

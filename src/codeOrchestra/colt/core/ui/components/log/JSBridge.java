@@ -16,6 +16,4 @@ public abstract class JSBridge {
     }
 
     abstract void resize(int height);
-
-    abstract void scroll(int pos);
 }
