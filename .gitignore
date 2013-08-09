@@ -11,4 +11,4 @@ out/*
 
 .gradle/*
 
-.build.properties
+build.properties
