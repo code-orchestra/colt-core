@@ -51,7 +51,8 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
                 .owner(COLTApplication.get().getPrimaryStage())
                 .title("Serial number")
                 .message("Please type the serial number purchased")
-                .lightweight()
+//                .lightweight()
+                .nativeChrome()
                 .showTextInput();
 
         if (StringUtils.isEmpty(serialNumber)) {
@@ -62,37 +63,78 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
         try {
             keyRegistrationResponse = PlimusHelper.registerKey(serialNumber);
         } catch (IOException e) {
-            Dialogs.create().owner(COLTApplication.get().getPrimaryStage()).lightweight().title("COLT License").message("Can't reach the validation server. Make sure your internet connection is active.").showError();
+            Dialogs.create()
+                    .owner(COLTApplication.get().getPrimaryStage())
+//                    .lightweight()
+                    .title("COLT License")
+                    .message("Can't reach the validation server. Make sure your internet connection is active.")
+                    .nativeChrome()
+                    .showError();
             ErrorHandler.handle(e);
             return showSerialNumberDialog();
         }
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_INVALIDKEY) {
-            Dialogs.create().owner(COLTApplication.get().getPrimaryStage()).lightweight().title("Serial number").message("The serial number entered is invalid.").showError();
+            Dialogs.create()
+                    .owner(COLTApplication.get().getPrimaryStage())
+//                    .lightweight()
+                    .title("Serial number")
+                    .message("The serial number entered is invalid.")
+                    .nativeChrome()
+                    .showError();
             return showSerialNumberDialog();
         }
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_INVALIDPRODUCT) {
-            Dialogs.create().owner(COLTApplication.get().getPrimaryStage()).lightweight().title("Serial number").message("The serial number entered can't be validated.").showError();
+            Dialogs.create()
+                    .owner(COLTApplication.get().getPrimaryStage())
+//                    .lightweight()
+                    .title("Serial number")
+                    .message("The serial number entered can't be validated.")
+                    .nativeChrome()
+                    .showError();
             return showSerialNumberDialog();
         }
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_EXPIREDKEY) {
-            Dialogs.create().owner(COLTApplication.get().getPrimaryStage()).lightweight().title("Serial number").message("The serial number entered had expired " + Math.abs(keyRegistrationResponse.getDaysTillExpiration()) + " days ago.").showError();
+            Dialogs.create()
+                    .owner(COLTApplication.get().getPrimaryStage())
+                    .lightweight().title("Serial number")
+                    .message("The serial number entered had expired " + Math.abs(keyRegistrationResponse.getDaysTillExpiration()) + " days ago.")
+                    .nativeChrome()
+                    .showError();
             return showSerialNumberDialog();
         }
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_MAXCOUNT) {
-            Dialogs.create().owner(COLTApplication.get().getPrimaryStage()).lightweight().title("Serial number").message("The key entered has already been registered the maximum number of times.").showError();
+            Dialogs.create()
+                    .owner(COLTApplication.get().getPrimaryStage())
+//                    .lightweight()
+                    .title("Serial number")
+                    .message("The key entered has already been registered the maximum number of times.")
+                    .nativeChrome()
+                    .showError();
             return showSerialNumberDialog();
         }
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.SUCCESS) {
-            Dialogs.create().owner(COLTApplication.get().getPrimaryStage()).lightweight().title("COLT License").message("Thank you for choosing the Code Orchestra Livecoding Tool!").showInformation();
+            Dialogs.create()
+                    .owner(COLTApplication.get().getPrimaryStage())
+//                    .lightweight()
+                    .title("COLT License")
+                    .message("Thank you for choosing the Code Orchestra Livecoding Tool!")
+                    .nativeChrome()
+                    .showInformation();
             registerProduct(serialNumber, keyRegistrationResponse);
             return true;
         } else {
-            Dialogs.create().owner(COLTApplication.get().getPrimaryStage()).lightweight().title("Serial number").message("The serial number entered can't be validated (" + keyRegistrationResponse.getStatus() + ").").showError();
+            Dialogs.create()
+                    .owner(COLTApplication.get().getPrimaryStage())
+//                    .lightweight()
+                    .title("Serial number")
+                    .message("The serial number entered can't be validated (" + keyRegistrationResponse.getStatus() + ").")
+                    .nativeChrome()
+                    .showError();
             return showSerialNumberDialog();
         }
     }
@@ -128,8 +170,9 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
         Dialogs.create()
                 .owner(COLTApplication.get().getPrimaryStage())
                 .title("COLT License")
-                .lightweight()
+//                .lightweight()
                 .message(expireMessage)
+                .nativeChrome()
                 .showInformation();
     }
 
@@ -151,6 +194,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
                     .owner(COLTApplication.get().getPrimaryStage())
                     .title("COLT License")
                     .message(expireMessage)
+                    .nativeChrome()
                     .showError();
 
             return false;
@@ -170,7 +214,8 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
                 .owner(COLTApplication.get().getPrimaryStage())
                 .title("COLT License")
                 .message(expireMessage)
-                .lightweight()
+//                .lightweight()
+                .nativeChrome()
                 .showCommandLinks(links.get(1), links);
 
         if (response.textProperty().getBean() == links.get(1)) {

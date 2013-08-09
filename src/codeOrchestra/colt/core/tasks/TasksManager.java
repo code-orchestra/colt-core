@@ -137,7 +137,11 @@ public class TasksManager {
     }
 
     public void scheduleModalTask(COLTTask task) {
-        Dialogs.create().title(task.getName()).lightweight().showWorkerProgress(task);
+        Dialogs.create()
+                .title(task.getName())
+//                .lightweight()
+                .nativeChrome()
+                .showWorkerProgress(task);
         schedule(task);
     }
 
