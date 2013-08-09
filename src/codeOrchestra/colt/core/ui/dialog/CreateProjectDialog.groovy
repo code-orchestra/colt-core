@@ -41,8 +41,9 @@ class CreateProjectDialog {
         Dialog dlg = new Dialog(stage, "New Live Coding Project", false, true)
 
         dlg.resizable = false
+        dlg.iconifiable = false
         dlg.content = vBox
-        dlg.actions.addAll(Dialog.Actions.CANCEL, okAction)
+        dlg.actions.addAll(okAction, Dialog.Actions.CANCEL)
 
         return dlg.show() == okAction ? field.text : null
     }
