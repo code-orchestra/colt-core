@@ -1,7 +1,5 @@
 package codeOrchestra.colt.core.ui.components.log
 
-import codeOrchestra.colt.core.logging.Level
-import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList as OL
@@ -13,8 +11,6 @@ import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
 import netscape.javascript.JSObject
-
-import java.util.regex.Pattern
 
 import static codeOrchestra.colt.core.logging.Level.*
 
@@ -93,20 +89,21 @@ class LogWebView extends VBox {
         })
     }
 
+    private JSObject getJSTopObject() {
+        (JSObject) webView.engine.executeScript("window")
+    }
+
     private void addLogMessage(LogMessage message) {
         if (message) {
-            JSObject window = (JSObject) webView.engine.executeScript("window")
-            window.call("addLogMessage", message)
+            getJSTopObject().call("addLogMessage", message)
         }
     }
 
     private void clear() {
-        JSObject window = (JSObject) webView.engine.executeScript("window")
-        window.call("clear")
+        getJSTopObject().call("clear")
     }
 
     private void filter() {
-        JSObject window = (JSObject) webView.engine.executeScript("window")
-        window.call("filter")
+        getJSTopObject().call("filter")
     }
 }
