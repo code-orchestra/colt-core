@@ -9,6 +9,6 @@ build
 out/*
 .DS_Store
 
-.gradle/1.7/taskArtifacts/cache.properties
+.gradle/*
 
-.gradle/1.7/taskArtifacts/cache.properties.lock
+build.properties

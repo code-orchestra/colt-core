@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="colt-core" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.zip"/>
+    <include name="*.apk"/>
+    <include name="*.war"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.ane"/>
+    <include name="*.swc"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="lib/ant-javafx.jar"/>
+      <include name="lib/dt.jar"/>
+      <include name="lib/javafx-mx.jar"/>
+      <include name="lib/jconsole.jar"/>
+      <include name="lib/sa-jdi.jar"/>
+      <include name="lib/tools.jar"/>
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/htmlconverter.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/JObjC.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+  
+  
+  <!-- Global Libraries -->
+  
+  <path id="library.groovy.classpath">
+    <pathelement location="${groovy.home}/lib/ant-1.8.4.jar"/>
+    <pathelement location="${groovy.home}/lib/ant-antlr-1.8.4.jar"/>
+    <pathelement location="${groovy.home}/lib/ant-junit-1.8.4.jar"/>
+    <pathelement location="${groovy.home}/lib/ant-launcher-1.8.4.jar"/>
+    <pathelement location="${groovy.home}/lib/antlr-2.7.7.jar"/>
+    <pathelement location="${groovy.home}/lib/asm-4.0.jar"/>
+    <pathelement location="${groovy.home}/lib/asm-analysis-4.0.jar"/>
+    <pathelement location="${groovy.home}/lib/asm-commons-4.0.jar"/>
+    <pathelement location="${groovy.home}/lib/asm-tree-4.0.jar"/>
+    <pathelement location="${groovy.home}/lib/asm-util-4.0.jar"/>
+    <pathelement location="${groovy.home}/lib/bsf-2.4.0.jar"/>
+    <pathelement location="${groovy.home}/lib/commons-cli-1.2.jar"/>
+    <pathelement location="${groovy.home}/lib/commons-logging-1.1.1.jar"/>
+    <pathelement location="${groovy.home}/lib/gpars-1.0.0.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-ant-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-bsf-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-console-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-docgenerator-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-groovydoc-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-groovysh-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-jmx-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-json-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-jsr223-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-servlet-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-sql-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-swing-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-templates-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-test-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-testng-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/groovy-xml-2.1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/hamcrest-core-1.3.jar"/>
+    <pathelement location="${groovy.home}/lib/ivy-2.2.0.jar"/>
+    <pathelement location="${groovy.home}/lib/jansi-1.6.jar"/>
+    <pathelement location="${groovy.home}/lib/jcommander-1.27.jar"/>
+    <pathelement location="${groovy.home}/lib/jline-1.0.jar"/>
+    <pathelement location="${groovy.home}/lib/jsp-api-2.0.jar"/>
+    <pathelement location="${groovy.home}/lib/jsr166y-1.7.0.jar"/>
+    <pathelement location="${groovy.home}/lib/junit-4.11.jar"/>
+    <pathelement location="${groovy.home}/lib/qdox-1.12.1.jar"/>
+    <pathelement location="${groovy.home}/lib/servlet-api-2.4.jar"/>
+    <pathelement location="${groovy.home}/lib/testng-6.8.jar"/>
+    <pathelement location="${groovy.home}/lib/xmlpull-1.1.3.1.jar"/>
+    <pathelement location="${groovy.home}/lib/xstream-1.4.2.jar"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <target name="register.custom.compilers">
+    <property name="grooovyc.task.sdk" value="library.groovy.classpath"/>
+    <taskdef name="groovyc" classname="org.codehaus.groovy.ant.Groovyc" classpathref="${grooovyc.task.sdk}"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module colt-core -->
+  
+  <dirname property="module.colt-core.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.colt-core" value="${jdk.home.1.8}"/>
+  <property name="module.jdk.bin.colt-core" value="${jdk.bin.1.8}"/>
+  <property name="module.jdk.classpath.colt-core" value="jdk.classpath.1.8"/>
+  
+  <property name="compiler.args.colt-core" value="${compiler.args}"/>
+  
+  <property name="colt-core.output.dir" value="${module.colt-core.basedir}/out/production/colt-core"/>
+  <property name="colt-core.testoutput.dir" value="${module.colt-core.basedir}/out/test/colt-core"/>
+  
+  <path id="colt-core.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="colt-core.module.production.classpath">
+    <path refid="${module.jdk.classpath.colt-core}"/>
+    <fileset dir="${basedir}/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+    <path refid="library.groovy.classpath"/>
+  </path>
+  
+  <path id="colt-core.runtime.production.module.classpath">
+    <pathelement location="${colt-core.output.dir}"/>
+    <fileset dir="${basedir}/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+    <path refid="library.groovy.classpath"/>
+  </path>
+  
+  <path id="colt-core.module.classpath">
+    <path refid="${module.jdk.classpath.colt-core}"/>
+    <pathelement location="${colt-core.output.dir}"/>
+    <fileset dir="${basedir}/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+    <path refid="library.groovy.classpath"/>
+  </path>
+  
+  <path id="colt-core.runtime.module.classpath">
+    <pathelement location="${colt-core.testoutput.dir}"/>
+    <pathelement location="${colt-core.output.dir}"/>
+    <fileset dir="${basedir}/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+    <path refid="library.groovy.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.colt-core">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.colt-core">
+    <patternset refid="excluded.from.module.colt-core"/>
+  </patternset>
+  
+  <path id="colt-core.module.sourcepath">
+    <dirset dir="${module.colt-core.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.colt-core" depends="compile.module.colt-core.production,compile.module.colt-core.tests" description="Compile module colt-core"/>
+  
+  <target name="compile.module.colt-core.production" depends="register.custom.compilers" description="Compile module colt-core; production classes">
+    <mkdir dir="${colt-core.output.dir}"/>
+    <groovyc destdir="${colt-core.output.dir}" fork="yes">
+      <src refid="colt-core.module.sourcepath"/>
+      <classpath refid="colt-core.module.production.classpath"/>
+      <patternset refid="excluded.from.compilation.colt-core"/>
+      <javac debug="${compiler.debug}">
+        <compilerarg line="${compiler.args.colt-core}"/>
+      </javac>
+    </groovyc>
+    
+    <copy todir="${colt-core.output.dir}">
+      <fileset dir="${module.colt-core.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.colt-core.tests" depends="register.custom.compilers,compile.module.colt-core.production" description="compile module colt-core; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.colt-core" description="cleanup module">
+    <delete dir="${colt-core.output.dir}"/>
+    <delete dir="${colt-core.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.colt-core" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.colt-core" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.colt-core" value="${colt.output.dir}"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <mkdir dir="${colt.output.dir}"/>    
+    <property name="temp.jar.path.colt-core.jar" value="${artifacts.temp.dir}/colt-core.jar"/>
+  </target>
+  
+  <target name="artifact.colt-core" depends="init.artifacts, compile.module.colt-core" description="Build &#39;colt-core&#39; artifact">
+    <property name="artifact.temp.output.colt-core" value="${artifacts.temp.dir}/colt_core"/>
+    <mkdir dir="${artifact.temp.output.colt-core}"/>
+    <jar destfile="${temp.jar.path.colt-core.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${colt-core.output.dir}"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/ant-1.8.4.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/ant-antlr-1.8.4.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/ant-junit-1.8.4.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/ant-launcher-1.8.4.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/antlr-2.7.7.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/asm-4.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/asm-analysis-4.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/asm-commons-4.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/asm-tree-4.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/asm-util-4.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/bsf-2.4.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/commons-cli-1.2.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/commons-logging-1.1.1.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/gpars-1.0.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-ant-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-bsf-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-console-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-docgenerator-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-groovydoc-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-groovysh-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-jmx-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-json-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-jsr223-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-servlet-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-sql-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-swing-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-templates-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-test-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-testng-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-xml-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/hamcrest-core-1.3.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/ivy-2.2.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/jansi-1.6.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/jcommander-1.27.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/jline-1.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/jsp-api-2.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/jsr166y-1.7.0.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/junit-4.11.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/qdox-1.12.1.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/servlet-api-2.4.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/testng-6.8.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/xmlpull-1.1.3.1.jar"/>
+      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/xstream-1.4.2.jar"/>
+      <zipfileset src="${basedir}/lib/ant.jar"/>
+      <zipfileset src="${basedir}/lib/aquafx-0.1.jar"/>
+      <zipfileset src="${basedir}/lib/httpclient.jar"/>
+      <zipfileset src="${basedir}/lib/ScenicView.jar"/>
+      <zipfileset src="${basedir}/lib/jetty-6.1.26.jar"/>
+      <zipfileset src="${basedir}/lib/colt-groovyfx.jar"/>
+      <zipfileset src="${basedir}/lib/groovyfx-0.3.1.jar"/>
+      <zipfileset src="${basedir}/lib/jsonrpc4j-0.28.jar"/>
+      <zipfileset src="${basedir}/lib/portlet-api-2.0.jar"/>
+      <zipfileset src="${basedir}/lib/servlet-api-2.5.jar"/>
+      <zipfileset src="${basedir}/lib/slf4j-api-1.7.5.jar"/>
+      <zipfileset src="${basedir}/lib/controlsfx-8.0.1.jar"/>
+      <zipfileset src="${basedir}/lib/grooscript-0.2.4.jar"/>
+      <zipfileset src="${basedir}/lib/commons-codec-1.3.jar"/>
+      <zipfileset src="${basedir}/lib/jetty-util-6.1.26.jar"/>
+      <zipfileset src="${basedir}/lib/aquafx-0.1-sources.jar"/>
+      <zipfileset src="${basedir}/lib/jackson-core-2.2.0.jar"/>
+      <zipfileset src="${basedir}/lib/slf4j-simple-1.7.5.jar"/>
+      <zipfileset src="${basedir}/lib/log4j-api-2.0-beta8.jar"/>
+      <zipfileset src="${basedir}/lib/log4j-core-2.0-beta8.jar"/>
+      <zipfileset src="${basedir}/lib/jackson-databind-2.2.0.jar"/>
+      <zipfileset src="${basedir}/lib/jgoogleanalyticstracker.jar"/>
+      <zipfileset src="${basedir}/lib/jackson-annotations-2.2.0.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.colt-core.jar}" tofile="${artifact.temp.output.colt-core}/colt-core.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.colt-core" description="Build all artifacts">
+    <mkdir dir="${artifact.output.colt-core}"/>
+    <copy todir="${artifact.output.colt-core}">
+      <fileset dir="${artifact.temp.output.colt-core}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
