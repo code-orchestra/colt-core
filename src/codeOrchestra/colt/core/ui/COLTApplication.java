@@ -11,6 +11,7 @@ import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
 import codeOrchestra.colt.core.tasks.COLTTask;
 import codeOrchestra.colt.core.tasks.TasksManager;
+import codeOrchestra.colt.core.ui.dialog.CreateProjectDialog;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -94,7 +95,26 @@ public class COLTApplication extends Application {
             }
         });
 
-        menu.getItems().addAll(menuLoad, menuSave);
+        MenuItem menuCreate = new MenuItem("Create");
+        menuCreate.setOnAction(t -> {
+            String projectName = new CreateProjectDialog().show(primaryStage);
+
+            if (projectName != null) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setInitialFileName(projectName);
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt2"));
+                File file = fileChooser.showSaveDialog(primaryStage);
+                if (file != null) {
+                    try {
+                        COLTProjectManager.getInstance().create("AS", projectName, file);
+                    } catch (COLTException e) {
+                        throw new RuntimeException(e); // TODO: handle nicely
+                    }
+                }
+            }
+        });
+
+        menu.getItems().addAll(menuCreate, menuLoad, menuSave);
 
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menu);

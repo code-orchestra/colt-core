@@ -4,10 +4,11 @@ import codeOrchestra.colt.core.loading.LiveCodingHandlerLoadingException;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.COLTProjectHandlerIdParser;
-import codeOrchestra.colt.core.rpc.COLTRemoteService;
 import codeOrchestra.util.FileUtils;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author Alexander Eliseyev
@@ -53,6 +54,30 @@ public class COLTProjectManager {
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         currentProject = handler.parseProject(coltProjectHandlerIdParser.getNode());
         currentProject.setPath(path);
+
+        handler.fireProjectLoaded();
+    }
+
+    public synchronized void create(String handlerId, String pName, File pFile) throws COLTException {
+        try {
+            LiveCodingHandlerManager.getInstance().load(handlerId);
+        } catch (LiveCodingHandlerLoadingException e) {
+            throw new COLTException("Can't load the handler for the project type " + handlerId);
+        }
+
+        LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
+        currentProject = handler.createProject(pName);
+        currentProject.setPath(pFile.getPath());
+
+        String xml = currentProject.toXmlString();
+
+        try {
+            FileWriter fileWriter = new FileWriter(pFile);
+            fileWriter.write(xml);
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         handler.fireProjectLoaded();
     }
