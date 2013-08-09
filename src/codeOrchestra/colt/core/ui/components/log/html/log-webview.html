@@ -44,26 +44,55 @@
         $('.log').resize(function(){
             if(window.app)app.resize($('body').height());
         });
-
         test();
         //clear()
     });
 
     function test(){
-
-        addLogMessage('mojito-dispatcher: Dispatcher created', "warning", "http://s7.addthis.com/js/250/addthis_widget.js")
-        addLogMessage('mojito-dispatcher: Dispatcher paused', "error", "http://s7.addthis.com/js/250/addthis_widget.js")
-        addLogMessage('mojito-client: Executing "@TodoMojit/getAll" on the client', "", "")
-        addLogMessage('Get http://localhost:8666/static/T 200 OK 56ms consectetur adipisicing elit. Aliquam', "", "")
-        addLogMessage('mojito-client: Attached 0 event delegates sequi nisi necessitatibus expedita suscipit eius fugiat recusandae beatae aut.', "", "")
-        addLogMessage('mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', "", "")
-        addLogMessage('Uncaught ReferenceError: Ajax is not defined [VM] dashboard (56):1<br> (anonymous function) [VM] dashboard (58):1<br> jQuery.globalEval<br> (anonymous function)<br> e.extend.each<br> f.fn.extend.domManip<br> f.fn.extend.append<br> MissingE.utilities.ajaxEvents.run<br> MissingE.utilities.ajaxEvents.init<br> (anonymous function)<br> (anonymous function)', "error", "mySource.js")
-        addLogMessage('mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', "", "")
+        addLogMessage({message: 'mojito-dispatcher: Dispatcher created', level: "warning", source: "http://s7.addthis.com/js/250/addthis_widget.js"})
+        addLogMessage({message: 'mojito-dispatcher: Dispatcher paused', level: "error", source: "http://s7.addthis.com/js/250/addthis_widget.js"})
+        addLogMessage({message: 'mojito-client: Executing "@TodoMojit/getAll" on the client', level: "", source: ""})
+        addLogMessage({message: 'Get http://localhost:8666/static/T 200 OK 56ms consectetur adipisicing elit. Aliquam', level: "", source: ""})
+        addLogMessage({message: 'mojito-client: Attached 0 event delegates sequi nisi necessitatibus expedita suscipit eius fugiat recusandae beatae aut.', level: "", source: ""})
+        addLogMessage({message: 'mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', level: "", source: ""})
+        addLogMessage({message: 'Uncaught ReferenceError: Ajax is not defined [VM] dashboard (56):1<br> (anonymous function) [VM] dashboard (58):1<br> jQuery.globalEval<br> (anonymous function)<br> e.extend.each<br> f.fn.extend.domManip<br> f.fn.extend.append<br> MissingE.utilities.ajaxEvents.run<br> MissingE.utilities.ajaxEvents.init<br> (anonymous function)<br> (anonymous function)', level: "error", source: "mySource.js"})
+        addLogMessage({message: 'mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', level: "", source: ""})
     }
 
+    function parseLogMessageObject(messageData){
+        if(messageData.message)return messageData;
+        var message = messageData.getMessage();
+        var level = messageData.getLevel();
+        var source = messageData.getSource();
 
+        switch (level.name()) {
+            case "FATAL":
+            case "ERROR":
+                level = "error";
+                break;
+            case "WARN":
+                level = "warning";
+                break;
+            case "INFO":
+                level = "info";
+                break;
+            default :
+                level = "";
+        }
 
-    function addLogMessage(message, level, source){
+        return {
+            message: message,
+            level : level,
+            source: source
+        }
+    }
+
+    function addLogMessage(data){
+        var messageData = parseLogMessageObject(data);
+
+        var message = messageData.message;
+        var level = messageData.level;
+        var source = messageData.source;
 
         var style = "";
         if(["warning", "info", "error"].indexOf(level) != -1){
@@ -72,6 +101,8 @@
 
         var logItem = $('<li' + style + '><p>' + message + '</p>' +
                 '<a href="javascript:openTarget(\'' + source + '\')" title="' + source + '">' + source + '</a></li>');
+
+        $(logItem).data("message", data);
 
         $(logItem).children('a').each(function() {
             var str = $(this).text();
@@ -86,19 +117,19 @@
         $(logItem).children("p").click(function(){
             var parent = $(this).parent("li");
             var selected = $('.selected');
-            if ($(parent).hasClass("selected")) {
+
+            //alert($(parent).data("message"));//todo:
+
+            if (parent.is(selected)) {
                 $(parent).removeClass('selected');
             } else {
                 $(selected).removeClass('selected');
                 $(parent).addClass('selected');
             }
-            $(selected).children('p').dotdotdot({watch: 'window'});
-            $(parent).children('p').dotdotdot({watch: 'window'});
+            $(selected).add(parent).children('p').dotdotdot({watch: 'window'});
         });
 
-
         $(".log").append(logItem);
-
         $(logItem).children('p').dotdotdot({watch: 'window'});
     }
 
@@ -107,11 +138,21 @@
     }
 
     function openTarget(m){
-        console.log(m)
+        console.log(m);
     }
 
     function logHeight(){
-        return $(".log").height()
+        return $(".log").height();
+    }
+
+    function filter(){
+        $(".log li").each(function(){
+            if($(this).data("message").getVisible()){
+                $(this).show();
+            }else{
+                $(this).hide();
+            }
+        })
     }
 
 </script>

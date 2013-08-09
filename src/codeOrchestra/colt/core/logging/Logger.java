@@ -42,7 +42,6 @@ public abstract class Logger {
                     break;
                 case TRACE:
                 case INFO:
-                case ALL:
                     slf4jlogger.info(fullMessage);
                     break;
                 case WARN:

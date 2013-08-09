@@ -14,6 +14,7 @@ class LogMessage {
     Level level
     String message
     String stackTrace
+    boolean visible = true
 
     public LogMessage(String source, Level level, String message, long timestamp, String stackTrace) {
         this.timestamp = timestamp

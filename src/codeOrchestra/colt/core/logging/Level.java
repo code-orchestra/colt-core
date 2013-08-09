@@ -5,13 +5,13 @@ package codeOrchestra.colt.core.logging;
  */
 public enum Level {
   
-  OFF,
   FATAL,
   ERROR,
   WARN,
   INFO,
   DEBUG,
   TRACE,
-  ALL;
+  LIVE,
+  COMPILATION
 
 }

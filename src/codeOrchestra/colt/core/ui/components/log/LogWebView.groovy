@@ -70,6 +70,7 @@ class LogWebView extends VBox {
                     }
                 }
             }
+            filter()
         } as ListChangeListener)
 
         engine.onAlert = new EventHandler<WebEvent<String>>() {
@@ -97,27 +98,20 @@ class LogWebView extends VBox {
         })
     }
 
-    void addLogMessage(LogMessage message) {
+    private void addLogMessage(LogMessage message) {
         if (message) {
-            String messageText = message.message
-            String level = "trace"
-            switch (message.level) {
-                case FATAL:
-                case ERROR:
-                    level = "error"; break
-                case WARN:
-                    level = "warning"; break
-                case INFO:
-                    level = "info"; break
-            }
-            String source = message.source
             JSObject window = (JSObject) webView.engine.executeScript("window")
-            window.call("addLogMessage", messageText, level, source)
+            window.call("addLogMessage", message)
         }
     }
 
-    void clear() {
+    private void clear() {
         JSObject window = (JSObject) webView.engine.executeScript("window")
         window.call("clear")
+    }
+
+    private void filter() {
+        JSObject window = (JSObject) webView.engine.executeScript("window")
+        window.call("filter")
     }
 }
