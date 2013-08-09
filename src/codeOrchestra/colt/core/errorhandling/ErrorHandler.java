@@ -10,12 +10,23 @@ public class ErrorHandler {
 
     public static void handle(final Throwable t) {
         logger.error(t);
-        Dialogs.create().lightweight().title("Error").owner(COLTApplication.get().getPrimaryStage()).showException(t);
+        Dialogs.create()
+//                .lightweight()
+                .title("Error")
+                .owner(COLTApplication.get().getPrimaryStage())
+                .nativeChrome()
+                .showException(t);
     }
 
     public static void handle(final Throwable t, final String message) {
         logger.error(message, t);
-        Dialogs.create().lightweight().title("Error").owner(COLTApplication.get().getPrimaryStage()).message(message).showException(t);
+        Dialogs.create()
+//                .lightweight()
+                .title("Error")
+                .owner(COLTApplication.get().getPrimaryStage())
+                .message(message)
+                .nativeChrome()
+                .showException(t);
     }
 
     public static void handle(final String message) {
@@ -25,7 +36,13 @@ public class ErrorHandler {
 
     public static void handle(final String message, final String title) {
         logger.error(message);
-        Dialogs.create().lightweight().title(title).owner(COLTApplication.get().getPrimaryStage()).message(message).showError();
+        Dialogs.create()
+//                .lightweight()
+                .title(title)
+                .owner(COLTApplication.get().getPrimaryStage())
+                .message(message)
+                .nativeChrome()
+                .showError();
     }
 
 }

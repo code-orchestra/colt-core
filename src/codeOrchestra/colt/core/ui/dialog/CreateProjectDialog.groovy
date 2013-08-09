@@ -1,16 +1,12 @@
 package codeOrchestra.colt.core.ui.dialog
 
-import javafx.event.ActionEvent
+
 import javafx.geometry.Insets
-import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
-import org.controlsfx.control.ButtonBar
-import org.controlsfx.control.action.AbstractAction
 import org.controlsfx.control.action.Action
 import org.controlsfx.dialog.Dialog
 
@@ -42,7 +38,7 @@ class CreateProjectDialog {
     }
 
     String show(Stage stage) {
-        Dialog dlg = new Dialog(stage, "New Live Coding Project")
+        Dialog dlg = new Dialog(stage, "New Live Coding Project", false, true)
 
         dlg.resizable = false
         dlg.content = vBox
