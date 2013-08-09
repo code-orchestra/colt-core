@@ -92,6 +92,5 @@ class LogWebView extends VBox {
     void clear(){
         JSObject window = (JSObject) webView.engine.executeScript("window")
         window.call("clear")
-//        webView.engine.executeScript("clear()")
     }
 }
