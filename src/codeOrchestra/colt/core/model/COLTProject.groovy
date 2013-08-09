@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.model
 
+import codeOrchestra.groovyfx.FXBindable
 import groovy.xml.MarkupBuilder
 
 /**
@@ -7,7 +8,7 @@ import groovy.xml.MarkupBuilder
  */
 abstract class COLTProject implements IModelElement {
 
-    String name
+    @FXBindable String name
     String path
 
     boolean disposed
