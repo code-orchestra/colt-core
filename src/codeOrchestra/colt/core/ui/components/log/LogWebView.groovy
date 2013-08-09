@@ -1,10 +1,13 @@
 package codeOrchestra.colt.core.ui.components.log
 
 import codeOrchestra.colt.core.logging.Level
+import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList as OL
 import javafx.event.EventHandler
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.VBox
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
@@ -54,23 +57,47 @@ class LogWebView extends VBox {
         children.add(webView)
 
         logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
-            if(c.wasRemoved()){
-                clear()
-            }
-            c.getAddedSubList().each {
-                addLogMessage(it)
+            while (c.next()) {
+                if (c.wasRemoved()) {
+                    clear()
+                } else if (c.wasPermutated()) {
+                    println "permutated"
+                } else if (c.wasUpdated()) {
+                    println "updated"
+                } else {
+                    c.getAddedSubList().each {
+                        addLogMessage(it)
+                    }
+                }
             }
         } as ListChangeListener)
 
         engine.onAlert = new EventHandler<WebEvent<String>>() {
             @Override
             void handle(WebEvent<String> event) {
-                println("alert >> "+ event.data)
+                println("alert >> " + event.data)
             }
         }
+
+        addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            void handle(KeyEvent event) {
+                if (event.controlDown) {
+                    if (event.code == KeyCode.SPACE) {
+                        logMessages.add(new LogMessage("com.codeOrchestra.*:8", WARN, """ListView Selection / Focus APIs To track selection and focus, it is necessary to become familiar with the SelectionModel and FocusModel classes. A ListView has at most one instance of each of these classes, available from selectionModel and focusModel properties respectively. Whilst it is possible to use this API to set a new selection model, in most circumstances this is not necessary - the default selection and focus models should work in most circumstances. The default SelectionModel used when instantiating a ListView is an implementation of the MultipleSelectionModel abstract class. However, as noted in the API documentation for the selectionMode property, the default value is SelectionMode.SINGLE. To enable multiple selection in a default ListView instance, it is therefore necessary to do the following: listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);""", 10, ""))
+                        logMessages.add(new LogMessage("com.codeOrchestra.*:8", ERROR, """ListView Selection / Focus APIs To track selection and focus, it is necessary to become familiar with the SelectionModel and FocusModel classes. A ListView has at most one instance of each of these classes, available from selectionModel and focusModel properties respectively. Whilst it is possible to use this API to set a new selection model, in most circumstances this is not necessary - the default selection and focus models should work in most circumstances. The default SelectionModel used when instantiating a ListView is an implementation of the MultipleSelectionModel abstract class. However, as noted in the API documentation for the selectionMode property, the default value is SelectionMode.SINGLE. To enable multiple selection in a default ListView instance, it is therefore necessary to do the following: listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);""", 10, ""))
+                        logMessages.add(new LogMessage("com.codeOrchestra.*:8", INFO, """ListView Selection / Focus APIs To track selection and focus, it is necessary to become familiar with the SelectionModel and FocusModel classes. A ListView has at most one instance of each of these classes, available from selectionModel and focusModel properties respectively. Whilst it is possible to use this API to set a new selection model, in most circumstances this is not necessary - the default selection and focus models should work in most circumstances. The default SelectionModel used when instantiating a ListView is an implementation of the MultipleSelectionModel abstract class. However, as noted in the API documentation for the selectionMode property, the default value is SelectionMode.SINGLE. To enable multiple selection in a default ListView instance, it is therefore necessary to do the following: listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);""", 10, ""))
+                        logMessages.add(new LogMessage("com.codeOrchestra.*:8", TRACE, """ListView Selection / Focus APIs To track selection and focus, it is necessary to become familiar with the SelectionModel and FocusModel classes. A ListView has at most one instance of each of these classes, available from selectionModel and focusModel properties respectively. Whilst it is possible to use this API to set a new selection model, in most circumstances this is not necessary - the default selection and focus models should work in most circumstances. The default SelectionModel used when instantiating a ListView is an implementation of the MultipleSelectionModel abstract class. However, as noted in the API documentation for the selectionMode property, the default value is SelectionMode.SINGLE. To enable multiple selection in a default ListView instance, it is therefore necessary to do the following: listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);""", 10, ""))
+                        println "logMessages = ${logMessages.size()}"
+                    } else if (event.code == KeyCode.BACK_SPACE) {
+                        logMessages.clear()
+                    }
+                }
+            }
+        })
     }
 
-    void addLogMessage(LogMessage message){
+    void addLogMessage(LogMessage message) {
         if (message) {
             String messageText = message.message
             String level = "trace"
@@ -89,7 +116,7 @@ class LogWebView extends VBox {
         }
     }
 
-    void clear(){
+    void clear() {
         JSObject window = (JSObject) webView.engine.executeScript("window")
         window.call("clear")
     }
