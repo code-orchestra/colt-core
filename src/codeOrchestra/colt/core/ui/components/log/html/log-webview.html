@@ -80,7 +80,7 @@
                 str = str.substr(0, 3) + '...' + str.substr(str.length-13, str.length);
                 $(this).html(str);
             }
-            $(this).tipsy({gravity: 'e'});
+            $(this).tipsy({gravity: 'e', delayIn: 120, offset: 12});
         });
 
         $(logItem).children("p").click(function(){
