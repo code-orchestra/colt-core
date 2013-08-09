@@ -63,6 +63,8 @@
     function addLogMessage(message, level, source){
 
 
+        alert(level + " -> "+ source)
+
         var style = "";
         if(["warning", "info", "error"].indexOf(level) != -1){
             style = ' class="'+level + '"';
@@ -97,7 +99,6 @@
     }
 
     function clear(){
-
         $(".log li").remove();
     }
 

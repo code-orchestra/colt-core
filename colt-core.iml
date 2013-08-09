@@ -18,6 +18,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="groovy" level="application" />
+    <orderEntry type="module" module-name="groovy-fx-goodies" />
   </component>
 </module>
 
