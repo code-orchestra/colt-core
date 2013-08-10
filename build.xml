@@ -377,6 +377,7 @@
     <copy todir="${mac.output.dir}/Contents">
       <fileset dir="${basedir}/packaging/mac/"/>
     </copy>	 
+    <mkdir dir="${mac.output.dir}/Contents/Java" />    
 	<copy todir="${mac.output.dir}/Contents/Java">
       <fileset dir="${artifact.output.colt-core}">
         <include name="*.jar"/>
