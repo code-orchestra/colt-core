@@ -1,66 +1,40 @@
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<?xml version="1.0" ?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-  <dict>
-    <key>CFBundleName</key>
-    <string>COLT</string>
-    <key>CFBundleGetInfoString</key>
-    <string>COLT 1.2</string>
-    <key>CFBundleShortVersionString</key>
-    <string>1.2</string>
-    <key>CFBundleVersion</key>
-    <string>1.2</string>
-    <key>CFBundleExecutable</key>
-    <string>colt</string>
-    <key>CFBundleIconFile</key>
-    <string>colticon.icns</string>
-    <key>CFBundleDevelopmentRegion</key>
-    <string>English</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-    <key>CFBundleSignature</key>
-    <string>????</string>
-	<!--
-    <key>CFBundleDocumentTypes</key>
-    <array>
-      <dict>
-        <key>CFBundleTypeExtensions</key>
-        <array>
-          <string>colt2</string>
-        </array>
-        <key>CFBundleTypeIconFile</key>
-        <string>colticon.icns</string>
-        <key>CFBundleTypeName</key>
-        <string>Code Orchestra</string>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-		<key>LSIsAppleDefaultForType</key>
- 	    <true/>        
-      </dict>
-    </array>
-    -->
-    <key>Java</key>
-    <dict>
-      <key>ClassPath</key>
-      <string>$APP_PACKAGE/colt-core.jar:$APP_PACKAGE/lib/colt-as.jar</string>
-      <key>JVMVersion</key>
-      <string>1.8+</string>
-      <key>MainClass</key>
-      <string>codeOrchestra.colt.core.ui.COLTApplication</string>
-      <key>Properties</key>
-      <dict>
-        <key>apple.laf.useScreenMenuBar</key>
-        <string>true</string>
-        <key>com.apple.mrj.application.live-resize</key>
-        <string>false</string>
-        <key>file.encoding</key>
-        <string>windows-1251</string>        
-      </dict>
-      <key>VMOptions</key>
-      <string>-Dcolt.base.dir="$APP_PACKAGE" -Dcolt.handlers=AS:codeOrchestra.colt.as.ASLiveCodingLanguageHandler</string>
-      <key>WorkingDirectory</key>
-      <string>$APP_PACKAGE</string>
-    </dict>
-  </dict>
+<dict>
+<key>CFBundleDevelopmentRegion</key>
+<string>English</string>
+<key>CFBundleExecutable</key>
+<string>JavaAppLauncher</string>
+<key>CFBundleIconFile</key>
+<string>colticon.icns</string>
+<key>CFBundleIdentifier</key>
+<string>codeorchestra.colt</string>
+<key>CFBundleDisplayName</key>
+<string>COLT 1.2</string>
+<key>CFBundleInfoDictionaryVersion</key>
+<string>6.0</string>
+<key>CFBundleName</key>
+<string>COLT</string>
+<key>CFBundlePackageType</key>
+<string>APPL</string>
+<key>CFBundleShortVersionString</key>
+<string>1.0</string>
+<key>CFBundleSignature</key>
+<string>????</string>
+<key>CFBundleVersion</key>
+<string>1</string>
+<key>NSHumanReadableCopyright</key>
+<string></string>
+<key>JVMMainClassName</key>
+<string>codeOrchestra.colt.core.ui.COLTApplication</string>
+<key>JVMOptions</key>
+<array>
+  <string>-Dcolt.base.dir=$APP_PACKAGE</string>
+  <string>-Dcolt.handlers=AS:codeOrchestra.colt.as.ASLiveCodingLanguageHandler</string>  
+</array>
+<key>JVMArguments</key>
+<array>
+</array>
+</dict>
 </plist>

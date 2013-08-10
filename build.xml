@@ -11,8 +11,9 @@
       <os family="windows" />
   </condition>	
 
-  <!-- Compiler options -->
-  
+  <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="${basedir}/lib/appbundler-1.0.jar" />
+
+  <!-- Compiler options -->  
   <property name="compiler.debug" value="on"/>
   <property name="compiler.generate.no.warnings" value="off"/>
   <property name="compiler.args" value=""/>
@@ -368,12 +369,20 @@
 	<property name="mac.output.dir" value="${colt.output.dir}/mac/COLT.app" />
     <mkdir dir="${mac.output.dir}"/>
     <copy todir="${mac.output.dir}">
-      <fileset dir="${artifact.output.colt-core}"/>
+      <fileset dir="${artifact.output.colt-core}">
+		<exclude name="**/*.jar"/>
+      </fileset>
     </copy>	
     <mkdir dir="${mac.output.dir}/Contents" />
     <copy todir="${mac.output.dir}/Contents">
       <fileset dir="${basedir}/packaging/mac/"/>
-    </copy>	    
+    </copy>	 
+	<copy todir="${mac.output.dir}/Contents/Java">
+      <fileset dir="${artifact.output.colt-core}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>       
+    <chmod file="${mac.output.dir}/Contents/MacOs/JavaAppLauncher" perm="+x"/>
   </target>
 
   <target name="package.win" if="isWindows">
