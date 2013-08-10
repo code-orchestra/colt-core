@@ -8,7 +8,9 @@ import javafx.collections.ObservableList as OL
 import javafx.event.EventHandler
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
+import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.scene.shape.Box
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
@@ -21,12 +23,13 @@ import static codeOrchestra.colt.core.logging.Level.*
 /**
  * @author Eugene Potapenko
  */
-class LogWebView extends VBox {
+class LogWebView extends HBox {
 
     private WebView webView = new WebView(contextMenuEnabled: false)
     final OL<LogMessage> logMessages = FXCollections.observableArrayList()
     private boolean htmlLoaded;
     private boolean layoutInited;
+    final private List flushList = []
 
     @Override
     protected void layoutChildren() {
@@ -34,8 +37,9 @@ class LogWebView extends VBox {
         if (!layoutInited) {
             layoutInited = true
             if (layoutInited && htmlLoaded) {
-                clear()
-                addLogMessages(logMessages)
+                List<LogMessage> old = logMessages.asList()
+                logMessages.clear()
+                logMessages.addAll(old)
             }
         }
     }
@@ -53,7 +57,7 @@ class LogWebView extends VBox {
             htmlLoaded = true
             if (layoutInited && htmlLoaded) {
                 clear()
-                addLogMessages(logMessages)
+                addLogMessages(logMessages.asList())
             }
 
         } as ChangeListener)
@@ -61,20 +65,24 @@ class LogWebView extends VBox {
         children.add(webView)
 
         logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
-            if (htmlLoaded) {
-                while (c.next()) {
-                    if (c.wasRemoved()) {
-                        clear()
-                    } else if (c.wasPermutated()) {
-                        println "permutated"
-                    } else if (c.wasUpdated()) {
-                        println "updated"
-                    } else {
-                        addLogMessages(c.getAddedSubList())
+            synchronized (logMessages) {
+                if (htmlLoaded) {
+                    while (c.next()) {
+                        if (c.wasRemoved()) {
+                            println("clear log")
+                            clear()
+                        } else if (c.wasPermutated()) {
+                            println "permutated"
+                        } else if (c.wasUpdated()) {
+                            println "updated"
+                        } else {
+                            addLogMessages(c.getAddedSubList().asList())
+                        }
                     }
+                    filter()
                 }
-                filter()
             }
+
         } as ListChangeListener)
 
         engine.onAlert = new EventHandler<WebEvent<String>>() {
@@ -89,7 +97,7 @@ class LogWebView extends VBox {
             void handle(KeyEvent event) {
                 if (event.controlDown) {
                     if (event.code == KeyCode.SPACE) {
-                        (10).times {
+                        (20).times {
                             logMessages.add(new LogMessage("com.codeOrchestra.*:8", WARN, """ListView Selection / Focus APIs To track selection and focus, it is necessary to become familiar with the SelectionModel and FocusModel classes. A ListView has at most one instance of each of these classes, available from selectionModel and focusModel properties respectively. Whilst it is possible to use this API to set a new selection model, in most circumstances this is not necessary - the default selection and focus models should work in most circumstances. The default SelectionModel used when instantiating a ListView is an implementation of the MultipleSelectionModel abstract class. However, as noted in the API documentation for the selectionMode property, the default value is SelectionMode.SINGLE. To enable multiple selection in a default ListView instance, it is therefore necessary to do the following: listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);""", 10, ""))
                             logMessages.add(new LogMessage("com.codeOrchestra.*:8", ERROR, """ListView Selection / Focus APIs To track selection and focus, it is necessary to become familiar with the SelectionModel and FocusModel classes. A ListView has at most one instance of each of these classes, available from selectionModel and focusModel properties respectively. Whilst it is possible to use this API to set a new selection model, in most circumstances this is not necessary - the default selection and focus models should work in most circumstances. The default SelectionModel used when instantiating a ListView is an implementation of the MultipleSelectionModel abstract class. However, as noted in the API documentation for the selectionMode property, the default value is SelectionMode.SINGLE. To enable multiple selection in a default ListView instance, it is therefore necessary to do the following: listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);""", 10, ""))
                             logMessages.add(new LogMessage("com.codeOrchestra.*:8", INFO, """ListView Selection / Focus APIs To track selection and focus, it is necessary to become familiar with the SelectionModel and FocusModel classes. A ListView has at most one instance of each of these classes, available from selectionModel and focusModel properties respectively. Whilst it is possible to use this API to set a new selection model, in most circumstances this is not necessary - the default selection and focus models should work in most circumstances. The default SelectionModel used when instantiating a ListView is an implementation of the MultipleSelectionModel abstract class. However, as noted in the API documentation for the selectionMode property, the default value is SelectionMode.SINGLE. To enable multiple selection in a default ListView instance, it is therefore necessary to do the following: listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);""", 10, ""))
@@ -109,10 +117,22 @@ class LogWebView extends VBox {
     }
 
     private void addLogMessages(List messages) {
-        Platform.runLater {
-            ArrayList data = []
-            data.addAll(messages)
-            getJSTopObject().call("addLogMessages", data)
+        synchronized (flushList) {
+            boolean flushBefore = flushList.isEmpty()
+            flushList.addAll(messages)
+            if (flushBefore) {
+                Platform.runLater {
+                    flush()
+                }
+            }
+        }
+    }
+
+    private flush() {
+        synchronized (flushList) {
+            println "flushList = ${flushList.size()}"
+            getJSTopObject().call("addLogMessages", flushList)
+            flushList.clear()
         }
     }
 
@@ -127,4 +147,6 @@ class LogWebView extends VBox {
             getJSTopObject().call("filter")
         }
     }
+
+
 }
