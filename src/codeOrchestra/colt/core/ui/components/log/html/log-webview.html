@@ -26,7 +26,7 @@
         .log .info{background-image:url('info.png');}
         .log .warning{background-image:url('warning.png');}
         .log P{margin:0;max-height:2.769230769230769em;}
-        .log A{font-family:Consolas,'Andale Mono WT','Andale Mono','Lucida Console','Lucida Sans Typewriter','DejaVu Sans Mono','Bitstream Vera Sans Mono','Liberation Mono','Nimbus Mono L',Monaco,'Courier New',Courier,monospace;display:block;text-align:right;white-space:nowrap;overflow:hidden;position:absolute;top:0.38461538461538464em;right:15px;height:1.3846153846153846em;width:19ch;}
+        .log A{font-family:Consolas,'Andale Mono WT','Andale Mono','Lucida Console','Lucida Sans Typewriter','DejaVu Sans Mono','Bitstream Vera Sans Mono','Liberation Mono','Nimbus Mono L',Monaco,'Courier New',Courier,monospace;display:block;text-align:right;white-space:nowrap;overflow:hidden;position:absolute;top:0.38461538461538464em;right:15px;height:1.3846153846153846em;width:13ch;}
         .log .selected A{top:0.3076923076923077em;}
     </style>
     <link rel="stylesheet" href="../../shared/tipsy.css" type="text/css" />
@@ -117,9 +117,9 @@
 
         $(logItem).children('a').each(function() {
             var str = $(this).text();
-            if (str.length > 19) {
+            if (str.length > 13) {
                 str = str.replace('http://','');
-                str = str.substr(0, 3) + '...' + str.substr(str.length-13, str.length);
+                str = '~' + str.substr(str.length-12, str.length);
                 $(this).html(str);
             }
             $(this).tipsy({gravity: 'e', delayIn: 120, offset: 12});

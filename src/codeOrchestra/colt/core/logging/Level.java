@@ -13,5 +13,4 @@ public enum Level {
   TRACE,
   LIVE,
   COMPILATION
-
 }

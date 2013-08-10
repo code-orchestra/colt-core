@@ -9,6 +9,7 @@ import javafx.event.EventHandler
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.shape.Box
 import javafx.scene.web.WebEngine
@@ -23,7 +24,7 @@ import static codeOrchestra.colt.core.logging.Level.*
 /**
  * @author Eugene Potapenko
  */
-class LogWebView extends HBox {
+class LogWebView extends VBox {
 
     private WebView webView = new WebView(contextMenuEnabled: false)
     final OL<LogMessage> logMessages = FXCollections.observableArrayList()
@@ -37,7 +38,8 @@ class LogWebView extends HBox {
         if (!layoutInited) {
             layoutInited = true
             if (layoutInited && htmlLoaded) {
-                List<LogMessage> old = logMessages.asList()
+                List<LogMessage> old = []
+                old.addAll(logMessages)
                 logMessages.clear()
                 logMessages.addAll(old)
             }
@@ -45,15 +47,10 @@ class LogWebView extends HBox {
     }
 
     LogWebView() {
+
         String htmlPage = this.class.getResource("html/log-webview.html").toExternalForm()
         WebEngine engine = webView.engine
         engine.documentProperty().addListener({ o, oldValue, newValue ->
-            new JSBridge(engine) {
-                @Override
-                void resize(int height) {
-                    //println "height = $height"
-                }
-            }
             htmlLoaded = true
             if (layoutInited && htmlLoaded) {
                 clear()
@@ -63,6 +60,7 @@ class LogWebView extends HBox {
         } as ChangeListener)
         engine.load(htmlPage)
         children.add(webView)
+        setVgrow(webView, Priority.ALWAYS)
 
         logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
             synchronized (logMessages) {
@@ -130,7 +128,6 @@ class LogWebView extends HBox {
 
     private flush() {
         synchronized (flushList) {
-            println "flushList = ${flushList.size()}"
             getJSTopObject().call("addLogMessages", flushList)
             flushList.clear()
         }
@@ -142,11 +139,17 @@ class LogWebView extends HBox {
         }
     }
 
-    private void filter() {
-        Platform.runLater {
-            getJSTopObject().call("filter")
+    public void filter(LogFilter logFilter) {
+        boolean updated
+        logMessages.each {
+            if(it.filter(logFilter)){
+                updated = true
+            }
+        }
+        if(updated){
+            Platform.runLater {
+                getJSTopObject().call("filter")
+            }
         }
     }
-
-
 }

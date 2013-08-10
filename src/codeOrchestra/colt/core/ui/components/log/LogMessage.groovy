@@ -23,4 +23,26 @@ class LogMessage {
         this.message = message
         this.stackTrace = stackTrace
     }
+
+    public boolean filter(LogFilter filter){
+        boolean visibleState = visible
+        switch (filter){
+            case LogFilter.ALL:
+                visible = true
+                break
+            case LogFilter.ERRORS:
+                visible = level == Level.ERROR
+                break
+            case LogFilter.WARNINGS:
+                visible = level == Level.WARN
+                break
+            case LogFilter.INFO:
+                visible = level == Level.INFO
+                break
+            case LogFilter.LOG:
+                visible = level == Level.LIVE || level == Level.COMPILATION
+                break
+        }
+        return  visibleState == visible
+    }
 }
