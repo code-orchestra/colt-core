@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="colt-core" default="all">
   
-  
   <property file="build.properties"/>
-  <!-- Uncomment the following property if no tests compilation is needed -->
-  <!-- 
-  <property name="skip.tests" value="true"/>
-   -->
-  
+
+  <!-- Property for the platform.  -->
+  <condition property="isMac" value="true">
+      <os family="mac"/>
+  </condition>
+  <condition property="isWindows">
+      <os family="windows" />
+  </condition>	
+
   <!-- Compiler options -->
   
   <property name="compiler.debug" value="on"/>
@@ -270,56 +273,56 @@
     <mkdir dir="${artifact.temp.output.colt-core}"/>
     <jar destfile="${temp.jar.path.colt-core.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
       <zipfileset dir="${colt-core.output.dir}"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/ant-1.8.4.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/ant-antlr-1.8.4.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/ant-junit-1.8.4.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/ant-launcher-1.8.4.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/antlr-2.7.7.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/asm-4.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/asm-analysis-4.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/asm-commons-4.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/asm-tree-4.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/asm-util-4.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/bsf-2.4.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/commons-cli-1.2.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/commons-logging-1.1.1.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/gpars-1.0.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-ant-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-bsf-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-console-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-docgenerator-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-groovydoc-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-groovysh-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-jmx-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-json-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-jsr223-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-servlet-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-sql-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-swing-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-templates-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-test-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-testng-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/groovy-xml-2.1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/hamcrest-core-1.3.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/ivy-2.2.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/jansi-1.6.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/jcommander-1.27.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/jline-1.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/jsp-api-2.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/jsr166y-1.7.0.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/junit-4.11.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/qdox-1.12.1.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/servlet-api-2.4.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/testng-6.8.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/xmlpull-1.1.3.1.jar"/>
-      <zipfileset src="${basedir}/../../Downloads/groovy-2.1.6/lib/xstream-1.4.2.jar"/>
+      <zipfileset src="${groovy.home}/lib/ant-1.8.4.jar"/>
+      <zipfileset src="${groovy.home}/lib/ant-antlr-1.8.4.jar"/>
+      <zipfileset src="${groovy.home}/lib/ant-junit-1.8.4.jar"/>
+      <zipfileset src="${groovy.home}/lib/ant-launcher-1.8.4.jar"/>
+      <zipfileset src="${groovy.home}/lib/antlr-2.7.7.jar"/>
+      <zipfileset src="${groovy.home}/lib/asm-4.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/asm-analysis-4.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/asm-commons-4.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/asm-tree-4.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/asm-util-4.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/bsf-2.4.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/commons-cli-1.2.jar"/>
+      <zipfileset src="${groovy.home}/lib/commons-logging-1.1.1.jar"/>
+      <zipfileset src="${groovy.home}/lib/gpars-1.0.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-ant-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-bsf-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-console-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-docgenerator-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-groovydoc-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-groovysh-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-jmx-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-json-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-jsr223-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-servlet-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-sql-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-swing-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-templates-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-test-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-testng-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/groovy-xml-2.1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/hamcrest-core-1.3.jar"/>
+      <zipfileset src="${groovy.home}/lib/ivy-2.2.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/jansi-1.6.jar"/>
+      <zipfileset src="${groovy.home}/lib/jcommander-1.27.jar"/>
+      <zipfileset src="${groovy.home}/lib/jline-1.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/jsp-api-2.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/jsr166y-1.7.0.jar"/>
+      <zipfileset src="${groovy.home}/lib/junit-4.11.jar"/>
+      <zipfileset src="${groovy.home}/lib/qdox-1.12.1.jar"/>
+      <zipfileset src="${groovy.home}/lib/servlet-api-2.4.jar"/>
+      <zipfileset src="${groovy.home}/lib/testng-6.8.jar"/>
+      <zipfileset src="${groovy.home}/lib/xmlpull-1.1.3.1.jar"/>
+      <zipfileset src="${groovy.home}/lib/xstream-1.4.2.jar"/>
       <zipfileset src="${basedir}/lib/ant.jar"/>
       <zipfileset src="${basedir}/lib/aquafx-0.1.jar"/>
       <zipfileset src="${basedir}/lib/httpclient.jar"/>
       <zipfileset src="${basedir}/lib/ScenicView.jar"/>
       <zipfileset src="${basedir}/lib/jetty-6.1.26.jar"/>
-      <zipfileset src="${basedir}/lib/colt-groovyfx.jar"/>
+	  <zipfileset src="${basedir}/lib/groovyfx-0.3.1.jar"/>
       <zipfileset src="${basedir}/lib/groovy-fx-goodies.jar"/>
       <zipfileset src="${basedir}/lib/jsonrpc4j-0.28.jar"/>
       <zipfileset src="${basedir}/lib/portlet-api-2.0.jar"/>
@@ -351,7 +354,7 @@
     <delete dir="${artifacts.temp.dir}"/>
   </target>
   
-  <target name="all" depends="build.modules, build.all.artifacts, build.as, copy.colt.resources" description="build all"/>
+  <target name="all" depends="build.modules, build.all.artifacts, build.as, copy.colt.resources, package.mac, package.win" description="build all"/>
   
   <target name="build.as">
 	<ant antfile="${basedir}/../colt-as/build.xml" dir="${basedir}/../colt-as" target="all"/>
@@ -359,6 +362,22 @@
   
   <target name="copy.colt.resources">
 	<copy file="${basedir}/crossdomain.xml" todir="${artifact.output.colt-core}"/>
+  </target>
+  
+  <target name="package.mac" if="isMac">
+	<property name="mac.output.dir" value="${colt.output.dir}/mac/COLT.app" />
+    <mkdir dir="${mac.output.dir}"/>
+    <copy todir="${mac.output.dir}">
+      <fileset dir="${artifact.output.colt-core}"/>
+    </copy>	
+    <mkdir dir="${mac.output.dir}/Contents" />
+    <copy todir="${mac.output.dir}/Contents">
+      <fileset dir="${basedir}/packaging/mac/"/>
+    </copy>	    
+  </target>
+
+  <target name="package.win" if="isWindows">
+	<!-- TODO: implement -->
   </target>
   
 </project>
