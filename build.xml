@@ -320,7 +320,7 @@
       <zipfileset src="${basedir}/lib/ScenicView.jar"/>
       <zipfileset src="${basedir}/lib/jetty-6.1.26.jar"/>
       <zipfileset src="${basedir}/lib/colt-groovyfx.jar"/>
-      <zipfileset src="${basedir}/lib/groovyfx-0.3.1.jar"/>
+      <zipfileset src="${basedir}/lib/groovy-fx-goodies.jar"/>
       <zipfileset src="${basedir}/lib/jsonrpc4j-0.28.jar"/>
       <zipfileset src="${basedir}/lib/portlet-api-2.0.jar"/>
       <zipfileset src="${basedir}/lib/servlet-api-2.5.jar"/>
