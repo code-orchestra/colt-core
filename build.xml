@@ -351,5 +351,14 @@
     <delete dir="${artifacts.temp.dir}"/>
   </target>
   
-  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+  <target name="all" depends="build.modules, build.all.artifacts, build.as, copy.colt.resources" description="build all"/>
+  
+  <target name="build.as">
+	<ant antfile="${basedir}/../colt-as/build.xml" dir="${basedir}/../colt-as" target="all"/>
+  </target>
+  
+  <target name="copy.colt.resources">
+	<copy file="${basedir}/crossdomain.xml" todir="${artifact.output.colt-core}"/>
+  </target>
+  
 </project>
