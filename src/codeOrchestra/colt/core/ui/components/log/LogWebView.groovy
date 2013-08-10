@@ -14,6 +14,8 @@ import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
 import netscape.javascript.JSObject
 
+
+
 import static codeOrchestra.colt.core.logging.Level.*
 
 /**
@@ -23,7 +25,20 @@ class LogWebView extends VBox {
 
     private WebView webView = new WebView(contextMenuEnabled: false)
     final OL<LogMessage> logMessages = FXCollections.observableArrayList()
-    private boolean inited;
+    private boolean htmlLoaded;
+    private boolean layoutInited;
+
+    @Override
+    protected void layoutChildren() {
+        super.layoutChildren()
+        if (!layoutInited) {
+            layoutInited = true
+            if (layoutInited && htmlLoaded) {
+                clear()
+                addLogMessages(logMessages)
+            }
+        }
+    }
 
     LogWebView() {
         String htmlPage = this.class.getResource("html/log-webview.html").toExternalForm()
@@ -32,38 +47,33 @@ class LogWebView extends VBox {
             new JSBridge(engine) {
                 @Override
                 void resize(int height) {
-                    println "height = $height"
+                    //println "height = $height"
                 }
             }
-            clear()
-            Platform.runLater{
-                logMessages.each {
-                    addLogMessage(it)
-                }
-                inited = true;
+            htmlLoaded = true
+            if (layoutInited && htmlLoaded) {
+                clear()
+                addLogMessages(logMessages)
             }
+
         } as ChangeListener)
         engine.load(htmlPage)
         children.add(webView)
 
         logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
-            Platform.runLater{
-                if (inited) {
-                    while (c.next()) {
-                        if (c.wasRemoved()) {
-                            clear()
-                        } else if (c.wasPermutated()) {
-                            println "permutated"
-                        } else if (c.wasUpdated()) {
-                            println "updated"
-                        } else {
-                            c.getAddedSubList().each {
-                                addLogMessage(it)
-                            }
-                        }
+            if (htmlLoaded) {
+                while (c.next()) {
+                    if (c.wasRemoved()) {
+                        clear()
+                    } else if (c.wasPermutated()) {
+                        println "permutated"
+                    } else if (c.wasUpdated()) {
+                        println "updated"
+                    } else {
+                        addLogMessages(c.getAddedSubList())
                     }
-                    filter()
                 }
+                filter()
             }
         } as ListChangeListener)
 
@@ -98,17 +108,23 @@ class LogWebView extends VBox {
         (JSObject) webView.engine.executeScript("window")
     }
 
-    private void addLogMessage(LogMessage message) {
-        if (message) {
-            getJSTopObject().call("addLogMessage", message)
+    private void addLogMessages(List messages) {
+        Platform.runLater {
+            ArrayList data = []
+            data.addAll(messages)
+            getJSTopObject().call("addLogMessages", data)
         }
     }
 
     private void clear() {
-        getJSTopObject().call("clear")
+        Platform.runLater {
+            getJSTopObject().call("clear")
+        }
     }
 
     private void filter() {
-        getJSTopObject().call("filter")
+        Platform.runLater {
+            getJSTopObject().call("filter")
+        }
     }
 }

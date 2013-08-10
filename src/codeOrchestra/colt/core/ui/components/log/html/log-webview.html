@@ -34,6 +34,7 @@
     <script src="../../shared/dotdotdot.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../shared/jquery-resize.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../shared/jquery.tipsy.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../shared/jquery.scroll-to.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 <body>
@@ -84,6 +85,16 @@
             message: message,
             level : level,
             source: source
+        }
+    }
+
+    function addLogMessages(messages){
+        var maxScrolled = isMaxScroll();
+        for (var i = 0; i < messages.size();i++){
+            addLogMessage(messages.get(i));
+        }
+        if (maxScrolled) {
+            $(document).scrollTop(maxScrollTop());
         }
     }
 
@@ -153,6 +164,14 @@
                 $(this).hide();
             }
         })
+    }
+
+    function maxScrollTop() {
+        return $(document).height() - $(window).height();
+    }
+
+    function isMaxScroll(){
+        return $(document).scrollTop() == maxScrollTop();
     }
 
 </script>
