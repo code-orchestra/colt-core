@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui.components.log
 
 import javafx.application.Platform
 import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList as OL
@@ -108,6 +109,13 @@ class LogWebView extends VBox {
                 }
             }
         })
+
+        webView.widthProperty().addListener({ ObservableValue<? extends Number> observable, Number oldValue, Number newValue ->
+            fireApplicationResize()
+        } as ChangeListener)
+        webView.heightProperty().addListener({ ObservableValue<? extends Number> observable, Number oldValue, Number newValue ->
+            fireApplicationResize()
+        } as ChangeListener)
     }
 
     private JSObject getJSTopObject() {
@@ -150,6 +158,12 @@ class LogWebView extends VBox {
             Platform.runLater {
                 getJSTopObject().call("filter")
             }
+        }
+    }
+
+    private void fireApplicationResize(){
+        Platform.runLater {
+            getJSTopObject().call("applicationResize")
         }
     }
 }

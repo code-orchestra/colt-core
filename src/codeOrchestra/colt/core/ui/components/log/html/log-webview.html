@@ -5,33 +5,154 @@
     <title>Colt Log</title>
 
     <style type="text/css">
-        HTML{font-size:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
-        HTML,BODY{min-height:100%;}
-        BODY{background:#f7f8fa;text-align:left;-webkit-font-smoothing:antialiased;margin:0;padding:0;}
-        BODY,BUTTON,INPUT,LABEL,SELECT,TEXTAREA{color:#515458;font:13px/18px 'Lucida Grande','Lucida Sans Unicode','Lucida Sans','DejaVu Sans','Bitstream Vera Sans','Liberation Sans',Arial,sans-serif;}
-        :focus{outline:none;}
-        A:focus{outline:thin dotted #CCCFD3;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px;}
-        A:hover,A:active{outline:0;}
-        A{color:#06c;text-decoration:none;}A:visited{color:#606;}
-        A:hover{color:#003d7a;text-decoration:underline;}
-        A:link{-webkit-tap-highlight-color:transparent;}
-        B,STRONG{font:bold;}
-        ::-moz-selection{background:#06c;color:#FFF;text-shadow:none;}
-        ::selection{background:#06c;color:#FFF;text-shadow:none;}
-        .log{list-style:none;margin:0;padding:0 0 18px;}.log LI{cursor:pointer;padding:0.3076923076923077em 155px 0.38461538461538464em 37px;position:relative;}.log LI:nth-child(odd){background-color:#ebeef2;}
-        .log LI.selected{background-color:#deeeff;border:1px solid #bfd9f2;border-width:1px 0 1px 0;padding-top:0.23076923076923078em;padding-bottom:0.3076923076923077em;}.log LI.selected P{max-height:none;}
-        .log .error,.log .info,.log .warning{background-position:10px 0.46153846153846156em;background-repeat:no-repeat;-webkit-background-size:16px 16px;-moz-background-size:16px 16px;-o-background-size:16px 16px;background-size:16px 16px;}
-        .log .selected.error,.log .selected.info,.log .selected.warning{background-position:10px 0.38461538461538464em;}
-        .log .error{background-image:url('error.png');}
-        .log .info{background-image:url('info.png');}
-        .log .warning{background-image:url('warning.png');}
-        .log P{margin:0;max-height:2.769230769230769em;}
-        .log A{font-family:Consolas,'Andale Mono WT','Andale Mono','Lucida Console','Lucida Sans Typewriter','DejaVu Sans Mono','Bitstream Vera Sans Mono','Liberation Mono','Nimbus Mono L',Monaco,'Courier New',Courier,monospace;display:block;text-align:right;white-space:nowrap;overflow:hidden;position:absolute;top:0.38461538461538464em;right:15px;height:1.3846153846153846em;width:13ch;}
-        .log .selected A{top:0.3076923076923077em;}
+        HTML {
+            font-size: 100%;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        HTML, BODY {
+            min-height: 100%;
+        }
+
+        BODY {
+            background: #f7f8fa;
+            text-align: left;
+            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 0;
+        }
+
+        BODY, BUTTON, INPUT, LABEL, SELECT, TEXTAREA {
+            color: #515458;
+            font: 13px/18px 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'DejaVu Sans', 'Bitstream Vera Sans', 'Liberation Sans', Arial, sans-serif;
+        }
+
+        :focus {
+            outline: none;
+        }
+
+        A:focus {
+            outline: thin dotted #CCCFD3;
+            outline: 5px auto -webkit-focus-ring-color;
+            outline-offset: -2px;
+        }
+
+        A:hover, A:active {
+            outline: 0;
+        }
+
+        A {
+            color: #06c;
+            text-decoration: none;
+        }
+
+        A:visited {
+            color: #606;
+        }
+
+        A:hover {
+            color: #003d7a;
+            text-decoration: underline;
+        }
+
+        A:link {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        B, STRONG {
+            font: bold;
+        }
+
+        ::-moz-selection {
+            background: #06c;
+            color: #FFF;
+            text-shadow: none;
+        }
+
+        ::selection {
+            background: #06c;
+            color: #FFF;
+            text-shadow: none;
+        }
+
+        .log {
+            list-style: none;
+            margin: 0;
+            padding: 0 0 18px;
+        }
+
+        .log LI {
+            cursor: pointer;
+            padding: 0.3076923076923077em 155px 0.38461538461538464em 37px;
+            position: relative;
+        }
+
+        .log LI:nth-child(odd) {
+            background-color: #ebeef2;
+        }
+
+        .log LI.selected {
+            background-color: #deeeff;
+            border: 1px solid #bfd9f2;
+            border-width: 1px 0 1px 0;
+            padding-top: 0.23076923076923078em;
+            padding-bottom: 0.3076923076923077em;
+        }
+
+        .log LI.selected P {
+            max-height: none;
+        }
+
+        .log .error, .log .info, .log .warning {
+            background-position: 10px 0.46153846153846156em;
+            background-repeat: no-repeat;
+            -webkit-background-size: 16px 16px;
+            -moz-background-size: 16px 16px;
+            -o-background-size: 16px 16px;
+            background-size: 16px 16px;
+        }
+
+        .log .selected.error, .log .selected.info, .log .selected.warning {
+            background-position: 10px 0.38461538461538464em;
+        }
+
+        .log .error {
+            background-image: url('error.png');
+        }
+
+        .log .info {
+            background-image: url('info.png');
+        }
+
+        .log .warning {
+            background-image: url('warning.png');
+        }
+
+        .log P {
+            margin: 0;
+        }
+
+        .log A {
+            font-family: Consolas, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', Monaco, 'Courier New', Courier, monospace;
+            display: block;
+            text-align: right;
+            white-space: nowrap;
+            overflow: hidden;
+            position: absolute;
+            top: 0.38461538461538464em;
+            right: 15px;
+            height: 1.3846153846153846em;
+            width: 13ch;
+        }
+
+        .log .selected A {
+            top: 0.3076923076923077em;
+        }
     </style>
-    <link rel="stylesheet" href="../../shared/tipsy.css" type="text/css" />
+    <link rel="stylesheet" href="../../shared/tipsy.css" type="text/css"/>
     <script src="../../shared/jquery.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../shared/dotdotdot.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../shared/trunk8.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../shared/jquery-resize.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../shared/jquery.tipsy.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../shared/jquery.scroll-to.js" type="text/javascript" charset="utf-8"></script>
@@ -41,15 +162,57 @@
 <ul class="log"></ul>
 
 <script>
-    $(document).ready(function() {
-        $('.log').resize(function(){
-            if(window.app)app.resize($('body').height());
+
+    var forUpdateDot = $();
+
+    function updateDotdotdot() {
+        var needUpdate = $();
+        var nextUpdate = $();
+
+        forUpdateDot.each(function () {
+            if (isScrolledIntoView(this)) {
+                if (!$(this).hasClass("selected")) {
+                    needUpdate = needUpdate.add($(this));
+                }
+            } else {
+                nextUpdate = nextUpdate.add($(this));
+            }
         });
-        test();
-        //clear()
+
+        forUpdateDot = nextUpdate;
+
+        needUpdate.each(function () {
+            $(this).children('p').trunk8('update');
+        });
+    }
+
+    $(document).ready(function () {
+        $('.log').resize(function () {
+            if (window.app)app.resize($('body').height());
+        });
+
+        $(document).scroll(function () {
+            updateDotdotdot();
+        })
+        test()
     });
 
-    function test(){
+    function applicationResize() {
+        forUpdateDot = $('.log li');
+        updateDotdotdot()
+    }
+
+    function isScrolledIntoView(elem) {
+        var docViewTop = $(window).scrollTop();
+        var docViewBottom = docViewTop + $(window).height();
+
+        var elemTop = $(elem).offset().top;
+        var elemBottom = elemTop + $(elem).height();
+
+        return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+    }
+
+    function test() {
         addLogMessage({message: 'mojito-dispatcher: Dispatcher created', level: "warning", source: "http://s7.addthis.com/js/250/addthis_widget.js"})
         addLogMessage({message: 'mojito-dispatcher: Dispatcher paused', level: "error", source: "http://s7.addthis.com/js/250/addthis_widget.js"})
         addLogMessage({message: 'mojito-client: Executing "@TodoMojit/getAll" on the client', level: "", source: ""})
@@ -60,8 +223,8 @@
         addLogMessage({message: 'mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', level: "", source: ""})
     }
 
-    function parseLogMessageObject(messageData){
-        if(messageData.message)return messageData;
+    function parseLogMessageObject(messageData) {
+        if (messageData.message)return messageData;
         var message = messageData.getMessage();
         var level = messageData.getLevel();
         var source = messageData.getSource();
@@ -83,14 +246,14 @@
 
         return {
             message: message,
-            level : level,
+            level: level,
             source: source
         }
     }
 
-    function addLogMessages(messages){
+    function addLogMessages(messages) {
         var maxScrolled = isMaxScroll();
-        for (var i = 0; i < messages.size();i++){
+        for (var i = 0; i < messages.size(); i++) {
             addLogMessage(messages.get(i));
         }
         if (maxScrolled) {
@@ -98,7 +261,7 @@
         }
     }
 
-    function addLogMessage(data){
+    function addLogMessage(data) {
         var messageData = parseLogMessageObject(data);
 
         var message = messageData.message;
@@ -106,8 +269,8 @@
         var source = messageData.source;
 
         var style = "";
-        if(["warning", "info", "error"].indexOf(level) != -1){
-            style = ' class="'+level + '"';
+        if (["warning", "info", "error"].indexOf(level) != -1) {
+            style = ' class="' + level + '"';
         }
 
         var logItem = $('<li' + style + '><p>' + message + '</p>' +
@@ -115,62 +278,69 @@
 
         $(logItem).data("message", data);
 
-        $(logItem).children('a').each(function() {
+        $(logItem).children('a').each(function () {
             var str = $(this).text();
             if (str.length > 13) {
-                str = str.replace('http://','');
-                str = '~' + str.substr(str.length-12, str.length);
+                str = str.replace('http://', '');
+                str = '~' + str.substr(str.length - 12, str.length);
                 $(this).html(str);
             }
             $(this).tipsy({gravity: 'e', delayIn: 120, offset: 12});
         });
 
-        $(logItem).children("p").click(function(){
+        $(logItem).children("p").click(function () {
             var parent = $(this).parent("li");
             var selected = $('.selected');
 
-            //alert($(parent).data("message"));//todo:
-
             if (parent.is(selected)) {
                 $(parent).removeClass('selected');
+                dotdotdot(parent);
             } else {
                 $(selected).removeClass('selected');
                 $(parent).addClass('selected');
+                $(parent).children('p').trunk8('revert');
+                dotdotdot(selected);
             }
-            $(selected).add(parent).children('p').dotdotdot({watch: 'window'});
         });
 
         $(".log").append(logItem);
-        $(logItem).children('p').dotdotdot({watch: 'window'});
+        dotdotdot(logItem);
     }
 
-    function clear(){
+    function dotdotdot(item) {
+        $(item).children('p').trunk8({ lines: 2 });
+    }
+
+    function clear() {
         $(".log li").remove();
     }
 
-    function openTarget(m){
+    function openTarget(m) {
         console.log(m);
     }
 
-    function logHeight(){
+    function logHeight() {
         return $(".log").height();
     }
 
-    function filter(){
-        $(".log li").each(function(){
-            if($(this).data("message").getVisible()){
-                $(this).show();
-            }else{
+    function filter() {
+        $(".log li").each(function () {
+            if ($(this).data("message").getVisible()) {
+                if ($(this).css("display") == "none") {
+                    $(this).show();
+                }
+            } else {
                 $(this).hide();
             }
-        })
+        });
+        $(document).scrollTop(maxScrollTop());
     }
 
     function maxScrollTop() {
         return $(document).height() - $(window).height();
     }
 
-    function isMaxScroll(){
+    function isMaxScroll() {
         return $(document).scrollTop() == maxScrollTop();
     }
 
