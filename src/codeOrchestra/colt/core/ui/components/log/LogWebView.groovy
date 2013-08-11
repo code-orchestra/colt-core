@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.shape.Box
+import javafx.scene.text.Font
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
@@ -32,6 +33,7 @@ class LogWebView extends VBox {
     private boolean htmlLoaded;
     private boolean layoutInited;
     final private List flushList = []
+    private LogFilter logFilter
 
     @Override
     protected void layoutChildren() {
@@ -48,6 +50,8 @@ class LogWebView extends VBox {
     }
 
     LogWebView() {
+
+        Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 12);
 
         String htmlPage = this.class.getResource("html/log-webview.html").toExternalForm()
         WebEngine engine = webView.engine
@@ -78,7 +82,6 @@ class LogWebView extends VBox {
                             addLogMessages(c.getAddedSubList().asList())
                         }
                     }
-                    filter()
                 }
             }
 
@@ -122,8 +125,9 @@ class LogWebView extends VBox {
         (JSObject) webView.engine.executeScript("window")
     }
 
-    private void addLogMessages(List messages) {
+    private void addLogMessages(List<LogMessage> messages) {
         synchronized (flushList) {
+            messages*.filter(logFilter ?: LogFilter.ALL)
             boolean flushBefore = flushList.isEmpty()
             flushList.addAll(messages)
             if (flushBefore) {
@@ -148,6 +152,7 @@ class LogWebView extends VBox {
     }
 
     public void filter(LogFilter logFilter) {
+        this.logFilter = logFilter
         boolean updated
         logMessages.each {
             if(it.filter(logFilter)){
