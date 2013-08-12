@@ -113,6 +113,10 @@ public abstract class Logger {
         return getLogger(clazz.getSimpleName());
     }
 
+    public void compile(String message) {
+        log(message, DEFAULT_SCOPES, System.currentTimeMillis(), Level.COMPILATION);
+    }
+
     public void info(String message, List<String> scopeIds, long timestamp) {
         log(message, scopeIds, timestamp, Level.INFO);
     }
