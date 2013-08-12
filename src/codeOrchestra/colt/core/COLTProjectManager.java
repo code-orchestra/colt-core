@@ -52,8 +52,7 @@ public class COLTProjectManager {
 
         // Parse the project
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
-        currentProject = handler.parseProject(coltProjectHandlerIdParser.getNode());
-        currentProject.setPath(path);
+        currentProject = handler.parseProject(coltProjectHandlerIdParser.getNode(), path);
 
         handler.fireProjectLoaded();
     }

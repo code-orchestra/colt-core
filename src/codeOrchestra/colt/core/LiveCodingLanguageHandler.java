@@ -21,7 +21,7 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     String getName();
 
-    P parseProject (GPathResult gPathResult);
+    P parseProject (GPathResult gPathResult, String projectPath);
 
     P createProject(String pName);
 
