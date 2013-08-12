@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.logging;
 import codeOrchestra.colt.core.LiveCodingLanguageHandler;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.util.StringUtils;
+import javafx.application.Platform;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
@@ -98,7 +99,12 @@ public abstract class Logger {
             if (loggerService == null) {
                 HEADLESS_LOGGER.log(message, scopeIds, timestamp, level);
             } else {
-                loggerService.log(source, message, scopeIds, timestamp, level, stackTrace);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        loggerService.log(source, message, scopeIds, timestamp, level, stackTrace);
+                    }
+                });
             }
         }
     }
