@@ -114,7 +114,21 @@ public class COLTApplication extends Application {
             }
         });
 
-        menu.getItems().addAll(menuCreate, menuLoad, menuSave);
+        MenuItem menuImport = new MenuItem("Import");
+        menuImport.setOnAction(t -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt"));
+            File file = fileChooser.showOpenDialog(primaryStage.getScene().getWindow());
+            if (file != null) {
+                try {
+                    COLTProjectManager.getInstance().importProject(file);
+                } catch (COLTException e) {
+                    throw new RuntimeException(e); // TODO: handle nicely
+                }
+            }
+        });
+
+        menu.getItems().addAll(menuCreate, menuImport, menuLoad, menuSave);
 
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menu);

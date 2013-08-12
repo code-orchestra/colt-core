@@ -12,6 +12,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 /**
  * @author Alexander Eliseyev
  */
@@ -24,6 +26,8 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
     P parseProject (GPathResult gPathResult, String projectPath);
 
     P createProject(String pName);
+
+    P importProject(File file);
 
     P getCurrentProject();
 

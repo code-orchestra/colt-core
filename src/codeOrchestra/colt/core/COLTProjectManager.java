@@ -81,6 +81,21 @@ public class COLTProjectManager {
         handler.fireProjectLoaded();
     }
 
+    public synchronized void importProject(File file) throws COLTException {
+        String handlerId = "AS";
+        try {
+            LiveCodingHandlerManager.getInstance().load(handlerId);
+        } catch (LiveCodingHandlerLoadingException e) {
+            throw new COLTException("Can't load the handler for the project type " + handlerId);
+        }
+
+        LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
+        currentProject = handler.importProject(file);
+        currentProject.setPath(file.getPath());
+
+        handler.fireProjectLoaded();
+    }
+
     public synchronized void unload() throws COLTException {
         // TODO: implement
     }
