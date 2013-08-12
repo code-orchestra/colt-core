@@ -27,6 +27,10 @@ public class PathUtils {
     }
 
     public static String makeRelative(String absolutePath) {
+        if (absolutePath == null) {
+            return null;
+        }
+
         String relativePath = absolutePath;
 
         String projectPath = ProjectHelper.getCurrentProject().getBaseDir().getPath();
@@ -43,6 +47,10 @@ public class PathUtils {
     }
 
     public static String makeAbsolute(String relativePath) {
+        if (relativePath == null) {
+            return null;
+        }
+
         String absolutePath = relativePath;
 
         for (String replacementToken : replacementTokens) {
