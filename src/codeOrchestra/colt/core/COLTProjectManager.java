@@ -52,8 +52,7 @@ public class COLTProjectManager {
 
         // Parse the project
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
-        currentProject = handler.parseProject(coltProjectHandlerIdParser.getNode());
-        currentProject.setPath(path);
+        currentProject = handler.parseProject(coltProjectHandlerIdParser.getNode(), path);
 
         handler.fireProjectLoaded();
     }
@@ -78,6 +77,21 @@ public class COLTProjectManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        handler.fireProjectLoaded();
+    }
+
+    public synchronized void importProject(File file) throws COLTException {
+        String handlerId = "AS";
+        try {
+            LiveCodingHandlerManager.getInstance().load(handlerId);
+        } catch (LiveCodingHandlerLoadingException e) {
+            throw new COLTException("Can't load the handler for the project type " + handlerId);
+        }
+
+        LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
+        currentProject = handler.importProject(file);
+        currentProject.setPath(file.getPath());
 
         handler.fireProjectLoaded();
     }
