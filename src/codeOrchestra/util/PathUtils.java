@@ -30,6 +30,9 @@ public class PathUtils {
         if (absolutePath == null) {
             return null;
         }
+        if ("".equals(absolutePath)) {
+            return absolutePath;
+        }
 
         String relativePath = absolutePath;
 
@@ -49,6 +52,9 @@ public class PathUtils {
     public static String makeAbsolute(String relativePath) {
         if (relativePath == null) {
             return null;
+        }
+        if ("".equals(relativePath)) {
+            return relativePath;
         }
 
         String absolutePath = relativePath;
