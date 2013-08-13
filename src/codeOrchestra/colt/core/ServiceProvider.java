@@ -22,6 +22,10 @@ public class ServiceProvider {
     private static Map<String, COLTService> cache = new HashMap<String, COLTService>();
 
     public static synchronized void dispose() {
+        for (COLTService coltService : cache.values()) {
+            coltService.dispose();
+        }
+
         cache.clear();
     }
 
