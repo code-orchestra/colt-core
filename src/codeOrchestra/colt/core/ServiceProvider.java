@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core;
 
+import codeOrchestra.colt.core.controller.COLTController;
 import codeOrchestra.colt.core.launch.LiveLauncher;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.logging.LoggerService;
@@ -29,6 +30,7 @@ public class ServiceProvider {
         add(LiveCodingManager.class);
         add(SourceFileFactory.class);
         add(COLTRemoteService.class);
+        add(COLTController.class);
     }};
 
     public static synchronized <T extends COLTService> T get(Class<T> clazz) {

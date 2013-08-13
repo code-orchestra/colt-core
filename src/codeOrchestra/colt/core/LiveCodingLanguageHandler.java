@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core;
 
+import codeOrchestra.colt.core.controller.COLTController;
 import codeOrchestra.colt.core.launch.LiveLauncher;
 import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.logging.LoggerService;
@@ -55,7 +56,9 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     // Services
 
-    COLTRemoteService createRPCService();
+    COLTController<P> createCOLTController();
+
+    COLTRemoteService<P> createRPCService();
 
     LiveLauncher<P> createLauncher();
 

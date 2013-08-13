@@ -64,6 +64,7 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
         currentHandler.disposeHandler();
         currentHandler = null;
 
+        ServiceProvider.dispose();
         Logger.dispose();
     }
 
