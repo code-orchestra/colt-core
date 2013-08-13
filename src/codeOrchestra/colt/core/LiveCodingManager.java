@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.session.LiveCodingSession;
 import codeOrchestra.colt.core.session.listener.LiveCodingListener;
 import codeOrchestra.colt.core.socket.ClientSocketHandler;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,6 +21,8 @@ public interface LiveCodingManager<P extends COLTProject> extends COLTService<P>
     void stopSession(LiveCodingSession liveCodingSession);
 
     Set<String> getCurrentSessionsClientIds();
+
+    List<LiveCodingSession> getCurrentConnections();
 
     void addListener(LiveCodingListener listener);
 

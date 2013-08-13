@@ -18,6 +18,18 @@ public abstract class AbstractLiveCodingManager<P extends COLTProject> implement
     private List<LiveCodingListener> liveCodingListeners = new ArrayList<LiveCodingListener>();
 
     @Override
+    public List<LiveCodingSession> getCurrentConnections() {
+        List<LiveCodingSession> liveCodingSessions = new ArrayList<>(currentSessions.values());
+        Collections.sort(liveCodingSessions, new Comparator<LiveCodingSession>() {
+            @Override
+            public int compare(LiveCodingSession s1, LiveCodingSession s2) {
+                return s1.getSessionNumber() - s2.getSessionNumber();
+            }
+        });
+        return liveCodingSessions;
+    }
+
+    @Override
     public LiveCodingSession getSession(String clientId) {
         return currentSessions.get(clientId);
     }
