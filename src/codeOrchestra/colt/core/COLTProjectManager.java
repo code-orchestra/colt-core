@@ -75,7 +75,7 @@ public class COLTProjectManager {
             fileWriter.write(xml);
             fileWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: handle nicely
         }
 
         handler.fireProjectLoaded();
