@@ -12,18 +12,31 @@ import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
 import codeOrchestra.colt.core.tasks.COLTTask;
 import codeOrchestra.colt.core.tasks.TasksManager;
 import codeOrchestra.colt.core.ui.dialog.CreateProjectDialog;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialogs;
 
@@ -38,10 +51,17 @@ public class COLTApplication extends Application {
 
     private static COLTApplication instance;
 
+    private static final int SPLASH_WIDTH = 480;
+    private static final int SPLASH_HEIGHT = 320;
+    private Timeline timeline;
+
     public static COLTApplication get() {
         return instance;
     }
 
+    private StackPane splashLayout;
+
+    private Stage mainStage;
     private VBox root;
     private Node currentPluginNode;
     private Stage primaryStage;
@@ -54,11 +74,44 @@ public class COLTApplication extends Application {
 
         this.primaryStage = primaryStage;
 
+        initSplash();
+        initMainStage();
+
+        showSplash();
+
+        timeline = new Timeline(new KeyFrame(new Duration(1000), actionEvent -> {
+            timeline.stop();
+            Platform.runLater(this::doAfterUIInit);
+        }));
+        timeline.play();
+    }
+
+    private void showSplash() {
+        Scene splashScene = new Scene(splashLayout);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        final Rectangle2D bounds = Screen.getPrimary().getBounds();
+        primaryStage.setScene(splashScene);
+        primaryStage.setX(bounds.getMinX() + bounds.getWidth() / 2 - SPLASH_WIDTH / 2);
+        primaryStage.setY(bounds.getMinY() + bounds.getHeight() / 2 - SPLASH_HEIGHT / 2);
+        primaryStage.show();
+    }
+
+    private void initSplash() {
+        splashLayout = new StackPane();
+        String imagePath = getClass().getResource("splash.png").toString();
+        Image image = new Image(imagePath);
+        splashLayout.getChildren().add(new ImageView(image));
+        splashLayout.setEffect(new DropShadow());
+    }
+
+    private void initMainStage() {
+        mainStage = new Stage(StageStyle.DECORATED);
+
         root = new VBox();
         root.setFillWidth(true);
         root.setMaxHeight(Double.MAX_VALUE);
-        primaryStage.setTitle("COLT 1.1");
-        primaryStage.setScene(new Scene(root, 800, 700));
+        mainStage.setTitle("COLT 1.1");
+        mainStage.setScene(new Scene(root, 800, 700));
 
         Menu menu = new Menu("File");
         MenuItem menuLoad = new MenuItem("Load");
@@ -135,10 +188,6 @@ public class COLTApplication extends Application {
         menuBar.setUseSystemMenuBar(true);
 
         root.getChildren().add(menuBar);
-
-        primaryStage.show();
-
-        doAfterUIInit();
     }
 
     private void doAfterUIInit() {
@@ -157,6 +206,11 @@ public class COLTApplication extends Application {
 
         CodeOrchestraRPCHttpServer.getInstance().init();
         CodeOrchestraRPCHttpServer.getInstance().addServlet(COLTRemoteServiceServlet.getInstance(), "/coltService");
+
+        primaryStage.hide();
+
+        primaryStage = mainStage;
+        primaryStage.show();
     }
 
     public Stage getPrimaryStage() {
