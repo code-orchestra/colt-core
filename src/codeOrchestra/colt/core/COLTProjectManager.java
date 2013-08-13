@@ -65,7 +65,7 @@ public class COLTProjectManager {
         }
 
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
-        currentProject = handler.createProject(pName);
+        currentProject = handler.createProject(pName, pFile);
         currentProject.setPath(pFile.getPath());
 
         String xml = currentProject.toXmlString();
