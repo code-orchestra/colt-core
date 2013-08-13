@@ -40,7 +40,7 @@ public abstract class AbstractCOLTRemoteService<P extends COLTProject> implement
         return 0;
     }
 
-    private <T> T executeInDisplayAsyncAndWait(final RemoteAsyncCommand<T> command)
+    protected  <T> T executeInDisplayAsyncAndWait(final RemoteAsyncCommand<T> command)
             throws COLTRemoteTransferableException {
         final Throwable[] exception = new Throwable[1];
         final Object[] result = new Object[1];
@@ -93,7 +93,7 @@ public abstract class AbstractCOLTRemoteService<P extends COLTProject> implement
         return (T) result[0];
     }
 
-    private <T> T executeInDisplayAndWait(final RemoteCommand<T> command) throws COLTRemoteTransferableException {
+    protected <T> T executeInDisplayAndWait(final RemoteCommand<T> command) throws COLTRemoteTransferableException {
         final Throwable[] exception = new Throwable[1];
         final Object[] result = new Object[1];
 
@@ -134,7 +134,7 @@ public abstract class AbstractCOLTRemoteService<P extends COLTProject> implement
         return (T) result[0];
     }
 
-    private <T> T executeSecurily(String securityToken, final RemoteCommand<T> command)
+    protected <T> T executeSecurily(String securityToken, final RemoteCommand<T> command)
             throws COLTRemoteTransferableException {
         if (!COLTRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
             throw new InvalidAuthTokenException();
@@ -154,7 +154,7 @@ public abstract class AbstractCOLTRemoteService<P extends COLTProject> implement
         }
     }
 
-    private <T> T executeSecurilyInUI(String securityToken, final RemoteCommand<T> command)
+    protected <T> T executeSecurilyInUI(String securityToken, final RemoteCommand<T> command)
             throws COLTRemoteTransferableException {
         if (!COLTRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
             throw new InvalidAuthTokenException();
@@ -163,7 +163,7 @@ public abstract class AbstractCOLTRemoteService<P extends COLTProject> implement
         return executeInDisplayAndWait(command);
     }
 
-    private <T> T executeSecurilyAsyncInUI(String securityToken, final RemoteAsyncCommand<T> command)
+    protected <T> T executeSecurilyAsyncInUI(String securityToken, final RemoteAsyncCommand<T> command)
             throws COLTRemoteTransferableException {
         if (!COLTRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
             throw new InvalidAuthTokenException();
