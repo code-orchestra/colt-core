@@ -172,6 +172,40 @@ $(document).ready(function () {
         updateDotdotdot()
     })
 
+    $(document).keydown(function (e) {
+        var up = e.keyCode == 38
+        var down = e.keyCode == 40
+        if (up || down) {
+            var selected = $(".selected")
+            var newSelection;
+
+            if (selected.length) {
+                if (up) {
+                    newSelection = $(selected).prev()
+                } else {
+                    newSelection = $(selected).next()
+                }
+            } else {
+                var inScrollView = $('.log li').filter(scrollViewFilter)
+                if (up) {
+                    newSelection = inScrollView.first()
+                } else {
+                    newSelection = inScrollView.last()
+                }
+            }
+            if (newSelection.length) {
+                selectLogElement(newSelection)
+                $(window).scrollTo(newSelection, {duration:50})
+            }
+        }
+    })
+
+    function escapeHtml(text){
+        return $("<div/>").text(text).html()
+    }
+
+    console.log(escapeHtml("<p>hello</p>")) // &lt;p&gt;hello&lt;/p&gt;
+
     test()
 })
 
@@ -212,6 +246,10 @@ function applicationResize() {
     alert("application resize")
     forUpdateDot = $('.log li')
     updateDotdotdot()
+}
+
+function scrollViewFilter(){
+    return isScrolledIntoView($(this))
 }
 
 function isScrolledIntoView(elem) {
@@ -310,23 +348,27 @@ function addLogMessage(data) {
     })
 
     $(logItem).children("p").click(function () {
-        if(window.getSelection().toString().length)return
-        var parent = $(this).parent("li")
-        var selected = $('.selected')
-
-        if (parent.is(selected)) {
-            $(parent).removeClass('selected')
-            dotdotdot(parent)
-        } else {
-            $(selected).removeClass('selected')
-            $(parent).addClass('selected')
-            $(parent).children('p').trunk8('revert')
-            dotdotdot(selected)
-        }
+        if (window.getSelection().toString().length)return
+        selectLogElement($(this).parent("li"));
     })
 
     $(".log").append(logItem)
     dotdotdot(logItem)
+}
+
+function selectLogElement(el) {
+    var parent = $(el)
+    var selected = $('.selected')
+
+    if (parent.is(selected)) {
+        $(parent).removeClass('selected')
+        dotdotdot(parent)
+    } else {
+        $(selected).removeClass('selected')
+        $(parent).addClass('selected')
+        $(parent).children('p').trunk8('revert')
+        dotdotdot(selected)
+    }
 }
 
 function dotdotdot(item) {

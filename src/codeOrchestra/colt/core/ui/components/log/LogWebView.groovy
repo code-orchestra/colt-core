@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui.components.log
 
+import codeOrchestra.colt.core.ui.components.logVisualizer.LogVisualizer
 import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -9,17 +10,13 @@ import javafx.collections.ObservableList as OL
 import javafx.event.EventHandler
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
-import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import javafx.scene.shape.Box
 import javafx.scene.text.Font
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
 import netscape.javascript.JSObject
-
-
 
 import static codeOrchestra.colt.core.logging.Level.*
 
@@ -34,6 +31,7 @@ class LogWebView extends VBox {
     private boolean layoutInited;
     final private List flushList = []
     private LogFilter logFilter
+    private LogVisualizer visualizer = new LogVisualizer()
 
     @Override
     protected void layoutChildren() {
@@ -64,6 +62,8 @@ class LogWebView extends VBox {
 
         } as ChangeListener)
         engine.load(htmlPage)
+        visualizer.logMessages = logMessages
+        children.add(visualizer)
         children.add(webView)
         setVgrow(webView, Priority.ALWAYS)
 

@@ -1,77 +1,4 @@
 (function ($) {
-    $.GrowingInput = function (element, options) {
-
-        var value, lastValue, calc;
-
-        options = $.extend({
-            min: 0,
-            max: null,
-            startWidth: 15,
-            correction: 15
-        }, options);
-
-        element = $(element).data('growing', this);
-
-        var self = this;
-        var init = function () {
-            calc = $('<span></span>').css({
-                'float': 'left',
-                'display': 'inline-block',
-                'position': 'absolute',
-                'left': -1000
-            }).insertAfter(element);
-            $.each(['font-size', 'font-family', 'padding-left', 'padding-top', 'padding-bottom',
-                'padding-right', 'border-left', 'border-right', 'border-top', 'border-bottom',
-                'word-spacing', 'letter-spacing', 'text-indent', 'text-transform'], function (i, p) {
-                calc.css(p, element.css(p));
-            });
-            element.blur(resize).keyup(resize).keydown(resize).keypress(resize);
-            resize();
-        };
-
-        var calculate = function (chars) {
-            calc.text(chars);
-            var width = calc.width();
-            return (width ? width : options.startWidth) + options.correction;
-        };
-
-        var resize = function () {
-            lastValue = value;
-            value = element.val();
-            var retValue = value;
-            if (chk(options.min) && value.length < options.min) {
-                if (chk(lastValue) && (lastValue.length <= options.min)) return;
-                retValue = str_pad(value, options.min, '-');
-            } else if (chk(options.max) && value.length > options.max) {
-                if (chk(lastValue) && (lastValue.length >= options.max)) return;
-                retValue = value.substr(0, options.max);
-            }
-            element.width(calculate(retValue));
-            return self;
-        };
-
-        this.resize = resize;
-        init();
-    };
-
-    var chk = function (v) {
-        return !!(v || v === 0);
-    };
-    var str_repeat = function (str, times) {
-        return new Array(times + 1).join(str);
-    };
-    var str_pad = function (self, length, str, dir) {
-        if (self.length >= length) return this;
-        str = str || ' ';
-        var pad = str_repeat(str, length - self.length).substr(0, length - self.length);
-        if (!dir || dir == 'right') return self + pad;
-        if (dir == 'left') return pad + self;
-        return pad.substr(0, (pad.length / 2).floor()) + self + pad.substr(0, (pad.length / 2).ceil());
-    };
-
-})(jQuery);
-
-(function ($) {
 
     $.TextboxList = function (element, _options) {
 
@@ -92,13 +19,13 @@
             encode: function (o) {
                 return $.grep($.map(o, function (v) {
                     v = (chk(v[0]) ? v[0] : v[1]);
-                    return chk(v) ? v.toString().replace(/,/, '') : null;
+                    return chk(v) ? v.toString().replace(/,.*/, '') : null;
                 }),function (o) {
                     return o != undefined;
-                }).join(',');
+                }).join(', ');
             },
             decode: function (o) {
-                return o.split(',');
+                return o.split(/, */);
             }
         }, _options);
 
@@ -122,7 +49,10 @@
         };
 
         var afterInit = function () {
-            if (options.endEditableBit) create('editable', null, {tabIndex: original.tabIndex}).inject(list);
+            if (options.endEditableBit){
+                create('editable', null, {tabIndex: original.tabIndex}).inject(list);
+                console.log("size: " + list.size())
+            }
             addEvent('bitAdd', update, true);
             addEvent('bitRemove', update, true);
             $(document).click(function (e) {
@@ -134,7 +64,6 @@
                 }
                 blur();
             }).keydown(function (ev) {
-                    console.log(ev)
                     if (!focused || !current) return;
                     var caret = current.is('editable') ? current.getCaret() : null;
                     var value = current.getValue()[1];
@@ -169,7 +98,26 @@
                                 focusRelative('next');
                             }
                     }
+            }).dblclick(function(e){
+                    if (!focused || !current) return;
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var c = $(container).hide()
+                    var textarea = $("<textarea style='resize: none;' class='" + options.prefix + "'>" + original.val() + "</textarea>")
+                        .width(c.width()).height(c.height())
+                    var onBlur = function(){
+                        setValues(options.decode(textarea.val()))
+                        update()
+                        $(container).show()
+                        textarea.remove()
+                    }
+                    textarea.blur(onBlur)
+                    textarea.insertAfter(original)
+                    textarea.focus()
+
+                    //todo: добавить энтер, esc
                 });
+
             setValues(options.decode(original.val()));
         };
 
@@ -350,11 +298,9 @@
             deleteButton: true
         } : {
             tabIndex: null,
-            growing: true,
-            growingOptions: {},
             stopEnter: true,
-            addOnBlur: false,
-            addKeys: [13]
+            addOnBlur: true,
+            addKeys: [188, 32, 13]
         }, _options);
 
         this.type = type;
@@ -384,7 +330,6 @@
             } else {
                 element = $('<input type="text" class="' + typeprefix + '-input" autocomplete="off" />').val(self.value ? self.value[1] : '').appendTo(bit);
                 if (chk(options.tabIndex)) element.tabIndex = options.tabIndex;
-                if (options.growing) new $.GrowingInput(element, options.growingOptions);
                 element.focus(function () {
                     focus(true);
                 }).blur(function () {
@@ -482,7 +427,6 @@
         this.setValue = function (v) {
             if (type == 'editable') {
                 element.val(chk(v[0]) ? v[0] : v[1]);
-                if (options.growing) element.data('growing').resize();
             } else value = v;
             return self;
         };
@@ -561,7 +505,6 @@
     };
 
     $.fn.extend({
-
         textboxlist: function (options) {
             return this.each(function () {
                 new $.TextboxList(this, options);
@@ -571,289 +514,3 @@
     });
 
 })(jQuery);
-
-(function () {
-
-    $.TextboxList.Autocomplete = function (textboxlist, _options) {
-
-        var index, prefix, method, container, list, values = [], searchValues = [], results = [], placeholder = false, current, currentInput, hidetimer, doAdd, currentSearch, currentRequest;
-        var options = $.extend(true, {
-            minLength: 1,
-            maxResults: 10,
-            insensitive: true,
-            highlight: true,
-            highlightSelector: null,
-            mouseInteraction: true,
-            onlyFromValues: false,
-            queryRemote: false,
-            remote: {
-                url: '',
-                param: 'search',
-                extraParams: {},
-                loadPlaceholder: 'Please wait...'
-            },
-            method: 'standard',
-            placeholder: 'Type to receive suggestions'
-        }, _options);
-
-        var init = function () {
-            textboxlist.addEvent('bitEditableAdd', setupBit)
-                .addEvent('bitEditableFocus', search)
-                .addEvent('bitEditableBlur', hide)
-                .setOptions({bitsOptions: {editable: {addKeys: false, stopEnter: false}}});
-            if ($.browser.msie) textboxlist.setOptions({bitsOptions: {editable: {addOnBlur: false}}});
-            prefix = textboxlist.getOptions().prefix + '-autocomplete';
-            method = $.TextboxList.Autocomplete.Methods[options.method];
-            container = $('<div class="' + prefix + '" />').width(textboxlist.getContainer().width()).appendTo(textboxlist.getContainer());
-            if (chk(options.placeholder)) placeholder = $('<div class="' + prefix + '-placeholder" />').html(options.placeholder).appendTo(container);
-            list = $('<ul class="' + prefix + '-results" />').appendTo(container).click(function (ev) {
-                ev.stopPropagation();
-                ev.preventDefault();
-            });
-        };
-
-        var setupBit = function (bit) {
-            bit.toElement().keydown(navigate).keyup(function () {
-                search();
-            });
-        };
-
-        var search = function (bit) {
-            if (bit) currentInput = bit;
-            if (!options.queryRemote && !values.length) return;
-            var search = $.trim(currentInput.getValue()[1]);
-            if (search.length < options.minLength) showPlaceholder();
-            if (search == currentSearch) return;
-            currentSearch = search;
-            list.css('display', 'none');
-            if (search.length < options.minLength) return;
-            if (options.queryRemote) {
-                if (searchValues[search]) {
-                    values = searchValues[search];
-                } else {
-                    var data = options.remote.extraParams;
-                    data[options.remote.param] = search;
-                    if (currentRequest) currentRequest.abort();
-                    currentRequest = $.ajax({
-                        url: options.remote.url,
-                        data: data,
-                        dataType: 'json',
-                        success: function (r) {
-                            searchValues[search] = r;
-                            values = r;
-                            showResults(search);
-                        }
-                    });
-                }
-            }
-            showResults(search);
-        };
-
-        var showResults = function (search) {
-            var results = method.filter(values, search, options.insensitive, options.maxResults);
-            if (textboxlist.getOptions().unique) {
-                results = $.grep(results, function (v) {
-                    return textboxlist.isDuplicate(v) == -1;
-                });
-            }
-            hidePlaceholder();
-            if (!results.length) return;
-            blur();
-            list.empty().css('display', 'block');
-            $.each(results, function (i, r) {
-                addResult(r, search);
-            });
-            if (options.onlyFromValues) focusFirst();
-            results = results;
-        };
-
-        var addResult = function (r, searched) {
-            var element = $('<li class="' + prefix + '-result" />').html(r[3] ? r[3] : r[1]).data('textboxlist:auto:value', r);
-            element.appendTo(list);
-            if (options.highlight) $(options.highlightSelector ? element.find(options.highlightSelector) : element).each(function () {
-                if ($(this).html()) method.highlight($(this), searched, options.insensitive, prefix + '-highlight');
-            });
-            if (options.mouseInteraction) {
-                element.css('cursor', 'pointer').hover(function () {
-                    focus(element);
-                }).mousedown(function (ev) {
-                        ev.stopPropagation();
-                        ev.preventDefault();
-                        clearTimeout(hidetimer);
-                        doAdd = true;
-                    }).mouseup(function () {
-                        if (doAdd) {
-                            addCurrent();
-                            currentInput.focus();
-                            search();
-                            doAdd = false;
-                        }
-                    });
-                if (!options.onlyFromValues) element.mouseleave(function () {
-                    if (current && (current.get(0) == element.get(0))) blur();
-                });
-            }
-        };
-
-        var hide = function () {
-            hidetimer = setTimeout(function () {
-                hidePlaceholder();
-                list.css('display', 'none');
-                currentSearch = null;
-            }, $.browser.msie ? 150 : 0);
-        };
-
-        var showPlaceholder = function () {
-            if (placeholder) placeholder.css('display', 'block');
-        };
-
-        var hidePlaceholder = function () {
-            if (placeholder) placeholder.css('display', 'none');
-        };
-
-        var focus = function (element) {
-            if (!element || !element.length) return;
-            blur();
-            current = element.addClass(prefix + '-result-focus');
-        };
-
-        var blur = function () {
-            if (current && current.length) {
-                current.removeClass(prefix + '-result-focus');
-                current = null;
-            }
-        };
-
-        var focusFirst = function () {
-            return focus(list.find(':first'));
-        };
-
-        var focusRelative = function (dir) {
-            if (!current || !current.length) return self;
-            return focus(current[dir]());
-        };
-
-        var addCurrent = function () {
-            var value = current.data('textboxlist:auto:value');
-            var b = textboxlist.create('box', value.slice(0, 3));
-            if (b) {
-                b.autoValue = value;
-                if ($.isArray(index)) index.push(value);
-                currentInput.setValue([null, '', null]);
-                b.inject(currentInput.toElement(), 'before');
-            }
-            blur();
-            return self;
-        };
-
-        var navigate = function (ev) {
-            var evStop = function () {
-                ev.stopPropagation();
-                ev.preventDefault();
-            };
-            switch (ev.which) {
-                case 38:
-                    evStop();
-                    (!options.onlyFromValues && current && current.get(0) === list.find(':first').get(0)) ? blur() : focusRelative('prev');
-                    break;
-                case 40:
-                    evStop();
-                    (current && current.length) ? focusRelative('next') : focusFirst();
-                    break;
-                case 13:
-                    evStop();
-                    if (current && current.length) addCurrent();
-                    else if (!options.onlyFromValues) {
-                        var value = currentInput.getValue();
-                        var b = textboxlist.create('box', value);
-                        if (b) {
-                            b.inject(currentInput.toElement(), 'before');
-                            currentInput.setValue([null, '', null]);
-                        }
-                    }
-            }
-        };
-
-        this.setValues = function (v) {
-            values = v;
-        };
-
-        init();
-    };
-
-    $.TextboxList.Autocomplete.Methods = {
-
-        standard: {
-            filter: function (values, search, insensitive, max) {
-                var newvals = [], regexp = new RegExp('\\b' + escapeRegExp(search), insensitive ? 'i' : '');
-                for (var i = 0; i < values.length; i++) {
-                    if (newvals.length === max) break;
-                    if (regexp.test(values[i][1])) newvals.push(values[i]);
-                }
-                return newvals;
-            },
-
-            highlight: function (element, search, insensitive, klass) {
-                var regex = new RegExp('(<[^>]*>)|(\\b' + escapeRegExp(search) + ')', insensitive ? 'ig' : 'g');
-                return element.html(element.html().replace(regex, function (a, b, c) {
-                    return (a.charAt(0) == '<') ? a : '<strong class="' + klass + '">' + c + '</strong>';
-                }));
-            }
-        }
-
-    };
-
-    var chk = function (v) {
-        return !!(v || v === 0);
-    };
-    var escapeRegExp = function (str) {
-        return str.replace(/([-.*+?^${}()|[\]\/\\])/g, "\\$1");
-    };
-
-})();
-
-$.TextboxList.Autocomplete.Methods.binary = {
-    filter: function (values, search, insensitive, max) {
-        var method = insensitive ? 'toLowerCase' : 'toString', low = 0, high = values.length - 1, lastTry;
-        search = search[method]();
-        while (high >= low) {
-            var mid = parseInt((low + high) / 2);
-            var curr = values[mid][1].substr(0, search.length)[method]();
-            var result = ((search == curr) ? 0 : ((search > curr) ? 1 : -1));
-            if (result < 0) {
-                high = mid - 1;
-                continue;
-            }
-            if (result > 0) {
-                low = mid + 1;
-                continue;
-            }
-            if (result === 0) break;
-        }
-        if (high < low) return [];
-        var newvalues = [values[mid]], checkNext = true, checkPrev = true, v1, v2;
-        for (var i = 1; i <= values.length - mid; i++) {
-            if (newvalues.length === max) break;
-            if (checkNext) v1 = values[mid + i] ? values[mid + i][1].substr(0, search.length)[method]() : false;
-            if (checkPrev) v2 = values[mid - i] ? values[mid - i][1].substr(0, search.length)[method]() : false;
-            checkNext = checkPrev = false;
-            if (v1 === search) {
-                newvalues.push(values[mid + i]);
-                checkNext = true;
-            }
-            if (v2 === search) {
-                newvalues.unshift(values[mid - i]);
-                checkPrev = true;
-            }
-            if (!(checkNext || checkPrev)) break;
-        }
-        return newvalues;
-    },
-
-    highlight: function (element, search, insensitive, klass) {
-        var regex = new RegExp('(<[^>]*>)|(\\b' + search.replace(/([-.*+?^${}()|[\]\/\\])/g, "\\$1") + ')', insensitive ? 'ig' : 'g');
-        return element.html(element.html().replace(regex, function (a, b, c, d) {
-            return (a.charAt(0) == '<') ? a : '<strong class="' + klass + '">' + c + '</strong>';
-        }));
-    }
-};

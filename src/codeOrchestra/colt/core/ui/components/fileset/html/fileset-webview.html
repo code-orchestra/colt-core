@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="fileset.css" type="text/css" media="screen" charset="utf-8"/>
     <script src="../../shared/jquery.js" type="text/javascript" charset="utf-8"></script>
-    <script src="TextboxList.js" type="text/javascript" charset="utf-8"></script>
+    <script src="jquery-textboxlist.js" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
         $(function () {
@@ -22,8 +22,12 @@
             textbox.add('src/**.*')
                    .add('/src/com.package.MyClass.as')
                    .add('lib/*.swc')
-                   .add("/users/john/Documents/myLib/**.as");
+                   .add("/users/john/Documents/myLib/**.as")
 
+
+            $("#form_tags_input").dblclick(function(){
+                console.log("hello")
+            })
         });
     </script>
 
@@ -40,6 +44,7 @@
         body {
             margin: 0;
         }
+
     </style>
 </head>
 <body>
