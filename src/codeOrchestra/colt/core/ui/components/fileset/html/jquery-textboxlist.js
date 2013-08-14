@@ -19,7 +19,7 @@
             encode: function (o) {
                 return $.grep($.map(o, function (v) {
                     v = (chk(v[0]) ? v[0] : v[1]);
-                    return chk(v) ? v.toString().replace(/,.*/, '') : null;
+                    return chk(v) ? v.toString().replace(/, */, '') : null;
                 }),function (o) {
                     return o != undefined;
                 }).join(', ');
@@ -48,11 +48,19 @@
             self.plugins[name] = new $.TextboxList[camelCase(capitalize(name))](self, options);
         };
 
+        var clear = function(){
+            list.children().remove()
+            if (options.endEditableBit) create('editable', null, {tabIndex: original.tabIndex}).inject(list);
+        }
+
+        var setNewValues = function(values){
+            clear()
+            setValues(options.decode(values))
+            update()
+        }
+
         var afterInit = function () {
-            if (options.endEditableBit){
-                create('editable', null, {tabIndex: original.tabIndex}).inject(list);
-                console.log("size: " + list.size())
-            }
+            if (options.endEditableBit) create('editable', null, {tabIndex: original.tabIndex}).inject(list);
             addEvent('bitAdd', update, true);
             addEvent('bitRemove', update, true);
             $(document).click(function (e) {
@@ -106,12 +114,17 @@
                     var textarea = $("<textarea style='resize: none;' class='" + options.prefix + "'>" + original.val() + "</textarea>")
                         .width(c.width()).height(c.height())
                     var onBlur = function(){
-                        setValues(options.decode(textarea.val()))
-                        update()
+                        setNewValues(textarea.val())
                         $(container).show()
                         textarea.remove()
                     }
                     textarea.blur(onBlur)
+                    textarea.keydown(function(e){
+                        console.log(e.keyCode)
+                        if(e.keyCode == 13 || e.keyCode == 27){
+                            onBlur()
+                        }
+                    })
                     textarea.insertAfter(original)
                     textarea.focus()
 
