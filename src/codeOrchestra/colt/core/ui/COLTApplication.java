@@ -8,10 +8,13 @@ import codeOrchestra.colt.core.license.COLTRunningKey;
 import codeOrchestra.colt.core.license.StartupInterceptType;
 import codeOrchestra.colt.core.license.StartupInterceptor;
 import codeOrchestra.colt.core.model.COLTProject;
+import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
 import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
 import codeOrchestra.colt.core.tasks.COLTTask;
 import codeOrchestra.colt.core.tasks.TasksManager;
+import codeOrchestra.colt.core.ui.dialog.CloseProjectDialog;
 import codeOrchestra.colt.core.ui.dialog.CreateProjectDialog;
+import com.sun.scenario.Settings;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -32,12 +35,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
 import javafx.util.Duration;
+import org.controlsfx.control.ButtonBar;
+import org.controlsfx.control.action.AbstractAction;
 import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import java.io.File;
@@ -106,6 +109,26 @@ public class COLTApplication extends Application {
 
     private void initMainStage() {
         mainStage = new Stage(StageStyle.DECORATED);
+        mainStage.setOnCloseRequest(windowEvent -> {
+            if (ChangingMonitor.getInstance().isChanged()) {
+                Action action = CloseProjectDialog.show(primaryStage);
+                if (action == Dialog.Actions.CANCEL) {
+                    windowEvent.consume();
+                } else if (action == CloseProjectDialog.SAVE) {
+                    COLTProject project = COLTProjectManager.getInstance().getCurrentProject();
+
+                    File file = new File(project.getPath());
+                    FileWriter fileWriter = null;
+                    try {
+                        fileWriter = new FileWriter(file);
+                        fileWriter.write(project.toXmlString());
+                        fileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
         root = new VBox();
         root.setFillWidth(true);
@@ -122,6 +145,7 @@ public class COLTApplication extends Application {
             if (file != null) {
                 try {
                     COLTProjectManager.getInstance().load(file.getPath());
+                    ChangingMonitor.getInstance().reset();
                 } catch (COLTException e) {
                     throw new RuntimeException(e); // TODO: handle nicely
                 }
@@ -141,6 +165,7 @@ public class COLTApplication extends Application {
                         FileWriter fileWriter = new FileWriter(file);
                         fileWriter.write(xml);
                         fileWriter.close();
+                        ChangingMonitor.getInstance().reset();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -160,6 +185,7 @@ public class COLTApplication extends Application {
                 if (file != null) {
                     try {
                         COLTProjectManager.getInstance().create("AS", projectName, file);
+                        ChangingMonitor.getInstance().reset();
                     } catch (COLTException e) {
                         throw new RuntimeException(e); // TODO: handle nicely
                     }
