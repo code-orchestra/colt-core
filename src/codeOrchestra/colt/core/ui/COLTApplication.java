@@ -8,20 +8,14 @@ import codeOrchestra.colt.core.license.*;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
 import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
-import codeOrchestra.colt.core.tasks.COLTTask;
-import codeOrchestra.colt.core.tasks.TasksManager;
-import codeOrchestra.colt.core.ui.dialog.CloseProjectDialog;
-import codeOrchestra.colt.core.ui.dialog.CreateProjectDialog;
-import com.sun.scenario.Settings;
+import codeOrchestra.colt.core.ui.dialog.COLTDialogs;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -30,17 +24,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import javafx.util.Duration;
-import org.controlsfx.control.ButtonBar;
-import org.controlsfx.control.action.AbstractAction;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -110,10 +100,10 @@ public class COLTApplication extends Application {
         mainStage = new Stage(StageStyle.DECORATED);
         mainStage.setOnCloseRequest(windowEvent -> {
             if (ChangingMonitor.getInstance().isChanged()) {
-                Action action = CloseProjectDialog.show(primaryStage);
+                Action action = COLTDialogs.showCloseProjectDialog(primaryStage);
                 if (action == Dialog.Actions.CANCEL) {
                     windowEvent.consume();
-                } else if (action == CloseProjectDialog.SAVE) {
+                } else if (action == Dialog.Actions.YES) {
                     // TODO: Shoudn't be here - move to ProjectManager
                     COLTProject project = COLTProjectManager.getInstance().getCurrentProject();
 
@@ -179,7 +169,7 @@ public class COLTApplication extends Application {
 
         MenuItem menuCreate = new MenuItem("Create");
         menuCreate.setOnAction(t -> {
-            String projectName = new CreateProjectDialog().show(primaryStage);
+            String projectName = COLTDialogs.showCreateProjectDialog(primaryStage);
 
             if (projectName != null) {
                 FileChooser fileChooser = new FileChooser();

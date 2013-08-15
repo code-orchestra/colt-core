@@ -7,6 +7,7 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
+import javafx.stage.Window
 import org.controlsfx.control.action.Action
 import org.controlsfx.dialog.Dialog
 
@@ -37,8 +38,8 @@ class CreateProjectDialog {
         okAction.disabledProperty().bind(field.textProperty().isEmpty())
     }
 
-    String show(Stage stage) {
-        Dialog dlg = new Dialog(stage, "New Live Coding Project", false, true)
+    String show(Window owner) {
+        Dialog dlg = new Dialog(owner, "New Live Coding Project", false, true)
 
         dlg.resizable = false
         dlg.iconifiable = false
