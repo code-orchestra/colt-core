@@ -4,9 +4,7 @@ import codeOrchestra.colt.core.COLTException;
 import codeOrchestra.colt.core.COLTProjectManager;
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
-import codeOrchestra.colt.core.license.COLTRunningKey;
-import codeOrchestra.colt.core.license.StartupInterceptType;
-import codeOrchestra.colt.core.license.StartupInterceptor;
+import codeOrchestra.colt.core.license.*;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
 import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
@@ -20,6 +18,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
@@ -209,8 +208,22 @@ public class COLTApplication extends Application {
 
         menu.getItems().addAll(menuCreate, menuImport, menuLoad, menuSave);
 
+        Menu helpMenu = new Menu("Help");
+        final MenuItem enterSerialItem = new MenuItem("Enter Serial Number");
+        enterSerialItem.setOnAction(t -> {
+            ExpirationHelper.getExpirationStrategy().showSerialNumberDialog();
+        });
+        enterSerialItem.setOnMenuValidation(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                enterSerialItem.setDisable(ExpirationHelper.getExpirationStrategy().isTrialOnly() || CodeOrchestraLicenseManager.noSerialNumberPresent());
+            }
+        });
+        helpMenu.getItems().add(enterSerialItem);
+
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(menu);
+        menuBar.getMenus().add(menu);
+        menuBar.getMenus().add(helpMenu);
         menuBar.setUseSystemMenuBar(true);
 
         root.getChildren().add(menuBar);
