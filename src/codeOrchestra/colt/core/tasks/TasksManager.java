@@ -131,11 +131,6 @@ public class TasksManager {
         }
     }
 
-    private ProgressIndicator getProgressIndicator() {
-        // TODO: implement
-        return null;
-    }
-
     public void scheduleModalTask(COLTTask task) {
         Dialogs.create()
                 .title(task.getName())
@@ -145,9 +140,8 @@ public class TasksManager {
         schedule(task);
     }
 
-    public <R> R scheduleBackgroundTask(COLTTask<R> task) {
-        // TODO: implement
-        return null;
+    public void scheduleBackgroundTask(COLTTask task) {
+        schedule(task);
     }
 
 }
