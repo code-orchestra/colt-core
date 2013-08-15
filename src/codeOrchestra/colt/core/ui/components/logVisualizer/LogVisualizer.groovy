@@ -28,18 +28,16 @@ class LogVisualizer extends VBox {
 
     private WebView webView = new WebView(contextMenuEnabled: false, prefHeight: 130)
     OL<LogMessage> logMessages
-    private boolean htmlLoaded;
-    private boolean layoutInited;
+    private boolean htmlLoaded
+    final private List flushList = []
 
     LogVisualizer() {
 
         String htmlPage = this.class.getResource("html/log-visualizer-webview.html").toExternalForm()
         WebEngine engine = webView.engine
         engine.documentProperty().addListener({ o, oldValue, newValue ->
-            htmlLoaded = true
-            if (layoutInited && htmlLoaded) {
-                // init logic
-            }
+            // too early here
+            //htmlLoaded = true
 
         } as ChangeListener)
         engine.load(htmlPage)
@@ -49,7 +47,12 @@ class LogVisualizer extends VBox {
         engine.onAlert = new EventHandler<WebEvent<String>>() {
             @Override
             void handle(WebEvent<String> event) {
-                println("alert >> " + event.data)
+                if (event.data == "ready") {
+                    htmlLoaded = true;
+                    flush()
+                } else {
+                    println("alert >> " + event.data)
+                }
             }
         }
     }
@@ -58,18 +61,16 @@ class LogVisualizer extends VBox {
         this.logMessages = logMessages
         logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
             synchronized (logMessages) {
-                if (htmlLoaded) {
-                    while (c.next()) {
-                        if (c.wasRemoved()) {
-                            println("clear log")
-                        } else if (c.wasPermutated()) {
-                            println "permutated"
-                        } else if (c.wasUpdated()) {
-                            println "updated"
-                        } else {
-                            println("added")
-                            addLogMessages()
-                        }
+                // htmlLoaded check moved to flush()
+                while (c.next()) {
+                    if (c.wasRemoved()) {
+                        println("clear log")
+                    } else if (c.wasPermutated()) {
+                        println "permutated"
+                    } else if (c.wasUpdated()) {
+                        println "updated"
+                    } else {
+                        addLogMessages(c.getAddedSubList().asList())
                     }
                 }
             }
@@ -82,7 +83,20 @@ class LogVisualizer extends VBox {
     }
 
     private void addLogMessages(List<LogMessage> messages) {
-        getJSTopObject().call("alert", [messages])
+        synchronized (flushList) {
+            flushList.addAll(messages*.level)
+            Platform.runLater {
+                flush()
+            }
+        }
     }
 
+    private flush() {
+        synchronized (flushList) {
+            if (htmlLoaded && (flushList.size() > 0)) {
+                getJSTopObject().call("addLogMessages", flushList)
+                flushList.clear()
+            }
+        }
+    }
 }
