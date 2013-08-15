@@ -114,6 +114,7 @@ public class COLTApplication extends Application {
                 if (action == Dialog.Actions.CANCEL) {
                     windowEvent.consume();
                 } else if (action == CloseProjectDialog.SAVE) {
+                    // TODO: Shoudn't be here - move to ProjectManager
                     COLTProject project = COLTProjectManager.getInstance().getCurrentProject();
 
                     File file = new File(project.getPath());
@@ -126,6 +127,10 @@ public class COLTApplication extends Application {
                         e.printStackTrace();
                     }
                 }
+            }
+
+            if (!windowEvent.isConsumed()) {
+                dispose();
             }
         });
 
@@ -227,6 +232,15 @@ public class COLTApplication extends Application {
         menuBar.setUseSystemMenuBar(true);
 
         root.getChildren().add(menuBar);
+    }
+
+    private void dispose() {
+        COLTRunningKey.setRunning(false);
+
+        CodeOrchestraResourcesHttpServer.getInstance().dispose();
+        CodeOrchestraRPCHttpServer.getInstance().dispose();
+
+        Platform.exit();
     }
 
     private void doAfterUIInit() {

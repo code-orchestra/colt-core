@@ -16,120 +16,123 @@ import java.util.Map;
  */
 public class CodeOrchestraResourcesHttpServer {
 
-  public static final int PORT = 8091;
-  
-  private static CodeOrchestraResourcesHttpServer instance = new CodeOrchestraResourcesHttpServer();
-  
-  public static CodeOrchestraResourcesHttpServer getInstance() {
-    return instance;
-  }
+    public static final int PORT = 8091;
 
-  private Server server;
-  private HandlerList activeHandlers;
-  
-  private Map<String, Handler> handlersMap = new HashMap<String, Handler>();
+    private static CodeOrchestraResourcesHttpServer instance = new CodeOrchestraResourcesHttpServer();
 
-  private boolean mustReload;
-  private long lastReloadRequest;
-  private Object reloadMonitor = new Object();
-
-  public void init() {
-    server = new Server(PORT); // TODO: make configurable
-
-    activeHandlers = new HandlerList();
-    server.setHandler(activeHandlers);
-
-    addAlias(PathUtils.getApplicationBaseDir(), "/");
-
-    try {
-      server.start();
-    } catch (Exception e) {
-      throw new RuntimeException("Can't start jetty server", e);
+    public static CodeOrchestraResourcesHttpServer getInstance() {
+        return instance;
     }
 
-    new ServerReloadThread().start();
-  }
+    private Server server;
+    private HandlerList activeHandlers;
 
-  public void addAlias(File baseDir, String alias) {
-    Handler handler = getContextHandler(alias, getResourceHandler(baseDir.getPath() + "/"));
-    addHandler(handler, alias);
-  }
-  
-  private void addHandler(Handler handler, String alias) {
-    Handler existingHandler = handlersMap.get(alias);
-    if (existingHandler != null) {
-      activeHandlers.removeHandler(existingHandler);
-    }
+    private Map<String, Handler> handlersMap = new HashMap<String, Handler>();
 
-    activeHandlers.addHandler(handler);
-    handlersMap.put(alias, handler);
+    private boolean mustStopReloadThread;
 
-    reloadServer();
-  }
+    private boolean mustReload;
+    private long lastReloadRequest;
+    private Object reloadMonitor = new Object();
 
-  private void reloadServer() {
-    synchronized (reloadMonitor) {
-      mustReload = true;
-      lastReloadRequest = System.currentTimeMillis();
-    }
-  }
+    public void init() {
+        server = new Server(PORT); // TODO: make configurable
 
-  public void dispose() {
-    try {
-      server.stop();
-    } catch (Exception e) {
-      // ignore
-    }
-  }
+        activeHandlers = new HandlerList();
+        server.setHandler(activeHandlers);
 
-  private static ContextHandler getContextHandler(String contextPath, Handler handler) {
-    ContextHandler contextHandler = new ContextHandler();
-    contextHandler.setContextPath(contextPath);
-    contextHandler.addHandler(handler);
-    return contextHandler;
-  }
-
-  private static ResourceHandler getResourceHandler(String resourceBase) {
-    ResourceHandler resourceHandler = new ResourceHandler();
-    resourceHandler.setResourceBase(resourceBase);
-    return resourceHandler;
-  }
-
-  private class ServerReloadThread extends Thread {
-    private ServerReloadThread() {
-      super("HTTP Server Reload Thread");
-    }
-
-    private void doReload() {
-      try {
-        System.out.println("Reloading Resources HTTP server");
-        
-        server.stop();
-        server.start();
-      } catch (Exception e) {
-        throw new RuntimeException("Can't reload jetty server", e);
-      } finally {
-        mustReload = false;
-      }
-    }
-
-    @Override
-    public void run() {
-      while (true) {
-        synchronized (reloadMonitor) {
-          if (mustReload && (System.currentTimeMillis() - lastReloadRequest) > 1500) {
-            doReload();
-          }
-        }
+        addAlias(PathUtils.getApplicationBaseDir(), "/");
 
         try {
-          Thread.sleep(500);
-        } catch (InterruptedException e) {
-          // ignore
+            server.start();
+        } catch (Exception e) {
+            throw new RuntimeException("Can't start jetty server", e);
         }
-      }
-    }
-  }
 
-  
+        new ServerReloadThread().start();
+    }
+
+    public void addAlias(File baseDir, String alias) {
+        Handler handler = getContextHandler(alias, getResourceHandler(baseDir.getPath() + "/"));
+        addHandler(handler, alias);
+    }
+
+    private void addHandler(Handler handler, String alias) {
+        Handler existingHandler = handlersMap.get(alias);
+        if (existingHandler != null) {
+            activeHandlers.removeHandler(existingHandler);
+        }
+
+        activeHandlers.addHandler(handler);
+        handlersMap.put(alias, handler);
+
+        reloadServer();
+    }
+
+    private void reloadServer() {
+        synchronized (reloadMonitor) {
+            mustReload = true;
+            lastReloadRequest = System.currentTimeMillis();
+        }
+    }
+
+    public void dispose() {
+        mustStopReloadThread = true;
+        try {
+            server.stop();
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
+    private static ContextHandler getContextHandler(String contextPath, Handler handler) {
+        ContextHandler contextHandler = new ContextHandler();
+        contextHandler.setContextPath(contextPath);
+        contextHandler.addHandler(handler);
+        return contextHandler;
+    }
+
+    private static ResourceHandler getResourceHandler(String resourceBase) {
+        ResourceHandler resourceHandler = new ResourceHandler();
+        resourceHandler.setResourceBase(resourceBase);
+        return resourceHandler;
+    }
+
+    private class ServerReloadThread extends Thread {
+        private ServerReloadThread() {
+            super("HTTP Server Reload Thread");
+        }
+
+        private void doReload() {
+            try {
+                System.out.println("Reloading Resources HTTP server");
+
+                server.stop();
+                server.start();
+            } catch (Exception e) {
+                throw new RuntimeException("Can't reload jetty server", e);
+            } finally {
+                mustReload = false;
+            }
+        }
+
+        @Override
+        public void run() {
+            while (!mustStopReloadThread) {
+                synchronized (reloadMonitor) {
+                    if (mustReload && (System.currentTimeMillis() - lastReloadRequest) > 1500) {
+                        doReload();
+                    }
+                }
+
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    // ignore
+                }
+            }
+        }
+    }
+
+
 }
