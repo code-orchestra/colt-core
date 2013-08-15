@@ -8,6 +8,7 @@ import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.rpc.COLTRemoteService;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
+import codeOrchestra.colt.core.ui.components.COLTProgressIndicator;
 import groovy.util.slurpersupport.GPathResult;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -53,6 +54,8 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
     // UI
 
     Node getPane() throws Exception;
+
+    COLTProgressIndicator getProgressIndicator();
 
     // Services
 
