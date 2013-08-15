@@ -14,8 +14,8 @@ public class GATracker {
 
     private JGoogleAnalyticsTracker tracker;
 
-    private String hostName = "code-orchestra.github.io";
-    private String refPage = "/";
+    private final String hostName = "code-orchestra.github.io";
+    private String refPage = "/index";
 
 
     public static GATracker getInstance() {
@@ -27,7 +27,7 @@ public class GATracker {
         int UUID = FingerprintUtil.getNumericFingerPrint();
         VisitorData visitorData = VisitorData.newVisitor(UUID);
         //TODO: replace with production TrackingCode
-        AnalyticsConfigData config = new AnalyticsConfigData("UA-42969501-3", visitorData);
+        AnalyticsConfigData config = new AnalyticsConfigData("UA-42969501-5", visitorData);
         AWTSystemPopulator.populateConfigData(config);
 
         tracker = new JGoogleAnalyticsTracker(config, JGoogleAnalyticsTracker.GoogleAnalyticsVersion.V_4_7_2);
