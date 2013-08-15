@@ -15,6 +15,8 @@
             keys: {previous: 37, next: 39},
             bitsOptions: {editable: {}, box: {}},
             plugins: {},
+            setClipboard: null,
+            getClipboard: null,
             // tip: you can change encode/decode with JSON.stringify and JSON.parse
             encode: function (o) {
                 return $.grep($.map(o, function (v) {
@@ -56,6 +58,8 @@
             setValues(options.decode(values))
             update()
         }
+
+        var clipboard;
 
         var afterInit = function () {
             if (options.endEditableBit) create('editable', null, {tabIndex: original.tabIndex}).inject(list);
@@ -124,7 +128,32 @@
                     })
                     textarea.insertAfter(original)
                     textarea.focus()
-                });
+            }).bind({
+                    copy : function(e){
+                        if (options.setClipboard) {
+                            if (current.is('box')) {
+                                options.setClipboard(current.value[1]);
+                            }
+                        }
+                    },
+                    paste : function(e){
+                        if(options.getClipboard){
+                            if (!current.is('box')) {
+                                current.setValue([null, options.getClipboard(), null])
+                                current.blur()
+                            }
+                        }
+                    },
+                    cut : function(e){
+                        if (options.setClipboard) {
+                            if (current.is('box')) {
+                                options.setClipboard(current.value[1]);
+                                current.remove();
+                            }
+                        }
+                    }
+             });
+
 
             setValues(options.decode(original.val()));
         };

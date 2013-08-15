@@ -11,9 +11,20 @@
 
     <script type="text/javascript" charset="utf-8">
         $(function () {
-            var textbox = new $.TextboxList('#form_tags_input');
+            var textbox = new $.TextboxList('#form_tags_input', {
+                setClipboard:function(str){
+                    if (window.app) {
+                        window.app.setClipboard(str)
+                    }
+                },
+                getClipboard:function(){
+                    if (window.app) {
+                        return window.app.getClipboard()
+                    }
+                    return null
+                }
+            });
             textbox.add('src/**.*')
-                   .add('/src/com.package.MyClass.as')
                    .add('lib/*.swc')
                    .add("/users/john/Documents/myLib/**.as")
         });
@@ -26,7 +37,7 @@
         }
 
         .textboxlist {
-            width: 400px;
+            width: 100%;
         }
 
         body {
