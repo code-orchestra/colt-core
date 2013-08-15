@@ -20,9 +20,7 @@
                 return $.grep($.map(o, function (v) {
                     v = (chk(v[0]) ? v[0] : v[1]);
                     return chk(v) ? v.toString().replace(/, */, '') : null;
-                }),function (o) {
-                    return o != undefined;
-                }).join(', ');
+                }),function (o) { return o != undefined }).join(', ');
             },
             decode: function (o) {
                 return o.split(/, */);
@@ -120,15 +118,12 @@
                     }
                     textarea.blur(onBlur)
                     textarea.keydown(function(e){
-                        console.log(e.keyCode)
                         if(e.keyCode == 13 || e.keyCode == 27){
                             onBlur()
                         }
                     })
                     textarea.insertAfter(original)
                     textarea.focus()
-
-                    //todo: добавить энтер, esc
                 });
 
             setValues(options.decode(original.val()));
@@ -207,7 +202,6 @@
                     exists = true;
                     return;
                 }
-                ;
             });
             if (!exists) events[type].push(fn);
             return self;
@@ -349,6 +343,7 @@
                         blur(true);
                         if (options.addOnBlur) toBox();
                     });
+
                 if (options.addKeys || options.stopEnter) {
                     element.keydown(function (ev) {
                         if (!focused) return;
@@ -474,6 +469,7 @@
 
             var toBox = function () {
                 var value = self.getValue();
+                if(value == "" || value == undefined || value == ",,")return
                 var b = textboxlist.create('box', value);
                 if (b) {
                     b.inject(bit, 'before');
