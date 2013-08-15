@@ -350,6 +350,12 @@ function addLogMessage(data) {
     $(logItem).children("p").click(function () {
         if (window.getSelection().toString().length)return
         selectLogElement($(this).parent("li"));
+    }).bind({
+        copy : function(){
+            if(window.app){
+                window.app.setClipboard(message)
+            }
+        }
     })
 
     $(".log").append(logItem)

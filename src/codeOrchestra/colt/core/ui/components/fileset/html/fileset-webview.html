@@ -12,28 +12,25 @@
     <script type="text/javascript" charset="utf-8">
         $(function () {
             var textbox = new $.TextboxList('#form_tags_input', {
-                setClipboard:function(str){
-                    if (window.app) {
-                        window.app.setClipboard(str)
+                setClipboard: function (src) {
+                    if(window.app){
+                        window.app.setClipboard(src)
                     }
                 },
-                getClipboard:function(){
-                    if (window.app) {
+                getClipboard: function () {
+                    if(window.app){
                         return window.app.getClipboard()
                     }
-                    return null
-                }
-            });
-            textbox.add('src/**.*')
-                   .add('lib/*.swc')
-                   .add("/users/john/Documents/myLib/**.as")
+                    return "hello" }});
+            textbox.add('src/**.as')
+                    .add('lib/*.swc')
         });
     </script>
 
     <!-- sample style -->
     <style type="text/css" media="screen">
         .form_tags {
-            margin-bottom: 10px;
+            margin: 0px;
         }
 
         .textboxlist {
@@ -42,6 +39,9 @@
 
         body {
             margin: 0;
+
+            overflow-x: hidden;
+            overflow-y: hidden;
         }
 
     </style>
