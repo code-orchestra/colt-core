@@ -9,6 +9,14 @@ import codeOrchestra.colt.core.ui.components.COLTProgressIndicator;
 public abstract class COLTTaskWithProgress<R> extends COLTTask<R> {
 
     @Override
+    protected void onOK(R result) {
+    }
+
+    @Override
+    protected void onFail() {
+    }
+
+    @Override
     protected final R call() throws Exception {
         return call(LiveCodingHandlerManager.getInstance().getCurrentHandler().getProgressIndicator());
     }
