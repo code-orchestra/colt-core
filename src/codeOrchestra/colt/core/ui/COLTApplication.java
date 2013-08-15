@@ -9,6 +9,7 @@ import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
 import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
 import codeOrchestra.colt.core.ui.dialog.COLTDialogs;
+import codeOrchestra.lcs.license.COLTRunningKey;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;

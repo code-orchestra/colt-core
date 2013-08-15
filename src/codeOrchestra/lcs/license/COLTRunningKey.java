@@ -1,4 +1,4 @@
-package codeOrchestra.colt.core.license;
+package codeOrchestra.lcs.license;
 
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
