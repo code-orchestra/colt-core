@@ -132,6 +132,9 @@ public class TasksManager {
     }
 
     public void scheduleModalTask(COLTTask task) {
+        if (task instanceof COLTTaskWithProgress) {
+            throw new IllegalArgumentException("Can't start a modal task that is progress bar aware");
+        }
         Dialogs.create()
                 .title(task.getName())
 //                .lightweight()
