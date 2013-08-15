@@ -14,7 +14,7 @@ public class ErrorHandler {
 //                .lightweight()
                 .title("Error")
                 .owner(COLTApplication.get().getPrimaryStage())
-                .nativeChrome()
+                .nativeTitleBar()
                 .showException(t);
     }
 
@@ -25,7 +25,7 @@ public class ErrorHandler {
                 .title("Error")
                 .owner(COLTApplication.get().getPrimaryStage())
                 .message(message)
-                .nativeChrome()
+                .nativeTitleBar()
                 .showException(t);
     }
 
@@ -41,7 +41,7 @@ public class ErrorHandler {
                 .title(title)
                 .owner(COLTApplication.get().getPrimaryStage())
                 .message(message)
-                .nativeChrome()
+                .nativeTitleBar()
                 .showError();
     }
 

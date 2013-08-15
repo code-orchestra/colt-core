@@ -140,7 +140,7 @@ public class TasksManager {
         Dialogs.create()
                 .title(task.getName())
 //                .lightweight()
-                .nativeChrome()
+                .nativeTitleBar()
                 .showWorkerProgress(task);
         schedule(task);
     }

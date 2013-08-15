@@ -52,7 +52,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
                 .title("Serial number")
                 .message("Please type the serial number purchased")
 //                .lightweight()
-                .nativeChrome()
+                .nativeTitleBar()
                 .showTextInput();
 
         if (StringUtils.isEmpty(serialNumber)) {
@@ -68,7 +68,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 //                    .lightweight()
                     .title("COLT License")
                     .message("Can't reach the validation server. Make sure your internet connection is active.")
-                    .nativeChrome()
+                    .nativeTitleBar()
                     .showError();
             ErrorHandler.handle(e);
             return showSerialNumberDialog();
@@ -80,7 +80,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 //                    .lightweight()
                     .title("Serial number")
                     .message("The serial number entered is invalid.")
-                    .nativeChrome()
+                    .nativeTitleBar()
                     .showError();
             return showSerialNumberDialog();
         }
@@ -91,7 +91,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 //                    .lightweight()
                     .title("Serial number")
                     .message("The serial number entered can't be validated.")
-                    .nativeChrome()
+                    .nativeTitleBar()
                     .showError();
             return showSerialNumberDialog();
         }
@@ -101,7 +101,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
                     .owner(COLTApplication.get().getPrimaryStage())
                     .lightweight().title("Serial number")
                     .message("The serial number entered had expired " + Math.abs(keyRegistrationResponse.getDaysTillExpiration()) + " days ago.")
-                    .nativeChrome()
+                    .nativeTitleBar()
                     .showError();
             return showSerialNumberDialog();
         }
@@ -112,7 +112,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 //                    .lightweight()
                     .title("Serial number")
                     .message("The key entered has already been registered the maximum number of times.")
-                    .nativeChrome()
+                    .nativeTitleBar()
                     .showError();
             return showSerialNumberDialog();
         }
@@ -123,7 +123,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 //                    .lightweight()
                     .title("COLT License")
                     .message("Thank you for choosing the Code Orchestra Livecoding Tool!")
-                    .nativeChrome()
+                    .nativeTitleBar()
                     .showInformation();
             registerProduct(serialNumber, keyRegistrationResponse);
             return true;
@@ -133,7 +133,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 //                    .lightweight()
                     .title("Serial number")
                     .message("The serial number entered can't be validated (" + keyRegistrationResponse.getStatus() + ").")
-                    .nativeChrome()
+                    .nativeTitleBar()
                     .showError();
             return showSerialNumberDialog();
         }
@@ -172,7 +172,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
                 .title("COLT License")
 //                .lightweight()
                 .message(expireMessage)
-                .nativeChrome()
+                .nativeTitleBar()
                 .showInformation();
     }
 
@@ -194,7 +194,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
                     .owner(COLTApplication.get().getPrimaryStage())
                     .title("COLT License")
                     .message(expireMessage)
-                    .nativeChrome()
+                    .nativeTitleBar()
                     .showError();
 
             return false;
@@ -215,7 +215,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
                 .title("COLT License")
                 .message(expireMessage)
 //                .lightweight()
-                .nativeChrome()
+                .nativeTitleBar()
                 .showCommandLinks(links.get(1), links);
 
         if (response.textProperty().getBean() == links.get(1)) {

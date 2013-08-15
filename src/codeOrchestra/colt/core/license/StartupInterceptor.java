@@ -25,7 +25,7 @@ public class StartupInterceptor {
                         .owner(COLTApplication.get().getPrimaryStage())
                         .title("COLT License")
                         .message("COLT beta version requires an active internet connection to start.")
-                        .nativeChrome()
+                        .nativeTitleBar()
                         .showError();
                 return StartupInterceptType.EXIT_NO_CONNECTION;
             }
@@ -57,7 +57,7 @@ public class StartupInterceptor {
                             .owner(COLTApplication.get().getPrimaryStage())
                             .title("Evaluation License")
                             .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
-                            .nativeChrome()
+                            .nativeTitleBar()
                             .showError();
 
                     return StartupInterceptType.EXIT_UNKNOWN;
@@ -84,7 +84,7 @@ public class StartupInterceptor {
                         .owner(COLTApplication.get().getPrimaryStage())
                         .title(title)
                         .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
-                        .nativeChrome()
+                        .nativeTitleBar()
                         .showError();
 
                 return StartupInterceptType.EXIT_UNKNOWN;
@@ -114,7 +114,7 @@ public class StartupInterceptor {
                         .owner(COLTApplication.get().getPrimaryStage())
                         .title("COLT Subscription")
                         .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
-                        .nativeChrome()
+                        .nativeTitleBar()
                         .showError();
 
                 return StartupInterceptType.EXIT_UNKNOWN;
