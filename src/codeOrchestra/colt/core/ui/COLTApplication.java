@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.COLTProjectManager;
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
 import codeOrchestra.colt.core.license.*;
+import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
 import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
@@ -228,6 +229,7 @@ public class COLTApplication extends Application {
     private void dispose() {
         COLTRunningKey.setRunning(false);
 
+        LiveCodingHandlerManager.getInstance().dispose();
         CodeOrchestraResourcesHttpServer.getInstance().dispose();
         CodeOrchestraRPCHttpServer.getInstance().dispose();
 
