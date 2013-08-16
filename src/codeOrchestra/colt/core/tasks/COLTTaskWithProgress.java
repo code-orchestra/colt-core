@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.tasks;
 
+import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.ui.components.ICOLTProgressIndicator;
 
@@ -18,7 +19,16 @@ public abstract class COLTTaskWithProgress<R> extends COLTTask<R> {
 
     @Override
     protected final R call() throws Exception {
-        return call(LiveCodingHandlerManager.getInstance().getCurrentHandler().getProgressIndicator());
+        ICOLTProgressIndicator progressIndicator = LiveCodingHandlerManager.getInstance().getCurrentHandler().getProgressIndicator();
+        progressIndicator.start();
+        try {
+            return call(progressIndicator);
+        } catch (Throwable t) {
+            ErrorHandler.handle(t);
+            return null;
+        } finally {
+            progressIndicator.stop();
+        }
     }
 
     protected abstract R call(ICOLTProgressIndicator progressIndicator);
