@@ -15,25 +15,41 @@ public class FxThreadCOLTProgressIndicatorWrapper implements ICOLTProgressIndica
 
     @Override
     public void start() {
-        Platform.runLater(progressIndicator::start);
+        if (Platform.isFxApplicationThread()) {
+            progressIndicator.start();
+        } else {
+            Platform.runLater(progressIndicator::start);
+        }
     }
 
     @Override
     public void stop() {
-        Platform.runLater(progressIndicator::stop);
+        if (Platform.isFxApplicationThread()) {
+            progressIndicator.stop();
+        } else {
+            Platform.runLater(progressIndicator::stop);
+        }
     }
 
     @Override
     public void setProgress(int percents) {
-        Platform.runLater(() -> {
+        if (Platform.isFxApplicationThread()) {
             progressIndicator.setProgress(percents);
-        });
+        } else {
+            Platform.runLater(() -> {
+                progressIndicator.setProgress(percents);
+            });
+        }
     }
 
     @Override
     public void setText(String text) {
-        Platform.runLater(() -> {
+        if (Platform.isFxApplicationThread()) {
             progressIndicator.setText(text);
-        });
+        } else {
+            Platform.runLater(() -> {
+                progressIndicator.setText(text);
+            });
+        }
     }
 }
