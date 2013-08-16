@@ -15,7 +15,7 @@ public class GATracker {
     private JGoogleAnalyticsTracker tracker;
 
     private final String hostName = "code-orchestra.github.io";
-    private String refPage = "/index";
+    private String refPage = "/";
 
 
     public static GATracker getInstance() {
