@@ -18,7 +18,13 @@ public abstract class COLTTaskWithProgress<R> extends COLTTask<R> {
 
     @Override
     protected final R call() throws Exception {
-        return call(LiveCodingHandlerManager.getInstance().getCurrentHandler().getProgressIndicator());
+        ICOLTProgressIndicator progressIndicator = LiveCodingHandlerManager.getInstance().getCurrentHandler().getProgressIndicator();
+        progressIndicator.start();
+        try {
+            return call(progressIndicator);
+        } finally {
+            progressIndicator.stop();
+        }
     }
 
     protected abstract R call(ICOLTProgressIndicator progressIndicator);
