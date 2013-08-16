@@ -66,8 +66,9 @@
     function draw () {
         var W, H, now = currentTime();
 
-        // clear
-        context.clearRect(0, 0, W = context.canvas.width, H = context.canvas.height);
+        // clearRect does not clear strokes... and it should
+//        context.clearRect(0, 0, W = context.canvas.width, H = context.canvas.height);
+        W = context.canvas.width; H = context.canvas.height; context.canvas.height = H;
 
         context.fillStyle = '#f7f8fa';
         context.fillRect(0, 0, W, H);
@@ -112,11 +113,14 @@
         context.font = "11px sans-serif";
         context.strokeStyle = '#caccd0';
         context.lineWidth = 1;
-        for (var w = 86.5, j = 4; w < W - 30; w += 52, j += 4) {
+        var d = ((now / msPerColumn)|0) % 4
+        for (var w = 86.5 + 13 * (d - 4), j = d; w < W - 30; w += 52, j += 4) {
+            if ((j == d) && (d == 0)) continue;
+            
             context.moveTo(w, 41);
             context.lineTo(w, 46);
 
-            var text = "" + j * (msPerColumn / 1000);
+            var text = "" + (((now - j * msPerColumn) / 1000) | 0) % 60;
             context.fillText(text, w - text.length * 3, 38);
         }
         context.stroke();
