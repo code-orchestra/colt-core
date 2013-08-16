@@ -44,12 +44,12 @@ class COLTProgressIndicatorController implements ICOLTProgressIndicator {
 
     @Override
     void start() {
-        progressIndicator.visible = true
+        progressIndicator?.visible = true
     }
 
     @Override
     void stop() {
-        progressIndicator.visible = false
+        progressIndicator?.visible = false
     }
 
     @Override
