@@ -131,6 +131,7 @@
 
         .log P {
             margin: 0;
+            /*max-height:2.769230769230769em;*/
         }
 
         .log A {
@@ -209,7 +210,7 @@ $(document).ready(function () {
     test()
 })
 
-var forUpdateDot = $()
+var forUpdateDot = []
 var doLaterInterval = -1
 
 function updateDotdotdot() {
@@ -217,48 +218,58 @@ function updateDotdotdot() {
     clearInterval(doLaterInterval)
     doLaterInterval = setInterval(function () {
         clearInterval(doLaterInterval)
-        if (forUpdateDot.size() > 0) {
 
-            var needUpdate = $()
-            var nextUpdate = $()
+//        var c  = new Date().getTime()
+//        var size = forUpdateDot.length;
 
-            forUpdateDot.each(function () {
-                var $this = $(this);
-                if (isScrolledIntoView(this)) {
-                    if (!$this.hasClass("selected") && $this.hasClass("visible")) {
-                        needUpdate = needUpdate.add($this)
+        if (forUpdateDot.length) {
+            var needUpdate = []
+            var nextUpdate = []
+
+            var docViewTop = $(window).scrollTop()
+            var docViewBottom = docViewTop + $(window).height()
+
+            $.each(forUpdateDot, function () {
+                if (_isElementInScroll(this, docViewTop, docViewBottom)) {
+                    if (!this.hasClass("selected") && this.hasClass("visible")) {
+                        needUpdate.push(this)
                     }
                 } else {
-                    nextUpdate = nextUpdate.add($this)
+                    nextUpdate.push(this)
                 }
             })
-
             forUpdateDot = nextUpdate
-
-            needUpdate.each(function () {
-                $(this).children('p').trunk8('update')
+            $.each(needUpdate, function () {
+                this.children('p').trunk8('update')
             })
         }
+
+//        alert("for-update: " + size + "/" + forUpdateDot.length + "/" + needUpdate.length + "/" + (new Date().getTime() - c))
     }, 1)
 }
 
 function applicationResize() {
     alert("application resize")
-    forUpdateDot = $('.log li')
+    forUpdateDot = []
+    $('.log li').each(function(){
+        forUpdateDot.push($(this))
+    })
     updateDotdotdot()
 }
 
 function scrollViewFilter(){
-    return isScrolledIntoView($(this))
+    return isElementInScroll(this)
 }
 
-function isScrolledIntoView(elem) {
+function isElementInScroll(elem) {
     var docViewTop = $(window).scrollTop()
     var docViewBottom = docViewTop + $(window).height()
+    return _isElementInScroll($(elem), docViewTop, docViewBottom)
+}
 
-    var elemTop = $(elem).offset().top
-    var elemBottom = elemTop + $(elem).height()
-
+function _isElementInScroll(elem, docViewTop, docViewBottom) {
+    var elemTop = elem.offset().top
+    var elemBottom = elemTop + elem.height()
     return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop))
 }
 
@@ -378,8 +389,9 @@ function selectLogElement(el) {
 }
 
 function dotdotdot(item) {
-    $(item).children('p').trunk8({ lines: 2 })
-    forUpdateDot = forUpdateDot.add(item)
+    var $item = $(item)
+    $item.children('p').trunk8({ lines: 2 })
+    forUpdateDot.push($item)
     updateDotdotdot()
 }
 
