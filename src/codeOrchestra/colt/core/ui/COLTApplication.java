@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui;
 
 import codeOrchestra.colt.core.COLTException;
 import codeOrchestra.colt.core.COLTProjectManager;
+import codeOrchestra.colt.core.RecentProjects;
 import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
@@ -45,6 +46,7 @@ import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Alexander Eliseyev
@@ -208,10 +210,8 @@ public class COLTApplication extends Application {
         });
 
         MenuItem exitMenuItem = new MenuItem("Exit");
-        exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                System.exit(0);
-            }
+        exitMenuItem.setOnAction(t -> {
+            System.exit(0);
         });
 
         recentProjectsSubMenu = new Menu("Open Recent");
@@ -226,19 +226,14 @@ public class COLTApplication extends Application {
             }
         });
 
-        fileMenu.getItems().addAll(newProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, saveProjectMenuItem, importProjectMenuItem, new SeparatorMenuItem(), exitMenuItem);
+        fileMenu.getItems().addAll(newProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, recentProjectsSubMenu, saveProjectMenuItem, importProjectMenuItem, new SeparatorMenuItem(), exitMenuItem);
 
         Menu helpMenu = new Menu("Help");
         final MenuItem enterSerialItem = new MenuItem("Enter Serial Number");
         enterSerialItem.setOnAction(t -> {
             ExpirationHelper.getExpirationStrategy().showSerialNumberDialog();
         });
-        enterSerialItem.setOnMenuValidation(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                enterSerialItem.setDisable(ExpirationHelper.getExpirationStrategy().isTrialOnly() || CodeOrchestraLicenseManager.noSerialNumberPresent());
-            }
-        });
+        // TODO: enable/disable via license listener
         helpMenu.getItems().add(enterSerialItem);
 
         MenuBar menuBar = new MenuBar();
@@ -250,7 +245,35 @@ public class COLTApplication extends Application {
     }
 
     private void refreshRecentProjectsMenu() {
-        // TODO: implement
+        recentProjectsSubMenu.getItems().removeAll();
+
+        List<String> recentProjectsPaths = RecentProjects.getRecentProjectsPaths();
+        if (recentProjectsPaths.isEmpty()) {
+            recentProjectsSubMenu.setDisable(true);
+            return;
+        }
+
+        recentProjectsSubMenu.setDisable(false);
+
+        for (String recentProjectsPath : recentProjectsPaths) {
+            MenuItem openRecentProjectItem = new MenuItem(recentProjectsPath);
+
+            final File projectFile = new File(recentProjectsPath);
+            if (!projectFile.exists() || projectFile.isDirectory()) {
+                continue;
+            }
+
+            openRecentProjectItem.setOnAction(actionEvent -> {
+                try {
+                    COLTProjectManager.getInstance().load(projectFile.getPath());
+                    ChangingMonitor.getInstance().reset();
+                } catch (COLTException e) {
+                    ErrorHandler.handle(e, "Can't load a project " + recentProjectsPath);
+                }
+            });
+
+            recentProjectsSubMenu.getItems().add(openRecentProjectItem);
+        }
     }
 
     private void dispose() {
