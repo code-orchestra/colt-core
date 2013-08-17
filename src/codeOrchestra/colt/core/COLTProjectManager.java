@@ -30,6 +30,16 @@ public class COLTProjectManager {
     private COLTProject currentProject;
 
     private COLTProjectManager() {
+        addProjectListener(new ProjectListener() {
+            @Override
+            public void onProjectLoaded(COLTProject project) {
+                RecentProjects.addRecentProject(project.getPath());
+            }
+
+            @Override
+            public void onProjectUnloaded(COLTProject project) {
+            }
+        });
     }
 
     public synchronized COLTProject getCurrentProject() {

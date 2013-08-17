@@ -57,6 +57,8 @@ public class COLTApplication extends Application {
     private static final int SPLASH_HEIGHT = 320;
     private Timeline timeline;
 
+    private Menu recentProjectsSubMenu;
+
     public static COLTApplication get() {
         return instance;
     }
@@ -134,9 +136,9 @@ public class COLTApplication extends Application {
         mainStage.setTitle("COLT 1.2");
         mainStage.setScene(new Scene(root, 800, 700));
 
-        Menu menu = new Menu("File");
-        MenuItem menuLoad = new MenuItem("Open Project");
-        menuLoad.setOnAction(t -> {
+        Menu fileMenu = new Menu("File");
+        MenuItem openProjectMenuItem = new MenuItem("Open Project");
+        openProjectMenuItem.setOnAction(t -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt2"));
             File file = fileChooser.showOpenDialog(primaryStage.getScene().getWindow());
@@ -150,28 +152,28 @@ public class COLTApplication extends Application {
             }
         });
 
-        MenuItem menuSave = new MenuItem("Save Project");
-        menuSave.setOnAction(t -> {
+        MenuItem saveProjectMenuItem = new MenuItem("Save Project");
+        saveProjectMenuItem.setOnAction(t -> {
             try {
                 COLTProjectManager.getInstance().save();
             } catch (COLTException e) {
                 ErrorHandler.handle(e, "Can't save the project");
             }
         });
-        menuSave.setDisable(true);
+        saveProjectMenuItem.setDisable(true);
         COLTProjectManager.getInstance().addProjectListener(new ProjectListener() {
             @Override
             public void onProjectLoaded(COLTProject project) {
-                menuSave.setDisable(false);
+                saveProjectMenuItem.setDisable(false);
             }
             @Override
             public void onProjectUnloaded(COLTProject project) {
-                menuSave.setDisable(true);
+                saveProjectMenuItem.setDisable(true);
             }
         });
 
-        MenuItem menuCreate = new MenuItem("New Project");
-        menuCreate.setOnAction(t -> {
+        MenuItem newProjectMenuItem = new MenuItem("New Project");
+        newProjectMenuItem.setOnAction(t -> {
             String projectName = COLTDialogs.showCreateProjectDialog(primaryStage);
 
             if (projectName != null) {
@@ -191,8 +193,8 @@ public class COLTApplication extends Application {
             }
         });
 
-        MenuItem menuImport = new MenuItem("Import Project");
-        menuImport.setOnAction(t -> {
+        MenuItem importProjectMenuItem = new MenuItem("Import Project");
+        importProjectMenuItem.setOnAction(t -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt"));
             File file = fileChooser.showOpenDialog(primaryStage.getScene().getWindow());
@@ -200,19 +202,31 @@ public class COLTApplication extends Application {
                 try {
                     COLTProjectManager.getInstance().importProject(file);
                 } catch (COLTException e) {
-                    throw new RuntimeException(e); // TODO: handle nicely
+                    ErrorHandler.handle(e, "Can't import a project");
                 }
             }
         });
 
-        MenuItem exit = new MenuItem("Exit");
-        exit.setOnAction(new EventHandler<ActionEvent>() {
+        MenuItem exitMenuItem = new MenuItem("Exit");
+        exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 System.exit(0);
             }
         });
 
-        menu.getItems().addAll(menuCreate, new SeparatorMenuItem(), menuLoad, menuSave, menuImport, new SeparatorMenuItem(), exit);
+        recentProjectsSubMenu = new Menu("Open Recent");
+        refreshRecentProjectsMenu();
+        COLTProjectManager.getInstance().addProjectListener(new ProjectListener() {
+            @Override
+            public void onProjectLoaded(COLTProject project) {
+                refreshRecentProjectsMenu();
+            }
+            @Override
+            public void onProjectUnloaded(COLTProject project) {
+            }
+        });
+
+        fileMenu.getItems().addAll(newProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, saveProjectMenuItem, importProjectMenuItem, new SeparatorMenuItem(), exitMenuItem);
 
         Menu helpMenu = new Menu("Help");
         final MenuItem enterSerialItem = new MenuItem("Enter Serial Number");
@@ -228,11 +242,15 @@ public class COLTApplication extends Application {
         helpMenu.getItems().add(enterSerialItem);
 
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().add(menu);
+        menuBar.getMenus().add(fileMenu);
         menuBar.getMenus().add(helpMenu);
         menuBar.setUseSystemMenuBar(true);
 
         root.getChildren().add(menuBar);
+    }
+
+    private void refreshRecentProjectsMenu() {
+        // TODO: implement
     }
 
     private void dispose() {
