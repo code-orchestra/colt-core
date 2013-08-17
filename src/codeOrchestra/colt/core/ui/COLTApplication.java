@@ -2,11 +2,16 @@ package codeOrchestra.colt.core.ui;
 
 import codeOrchestra.colt.core.COLTException;
 import codeOrchestra.colt.core.COLTProjectManager;
+import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
-import codeOrchestra.colt.core.license.*;
+import codeOrchestra.colt.core.license.CodeOrchestraLicenseManager;
+import codeOrchestra.colt.core.license.ExpirationHelper;
+import codeOrchestra.colt.core.license.StartupInterceptType;
+import codeOrchestra.colt.core.license.StartupInterceptor;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.COLTProject;
+import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
 import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
 import codeOrchestra.colt.core.ui.dialog.COLTDialogs;
@@ -15,6 +20,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -23,20 +29,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * @author Alexander Eliseyev
@@ -103,20 +111,14 @@ public class COLTApplication extends Application {
         mainStage.setOnCloseRequest(windowEvent -> {
             if (ChangingMonitor.getInstance().isChanged()) {
                 Action action = COLTDialogs.showCloseProjectDialog(primaryStage);
+
                 if (action == Dialog.Actions.CANCEL) {
                     windowEvent.consume();
                 } else if (action == Dialog.Actions.YES) {
-                    // TODO: Shoudn't be here - move to ProjectManager
-                    COLTProject project = COLTProjectManager.getInstance().getCurrentProject();
-
-                    File file = new File(project.getPath());
-                    FileWriter fileWriter = null;
                     try {
-                        fileWriter = new FileWriter(file);
-                        fileWriter.write(project.toXmlString());
-                        fileWriter.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        COLTProjectManager.getInstance().save();
+                    } catch (COLTException e) {
+                        ErrorHandler.handle(e, "Can't save project");
                     }
                 }
             }
@@ -129,11 +131,11 @@ public class COLTApplication extends Application {
         root = new VBox();
         root.setFillWidth(true);
         root.setMaxHeight(Double.MAX_VALUE);
-        mainStage.setTitle("COLT 1.1");
+        mainStage.setTitle("COLT 1.2");
         mainStage.setScene(new Scene(root, 800, 700));
 
         Menu menu = new Menu("File");
-        MenuItem menuLoad = new MenuItem("Load");
+        MenuItem menuLoad = new MenuItem("Open Project");
         menuLoad.setOnAction(t -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt2"));
@@ -143,33 +145,32 @@ public class COLTApplication extends Application {
                     COLTProjectManager.getInstance().load(file.getPath());
                     ChangingMonitor.getInstance().reset();
                 } catch (COLTException e) {
-                    throw new RuntimeException(e); // TODO: handle nicely
+                    ErrorHandler.handle(e, "Can't load the project");
                 }
             }
         });
 
-        MenuItem menuSave = new MenuItem("Save");
+        MenuItem menuSave = new MenuItem("Save Project");
         menuSave.setOnAction(t -> {
-            COLTProject project = COLTProjectManager.getInstance().getCurrentProject();
-            if (project != null) {
-                String xml = project.toXmlString();
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt2"));
-                File file = fileChooser.showSaveDialog(primaryStage);
-                if (file != null) {
-                    try {
-                        FileWriter fileWriter = new FileWriter(file);
-                        fileWriter.write(xml);
-                        fileWriter.close();
-                        ChangingMonitor.getInstance().reset();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+            try {
+                COLTProjectManager.getInstance().save();
+            } catch (COLTException e) {
+                ErrorHandler.handle(e, "Can't save the project");
+            }
+        });
+        menuSave.setDisable(true);
+        COLTProjectManager.getInstance().addProjectListener(new ProjectListener() {
+            @Override
+            public void onProjectLoaded(COLTProject project) {
+                menuSave.setDisable(false);
+            }
+            @Override
+            public void onProjectUnloaded(COLTProject project) {
+                menuSave.setDisable(true);
             }
         });
 
-        MenuItem menuCreate = new MenuItem("Create");
+        MenuItem menuCreate = new MenuItem("New Project");
         menuCreate.setOnAction(t -> {
             String projectName = COLTDialogs.showCreateProjectDialog(primaryStage);
 
@@ -180,16 +181,17 @@ public class COLTApplication extends Application {
                 File file = fileChooser.showSaveDialog(primaryStage);
                 if (file != null) {
                     try {
+                        // TODO: a handler must be defined by the user (AS, JS, etc)
                         COLTProjectManager.getInstance().create("AS", projectName, file);
                         ChangingMonitor.getInstance().reset();
                     } catch (COLTException e) {
-                        throw new RuntimeException(e); // TODO: handle nicely
+                        ErrorHandler.handle(e, "Can't create a new project");
                     }
                 }
             }
         });
 
-        MenuItem menuImport = new MenuItem("Import");
+        MenuItem menuImport = new MenuItem("Import Project");
         menuImport.setOnAction(t -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt"));
@@ -203,7 +205,14 @@ public class COLTApplication extends Application {
             }
         });
 
-        menu.getItems().addAll(menuCreate, menuImport, menuLoad, menuSave);
+        MenuItem exit = new MenuItem("Exit");
+        exit.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                System.exit(0);
+            }
+        });
+
+        menu.getItems().addAll(menuCreate, new SeparatorMenuItem(), menuLoad, menuSave, menuImport, new SeparatorMenuItem(), exit);
 
         Menu helpMenu = new Menu("Help");
         final MenuItem enterSerialItem = new MenuItem("Enter Serial Number");
@@ -278,7 +287,5 @@ public class COLTApplication extends Application {
 
         launch(args);
     }
-
-    // TODO: do we need dispose app method here?
 
 }

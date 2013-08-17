@@ -4,7 +4,6 @@ import codeOrchestra.colt.core.controller.COLTController;
 import codeOrchestra.colt.core.launch.LiveLauncher;
 import codeOrchestra.colt.core.logging.LoggerService;
 import codeOrchestra.colt.core.model.COLTProject;
-import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.rpc.COLTRemoteService;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
 import codeOrchestra.colt.core.ui.components.ICOLTProgressIndicator;
@@ -22,7 +21,7 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     String getName();
 
-    P parseProject (GPathResult gPathResult, String projectPath);
+    P parseProject(GPathResult gPathResult, String projectPath);
 
     P createProject(String pName, File pFile);
 
@@ -33,16 +32,6 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
     void initHandler();
 
     void disposeHandler();
-
-    // Listeners
-
-    void fireProjectLoaded();
-
-    void fireProjectClosed();
-
-    void addProjectListener(ProjectListener<P> projectListener);
-
-    void removeProjectListener(ProjectListener<P> projectListener);
 
     // Logger
 
