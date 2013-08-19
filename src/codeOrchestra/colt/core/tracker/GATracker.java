@@ -17,7 +17,7 @@ public class GATracker {
 
     private final String hostName = "code-orchestra.github.io";
     private String prevPage = "/";
-    private String refPageTitle = "";
+    private String prevPageTitle = "";
 
 
     public static GATracker getInstance() {
@@ -45,7 +45,7 @@ public class GATracker {
         data.setEventAction(argAction);
         data.setEventLabel(null);
         data.setEventValue(null);
-        data.setPageTitle(refPageTitle);
+        data.setPageTitle(prevPageTitle);
         data.setPageURL(prevPage);
 
         tracker.makeCustomRequest(data);
@@ -54,5 +54,6 @@ public class GATracker {
     public void trackPageView(String argPageURL, String argPageTitle) {
         tracker.trackPageViewFromReferrer(argPageURL, argPageTitle, hostName, hostName, prevPage);
         prevPage = argPageURL;
+        prevPageTitle = argPageTitle;
     }
 }

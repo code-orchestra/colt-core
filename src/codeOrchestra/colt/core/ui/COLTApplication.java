@@ -15,6 +15,7 @@ import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
 import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
+import codeOrchestra.colt.core.tracker.GAController;
 import codeOrchestra.colt.core.ui.dialog.COLTDialogs;
 import codeOrchestra.lcs.license.COLTRunningKey;
 import javafx.animation.KeyFrame;
@@ -24,6 +25,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -80,6 +82,7 @@ public class COLTApplication extends Application {
 
         this.primaryStage = primaryStage;
 
+        GAController.getInstance().start(primaryStage);
         initSplash();
         initMainStage();
 
@@ -306,6 +309,7 @@ public class COLTApplication extends Application {
         primaryStage.hide();
 
         primaryStage = mainStage;
+        GAController.getInstance().start(primaryStage);
         primaryStage.show();
     }
 
