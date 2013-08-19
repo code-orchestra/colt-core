@@ -2,17 +2,13 @@ package codeOrchestra.colt.core;
 
 import codeOrchestra.colt.core.controller.COLTController;
 import codeOrchestra.colt.core.launch.LiveLauncher;
-import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.logging.LoggerService;
 import codeOrchestra.colt.core.model.COLTProject;
-import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.rpc.COLTRemoteService;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
-import codeOrchestra.colt.core.ui.components.COLTProgressIndicator;
+import codeOrchestra.colt.core.ui.components.ICOLTProgressIndicator;
 import groovy.util.slurpersupport.GPathResult;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.stage.Stage;
 
 import java.io.File;
 
@@ -25,7 +21,7 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     String getName();
 
-    P parseProject (GPathResult gPathResult, String projectPath);
+    P parseProject(GPathResult gPathResult, String projectPath);
 
     P createProject(String pName, File pFile);
 
@@ -37,16 +33,6 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     void disposeHandler();
 
-    // Listeners
-
-    void fireProjectLoaded();
-
-    void fireProjectClosed();
-
-    void addProjectListener(ProjectListener<P> projectListener);
-
-    void removeProjectListener(ProjectListener<P> projectListener);
-
     // Logger
 
     LoggerService getLoggerService();
@@ -55,7 +41,7 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     Node getPane() throws Exception;
 
-    COLTProgressIndicator getProgressIndicator();
+    ICOLTProgressIndicator getProgressIndicator();
 
     // Services
 

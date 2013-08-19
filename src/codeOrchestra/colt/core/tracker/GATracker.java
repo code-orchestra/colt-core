@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.tracker;
 
 import codeOrchestra.util.FingerprintUtil;
 import com.dmurph.tracking.AnalyticsConfigData;
+import com.dmurph.tracking.AnalyticsRequestData;
 import com.dmurph.tracking.JGoogleAnalyticsTracker;
 import com.dmurph.tracking.VisitorData;
 import com.dmurph.tracking.system.AWTSystemPopulator;
@@ -15,7 +16,8 @@ public class GATracker {
     private JGoogleAnalyticsTracker tracker;
 
     private final String hostName = "code-orchestra.github.io";
-    private String refPage = "/index";
+    private String prevPage = "/";
+    private String prevPageTitle = "";
 
 
     public static GATracker getInstance() {
@@ -37,8 +39,21 @@ public class GATracker {
         tracker.trackEvent(argCategory, argAction);
     }
 
+    public void trackEventWithPage(String argCategory, String argAction) {
+        AnalyticsRequestData data = new AnalyticsRequestData();
+        data.setEventCategory(argCategory);
+        data.setEventAction(argAction);
+        data.setEventLabel(null);
+        data.setEventValue(null);
+        data.setPageTitle(prevPageTitle);
+        data.setPageURL(prevPage);
+
+        tracker.makeCustomRequest(data);
+    }
+
     public void trackPageView(String argPageURL, String argPageTitle) {
-        tracker.trackPageViewFromReferrer(argPageURL, argPageTitle, hostName, hostName, refPage);
-        refPage = argPageURL;
+        tracker.trackPageViewFromReferrer(argPageURL, argPageTitle, hostName, hostName, prevPage);
+        prevPage = argPageURL;
+        prevPageTitle = argPageTitle;
     }
 }

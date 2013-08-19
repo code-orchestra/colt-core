@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.errorhandling;
 
 import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.ui.COLTApplication;
+import javafx.application.Platform;
 import org.controlsfx.dialog.Dialogs;
 
 public class ErrorHandler {
@@ -10,23 +11,33 @@ public class ErrorHandler {
 
     public static void handle(final Throwable t) {
         logger.error(t);
-        Dialogs.create()
+
+        Runnable runnable = () -> {
+            Dialogs.create()
 //                .lightweight()
-                .title("Error")
-                .owner(COLTApplication.get().getPrimaryStage())
-                .nativeTitleBar()
-                .showException(t);
+                    .title("Error")
+                    .owner(COLTApplication.get().getPrimaryStage())
+                    .nativeTitleBar()
+                    .showException(t);
+        };
+
+        execInFXThread(runnable);
     }
 
     public static void handle(final Throwable t, final String message) {
         logger.error(message, t);
-        Dialogs.create()
+
+        Runnable runnable = () -> {
+            Dialogs.create()
 //                .lightweight()
-                .title("Error")
-                .owner(COLTApplication.get().getPrimaryStage())
-                .message(message)
-                .nativeTitleBar()
-                .showException(t);
+                    .title("Error")
+                    .owner(COLTApplication.get().getPrimaryStage())
+                    .message(message)
+                    .nativeTitleBar()
+                    .showException(t);
+        };
+
+        execInFXThread(runnable);
     }
 
     public static void handle(final String message) {
@@ -36,13 +47,30 @@ public class ErrorHandler {
 
     public static void handle(final String message, final String title) {
         logger.error(message);
-        Dialogs.create()
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Dialogs.create()
 //                .lightweight()
-                .title(title)
-                .owner(COLTApplication.get().getPrimaryStage())
-                .message(message)
-                .nativeTitleBar()
-                .showError();
+                        .title(title)
+                        .owner(COLTApplication.get().getPrimaryStage())
+                        .message(message)
+                        .nativeTitleBar()
+                        .showError();
+            }
+        };
+
+        execInFXThread(runnable);
     }
+
+    private static void execInFXThread(Runnable runnable) {
+        if (Platform.isFxApplicationThread()) {
+            runnable.run();
+        } else {
+            Platform.runLater(runnable);
+        }
+    }
+
 
 }

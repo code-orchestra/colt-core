@@ -9,4 +9,6 @@ public interface LoggerService {
 
     void log(String source, String message, List<String> scopeIds, long timestamp, Level level, String stackTrace);
 
+    void clear(Level level);
+
 }
