@@ -6,7 +6,6 @@ import codeOrchestra.colt.core.RecentProjects;
 import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
-import codeOrchestra.colt.core.license.CodeOrchestraLicenseManager;
 import codeOrchestra.colt.core.license.ExpirationHelper;
 import codeOrchestra.colt.core.license.StartupInterceptType;
 import codeOrchestra.colt.core.license.StartupInterceptor;
@@ -22,10 +21,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -145,7 +140,7 @@ public class COLTApplication extends Application {
         MenuItem openProjectMenuItem = new MenuItem("Open Project");
         openProjectMenuItem.setOnAction(t -> {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt2"));
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt"));
             File file = fileChooser.showOpenDialog(primaryStage.getScene().getWindow());
             if (file != null) {
                 try {
@@ -184,7 +179,7 @@ public class COLTApplication extends Application {
             if (projectName != null) {
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setInitialFileName(projectName);
-                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt2"));
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt"));
                 File file = fileChooser.showSaveDialog(primaryStage);
                 if (file != null) {
                     try {
@@ -194,20 +189,6 @@ public class COLTApplication extends Application {
                     } catch (COLTException e) {
                         ErrorHandler.handle(e, "Can't create a new project");
                     }
-                }
-            }
-        });
-
-        MenuItem importProjectMenuItem = new MenuItem("Import Project");
-        importProjectMenuItem.setOnAction(t -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("COLT", "*.colt"));
-            File file = fileChooser.showOpenDialog(primaryStage.getScene().getWindow());
-            if (file != null) {
-                try {
-                    COLTProjectManager.getInstance().importProject(file);
-                } catch (COLTException e) {
-                    ErrorHandler.handle(e, "Can't import a project");
                 }
             }
         });
@@ -229,7 +210,7 @@ public class COLTApplication extends Application {
             }
         });
 
-        fileMenu.getItems().addAll(newProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, recentProjectsSubMenu, saveProjectMenuItem, importProjectMenuItem, new SeparatorMenuItem(), exitMenuItem);
+        fileMenu.getItems().addAll(newProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, recentProjectsSubMenu, saveProjectMenuItem, new SeparatorMenuItem(), exitMenuItem);
 
         Menu helpMenu = new Menu("Help");
         final MenuItem enterSerialItem = new MenuItem("Enter Serial Number");
