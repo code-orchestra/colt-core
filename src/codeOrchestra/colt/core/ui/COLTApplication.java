@@ -6,9 +6,7 @@ import codeOrchestra.colt.core.RecentProjects;
 import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
-import codeOrchestra.colt.core.license.ExpirationHelper;
-import codeOrchestra.colt.core.license.StartupInterceptType;
-import codeOrchestra.colt.core.license.StartupInterceptor;
+import codeOrchestra.colt.core.license.*;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.listener.ProjectListener;
@@ -217,7 +215,10 @@ public class COLTApplication extends Application {
         enterSerialItem.setOnAction(t -> {
             ExpirationHelper.getExpirationStrategy().showSerialNumberDialog();
         });
-        // TODO: enable/disable via license listener
+        enterSerialItem.setDisable(ExpirationHelper.getExpirationStrategy().isTrialOnly() || !CodeOrchestraLicenseManager.noSerialNumberPresent());
+        CodeOrchestraLicenseManager.addListener(() -> {
+            enterSerialItem.setDisable(false);
+        });
         helpMenu.getItems().add(enterSerialItem);
 
         MenuBar menuBar = new MenuBar();
