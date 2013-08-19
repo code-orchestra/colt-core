@@ -9,10 +9,10 @@ import javafx.scene.control.Button
 import javafx.scene.control.ContentDisplay
 import javafx.scene.control.Label
 import javafx.scene.layout.AnchorPane
-import javafx.scene.layout.Pane
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
+import javafx.stage.FileChooser
 
 /*
 
@@ -36,26 +36,28 @@ class FilesetInput extends AnchorPane {
 
     private Label label = new Label(layoutY: 23)
     private WebView webView = new WebView(layoutY: 46, prefHeight: 30);
-//    private Pane noScrollPane = new Pane()
-    private Button button = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 46, prefHeight: 30, prefWidth: 30, text: "Add")
+    private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 46, prefHeight: 30, prefWidth: 30, text: "Add")
     private JSBridge bridge
     private boolean htmlLoaded
     private boolean layoutInited
 
     FilesetInput() {
-        setRightAnchor(button, 10)
-
+        setRightAnchor(addButton, 10)
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
-
         setLeftAnchor(webView, 10)
         setRightAnchor(webView, 48)
 
-        button.styleClass.add("btn-add")
-
+        addButton.styleClass.add("btn-add")
         label.textProperty().bind(titleProperty)
+        children.addAll(label, webView, addButton)
 
-        children.addAll(label, webView, button)
+        addButton.onAction = {
+            new FileChooser().showOpenMultipleDialog(scene.window).each {
+                println("file: " + it)
+            }
+
+        } as EventHandler
 
         // web engine
 

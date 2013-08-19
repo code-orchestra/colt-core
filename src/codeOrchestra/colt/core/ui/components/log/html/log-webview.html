@@ -273,7 +273,6 @@ function _isElementInScroll(elem, docViewTop, docViewBottom) {
     return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop))
 }
 
-
 function test() {
     addLogMessage({message: 'mojito-dispatcher: Dispatcher created', level: "warning", source: "http://s7.addthis.com/js/250/addthis_widget.js"})
     addLogMessage({message: 'mojito-dispatcher: Dispatcher paused', level: "error", source: "http://s7.addthis.com/js/250/addthis_widget.js"})
@@ -281,7 +280,7 @@ function test() {
     addLogMessage({message: 'Get http://localhost:8666/static/T 200 OK 56ms consectetur adipisicing elit. Aliquam', level: "", source: ""})
     addLogMessage({message: 'mojito-client: Attached 0 event delegates sequi nisi necessitatibus expedita suscipit eius fugiat recusandae beatae aut.', level: "", source: ""})
     addLogMessage({message: 'mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', level: "", source: ""})
-    addLogMessage({message: 'Uncaught ReferenceError: Ajax is not defined [VM] dashboard (56):1<br> (anonymous function) [VM] dashboard (58):1<br> jQuery.globalEval<br> (anonymous function)<br> e.extend.each<br> f.fn.extend.domManip<br> f.fn.extend.append<br> MissingE.utilities.ajaxEvents.run<br> MissingE.utilities.ajaxEvents.init<br> (anonymous function)<br> (anonymous function)', level: "error", source: "mySource.js"})
+    addLogMessage({message: 'Uncaught ReferenceError: Ajax is not defined [VM] dashboard (56):1 (anonymous function) [VM] dashboard (58):1 jQuery.globalEval (anonymous function) e.extend.each f.fn.extend.domManip<br> f.fn.extend.append<br> MissingE.utilities.ajaxEvents.run<br> MissingE.utilities.ajaxEvents.init<br> (anonymous function)<br> (anonymous function)', level: "error", source: "mySource.js"})
     addLogMessage({message: 'mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', level: "", source: ""})
 }
 
@@ -415,6 +414,7 @@ function updateVisible(element) {
         if (hidden) {
             $this.show()
             $this.addClass("visible")
+            dotdotdot($this)
             updated = true
         }
     } else {
