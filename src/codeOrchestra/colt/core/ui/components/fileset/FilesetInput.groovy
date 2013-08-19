@@ -29,7 +29,6 @@ import javafx.stage.FileChooser
     </children>
 </AnchorPane>
 
-
  */
 
 /**
@@ -47,6 +46,8 @@ class FilesetInput extends AnchorPane {
     private boolean layoutInited
     private ContextMenu contextMenu = new ContextMenu()
 
+    private File startDirectory = null
+
 
     FilesetInput() {
         setRightAnchor(addButton, 10)
@@ -61,7 +62,7 @@ class FilesetInput extends AnchorPane {
 
         contextMenu.items.addAll(
                 new MenuItem(text: "Add Files", onAction: { e ->
-                    new FileChooser().showOpenMultipleDialog(scene.window).each {
+                    new FileChooser(initialDirectory: startDirectory).showOpenMultipleDialog(scene.window).each {
                         println("file: " + it)
                     }
                 } as EventHandler<ActionEvent>),
@@ -71,12 +72,12 @@ class FilesetInput extends AnchorPane {
 
                 } as EventHandler<ActionEvent>),
                 new MenuItem(text: "Exclude Files", onAction: { e ->
-                    new FileChooser().showOpenMultipleDialog(scene.window).each {
+                    new FileChooser(initialDirectory: startDirectory).showOpenMultipleDialog(scene.window).each {
                         println("file: " + it)
                     }
                 } as EventHandler<ActionEvent>),
                 new MenuItem(text: "Exclude Directory", onAction: { e ->
-                    def it = new DirectoryChooser().showDialog(scene.window)
+                    def it = new DirectoryChooser(initialDirectory: startDirectory).showDialog(scene.window)
                     println("dir: " + it)
                 } as EventHandler<ActionEvent>)
         )
