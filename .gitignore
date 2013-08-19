@@ -12,3 +12,6 @@ out/*
 .gradle/*
 
 build.properties
+
+/colt-core.iml
+.idea
