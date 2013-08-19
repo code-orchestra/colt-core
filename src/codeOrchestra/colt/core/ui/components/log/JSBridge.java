@@ -19,18 +19,22 @@ public class JSBridge {
         win.setMember("app", this);
     }
 
-    void resize(int height){
+    public static JSBridge create(WebEngine engine) {
+        return new JSBridge(engine);
+    }
+
+    public void resize(int height){
         System.out.println("resize: " + height);
     }
 
-    void setTextClipboard(String str){
+    public void setClipboard(String str){
         Clipboard clipboard = Clipboard.getSystemClipboard();
         HashMap<DataFormat, Object> content = new HashMap<>();
         content.put(DataFormat.PLAIN_TEXT, str);
         clipboard.setContent(content);
     }
 
-    String getTextClipboad(String str){
+    public String getClipboard(){
         return Clipboard.getSystemClipboard().getString();
     }
 }

@@ -55,6 +55,7 @@ class LogWebView extends VBox {
         WebEngine engine = webView.engine
         engine.documentProperty().addListener({ o, oldValue, newValue ->
             htmlLoaded = true
+            JSBridge.create(engine)
             if (layoutInited && htmlLoaded) {
                 clear()
                 addLogMessages(logMessages.asList())
