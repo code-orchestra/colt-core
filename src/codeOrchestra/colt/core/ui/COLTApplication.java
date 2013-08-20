@@ -41,6 +41,7 @@ import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,6 +69,8 @@ public class COLTApplication extends Application {
     private Stage primaryStage;
 
     public static long timeStarted;
+
+    public ArrayList<MenuItem> menuItems = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -207,6 +210,10 @@ public class COLTApplication extends Application {
             public void onProjectUnloaded(COLTProject project) {
             }
         });
+
+        menuItems.add(newProjectMenuItem);
+        menuItems.add(openProjectMenuItem);
+        menuItems.add(saveProjectMenuItem);
 
         fileMenu.getItems().addAll(newProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, recentProjectsSubMenu, saveProjectMenuItem, new SeparatorMenuItem(), exitMenuItem);
 
