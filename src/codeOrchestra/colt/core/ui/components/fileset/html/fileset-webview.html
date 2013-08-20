@@ -10,10 +10,8 @@
     <script src="jquery-textboxlist.js" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
-        var textbox;
-
         $(function () {
-            textbox = new $.TextboxList('#form_tags_input', {
+            var textbox = new $.TextboxList('#form_tags_input', {
                 setClipboard: function (src) {
                     if(window.app){
                         window.app.setClipboard(src)
@@ -24,34 +22,9 @@
                         return window.app.getClipboard()
                     }
                     return "hello" }});
-
-            textbox.addEvent("bitBoxAdd", function(){
-//                alert("bit-add")
-                alert("command:update")
-            })
-
-            textbox.addEvent("bitBoxRemove", function(){
-//                alert("bit-removed")
-                alert("command:update")
-            })
-
-//            add('src/**.as').add('lib/*.swc')
+            textbox.add('src/**.as')
+                    .add('lib/*.swc')
         });
-
-        function add(str){
-            //alert(str)
-            textbox.add(str)
-            return textbox
-        }
-
-        function getFiles(){
-            return textbox.getValues().join(", ")
-        }
-
-        function fileNotExists(file){
-            // todo: mark file as
-        }
-
     </script>
 
     <!-- sample style -->
