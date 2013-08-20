@@ -135,7 +135,7 @@ public class COLTApplication extends Application {
         root.setFillWidth(true);
         root.setMaxHeight(Double.MAX_VALUE);
         mainStage.setTitle("COLT 1.2");
-        mainStage.setScene(new Scene(root, 800, 700));
+        mainStage.setScene(new Scene(root, 580, 820));
 
         Menu fileMenu = new Menu("File");
         MenuItem openProjectMenuItem = new MenuItem("Open Project");
