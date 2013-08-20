@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.ui.components.sessionIndicator
 import codeOrchestra.colt.core.LiveCodingManager
 import codeOrchestra.colt.core.session.LiveCodingSession
 import codeOrchestra.colt.core.session.listener.LiveCodingListener
+import codeOrchestra.util.ThreadUtils
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 
@@ -22,6 +23,8 @@ class SessionIndicatorController implements LiveCodingListener{
     Image on
     Image off
 
+    ArrayList<LiveCodingSession> sessions = new ArrayList<>()
+
     private SessionIndicatorController() {
         on = new Image(getClass().getResource("session-indicator-on.png").toString())
         off = new Image(getClass().getResource("session-indicator-off.png").toString())
@@ -34,12 +37,29 @@ class SessionIndicatorController implements LiveCodingListener{
 
     @Override
     void onSessionStart(LiveCodingSession session) {
-        indicator?.setImage(on)
+        if(!sessions.contains(session)) {
+            sessions.add(session)
+        }
+
+        ThreadUtils.executeInFXThread(new Runnable() {
+            @Override
+            void run() {
+                indicator?.setImage(on)
+            }
+        })
     }
 
     @Override
     void onSessionEnd(LiveCodingSession session) {
-        indicator?.setImage(off)
+        sessions.remove(session)
+        if (sessions.size() == 0) {
+            ThreadUtils.executeInFXThread(new Runnable() {
+                @Override
+                void run() {
+                    indicator?.setImage(off)
+                }
+            })
+        }
     }
 
     @Override
@@ -49,7 +69,7 @@ class SessionIndicatorController implements LiveCodingListener{
 
     @Override
     void onSessionResume() {
-        indicator?.setImage(on)
+        //todo: implement
     }
 
     @Override
