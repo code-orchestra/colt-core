@@ -22,6 +22,8 @@ class SessionIndicatorController implements LiveCodingListener{
     Image on
     Image off
 
+    ArrayList<LiveCodingSession> sessions = new ArrayList<>()
+
     private SessionIndicatorController() {
         on = new Image(getClass().getResource("session-indicator-on.png").toString())
         off = new Image(getClass().getResource("session-indicator-off.png").toString())
@@ -34,12 +36,18 @@ class SessionIndicatorController implements LiveCodingListener{
 
     @Override
     void onSessionStart(LiveCodingSession session) {
+        if(!sessions.contains(session)) {
+            sessions.add(session)
+        }
         indicator?.setImage(on)
     }
 
     @Override
     void onSessionEnd(LiveCodingSession session) {
-        indicator?.setImage(off)
+        sessions.remove(session)
+        if (sessions.size() == 0) {
+            indicator?.setImage(off)
+        }
     }
 
     @Override
@@ -49,7 +57,7 @@ class SessionIndicatorController implements LiveCodingListener{
 
     @Override
     void onSessionResume() {
-        indicator?.setImage(on)
+        //todo: implement
     }
 
     @Override
