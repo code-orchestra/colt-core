@@ -244,7 +244,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
             PlimusResponse validationResponse = PlimusHelper.validateKey(CodeOrchestraLicenseManager.getSerialNumber());
             return handleValidationResponse(validationResponse);
         } catch (IOException e) {
-//            ErrorHandler.handle(e);
+            ErrorHandler.handle(e);
             return checkIfExpiredLocally();
         }
     }

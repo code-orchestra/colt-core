@@ -206,7 +206,6 @@ public class COLTApplication extends Application {
             public void onProjectLoaded(COLTProject project) {
                 refreshRecentProjectsMenu();
             }
-
             @Override
             public void onProjectUnloaded(COLTProject project) {
             }
@@ -301,21 +300,6 @@ public class COLTApplication extends Application {
         primaryStage = mainStage;
         GAController.getInstance().start(primaryStage);
         primaryStage.show();
-
-        // Open most recent project
-        for (String recentProjectPath : RecentProjects.getRecentProjectsPaths()) {
-            File projectFile = new File(recentProjectPath);
-            if (projectFile.exists()) {
-                try {
-                    COLTProjectManager.getInstance().load(projectFile.getPath());
-                    ChangingMonitor.getInstance().reset();
-                    break;
-                } catch (COLTException e) {
-                    // ignore
-                }
-            }
-        }
-
     }
 
     public Stage getPrimaryStage() {

@@ -3,7 +3,6 @@ package codeOrchestra.colt.core.ui.components.sessionIndicator
 import codeOrchestra.colt.core.LiveCodingManager
 import codeOrchestra.colt.core.session.LiveCodingSession
 import codeOrchestra.colt.core.session.listener.LiveCodingListener
-import codeOrchestra.util.ThreadUtils
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 
@@ -40,25 +39,14 @@ class SessionIndicatorController implements LiveCodingListener{
         if(!sessions.contains(session)) {
             sessions.add(session)
         }
-
-        ThreadUtils.executeInFXThread(new Runnable() {
-            @Override
-            void run() {
-                indicator?.setImage(on)
-            }
-        })
+        indicator?.setImage(on)
     }
 
     @Override
     void onSessionEnd(LiveCodingSession session) {
         sessions.remove(session)
         if (sessions.size() == 0) {
-            ThreadUtils.executeInFXThread(new Runnable() {
-                @Override
-                void run() {
-                    indicator?.setImage(off)
-                }
-            })
+            indicator?.setImage(off)
         }
     }
 
