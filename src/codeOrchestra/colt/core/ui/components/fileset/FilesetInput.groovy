@@ -2,7 +2,9 @@ package codeOrchestra.colt.core.ui.components.fileset
 
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
+import codeOrchestra.util.ProjectHelper
 import javafx.beans.value.ChangeListener
+import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -12,12 +14,16 @@ import javafx.scene.control.ContentDisplay
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
+import javafx.scene.control.TextArea
 import javafx.scene.layout.AnchorPane
+import javafx.scene.shape.Rectangle
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
 import javafx.stage.DirectoryChooser
 import javafx.stage.FileChooser
+import netscape.javascript.JSObject
+import javafx.collections.ObservableList as OL
 
 /*
 
@@ -39,55 +45,52 @@ class FilesetInput extends AnchorPane {
     @FXBindable String title = "Library Paths:"
 
     private Label label = new Label(layoutY: 23)
-    private WebView webView = new WebView(layoutY: 46, prefHeight: 30);
+    private WebView webView = new WebView(id: "fileset-webview", layoutY: 47, prefHeight: 28);
+    private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 46, prefHeight: 30)
     private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 46, prefHeight: 30, prefWidth: 30, text: "Add")
     private JSBridge bridge
     private boolean htmlLoaded
     private boolean layoutInited
-    private ContextMenu contextMenu = new ContextMenu()
 
     private File startDirectory = null
 
+    @FXBindable boolean muliply = true
+    @FXBindable boolean addFiles = true
+    @FXBindable boolean addDirectory = true
+    @FXBindable boolean exclude = true
+    @FXBindable boolean useFilesets = true
+
+    OL<File> files = FXCollections.observableArrayList()
+    @FXBindable String filesString
 
     FilesetInput() {
         setRightAnchor(addButton, 10)
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
-        setLeftAnchor(webView, 10)
-        setRightAnchor(webView, 48)
+
+        setLeftAnchor(webView, 11)
+        setRightAnchor(webView, 49)
+        setLeftAnchor(focusRectangle, 10)
+        setRightAnchor(focusRectangle, 48)
 
         addButton.styleClass.add("btn-add")
         label.textProperty().bind(titleProperty)
-        children.addAll(label, webView, addButton)
+        children.addAll(label, webView, addButton, focusRectangle)
 
-        contextMenu.items.addAll(
-                new MenuItem(text: "Add Files", onAction: { e ->
-                    new FileChooser(initialDirectory: startDirectory).showOpenMultipleDialog(scene.window).each {
-                        println("file: " + it)
-                    }
-                } as EventHandler<ActionEvent>),
-                new MenuItem(text: "Add Directory", onAction: { e ->
-                    def it = new DirectoryChooser().showDialog(scene.window)
-                    println("dir: " + it)
+        focusRectangle.toBack()
+        focusRectangle.prefHeightProperty().bind(webView.prefHeightProperty())
+        focusRectangle.visibleProperty().bind(webView.focusedProperty())
 
-                } as EventHandler<ActionEvent>),
-                new MenuItem(text: "Exclude Files", onAction: { e ->
-                    new FileChooser(initialDirectory: startDirectory).showOpenMultipleDialog(scene.window).each {
-                        println("file: " + it)
-                    }
-                } as EventHandler<ActionEvent>),
-                new MenuItem(text: "Exclude Directory", onAction: { e ->
-                    def it = new DirectoryChooser(initialDirectory: startDirectory).showDialog(scene.window)
-                    println("dir: " + it)
-                } as EventHandler<ActionEvent>)
-        )
-
-        contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, .9);");
+        focusRectangle.styleClass.clear()
+        focusRectangle.styleClass.add("file-set-focus")
 
         addButton.onAction = {
-            contextMenu.show(addButton, Side.RIGHT, 0, 0)
-
-
+            ContextMenu cm = buildContextMenu()
+            if (cm.items.size() > 1) {
+                cm.show(addButton, Side.RIGHT, 0, 0)
+            }else{
+                cm.items.first().onAction.handle(null)
+            }
         } as EventHandler
 
         // web engine
@@ -104,15 +107,138 @@ class FilesetInput extends AnchorPane {
         } as ChangeListener)
         engine.load(htmlPage)
 
-        engine.onAlert = new EventHandler<WebEvent<String>>() {
-            @Override
-            void handle(WebEvent<String> event) {
-                println("alert >> " + event.data)
+        engine.onAlert = { WebEvent<String> event ->
+            String data = event.data
+            if(data.startsWith("command:update")){
+                OL<File> newFiles = FXCollections.observableArrayList()
+                List<String> notExists = []
+                getFilesetHtmlValue().split(", ").each {
+                    println "it = $it"
+                    File f = new File(it).getAbsoluteFile()
+                    if (!f.exists()) {
+                        notExists << it
+                    }
+                    newFiles << f
+                }
+                if(!newFiles.equals(files)){
+                    files.clear()
+                    files.addAll(newFiles)
+                    println("files updated: " + files)
+                }
+
+                notExists.each {
+                    getJSTopObject().call("fileNotExists", it)
+                }
+            }else{
+                println("alert >> " + data)
             }
-        }
+        } as EventHandler
 
         webView.childrenUnmodifiable.addListener({ change ->
             webView.lookupAll(".scroll-bar")*.visible = false
         } as ListChangeListener)
     }
+
+    private ContextMenu buildContextMenu() {
+        ContextMenu cm = new ContextMenu()
+        if (addFiles) {
+            cm.items.add(
+                    new MenuItem(text: "Add Files", onAction: { e ->
+                        if (muliply) {
+                            new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
+                                startDirectory = it.parentFile
+                                addFile(it)
+                            }
+                        } else {
+
+                            def it = new FileChooser(initialDirectory: getBaseDir()).showOpenDialog(scene.window)
+                                startDirectory = it.parentFile
+                            addFile(it)
+                        }
+                    } as EventHandler<ActionEvent>))
+        }
+
+        if (addDirectory) {
+            cm.items.add(
+                    new MenuItem(text: "Add Directory", onAction: { e ->
+                        def it = new DirectoryChooser(initialDirectory: getBaseDir()).showDialog(scene.window)
+                        startDirectory = it.parentFile
+                        addFile(it)
+
+                    } as EventHandler<ActionEvent>))
+        }
+
+        if (addFiles &&  exclude) {
+            cm.items.add(
+                    new MenuItem(text: "Exclude Files", onAction: { e ->
+                        new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
+                            startDirectory = it.parentFile
+                            excludeFile(it)
+                        }
+                    } as EventHandler<ActionEvent>))
+        }
+
+        if (addDirectory && exclude) {
+            cm.items.add(
+                    new MenuItem(text: "Exclude Directory", onAction: { e ->
+                        def it = new DirectoryChooser(initialDirectory: getBaseDir()).showDialog(scene.window)
+                        startDirectory = it.parentFile
+                        excludeFile(it)
+                    } as EventHandler<ActionEvent>))
+        }
+
+
+        cm.setStyle("-fx-background-color: rgba(255, 255, 255, .9);");
+
+        return cm
+    }
+
+    private File getBaseDir(){
+        new File("/Users/eugenepotapenko/Documents")
+        //startDirectory ?: ProjectHelper?.currentProject?.baseDir
+    }
+
+    private String createPattern(File file){
+        File base = getBaseDir() ?: ProjectHelper?.currentProject?.baseDir
+        String relative = base.toURI().relativize(file.toURI()).path
+        return  relative
+    }
+
+    private JSObject getJSTopObject() {
+        (JSObject) webView.engine.executeScript("window")
+    }
+
+    private void add(String el) {
+        getJSTopObject().call("addFile", el)
+    }
+
+    private void addFile(File file) {
+        add(createPattern(file))
+    }
+
+    private void excludeFile(File file) {
+        add("-" + createPattern(file))
+    }
+
+    String getFilesetHtmlValue(){
+        "" + getJSTopObject().call("getFiles")
+    }
+
+//    def getFiles(){
+//        AntBuilder ant = new AntBuilder()
+//        def scanner = ant.fileScanner{
+//            fileset{
+//
+//            }
+//
+//        }
+//
+//        //new FileSet().addFilename()
+//
+//    }
+
+
+
+
+
 }
