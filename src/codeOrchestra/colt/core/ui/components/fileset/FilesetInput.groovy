@@ -4,6 +4,7 @@ import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -42,8 +43,8 @@ class FilesetInput extends AnchorPane {
     @FXBindable String title = "Library Paths:"
 
     private Label label = new Label(layoutY: 23)
-    private WebView webView = new WebView(id: "fileset-webview", layoutY: 47, prefHeight: 28);
-    private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 46, prefHeight: 30)
+    private WebView webView = new WebView(id: "fileset-webview", layoutY: 47, prefHeight: 30);
+    private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 46)
     private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 46, prefHeight: 30, prefWidth: 30, text: "Add")
     private JSBridge bridge
     private boolean htmlLoaded
@@ -64,8 +65,8 @@ class FilesetInput extends AnchorPane {
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
 
-        setLeftAnchor(webView, 11)
-        setRightAnchor(webView, 49)
+        setLeftAnchor(webView, 12)
+        setRightAnchor(webView, 50)
         setLeftAnchor(focusRectangle, 10)
         setRightAnchor(focusRectangle, 48)
 
@@ -74,11 +75,11 @@ class FilesetInput extends AnchorPane {
         children.addAll(label, webView, addButton, focusRectangle)
 
         focusRectangle.toBack()
-        focusRectangle.prefHeightProperty().bind(webView.prefHeightProperty())
-        focusRectangle.visibleProperty().bind(webView.focusedProperty())
-
-        focusRectangle.styleClass.clear()
-        focusRectangle.styleClass.add("file-set-focus")
+        focusRectangle.prefHeightProperty().bind(webView.prefHeightProperty().add(2))
+        webView.focusedProperty().addListener({ o, old, focused ->
+            focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
+            focusRectangle.styleClass.add(focused ? "fileset-webview-focus" : "fileset-webview")
+        } as ChangeListener)
 
         addButton.onAction = {
             ContextMenu cm = buildContextMenu()
