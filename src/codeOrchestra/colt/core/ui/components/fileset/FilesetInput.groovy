@@ -56,7 +56,6 @@ class FilesetInput extends AnchorPane {
     @FXBindable boolean addFiles = true
     @FXBindable boolean addDirectory = true
     @FXBindable boolean useExcludes = true
-    @FXBindable boolean useFilesets = true
 
     @FXBindable String files
 
@@ -108,10 +107,6 @@ class FilesetInput extends AnchorPane {
             String data = event.data
             if (data.startsWith("command:update")) {
                 files = getFilesetHtmlValue()
-//                files.grep{File it -> !it.exists()}.each {
-//                    getJSTopObject().call("fileNotExists", it)
-//                }
-
                 getFiles(getFilesetHtmlValue()).each {
                     println("file >> " + it)
                 }
