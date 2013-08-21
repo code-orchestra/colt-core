@@ -111,6 +111,9 @@ class FilesetInput extends AnchorPane {
             String data = event.data
             if (data.startsWith("command:update")) {
                 files = getFilesetHtmlValue()
+//                getFilesFromString(files).each {
+//                    println("file >> " + it)
+//                }
             } else {
                 println("alert >> " + data)
             }
@@ -194,7 +197,7 @@ class FilesetInput extends AnchorPane {
         "" + getJSTopObject().call("getFiles")
     }
 
-    public static List<File> getFiles(String fileset) {
+    public static List<File> getFilesFromString(String fileset) {
         if (fileset.isEmpty()) return []
 
         List<File> result = []
@@ -203,11 +206,11 @@ class FilesetInput extends AnchorPane {
         fileset.split(", ").each {
             File file = new File(it)
             if (file.exists()) {
-                result.add(file)
+                result.add(file.getAbsoluteFile())
             } else {
                 file = new File(baseDir, it)
                 if (file.exists()) {
-                    result.add(file)
+                    result.add(file.getAbsoluteFile())
                 }
             }
             filesets << it
@@ -245,12 +248,15 @@ class FilesetInput extends AnchorPane {
     }
 
     private static File getBaseDir() {
-        new File("/Users/eugenepotapenko/Documents")
-        //startDirectory ?: ProjectHelper?.currentProject?.baseDir
+        try{
+            return ProjectHelper?.currentProject?.baseDir
+        }catch (Exception e){
+            return new File("/Users/eugenepotapenko/Documents")
+
+        }
     }
 
     private static String createPattern(File file) {
-        File base = getBaseDir() ?: ProjectHelper?.currentProject?.baseDir
-        return base.toURI().relativize(file.toURI()).path
+        return getBaseDir().toURI().relativize(file.toURI()).path
     }
 }
