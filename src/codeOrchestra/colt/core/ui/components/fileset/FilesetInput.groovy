@@ -14,6 +14,7 @@ import javafx.scene.control.ContentDisplay
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
+import javafx.scene.control.TextArea
 import javafx.scene.layout.AnchorPane
 import javafx.scene.shape.Rectangle
 import javafx.scene.web.WebEngine
@@ -45,9 +46,8 @@ class FilesetInput extends AnchorPane {
 
     private Label label = new Label(layoutY: 23)
     private WebView webView = new WebView(layoutY: 46, prefHeight: 30);
+    private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 46, prefHeight: 30)
     private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 46, prefHeight: 30, prefWidth: 30, text: "Add")
-    private Rectangle focusRectangle = new Rectangle(
-            id: "fileset-webview-focus", managed: false, layoutX: -5, layoutY: -5, width: 200, height: 30)
     private JSBridge bridge
     private boolean htmlLoaded
     private boolean layoutInited
@@ -67,18 +67,19 @@ class FilesetInput extends AnchorPane {
         setRightAnchor(addButton, 10)
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
+
         setLeftAnchor(webView, 10)
         setRightAnchor(webView, 48)
+        setLeftAnchor(focusRectangle, 10)
+        setRightAnchor(focusRectangle, 48)
+
 
         addButton.styleClass.add("btn-add")
         label.textProperty().bind(titleProperty)
         children.addAll(label, webView, addButton, focusRectangle)
 
         focusRectangle.toBack()
-        focusRectangle.widthProperty().bind(webView.widthProperty().add(8))
-        focusRectangle.heightProperty().bind(webView.heightProperty().add(8))
-        focusRectangle.layoutXProperty().bind(webView.layoutXProperty().add(-4))
-        focusRectangle.layoutYProperty().bind(webView.layoutYProperty().add(-4))
+        focusRectangle.prefHeightProperty().bind(webView.prefHeightProperty())
         focusRectangle.visibleProperty().bind(webView.focusedProperty())
 
         focusRectangle.styleClass.clear()
