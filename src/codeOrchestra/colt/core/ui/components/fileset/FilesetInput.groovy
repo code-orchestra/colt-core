@@ -4,7 +4,6 @@ import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import javafx.beans.value.ChangeListener
-import javafx.beans.value.ObservableValue
 import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -33,7 +32,7 @@ import netscape.javascript.JSObject
     </children>
 </AnchorPane>
 
- */
+*/
 
 /**
  * @author Eugene Potapenko
@@ -95,7 +94,7 @@ class FilesetInput extends AnchorPane {
         WebEngine engine = webView.engine
         engine.documentProperty().addListener({ o, oldValue, newValue ->
             htmlLoaded = true
-            bridge = new JSBridge(webView.engine){
+            bridge = new JSBridge(webView.engine) {
                 @Override
                 void resize(int height) {
                     webView.prefHeight = height
@@ -112,9 +111,6 @@ class FilesetInput extends AnchorPane {
             String data = event.data
             if (data.startsWith("command:update")) {
                 files = getFilesetHtmlValue()
-//                getFiles(getFilesetHtmlValue()).each {
-//                    println("file >> " + it)
-//                }
             } else {
                 println("alert >> " + data)
             }
@@ -173,13 +169,10 @@ class FilesetInput extends AnchorPane {
                     } as EventHandler<ActionEvent>))
         }
 
-
         cm.setStyle("-fx-background-color: rgba(255, 255, 255, .9);");
 
         return cm
     }
-
-
 
     private JSObject getJSTopObject() {
         (JSObject) webView.engine.executeScript("window")
@@ -234,8 +227,7 @@ class FilesetInput extends AnchorPane {
                     values.each { String f ->
                         if (f) {
                             if (f.startsWith("-")) {
-                                String filename = f[1..-1]
-                                exclude(name: filename)
+                                exclude(name: f[1..-1])
                             } else {
                                 include(name: f)
                             }
@@ -245,7 +237,7 @@ class FilesetInput extends AnchorPane {
             }
 
             scanner.each {
-                result.add(((File) it).getAbsoluteFile())
+                result << ((File) it).getAbsoluteFile()
             }
         }
 
