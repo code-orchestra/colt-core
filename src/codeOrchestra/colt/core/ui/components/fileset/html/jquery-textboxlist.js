@@ -219,6 +219,11 @@
             });
         };
 
+        var getText = function () {
+            update()
+            return original.val()
+        };
+
         var update = function () {
             original.val(options.encode(getValues()));
         };
@@ -323,6 +328,7 @@
         this.create = create;
         this.add = add;
         this.getValues = getValues;
+        this.getText = getText;
         this.plugins = [];
         init();
     };

@@ -8,6 +8,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList as OL
 import javafx.event.EventHandler
+import javafx.scene.control.ScrollPane
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.Priority
@@ -49,7 +50,7 @@ class LogWebView extends VBox {
 
     LogWebView() {
 
-        Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 12);
+Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 12);
 
         String htmlPage = this.class.getResource("html/log-webview.html").toExternalForm()
         WebEngine engine = webView.engine

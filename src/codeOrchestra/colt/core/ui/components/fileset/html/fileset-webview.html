@@ -35,12 +35,13 @@
         })
 
         function add(str) {
+            alert(">>>> add file::: " + str)
             textbox.add(str)
             return textbox
         }
 
         function getFiles() {
-            return textbox.getValues().join(", ")
+            return textbox.getText()
         }
 
         function fileNotExists(file) {

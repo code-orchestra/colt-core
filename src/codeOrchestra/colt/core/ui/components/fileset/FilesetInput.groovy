@@ -4,7 +4,6 @@ import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import javafx.beans.value.ChangeListener
-import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -16,14 +15,12 @@ import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
 import javafx.scene.control.TextArea
 import javafx.scene.layout.AnchorPane
-import javafx.scene.shape.Rectangle
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
 import javafx.stage.DirectoryChooser
 import javafx.stage.FileChooser
 import netscape.javascript.JSObject
-import javafx.collections.ObservableList as OL
 
 /*
 
@@ -54,14 +51,13 @@ class FilesetInput extends AnchorPane {
 
     private File startDirectory = null
 
-    @FXBindable boolean muliply = true
+    @FXBindable boolean useMultiply = true
     @FXBindable boolean addFiles = true
     @FXBindable boolean addDirectory = true
-    @FXBindable boolean exclude = true
+    @FXBindable boolean useExcludes = true
     @FXBindable boolean useFilesets = true
 
-    OL<File> files = FXCollections.observableArrayList()
-    @FXBindable String filesString
+    @FXBindable String files
 
     FilesetInput() {
         setRightAnchor(addButton, 10)
@@ -88,7 +84,7 @@ class FilesetInput extends AnchorPane {
             ContextMenu cm = buildContextMenu()
             if (cm.items.size() > 1) {
                 cm.show(addButton, Side.RIGHT, 0, 0)
-            }else{
+            } else {
                 cm.items.first().onAction.handle(null)
             }
         } as EventHandler
@@ -109,27 +105,16 @@ class FilesetInput extends AnchorPane {
 
         engine.onAlert = { WebEvent<String> event ->
             String data = event.data
-            if(data.startsWith("command:update")){
-                OL<File> newFiles = FXCollections.observableArrayList()
-                List<String> notExists = []
-                getFilesetHtmlValue().split(", ").each {
-                    println "it = $it"
-                    File f = new File(it).getAbsoluteFile()
-                    if (!f.exists()) {
-                        notExists << it
-                    }
-                    newFiles << f
-                }
-                if(!newFiles.equals(files)){
-                    files.clear()
-                    files.addAll(newFiles)
-                    println("files updated: " + files)
-                }
+            if (data.startsWith("command:update")) {
+                files = getFilesetHtmlValue()
+//                files.grep{File it -> !it.exists()}.each {
+//                    getJSTopObject().call("fileNotExists", it)
+//                }
 
-                notExists.each {
-                    getJSTopObject().call("fileNotExists", it)
+                getFiles(getFilesetHtmlValue()).each {
+                    println("file >> " + it)
                 }
-            }else{
+            } else {
                 println("alert >> " + data)
             }
         } as EventHandler
@@ -144,7 +129,7 @@ class FilesetInput extends AnchorPane {
         if (addFiles) {
             cm.items.add(
                     new MenuItem(text: "Add Files", onAction: { e ->
-                        if (muliply) {
+                        if (useMultiply) {
                             new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
                                 startDirectory = it.parentFile
                                 addFile(it)
@@ -152,7 +137,7 @@ class FilesetInput extends AnchorPane {
                         } else {
 
                             def it = new FileChooser(initialDirectory: getBaseDir()).showOpenDialog(scene.window)
-                                startDirectory = it.parentFile
+                            startDirectory = it.parentFile
                             addFile(it)
                         }
                     } as EventHandler<ActionEvent>))
@@ -168,7 +153,7 @@ class FilesetInput extends AnchorPane {
                     } as EventHandler<ActionEvent>))
         }
 
-        if (addFiles &&  exclude) {
+        if (addFiles && useExcludes) {
             cm.items.add(
                     new MenuItem(text: "Exclude Files", onAction: { e ->
                         new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
@@ -178,7 +163,7 @@ class FilesetInput extends AnchorPane {
                     } as EventHandler<ActionEvent>))
         }
 
-        if (addDirectory && exclude) {
+        if (addDirectory && useExcludes) {
             cm.items.add(
                     new MenuItem(text: "Exclude Directory", onAction: { e ->
                         def it = new DirectoryChooser(initialDirectory: getBaseDir()).showDialog(scene.window)
@@ -193,23 +178,14 @@ class FilesetInput extends AnchorPane {
         return cm
     }
 
-    private File getBaseDir(){
-        new File("/Users/eugenepotapenko/Documents")
-        //startDirectory ?: ProjectHelper?.currentProject?.baseDir
-    }
 
-    private String createPattern(File file){
-        File base = getBaseDir() ?: ProjectHelper?.currentProject?.baseDir
-        String relative = base.toURI().relativize(file.toURI()).path
-        return  relative
-    }
 
     private JSObject getJSTopObject() {
         (JSObject) webView.engine.executeScript("window")
     }
 
     private void add(String el) {
-        getJSTopObject().call("addFile", el)
+        getJSTopObject().call("add", el)
     }
 
     private void addFile(File file) {
@@ -220,25 +196,68 @@ class FilesetInput extends AnchorPane {
         add("-" + createPattern(file))
     }
 
-    String getFilesetHtmlValue(){
+    String getFilesetHtmlValue() {
         "" + getJSTopObject().call("getFiles")
     }
 
-//    def getFiles(){
-//        AntBuilder ant = new AntBuilder()
-//        def scanner = ant.fileScanner{
-//            fileset{
-//
-//            }
-//
-//        }
-//
-//        //new FileSet().addFilename()
-//
-//    }
+    public static List<File> getFiles(String fileset) {
+        if (fileset.isEmpty()) return []
 
+        List<File> result = []
+        List<String> filesets = []
 
+        fileset.split(", ").each {
+            File file = new File(it)
+            if (file.exists()) {
+                result.add(file)
+            } else {
+                file = new File(baseDir, it)
+                if (file.exists()) {
+                    result.add(file)
+                }
+            }
+            filesets << it
+        }
+        result.addAll(getFilesFromFileset(filesets))
+        return result
+    }
 
+    private static List<File> getFilesFromFileset(List<String> values) {
+        List<File> result = []
+        if (values) {
+            String baseDir = getBaseDir().getAbsolutePath()
+            AntBuilder ant = new AntBuilder()
 
+            def scanner = ant.fileScanner {
+                fileset(dir: baseDir) {
+                    values.each { String f ->
+                        if (f) {
+                            if (f.startsWith("-")) {
+                                String filename = f[1..-1]
+                                exclude(name: filename)
+                            } else {
+                                include(name: f)
+                            }
+                        }
+                    }
+                }
+            }
 
+            scanner.each {
+                result.add(((File) it).getAbsoluteFile())
+            }
+        }
+
+        return result
+    }
+
+    private static File getBaseDir() {
+        new File("/Users/eugenepotapenko/Documents")
+        //startDirectory ?: ProjectHelper?.currentProject?.baseDir
+    }
+
+    private static String createPattern(File file) {
+        File base = getBaseDir() ?: ProjectHelper?.currentProject?.baseDir
+        return base.toURI().relativize(file.toURI()).path
+    }
 }
