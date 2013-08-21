@@ -95,7 +95,12 @@ class FilesetInput extends AnchorPane {
         WebEngine engine = webView.engine
         engine.documentProperty().addListener({ o, oldValue, newValue ->
             htmlLoaded = true
-            bridge = new JSBridge(webView.engine)
+            bridge = new JSBridge(webView.engine){
+                @Override
+                void resize(int height) {
+                    webView.prefHeight = height
+                }
+            }
             if (layoutInited && htmlLoaded) {
                 // init logic
             }
@@ -107,9 +112,9 @@ class FilesetInput extends AnchorPane {
             String data = event.data
             if (data.startsWith("command:update")) {
                 files = getFilesetHtmlValue()
-                getFiles(getFilesetHtmlValue()).each {
-                    println("file >> " + it)
-                }
+//                getFiles(getFilesetHtmlValue()).each {
+//                    println("file >> " + it)
+//                }
             } else {
                 println("alert >> " + data)
             }

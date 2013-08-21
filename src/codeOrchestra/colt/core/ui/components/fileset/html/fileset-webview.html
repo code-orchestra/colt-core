@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="fileset.css" type="text/css" media="screen" charset="utf-8"/>
     <script src="../../shared/jquery.js" type="text/javascript" charset="utf-8"></script>
     <script src="jquery-textboxlist.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../shared/jquery-resize.js" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
         var textbox
@@ -30,6 +31,12 @@
             })
             textbox.addEvent("bitBoxRemove", function () {
                 alert("command:update")
+            })
+
+            $("body").resize(function(){
+                if(window.app){
+                    window.app.resize($("body").height())
+                }
             })
 
         })
