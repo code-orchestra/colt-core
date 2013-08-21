@@ -45,7 +45,7 @@ class FilesetInput extends AnchorPane {
     @FXBindable String title = "Library Paths:"
 
     private Label label = new Label(layoutY: 23)
-    private WebView webView = new WebView(layoutY: 46, prefHeight: 30);
+    private WebView webView = new WebView(id: "fileset-webview", layoutY: 47, prefHeight: 28);
     private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 46, prefHeight: 30)
     private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 46, prefHeight: 30, prefWidth: 30, text: "Add")
     private JSBridge bridge
@@ -68,11 +68,10 @@ class FilesetInput extends AnchorPane {
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
 
-        setLeftAnchor(webView, 10)
-        setRightAnchor(webView, 48)
+        setLeftAnchor(webView, 11)
+        setRightAnchor(webView, 49)
         setLeftAnchor(focusRectangle, 10)
         setRightAnchor(focusRectangle, 48)
-
 
         addButton.styleClass.add("btn-add")
         label.textProperty().bind(titleProperty)
@@ -225,18 +224,18 @@ class FilesetInput extends AnchorPane {
         "" + getJSTopObject().call("getFiles")
     }
 
-    def getFiles(){
-        AntBuilder ant = new AntBuilder()
-        def scanner = ant.fileScanner{
-            fileset{
-
-            }
-
-        }
-
-        //new FileSet().addFilename()
-
-    }
+//    def getFiles(){
+//        AntBuilder ant = new AntBuilder()
+//        def scanner = ant.fileScanner{
+//            fileset{
+//
+//            }
+//
+//        }
+//
+//        //new FileSet().addFilename()
+//
+//    }
 
 
 
