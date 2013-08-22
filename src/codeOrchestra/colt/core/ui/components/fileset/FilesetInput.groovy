@@ -107,15 +107,15 @@ class FilesetInput extends AnchorPane {
             String data = event.data
             if (data.startsWith("command:update")) {
                 files = getFilesetHtmlValue()
-                if (useFiles) {
-                    getFilesFromString(files).each {
-                        println("file >> " + it)
-                    }
-                }else{
-                    getDirectoriesFromString(files).each {
-                        println("file >> " + it)
-                    }
-                }
+//                if (useFiles) {
+//                    getFilesFromString(files).each {
+//                        println("file >> " + it)
+//                    }
+//                }else{
+//                    getDirectoriesFromString(files).each {
+//                        println("file >> " + it)
+//                    }
+//                }
             } else {
                 println("alert >> " + data)
             }
