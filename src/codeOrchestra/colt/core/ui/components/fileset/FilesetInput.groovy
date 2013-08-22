@@ -49,8 +49,8 @@ class FilesetInput extends AnchorPane {
     private File startDirectory = null
 
     @FXBindable boolean useMultiply = true
-    @FXBindable boolean addFiles = true
-    @FXBindable boolean addDirectory = true
+    @FXBindable boolean useFiles = true
+    @FXBindable boolean useDirectory = true
     @FXBindable boolean useExcludes = true
 
     @FXBindable String files = ""
@@ -107,9 +107,15 @@ class FilesetInput extends AnchorPane {
             String data = event.data
             if (data.startsWith("command:update")) {
                 files = getFilesetHtmlValue()
-//                getFilesFromString(files).each {
-//                    println("file >> " + it)
-//                }
+                if (useFiles) {
+                    getFilesFromString(files).each {
+                        println("file >> " + it)
+                    }
+                }else{
+                    getDirectoriesFromString(files).each {
+                        println("file >> " + it)
+                    }
+                }
             } else {
                 println("alert >> " + data)
             }
@@ -146,7 +152,7 @@ class FilesetInput extends AnchorPane {
 
     private ContextMenu buildContextMenu() {
         ContextMenu cm = new ContextMenu()
-        if (addFiles) {
+        if (useFiles) {
             cm.items.add(
                     new MenuItem(text: "Add Files", onAction: { e ->
                         if (useMultiply) {
@@ -163,7 +169,7 @@ class FilesetInput extends AnchorPane {
                     } as EventHandler<ActionEvent>))
         }
 
-        if (addDirectory) {
+        if (useDirectory) {
             cm.items.add(
                     new MenuItem(text: "Add Directory", onAction: { e ->
                         def it = new DirectoryChooser(initialDirectory: getBaseDir()).showDialog(scene.window)
@@ -173,7 +179,7 @@ class FilesetInput extends AnchorPane {
                     } as EventHandler<ActionEvent>))
         }
 
-        if (addFiles && useExcludes) {
+        if (useFiles && useExcludes) {
             cm.items.add(
                     new MenuItem(text: "Exclude Files", onAction: { e ->
                         new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
@@ -183,7 +189,7 @@ class FilesetInput extends AnchorPane {
                     } as EventHandler<ActionEvent>))
         }
 
-        if (addDirectory && useExcludes) {
+        if (useDirectory && useExcludes) {
             cm.items.add(
                     new MenuItem(text: "Exclude Directory", onAction: { e ->
                         def it = new DirectoryChooser(initialDirectory: getBaseDir()).showDialog(scene.window)
@@ -223,29 +229,19 @@ class FilesetInput extends AnchorPane {
 
     public static List<File> getFilesFromString(String fileset) {
         if (fileset.isEmpty()) return []
-
-        List<File> result = []
-        List<String> filesets = []
-
-        fileset.split(", ").each {
-            File file = new File(it)
-            if (file.exists()) {
-                result.add(file.getAbsoluteFile())
-            } else {
-                file = new File(baseDir, it)
-                if (file.exists()) {
-                    result.add(file.getAbsoluteFile())
-                }
-            }
-            filesets << it
-        }
+        def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset)
         result.addAll(getFilesFromFileset(filesets))
-        return result
+        return result.grep{File f -> !f.isDirectory()}
     }
 
     public static List<File> getDirectoriesFromString(String fileset) {
         if (fileset.isEmpty()) return []
+        def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset)
+        result.addAll(getFilesFromFileset(filesets))
+        return result.grep{File f -> f.isDirectory()}
+    }
 
+    private static List collectFiles(String fileset) {
         List<File> result = []
         List<String> filesets = []
 
@@ -261,8 +257,7 @@ class FilesetInput extends AnchorPane {
             }
             filesets << it
         }
-        result.addAll(getDirectoryFromFileset(filesets))
-        return result
+        [result, filesets]
     }
 
     private static List<File> getFilesFromFileset(List<String> values) {
@@ -290,35 +285,7 @@ class FilesetInput extends AnchorPane {
             }
         }
 
-        return result.grep{File f -> !f.isDirectory()}
-    }
-
-    private static List<File> getDirectoryFromFileset(List<String> values) {
-        List<File> result = []
-        if (values) {
-            String baseDir = getBaseDir().getAbsolutePath()
-            AntBuilder ant = new AntBuilder()
-
-            def scanner = ant.fileScanner {
-                dirset(dir: baseDir) {
-                    values.each { String f ->
-                        if (f) {
-                            if (f.startsWith("-")) {
-                                exclude(name: f[1..-1])
-                            } else {
-                                include(name: f)
-                            }
-                        }
-                    }
-                }
-            }
-
-            scanner.each {
-                result << ((File) it).getAbsoluteFile()
-            }
-        }
-
-        return result.grep{File f -> f.isDirectory()}
+        return result
     }
 
     private static File getBaseDir() {
