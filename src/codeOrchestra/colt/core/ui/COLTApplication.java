@@ -39,6 +39,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
+import org.scenicview.ScenicView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -316,6 +317,7 @@ public class COLTApplication extends Application {
             }
         }
 
+//        ScenicView.show(mainStage.getScene());
     }
 
     public Stage getPrimaryStage() {
