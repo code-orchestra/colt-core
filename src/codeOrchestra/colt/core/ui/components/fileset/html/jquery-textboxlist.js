@@ -57,6 +57,7 @@
             clear()
             setValues(options.decode(values))
             update()
+            return self
         }
 
         var clipboard;
@@ -138,10 +139,16 @@
                     },
                     paste : function(e){
                         if(options.getClipboard){
-                            if (!current.is('box')) {
-                                current.setValue([null, options.getClipboard(), null])
-                                current.blur()
+                            e.stopPropagation();
+                            e.preventDefault();
+                            var newValues = options.decode(options.getClipboard())
+                            if(current.is("box")){
+                                focusRelative('next');
                             }
+                            $.each(newValues, function(){
+                                current.setValue([null, this, null])
+                                current.toBox()
+                            })
                         }
                     },
                     cut : function(e){
@@ -153,6 +160,12 @@
                         }
                     }
              });
+
+            $(window).blur(
+                function(){
+                    if(current)current.blur()
+                }
+            )
 
 
             setValues(options.decode(original.val()));
@@ -330,6 +343,7 @@
         this.getValues = getValues;
         this.getText = getText;
         this.plugins = [];
+        this.setNewValues = setNewValues;
         init();
     };
 
@@ -525,6 +539,7 @@
         this.blur = blur;
         this.remove = remove;
         this.inject = inject;
+        this.toBox = toBox;
         this.show = show;
         this.hide = hide;
         this.fireBitEvent = fireBitEvent;

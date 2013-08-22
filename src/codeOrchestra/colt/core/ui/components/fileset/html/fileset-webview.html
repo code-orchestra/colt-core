@@ -39,12 +39,21 @@
                 }
             })
 
+            $("body").bind({
+                ondrop : function(){
+                    alert("drop")
+                }
+            })
         })
 
         function add(str) {
-            textbox.add(str)
-            return textbox
+            return textbox.add(str)
         }
+
+        function setFiles(str) {
+            return textbox.setNewValues(str)
+        }
+
 
         function getFiles() {
             return textbox.getText()

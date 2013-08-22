@@ -3,7 +3,9 @@ package codeOrchestra.colt.core.ui.components.fileset
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
+import javafx.application.Platform
 import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -14,6 +16,10 @@ import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
 import javafx.scene.control.TextArea
+import javafx.scene.input.DragEvent
+import javafx.scene.input.Dragboard
+import javafx.scene.input.MouseEvent
+import javafx.scene.input.TransferMode
 import javafx.scene.layout.AnchorPane
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
@@ -56,7 +62,7 @@ class FilesetInput extends AnchorPane {
     @FXBindable boolean addDirectory = true
     @FXBindable boolean useExcludes = true
 
-    @FXBindable String files
+    @FXBindable String files = ""
 
     FilesetInput() {
         setRightAnchor(addButton, 10)
@@ -100,10 +106,7 @@ class FilesetInput extends AnchorPane {
                     webView.prefHeight = height
                 }
             }
-            if (layoutInited && htmlLoaded) {
-                // init logic
-            }
-
+            setFilesetHtmlValue(files)
         } as ChangeListener)
         engine.load(htmlPage)
 
@@ -122,6 +125,30 @@ class FilesetInput extends AnchorPane {
         webView.childrenUnmodifiable.addListener({ change ->
             webView.lookupAll(".scroll-bar")*.visible = false
         } as ListChangeListener)
+
+        //binding
+
+        filesProperty.addListener({ o, old, String newValue ->
+            Platform.runLater{
+                if(getFilesetHtmlValue() != newValue){
+                    setFilesetHtmlValue(newValue)
+                }
+            }
+        } as ChangeListener)
+
+        // drag & drop
+
+        this.onDragDropped = { DragEvent event ->
+            println("dropped:  " + event)
+        } as EventHandler
+
+        this.onDragDone = { DragEvent event ->
+            println("drag done:  " + event)
+        } as EventHandler
+
+        this.onDragDetected = { DragEvent event ->
+            println("drag detected:  " + event)
+        } as EventHandler
     }
 
     private ContextMenu buildContextMenu() {
@@ -195,6 +222,10 @@ class FilesetInput extends AnchorPane {
 
     String getFilesetHtmlValue() {
         "" + getJSTopObject().call("getFiles")
+    }
+
+    void setFilesetHtmlValue(String str) {
+        getJSTopObject().call("setFiles", str)
     }
 
     public static List<File> getFilesFromString(String fileset) {
