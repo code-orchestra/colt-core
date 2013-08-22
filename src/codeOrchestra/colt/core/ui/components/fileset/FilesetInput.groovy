@@ -302,6 +302,6 @@ class FilesetInput extends AnchorPane {
     }
 
     public static String createFilesetString(List<File> files){
-        files.collect{createPattern(it).toString()}.join(", ")
+        return files.collect{createPattern(it)}.join(", ")
     }
 }
