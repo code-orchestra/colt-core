@@ -300,4 +300,8 @@ class FilesetInput extends AnchorPane {
     private static String createPattern(File file) {
         return getBaseDir().toURI().relativize(file.toURI()).path
     }
+
+    public static String createFilesetString(List<File> files){
+        files.collect{createPattern(it).toString()}.join(", ")
+    }
 }
