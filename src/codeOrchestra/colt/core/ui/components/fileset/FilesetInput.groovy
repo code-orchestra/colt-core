@@ -5,21 +5,12 @@ import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import javafx.application.Platform
 import javafx.beans.value.ChangeListener
-import javafx.beans.value.ObservableValue
 import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Side
-import javafx.scene.control.Button
-import javafx.scene.control.ContentDisplay
-import javafx.scene.control.ContextMenu
-import javafx.scene.control.Label
-import javafx.scene.control.MenuItem
-import javafx.scene.control.TextArea
+import javafx.scene.control.*
 import javafx.scene.input.DragEvent
-import javafx.scene.input.Dragboard
-import javafx.scene.input.MouseEvent
-import javafx.scene.input.TransferMode
 import javafx.scene.layout.AnchorPane
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
@@ -106,7 +97,9 @@ class FilesetInput extends AnchorPane {
                     webView.prefHeight = height
                 }
             }
-            setFilesetHtmlValue(files)
+            if (files) {
+                setFilesetHtmlValue(files)
+            }
         } as ChangeListener)
         engine.load(htmlPage)
 
@@ -250,6 +243,28 @@ class FilesetInput extends AnchorPane {
         return result
     }
 
+    public static List<File> getDirectoriesFromString(String fileset) {
+        if (fileset.isEmpty()) return []
+
+        List<File> result = []
+        List<String> filesets = []
+
+        fileset.split(", ").each {
+            File file = new File(it)
+            if (file.exists()) {
+                result.add(file.getAbsoluteFile())
+            } else {
+                file = new File(baseDir, it)
+                if (file.exists()) {
+                    result.add(file.getAbsoluteFile())
+                }
+            }
+            filesets << it
+        }
+        result.addAll(getDirectoryFromFileset(filesets))
+        return result
+    }
+
     private static List<File> getFilesFromFileset(List<String> values) {
         List<File> result = []
         if (values) {
@@ -275,7 +290,35 @@ class FilesetInput extends AnchorPane {
             }
         }
 
-        return result
+        return result.grep{File f -> !f.isDirectory()}
+    }
+
+    private static List<File> getDirectoryFromFileset(List<String> values) {
+        List<File> result = []
+        if (values) {
+            String baseDir = getBaseDir().getAbsolutePath()
+            AntBuilder ant = new AntBuilder()
+
+            def scanner = ant.fileScanner {
+                dirset(dir: baseDir) {
+                    values.each { String f ->
+                        if (f) {
+                            if (f.startsWith("-")) {
+                                exclude(name: f[1..-1])
+                            } else {
+                                include(name: f)
+                            }
+                        }
+                    }
+                }
+            }
+
+            scanner.each {
+                result << ((File) it).getAbsoluteFile()
+            }
+        }
+
+        return result.grep{File f -> f.isDirectory()}
     }
 
     private static File getBaseDir() {
