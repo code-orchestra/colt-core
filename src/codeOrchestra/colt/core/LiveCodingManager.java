@@ -12,11 +12,11 @@ import java.util.Set;
 /**
  * @author Alexander Eliseyev
  */
-public interface LiveCodingManager<P extends COLTProject> extends COLTService<P> {
+public interface LiveCodingManager<P extends COLTProject, S> extends COLTService<P> {
 
     LiveCodingSession getSession(String clientId);
 
-    void startSession(String broadcastId, String clientId, Map<String, String> clientInfo, ClientSocketHandler clientSocketHandler);
+    void startSession(String broadcastId, String clientId, Map<String, String> clientInfo, S clientSocketHandler);
 
     void stopSession(LiveCodingSession liveCodingSession);
 

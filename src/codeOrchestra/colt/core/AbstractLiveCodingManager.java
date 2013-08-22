@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * @author Alexander Eliseyev
  */
-public abstract class AbstractLiveCodingManager<P extends COLTProject> implements LiveCodingManager<P> {
+public abstract class AbstractLiveCodingManager<P extends COLTProject, S> implements LiveCodingManager<P, S> {
 
     private Object listenerMonitor = new Object();
 

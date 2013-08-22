@@ -51,7 +51,7 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     LiveLauncher<P> createLauncher();
 
-    LiveCodingManager<P> createLiveCodingManager();
+    LiveCodingManager<P, ?> createLiveCodingManager();
 
     SourceFileFactory createSourceFileFactory();
 
