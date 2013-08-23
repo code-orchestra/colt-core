@@ -21,7 +21,7 @@ class GAController {
         return instance
     }
 
-    GATracker tracke =  GATracker.instance
+    GATracker tracker =  GATracker.instance
 
     Stage curStage
 
@@ -59,16 +59,16 @@ class GAController {
         void handle(Event it) {
 //            println("it -> " + it)
             if (it instanceof ActionEvent) {
-                println "action > ${it.target}"
+//                println "action > ${it.target}"
 
                 if (eventsMap.containsKey(it.target)) {
                     GAEventInfo info = eventsMap[it.target]
-                    tracke.trackEventWithPage(info.category, info.category)
+                    tracker.trackEventWithPage(info.category, info.category)
                 }
             }
 
             if (it instanceof InputMethodEvent) {
-                println "focus > $it"
+//                println "focus > $it"
             }
         }
     }
@@ -88,7 +88,7 @@ class GAController {
         pageContainer = container
         pageContainer.addListener({observableValue, FXNode oldNode, FXNode newNode ->
             GAPageInfo info = pagesMap[newNode]
-            tracke.trackPageView(info.url, info.title)
+            tracker.trackPageView(info.url, info.title)
         } as ChangeListener)
     }
 
