@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.ui.components.inputForms
 import codeOrchestra.colt.core.ui.components.fileset.FilesetInput
 import codeOrchestra.groovyfx.FXBindable
 import javafx.application.Application
+import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.scene.Scene
 import javafx.scene.control.Button
@@ -13,7 +14,7 @@ import javafx.stage.Stage
  * @author Dima Kruk
  */
 class TestComponents extends Application {
-    @FXBindable String text = "srt2/";
+    @FXBindable String text = "model/";
 
     @Override
     void start(Stage primaryStage) throws Exception {
@@ -26,8 +27,15 @@ class TestComponents extends Application {
 
         Button button = new Button("Test")
         button.onAction = {
-            text = "str/"
-            text = "str2/"
+            text = "def/"
+                //bug
+            text = "new_model/"
+                //end bug
+                //fix
+            //Platform.runLater({text = "new_model/"})
+                //end fix
+
+
         } as EventHandler
         root.children.add(button)
 
