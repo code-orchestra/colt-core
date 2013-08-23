@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
+<fx:root maxWidth="640" type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
   <children>
     <Button fx:id="button" focusTraversable="false" layoutY="7" prefHeight="30" text="Advanced" AnchorPane.leftAnchor="19" />
     <Button fx:id="saveButton" focusTraversable="false" layoutY="7" prefHeight="30" prefWidth="67" styleClass="btn-done" text="Save" AnchorPane.rightAnchor="10" />

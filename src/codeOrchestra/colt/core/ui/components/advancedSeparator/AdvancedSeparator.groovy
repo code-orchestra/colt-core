@@ -54,6 +54,7 @@ class AdvancedSeparator extends AnchorPane {
 
     void setContent(javafx.scene.Node content) {
         this.content = content
+        content.maxWidth = maxWidth
         content.visible = content.managed = !close
         if (!content.styleClass.contains("fieldset-advanced")) {
             content.styleClass.add("fieldset-advanced")
