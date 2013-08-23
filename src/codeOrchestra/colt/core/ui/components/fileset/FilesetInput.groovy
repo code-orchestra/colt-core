@@ -231,14 +231,14 @@ class FilesetInput extends AnchorPane {
         if (fileset.isEmpty()) return []
         def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset)
         result.addAll(getFilesFromFileset(filesets))
-        return result.grep{File f -> !f.isDirectory()}
+        return result.grep{File f -> !f.directory }
     }
 
     public static List<File> getDirectoriesFromString(String fileset) {
-        if (fileset.isEmpty()) return []
+        if (fileset.empty) return []
         def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset)
         result.addAll(getFilesFromFileset(filesets))
-        return result.grep{File f -> f.isDirectory()}
+        return result.grep{File f -> f.directory }
     }
 
     private static List collectFiles(String fileset) {
@@ -247,12 +247,12 @@ class FilesetInput extends AnchorPane {
 
         fileset.split(", ").each {
             File file = new File(it)
-            if (file.exists() && file.isAbsolute()) {
-                result.add(file.getAbsoluteFile())
+            if (file.exists() && file.absolute) {
+                result.add(file.absoluteFile)
             } else {
                 file = new File(baseDir, it)
                 if (file.exists()) {
-                    result.add(file.getAbsoluteFile())
+                    result.add(file.absoluteFile)
                 }
             }
             filesets << it
