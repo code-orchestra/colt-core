@@ -1,5 +1,11 @@
-package codeOrchestra.colt.core.ui.components.inputForms
+package codeOrchestra.colt.core.ui.components.inputForms.group
 
+import codeOrchestra.colt.core.ui.components.inputForms.CBForm
+import codeOrchestra.colt.core.ui.components.inputForms.CTBForm
+import codeOrchestra.colt.core.ui.components.inputForms.FormType
+import codeOrchestra.colt.core.ui.components.inputForms.ITypedForm
+import codeOrchestra.colt.core.ui.components.inputForms.LTBForm
+import codeOrchestra.colt.core.ui.components.inputForms.RTBForm
 import javafx.collections.ListChangeListener
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
