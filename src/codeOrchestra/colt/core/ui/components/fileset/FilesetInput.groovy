@@ -247,7 +247,7 @@ class FilesetInput extends AnchorPane {
 
         fileset.split(", ").each {
             File file = new File(it)
-            if (file.exists()) {
+            if (file.exists() && file.isAbsolute()) {
                 result.add(file.getAbsoluteFile())
             } else {
                 file = new File(baseDir, it)
