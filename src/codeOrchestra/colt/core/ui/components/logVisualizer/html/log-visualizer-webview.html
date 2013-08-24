@@ -60,7 +60,7 @@
             }
         }
         messages.unshift(m);
-        alert ("Received " + m.counts[0] + " errors, " + m.counts[1] + " warnings, " + m.counts[2] + " infos");
+//        alert ("Received " + m.counts[0] + " errors, " + m.counts[1] + " warnings, " + m.counts[2] + " infos");
     }
 
     function draw () {
@@ -128,6 +128,14 @@
         // legend text todo: actual text
         var legendText = "sec";
         context.fillText(legendText, 17 - legendText.length * 3, 38);
+    }
+
+    window.onerror = function myErrorFunction(message, url, linenumber) {
+        alert("------------------------------------")
+        alert("js error (message): " + message)
+        alert("js error (url): " + url)
+        alert("js error (line number): " + linenumber)
+        alert("------------------------------------")
     }
 
 </script>

@@ -40,11 +40,10 @@ class FilesetInput extends AnchorPane {
 
     private Label label = new Label(layoutY: 23)
     private WebView webView = new WebView(id: "fileset-webview", layoutY: 47, prefHeight: 30);
-    private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 46)
+    private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 46, focusTraversable: false, editable: false)
     private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 46, prefHeight: 30, prefWidth: 30, text: "Add")
     private JSBridge bridge
     private boolean htmlLoaded
-    private boolean layoutInited
 
     private File startDirectory = null
 
@@ -74,6 +73,9 @@ class FilesetInput extends AnchorPane {
         webView.focusedProperty().addListener({ o, old, focused ->
             focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
             focusRectangle.styleClass.add(focused ? "fileset-webview-focus" : "fileset-webview")
+            if(focused){
+                getJSTopObject().call("requestFocus")
+            }
         } as ChangeListener)
 
         addButton.onAction = {

@@ -344,6 +344,11 @@
         this.getText = getText;
         this.plugins = [];
         this.setNewValues = setNewValues;
+
+        this.requestFocus = function(){
+            var last = list.children().last()
+            $(last).focus()
+        }
         init();
     };
 
@@ -377,7 +382,7 @@
                 bit.html(chk(self.value[2]) ? self.value[2] : self.value[1]).click(focus);
                 if (options.deleteButton) {
                     bit.addClass(typeprefix + '-deletable');
-                    close = $('<a href="#" class="' + typeprefix + '-deletebutton" />').click(remove).appendTo(bit);
+                    close = $('<a href="#" class="' + typeprefix + '-deletebutton" tabindex="-1"/>').click(remove).appendTo(bit);
                 }
                 bit.children().click(function (e) {
                     e.stopPropagation();

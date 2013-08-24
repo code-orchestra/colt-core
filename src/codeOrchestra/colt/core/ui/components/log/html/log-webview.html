@@ -209,12 +209,13 @@ $(document).ready(function () {
         }
     })
 
-    function escapeHtml(text){
-        return $("<div/>").text(text).html()
+    window.onerror = function myErrorFunction(message, url, linenumber) {
+        alert("------------------------------------")
+        alert("js error (message): " + message)
+        alert("js error (url): " + url)
+        alert("js error (line number): " + linenumber)
+        alert("------------------------------------")
     }
-
-    console.log(escapeHtml("<p>hello</p>")) // &lt;p&gt;hello&lt;/p&gt;
-
 //    test()
 })
 
