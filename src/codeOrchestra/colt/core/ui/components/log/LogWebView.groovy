@@ -50,15 +50,14 @@ class LogWebView extends VBox {
 
     LogWebView() {
 
-Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 12);
+//        Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 12); //todo: загружать нужно в html - @font-face
 
         String htmlPage = this.class.getResource("html/log-webview.html").toExternalForm()
         WebEngine engine = webView.engine
-        engine.documentProperty().addListener({ o, oldValue, newValue ->
+        engine.documentProperty().addListener({ o, oldValue,  newValue ->
             htmlLoaded = true
             JSBridge.create(engine)
             if (layoutInited && htmlLoaded) {
-                clear()
                 addLogMessages(logMessages.asList())
             }
 
@@ -70,23 +69,22 @@ Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 1
         setVgrow(webView, Priority.ALWAYS)
 
         logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
-            synchronized (logMessages) {
-                if (htmlLoaded) {
-                    while (c.next()) {
-                        if (c.wasRemoved()) {
-                            println("clear log")
-                            clear()
-                        } else if (c.wasPermutated()) {
-                            println "permutated"
-                        } else if (c.wasUpdated()) {
-                            println "updated"
-                        } else {
-                            addLogMessages(c.getAddedSubList().asList())
-                        }
+            if (htmlLoaded) {
+                while (c.next()) {
+                    if (c.wasRemoved()) {
+                        println("clear log")
+                        clear()
+                    } else if (c.wasPermutated()) {
+                        println "permutated"
+                    } else if (c.wasUpdated()) {
+                        println "updated"
+                    } else {
+                        List<LogMessage> newMessages = []
+                        newMessages.addAll(c.getAddedSubList())
+                        addLogMessages(newMessages)
                     }
                 }
             }
-
         } as ListChangeListener)
 
         engine.onAlert = new EventHandler<WebEvent<String>>() {
@@ -96,6 +94,47 @@ Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 1
             }
         }
 
+//        testLog()
+
+        webView.widthProperty().addListener({ ObservableValue<? extends Number> observable, Number oldValue, Number newValue ->
+            fireApplicationResize()
+        } as ChangeListener)
+        webView.heightProperty().addListener({ ObservableValue<? extends Number> observable, Number oldValue, Number newValue ->
+            fireApplicationResize()
+        } as ChangeListener)
+    }
+
+    private JSObject getJSTopObject() {
+        (JSObject) webView.engine.executeScript("window")
+    }
+
+    private void addLogMessages(List<LogMessage> messages) {
+        messages*.filter(logFilter ?: LogFilter.ALL)
+        getJSTopObject().call("addLogMessages", messages)
+    }
+
+    private void clear() {
+        getJSTopObject().call("clear")
+    }
+
+    public void filter(LogFilter logFilter) {
+        this.logFilter = logFilter
+        boolean updated
+        logMessages.each {
+            if (it.filter(logFilter)) {
+                updated = true
+            }
+        }
+        if (updated && htmlLoaded) {
+            getJSTopObject().call("filter")
+        }
+    }
+
+    private void fireApplicationResize() {
+        getJSTopObject().call("applicationResize")
+    }
+
+    private void testLog() {
         addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
             void handle(KeyEvent event) {
@@ -114,63 +153,5 @@ Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 1
                 }
             }
         })
-
-        webView.widthProperty().addListener({ ObservableValue<? extends Number> observable, Number oldValue, Number newValue ->
-            fireApplicationResize()
-        } as ChangeListener)
-        webView.heightProperty().addListener({ ObservableValue<? extends Number> observable, Number oldValue, Number newValue ->
-            fireApplicationResize()
-        } as ChangeListener)
-    }
-
-    private JSObject getJSTopObject() {
-        (JSObject) webView.engine.executeScript("window")
-    }
-
-    private void addLogMessages(List<LogMessage> messages) {
-        synchronized (flushList) {
-            messages*.filter(logFilter ?: LogFilter.ALL)
-            boolean flushBefore = flushList.isEmpty()
-            flushList.addAll(messages)
-            if (flushBefore) {
-                Platform.runLater {
-                    flush()
-                }
-            }
-        }
-    }
-
-    private flush() {
-        synchronized (flushList) {
-            getJSTopObject().call("addLogMessages", flushList)
-            flushList.clear()
-        }
-    }
-
-    private void clear() {
-        Platform.runLater {
-            getJSTopObject().call("clear")
-        }
-    }
-
-    public void filter(LogFilter logFilter) {
-        this.logFilter = logFilter
-        boolean updated
-        logMessages.each {
-            if(it.filter(logFilter)){
-                updated = true
-            }
-        }
-        if(updated){
-            Platform.runLater {
-                getJSTopObject().call("filter")
-            }
-        }
-    }
-
-    private void fireApplicationResize(){
-        Platform.runLater {
-            getJSTopObject().call("applicationResize")
-        }
     }
 }
