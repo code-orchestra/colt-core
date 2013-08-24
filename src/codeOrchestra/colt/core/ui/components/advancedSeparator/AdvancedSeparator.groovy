@@ -1,11 +1,13 @@
 package codeOrchestra.colt.core.ui.components.advancedSeparator
 
+import javafx.beans.value.ChangeListener
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.control.Button
 import javafx.scene.layout.AnchorPane
 import javafx.scene.Node as FXNode
+import javafx.scene.layout.Region
 
 /**
  * @author Dima Kruk
@@ -30,9 +32,8 @@ class AdvancedSeparator extends AnchorPane {
             throw new RuntimeException(exception);
         }
 
-        button.onAction = {
-            close = !close
-
+        saveButton.onAction = {
+            // call to main controller?
         } as EventHandler
 
         setClose(true)
@@ -52,7 +53,7 @@ class AdvancedSeparator extends AnchorPane {
         content?.visible = content?.managed = !close
     }
 
-    void setContent(javafx.scene.Node content) {
+    void setContent(Region content) {
         this.content = content
         content.maxWidth = maxWidth
         content.visible = content.managed = !close
