@@ -47,7 +47,7 @@ public class COLTProjectManager {
         return currentProject;
     }
 
-    private List<ProjectListener> projectListeners = new ArrayList<ProjectListener>();
+    private List<ProjectListener> projectListeners = new ArrayList<>();
 
     public synchronized void fireProjectLoaded() {
         for (ProjectListener projectListener : projectListeners) {

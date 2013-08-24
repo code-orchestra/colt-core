@@ -3,7 +3,7 @@ package codeOrchestra.colt.core.ui.components.fileset
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
-import javafx.application.Platform
+import javafx.beans.InvalidationListener
 import javafx.beans.value.ChangeListener
 import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
@@ -109,7 +109,10 @@ class FilesetInput extends AnchorPane {
         engine.onAlert = { WebEvent<String> event ->
             String data = event.data
             if (data.startsWith("command:update")) {
-                files = getFilesetHtmlValue()
+                String newValue = getFilesetHtmlValue()
+                if (newValue != files) {
+                    files = newValue
+                }
 //                if (useFiles) {
 //                    getFilesFromString(files).each {
 //                        println("file >> " + it)
@@ -131,10 +134,9 @@ class FilesetInput extends AnchorPane {
         //binding
 
         filesProperty.addListener({ o, old, String newValue ->
-            Platform.runLater{
-                if(getFilesetHtmlValue() != newValue){
-                    setFilesetHtmlValue(newValue)
-                }
+            String oldValue = getFilesetHtmlValue()
+            if(oldValue != files){
+                setFilesetHtmlValue(newValue)
             }
         } as ChangeListener)
 

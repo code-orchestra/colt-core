@@ -12,6 +12,7 @@
 
     <script type="text/javascript" charset="utf-8">
         var textbox
+        var currentValue
         $(function () {
             textbox = new $.TextboxList('#form_tags_input', {
                 setClipboard: function (src) {
@@ -26,12 +27,15 @@
                     return "hello"
                 }});
 
-            textbox.addEvent("bitBoxAdd", function () {
-                alert("command:update")
-            })
-            textbox.addEvent("bitBoxRemove", function () {
-                alert("command:update")
-            })
+            var fireUpdate = function () {
+                if(getFiles() != currentValue){
+                    currentValue = getFiles()
+                    alert("command:update")
+                }
+            }
+
+            textbox.addEvent("bitBoxAdd", fireUpdate)
+            textbox.addEvent("bitBoxRemove", fireUpdate)
 
             $("body").resize(function(){
                 if(window.app){
