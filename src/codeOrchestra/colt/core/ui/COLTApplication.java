@@ -124,7 +124,7 @@ public class COLTApplication extends Application {
         root.setFillWidth(true);
         root.setMaxHeight(Double.MAX_VALUE);
         mainStage.setTitle("COLT — Code Orchestra Livecoding Tool (1.2)");
-        mainStage.setScene(new Scene(root, 580, 820));
+        mainStage.setScene(new Scene(root, 506, 820));
 
         menuBar = new ColtMenuBar();
         root.getChildren().add(menuBar);

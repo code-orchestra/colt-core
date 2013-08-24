@@ -32,8 +32,8 @@ class AdvancedSeparator extends AnchorPane {
             throw new RuntimeException(exception);
         }
 
-        saveButton.onAction = {
-            // call to main controller?
+        button.onAction = {
+            close = !close
         } as EventHandler
 
         setClose(true)

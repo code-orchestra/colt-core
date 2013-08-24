@@ -127,9 +127,9 @@ class FilesetInput extends AnchorPane {
             }
         } as EventHandler
 
-        webView.childrenUnmodifiable.addListener({ change ->
-            webView.lookupAll(".scroll-bar")*.visible = false
-        } as ListChangeListener)
+//        webView.childrenUnmodifiable.addListener({ change ->
+//            webView.lookupAll(".scroll-bar")*.visible = false
+//        } as ListChangeListener)
 
         //binding
 

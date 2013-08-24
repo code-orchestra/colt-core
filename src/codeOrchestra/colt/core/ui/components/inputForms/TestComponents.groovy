@@ -39,7 +39,7 @@ class TestComponents extends Application {
         } as EventHandler
         root.children.add(button)
 
-        Scene scene = new Scene(root, 580, 820)
+        Scene scene = new Scene(root, 506, 820)
         primaryStage.setScene(scene);
         primaryStage.show();
     }

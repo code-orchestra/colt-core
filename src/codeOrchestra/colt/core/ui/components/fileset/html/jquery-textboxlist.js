@@ -37,7 +37,11 @@
             container = $('<div class="' + options.prefix + '" />')
                 .insertAfter(element)
                 .click(function (e) {
-                    if ((e.target == list.get(0) || e.target == container.get(0)) && (!focused || (current && current.toElement().get(0) != list.find(':last-child').get(0)))) focusLast();
+                    if ((e.target == list.get(0) || e.target == container.get(0)) && (!focused || (current && current.toElement().get(0) != list.find(':last-child').get(0)))){
+                        e.stopPropagation();
+                        e.preventDefault();
+                        focusLast();
+                    }
                 });
             list = $('<ul class="' + options.prefix + '-bits" />').appendTo(container);
             for (var name in options.plugins) enablePlugin(name, options.plugins[name]);
@@ -68,6 +72,8 @@
             addEvent('bitRemove', update, true);
             $(document).click(function (e) {
                 if (!focused) return;
+                e.stopPropagation();
+                e.preventDefault();
                 if (e.target.className.indexOf(options.prefix) != -1) {
                     if (e.target == $(container).get(0)) return;
                     var parent = $(e.target).parents('div.' + options.prefix);

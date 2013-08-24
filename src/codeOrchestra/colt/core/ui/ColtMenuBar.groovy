@@ -12,6 +12,7 @@ import codeOrchestra.colt.core.model.monitor.ChangingMonitor
 import codeOrchestra.colt.core.ui.dialog.COLTDialogs
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
+import javafx.scene.Scene
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
@@ -32,7 +33,7 @@ class ColtMenuBar extends MenuBar {
         Menu fileMenu = new Menu("File")
 
         MenuItem openProjectMenuItem = new MenuItem("Open Project")
-        openProjectMenuItem.accelerator = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN, KeyCombination.SHORTCUT_DOWN)
+        openProjectMenuItem.accelerator = new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN)
         openProjectMenuItem.onAction = { t ->
             FileChooser fileChooser = new FileChooser()
             fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
@@ -48,8 +49,9 @@ class ColtMenuBar extends MenuBar {
         } as EventHandler<ActionEvent>
 
         MenuItem saveProjectMenuItem = new MenuItem("Save Project")
-        saveProjectMenuItem.accelerator = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHORTCUT_DOWN)
+        saveProjectMenuItem.accelerator = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN)
         saveProjectMenuItem.onAction = { t ->
+            println("save project")
             try {
                 COLTProjectManager.getInstance().save()
             } catch (COLTException e) {
