@@ -101,13 +101,6 @@ class FilesetInput extends AnchorPane {
                 setFilesetHtmlValue(files)
             }
 
-            focusRectangle.styleClass.add(!focused ? "fileset-webview-focus" : "fileset-webview")
-            Platform.runLater{
-                focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
-                focusRectangle.styleClass.add(focused ? "fileset-webview-focus" : "fileset-webview")
-                println "{focusRectangle.styleClass} = ${focusRectangle.styleClass}"
-            }
-
         } as ChangeListener)
         engine.load(htmlPage)
 
