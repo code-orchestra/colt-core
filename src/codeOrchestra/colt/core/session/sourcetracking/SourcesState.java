@@ -36,6 +36,12 @@ public class SourcesState {
 	public void addFile(File file, File baseDir) {
 		state.put(file.getPath(), file.lastModified());
 		SourceFileFactory sourceFileFactory = ServiceProvider.get(SourceFileFactory.class);
+
+        if (sourceFileFactory == null) {
+            // disposed
+            return;
+        }
+
         pathToWrapper.put(file.getPath(), sourceFileFactory.createSourceFile(file, baseDir));
 	}
 	
