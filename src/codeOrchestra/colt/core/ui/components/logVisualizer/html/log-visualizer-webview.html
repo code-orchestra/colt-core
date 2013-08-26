@@ -19,6 +19,8 @@
     <img src="legend.png" style="position:absolute; top:47px; left:12px;" />
 
 <script>
+    var stopped = true;
+
     var context, messages = [], msPerColumn = 1000;
 
     function resizeCanvas () {
@@ -94,6 +96,7 @@
             // select colors
             for (var j = 0; j < rows; j++) {
                 fillStyles[j] = grey;
+                if (stopped) continue;
                 // todo: threshold
                 if (counts[j] > 0) {
                     fillStyles[j] = colors[j];
@@ -110,20 +113,22 @@
         // ticks and numbers
         context.fillStyle = '#8e9094';
         context.font = "11px sans-serif";
-        context.strokeStyle = '#caccd0';
-        context.lineWidth = 1;
-        context.beginPath();
-        var d = ((now / msPerColumn)|0) % 4
-        for (var w = 86.5 + 13 * (d - 4), j = d; w < W - 30; w += 52, j += 4) {
-            if ((j == d) && (d == 0)) continue;
+        if (!stopped) {
+            context.strokeStyle = '#caccd0';
+            context.lineWidth = 1;
+            context.beginPath();
+            var d = ((now / msPerColumn)|0) % 4
+            for (var w = 86.5 + 13 * (d - 4), j = d; w < W - 30; w += 52, j += 4) {
+                if ((j == d) && (d == 0)) continue;
 
-            context.moveTo(w, 41);
-            context.lineTo(w, 46);
+                context.moveTo(w, 41);
+                context.lineTo(w, 46);
 
-            var text = "" + (((now - j * msPerColumn) / 1000) | 0) % 60;
-            context.fillText(text, w - text.length * 3, 38);
+                var text = "" + (((now - j * msPerColumn) / 1000) | 0) % 60;
+                context.fillText(text, w - text.length * 3, 38);
+            }
+            context.stroke();
         }
-        context.stroke();
 
         // legend text todo: actual text
         var legendText = "sec";
@@ -136,6 +141,20 @@
         alert("js error (url): " + url)
         alert("js error (line number): " + linenumber)
         alert("------------------------------------")
+    }
+
+    function clearMessages() {
+        messages.length = 0;
+    }
+
+    function start() {
+        stopped = false;
+        clearMessages();
+    }
+
+    function stop() {
+        stopped = true;
+        clearMessages();
     }
 
 </script>

@@ -57,6 +57,18 @@ class LogVisualizer extends VBox {
         }
     }
 
+    public void clearMessages() {
+        getJSTopObject().call("clearMessages")
+    }
+
+    public void start() {
+        getJSTopObject().call("start")
+    }
+
+    public void stop() {
+        getJSTopObject().call("stop")
+    }
+
     void setLogMessages(OL<LogMessage> logMessages) {
         this.logMessages = logMessages
         logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
