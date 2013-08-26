@@ -12,7 +12,7 @@
   <HBox id="HBox" alignment="CENTER_LEFT" layoutY="-1.0" spacing="0.0" AnchorPane.leftAnchor="19.0">
     <children>
       <Label fx:id="label" text="Target player version (" />
-      <CheckBox fx:id="checkBox" prefWidth="-1.0" text="use max version" />
+      <CheckBox fx:id="checkBox" prefWidth="-1.0" text="use the latest version" />
       <Label text="):" />
     </children>
   </HBox>
