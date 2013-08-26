@@ -215,7 +215,7 @@ public class GeneralCommandLine {
     clone.myExePath = myExePath;
     clone.myWorkDirectory = myWorkDirectory;
     clone.myProgramParams = myProgramParams.clone();
-    clone.myEnvParams = myEnvParams != null ? new HashMap<String, String>(myEnvParams) : null;
+    clone.myEnvParams = myEnvParams != null ? new HashMap<>(myEnvParams) : null;
     return clone;
   }
 

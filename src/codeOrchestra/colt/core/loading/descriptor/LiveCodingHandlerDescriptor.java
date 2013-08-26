@@ -13,7 +13,7 @@ import java.util.List;
 public class LiveCodingHandlerDescriptor {
 
     public static List<LiveCodingHandlerDescriptor> fromXML(Document document) {
-        List<LiveCodingHandlerDescriptor> result = new ArrayList<LiveCodingHandlerDescriptor>();
+        List<LiveCodingHandlerDescriptor> result = new ArrayList<>();
 
         NodeList coldHandlersList = document.getDocumentElement().getElementsByTagName("coltHandler");
         for (int i = 0; i < coldHandlersList.getLength(); i++) {

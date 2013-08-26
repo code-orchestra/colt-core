@@ -7,11 +7,7 @@ import javafx.beans.value.ObservableValue
  * @author Dima Kruk
  */
 class ChangingMonitor {
-    private static ChangingMonitor ourInstance = new ChangingMonitor()
-
-    public static ChangingMonitor getInstance() {
-        return ourInstance
-    }
+    @Lazy static ChangingMonitor instance = new ChangingMonitor()
 
     ArrayList<ObservableValue> items
     boolean changed
@@ -42,10 +38,7 @@ class ChangingMonitor {
         value.removeListener(changeListener)
     }
 
-    private ChangeListener changeListener = new ChangeListener() {
-        @Override
-        void changed(ObservableValue observableValue, Object t, Object t1) {
-            changed = true
-        }
-    }
+    private ChangeListener changeListener = { ObservableValue observableValue, Object t, Object t1 ->
+        changed = true
+    } as ChangeListener
 }

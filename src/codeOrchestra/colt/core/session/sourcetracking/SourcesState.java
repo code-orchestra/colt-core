@@ -40,7 +40,7 @@ public class SourcesState {
 	}
 	
 	public List<SourceFile> getChangedFiles(SourcesState oldState) {
-		List<SourceFile> changedFiles = new ArrayList<SourceFile>();
+		List<SourceFile> changedFiles = new ArrayList<>();
 		
 		for (String newStatePath : state.keySet()) {
 			long newTimestamp = state.get(newStatePath);

@@ -166,10 +166,11 @@ class FilesetInput extends AnchorPane {
                                 addFile(it)
                             }
                         } else {
-
                             def it = new FileChooser(initialDirectory: getBaseDir()).showOpenDialog(scene.window)
-                            startDirectory = it.parentFile
-                            addFile(it)
+                            if (it) {
+                                startDirectory = it.parentFile
+                                addFile(it)
+                            }
                         }
                     } as EventHandler<ActionEvent>))
         }
@@ -178,8 +179,10 @@ class FilesetInput extends AnchorPane {
             cm.items.add(
                     new MenuItem(text: "Add Directory", onAction: { e ->
                         def it = new DirectoryChooser(initialDirectory: getBaseDir()).showDialog(scene.window)
-                        startDirectory = it.parentFile
-                        addFile(it)
+                        if (it) {
+                            startDirectory = it?.parentFile
+                            addFile(it)
+                        }
 
                     } as EventHandler<ActionEvent>))
         }
@@ -188,7 +191,7 @@ class FilesetInput extends AnchorPane {
             cm.items.add(
                     new MenuItem(text: "Exclude Files", onAction: { e ->
                         new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
-                            startDirectory = it.parentFile
+                            startDirectory = it?.parentFile
                             excludeFile(it)
                         }
                     } as EventHandler<ActionEvent>))
@@ -198,8 +201,10 @@ class FilesetInput extends AnchorPane {
             cm.items.add(
                     new MenuItem(text: "Exclude Directory", onAction: { e ->
                         def it = new DirectoryChooser(initialDirectory: getBaseDir()).showDialog(scene.window)
-                        startDirectory = it.parentFile
-                        excludeFile(it)
+                        if (it) {
+                            startDirectory = it.parentFile
+                            excludeFile(it)
+                        }
                     } as EventHandler<ActionEvent>))
         }
 

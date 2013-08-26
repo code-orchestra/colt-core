@@ -37,7 +37,7 @@ public class UsagePeriods {
         if (usagePeriods.size() + 1 > MAX_PAIRS_COUNT) {
             usagePeriods.remove(0);
         }
-        usagePeriods.add(new Pair<Long>(start, end));
+        usagePeriods.add(new Pair<>(start, end));
         try {
             save();
         } catch (BackingStoreException e) {
@@ -55,7 +55,7 @@ public class UsagePeriods {
                     String[] periodSplit = period.split("\\" + PERIOD_DELIMITER);
                     long start = Long.valueOf(periodSplit[0]);
                     long end = Long.valueOf(periodSplit[1]);
-                    usagePeriods.add(new Pair<Long>(start, end));
+                    usagePeriods.add(new Pair<>(start, end));
                 }
             }
         }
