@@ -21,7 +21,7 @@ public interface LiveCodingManager<P extends Project, S> extends ColtService<P> 
 
     Set<String> getCurrentSessionsClientIds();
 
-    List<LiveCodingSession> getCurrentConnections();
+    List<LiveCodingSession<S>> getCurrentConnections();
 
     void addListener(LiveCodingListener listener);
 

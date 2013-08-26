@@ -13,13 +13,13 @@ public abstract class AbstractLiveCodingManager<P extends Project, S> implements
 
     private Object listenerMonitor = new Object();
 
-    protected Map<String, LiveCodingSession> currentSessions = new HashMap<String, LiveCodingSession>();
+    protected Map<String, LiveCodingSession<S>> currentSessions = new HashMap<>();
 
-    private List<LiveCodingListener> liveCodingListeners = new ArrayList<LiveCodingListener>();
+    private List<LiveCodingListener> liveCodingListeners = new ArrayList<>();
 
     @Override
-    public List<LiveCodingSession> getCurrentConnections() {
-        List<LiveCodingSession> liveCodingSessions = new ArrayList<>(currentSessions.values());
+    public List<LiveCodingSession<S>> getCurrentConnections() {
+        List<LiveCodingSession<S>> liveCodingSessions = new ArrayList<>(currentSessions.values());
         Collections.sort(liveCodingSessions, new Comparator<LiveCodingSession>() {
             @Override
             public int compare(LiveCodingSession s1, LiveCodingSession s2) {
