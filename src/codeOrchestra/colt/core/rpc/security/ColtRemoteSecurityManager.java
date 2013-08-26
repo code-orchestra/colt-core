@@ -26,9 +26,9 @@ public class ColtRemoteSecurityManager {
   
   private final Preferences preferences = Preferences.userNodeForPackage(ColtRemoteSecurityManager.class);
   
-  private List<ColtRemoteSecurityListener> listeners = new ArrayList<ColtRemoteSecurityListener>();
+  private List<ColtRemoteSecurityListener> listeners = new ArrayList<>();
   
-  private transient Map<String, String> shortCodeToToken = new HashMap<String, String>();
+  private transient Map<String, String> shortCodeToToken = new HashMap<>();
   private transient List<String> tokensCache;
   
   private int failedAttempts;
@@ -112,7 +112,7 @@ public class ColtRemoteSecurityManager {
   }
 
   public void addAuthToken(String token) {
-    List<String> authTokens = new ArrayList<String>(getAuthTokens());
+    List<String> authTokens = new ArrayList<>(getAuthTokens());
     if (!authTokens.contains(authTokens)) {
       authTokens.add(token);      
     }
@@ -154,7 +154,7 @@ public class ColtRemoteSecurityManager {
   }
   
   private List<String> getPersistedAuthTokens() {
-    List<String> result = new ArrayList<String>();
+    List<String> result = new ArrayList<>();
     
     String tokensString = preferences.get(TOKENS_KEY, "");
     String[] tokensSplit = tokensString.split("\\|");

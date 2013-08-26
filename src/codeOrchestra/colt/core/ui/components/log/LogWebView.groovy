@@ -8,6 +8,9 @@ import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList as OL
 import javafx.event.EventHandler
+import javafx.geometry.HPos
+import javafx.geometry.Insets
+import javafx.geometry.VPos
 import javafx.scene.control.ScrollPane
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
@@ -30,28 +33,20 @@ class LogWebView extends VBox {
     final OL<LogMessage> logMessages = FXCollections.observableArrayList()
     private boolean htmlLoaded;
     private boolean layoutInited;
-    final private List flushList = []
     private LogFilter logFilter
     private LogVisualizer visualizer = new LogVisualizer()
 
+
     @Override
     protected void layoutChildren() {
-        super.layoutChildren()
         if (!layoutInited) {
             layoutInited = true
-            if (layoutInited && htmlLoaded) {
-                List<LogMessage> old = []
-                old.addAll(logMessages)
-                logMessages.clear()
-                logMessages.addAll(old)
-            }
+            init()
         }
+        super.layoutChildren()
     }
 
-    LogWebView() {
-
-//        Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 12); //todo: загружать нужно в html - @font-face
-
+    private void init(){
         String htmlPage = this.class.getResource("html/log-webview.html").toExternalForm()
         WebEngine engine = webView.engine
         engine.documentProperty().addListener({ o, oldValue,  newValue ->
@@ -94,7 +89,7 @@ class LogWebView extends VBox {
             }
         }
 
-//        testLog()
+        //        testLog()
 
         webView.widthProperty().addListener({ ObservableValue<? extends Number> observable, Number oldValue, Number newValue ->
             fireApplicationResize()
@@ -102,6 +97,15 @@ class LogWebView extends VBox {
         webView.heightProperty().addListener({ ObservableValue<? extends Number> observable, Number oldValue, Number newValue ->
             fireApplicationResize()
         } as ChangeListener)
+    }
+
+    LogWebView() {
+
+//        Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 12); //todo: загружать нужно в html - @font-face
+
+
+
+
     }
 
     private JSObject getJSTopObject() {
