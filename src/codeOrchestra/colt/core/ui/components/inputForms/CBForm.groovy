@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.ui.components.inputForms
 import javafx.beans.property.StringProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.scene.control.CheckBox
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
 import javafx.scene.layout.AnchorPane
@@ -12,6 +13,7 @@ import javafx.scene.layout.AnchorPane
  */
 class CBForm extends AnchorPane implements ITypedForm{
     @FXML Label label
+    @FXML CheckBox checkBox
     @FXML ChoiceBox choiceBox
     @FXML Label errorLabel
 
@@ -28,6 +30,8 @@ class CBForm extends AnchorPane implements ITypedForm{
             throw new RuntimeException(exception);
         }
         type = FormType.CHOICE_BOX
+
+        choiceBox.disableProperty().bind(checkBox.selectedProperty())
     }
 
     public String getText() {
