@@ -8,11 +8,8 @@ import codeOrchestra.colt.core.license.ExpirationHelper
 import codeOrchestra.colt.core.license.LicenseListener
 import codeOrchestra.colt.core.model.COLTProject
 import codeOrchestra.colt.core.model.listener.ProjectListener
-import codeOrchestra.colt.core.model.monitor.ChangingMonitor
-import codeOrchestra.colt.core.ui.dialog.COLTDialogs
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
-import javafx.scene.Scene
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
@@ -72,20 +69,16 @@ class ColtMenuBar extends MenuBar {
 
         MenuItem newProjectMenuItem = new MenuItem("New Project")
         newProjectMenuItem.onAction = { t ->
-            String projectName = COLTDialogs.showCreateProjectDialog(scene.window)
-
-            if (projectName != null) {
-                FileChooser fileChooser = new FileChooser()
-                fileChooser.initialFileName = projectName
-                fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
-                File file = fileChooser.showSaveDialog(scene.window)
-                if (file != null) {
-                    try {
-                        // TODO: a handler must be defined by the user (AS, JS, etc)
-                        COLTProjectManager.instance.create("AS", projectName, file)
-                    } catch (COLTException e) {
-                        ErrorHandler.handle(e, "Can't create a new project")
-                    }
+            FileChooser fileChooser = new FileChooser()
+//                fileChooser.initialFileName = "untitled"
+            fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
+            File file = fileChooser.showSaveDialog(scene.window)
+            if (file != null) {
+                try {
+                    // TODO: a handler must be defined by the user (AS, JS, etc)
+                    COLTProjectManager.instance.create("AS", file.name[0..-6], file)
+                } catch (COLTException e) {
+                    ErrorHandler.handle(e, "Can't create a new project")
                 }
             }
         } as EventHandler<ActionEvent>
