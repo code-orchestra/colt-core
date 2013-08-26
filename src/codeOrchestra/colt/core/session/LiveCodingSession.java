@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * @author Alexander Eliseyev
  */
-public interface LiveCodingSession {
+public interface LiveCodingSession<S> {
 
     String getClientId();
 
@@ -17,7 +17,7 @@ public interface LiveCodingSession {
 
     long getStartTimestamp();
 
-    SocketWriter getSocketWriter();
+    S getSocketWrapper();
 
     void sendLiveCodingMessage(String message, String packageId, boolean addToHistory);
 

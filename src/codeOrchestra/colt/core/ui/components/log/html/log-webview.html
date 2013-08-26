@@ -23,9 +23,16 @@
             padding: 0;
         }
 
+        @font-face {
+            font-family: 'LucidaGrande';
+            src: url('lucida-grande.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal; }
+
         BODY, BUTTON, INPUT, LABEL, SELECT, TEXTAREA {
             color: #515458;
-            font: 13px/18px 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'DejaVu Sans', 'Bitstream Vera Sans', 'Liberation Sans', Arial, sans-serif;
+            font: 13px/18px 'LucidaGrande', sans-serif;
+            /*'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'DejaVu Sans', 'Bitstream Vera Sans', 'Liberation Sans', Arial,*/
         }
 
         :focus {
@@ -156,6 +163,35 @@
 
             .log LI { padding-right: 15px; }
             .log A { display: none; }
+
+        }
+
+         @media print,
+        (-o-min-device-pixel-ratio: 5/4),
+        (-webkit-min-device-pixel-ratio: 1.25),
+        (min-resolution: 120dpi) {
+            UL:before {
+                background-image: url(icons-x2.png);
+                -webkit-background-size: 48px 48px;
+                background-size: 48px 48px; }
+
+            .log .error, .log .info, .log .warning {
+                -webkit-background-size: 48px 48px;
+                background-size: 16px 16px;
+            }
+
+        .log .error {
+            background-image: url('error-x2.png');
+        }
+
+        .log .info {
+            background-image: url('info-x2.png');
+        }
+
+        .log .warning {
+            background-image: url('warning-x2.png');
+        }
+        }
 
         }
     </style>
