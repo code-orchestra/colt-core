@@ -88,7 +88,9 @@ class GAController {
         pageContainer = container
         pageContainer.addListener({observableValue, FXNode oldNode, FXNode newNode ->
             GAPageInfo info = pagesMap[newNode]
-            tracker.trackPageView(info.url, info.title)
+            if (info) {
+                tracker.trackPageView(info.url, info.title)
+            }
         } as ChangeListener)
     }
 

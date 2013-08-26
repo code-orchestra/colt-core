@@ -108,7 +108,7 @@ class ColtMenuBar extends MenuBar {
             }
         })
 
-        popupMenuItems.addAll(newProjectMenuItem, openProjectMenuItem, openProjectMenuItem)
+        popupMenuItems.addAll(newProjectMenuItem, openProjectMenuItem, saveProjectMenuItem)
 
         fileMenu.items.addAll(newProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, recentProjectsSubMenu, saveProjectMenuItem, new SeparatorMenuItem(), exitMenuItem)
 
