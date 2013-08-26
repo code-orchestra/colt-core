@@ -1,8 +1,14 @@
 package codeOrchestra.colt.core.annotation.ast
 
+import codeOrchestra.colt.core.annotation.Service
+
 /**
  * @author Eugene Potapenko
  */
 class AnyClass {
-    String hello = String.valueOf(String.class)
+    @Service ColtAsController2 hello
+
+    AnyClass() {
+        println(hello)
+    }
 }

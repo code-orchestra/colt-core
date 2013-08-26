@@ -8,17 +8,14 @@ import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Alexander Eliseyev
  */
 public class ServiceProvider {
 
-    private static Map<String, ColtService> cache = new HashMap<String, ColtService>();
+    private static Map<String, ColtService> cache = new HashMap<>();
 
     public static synchronized void dispose() {
         for (ColtService coltService : cache.values()) {
