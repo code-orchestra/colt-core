@@ -41,7 +41,6 @@ class ColtMenuBar extends MenuBar {
             if (file != null) {
                 try {
                     COLTProjectManager.instance.load(file.getPath())
-                    ChangingMonitor.instance.reset()
                 } catch (COLTException e) {
                     ErrorHandler.handle(e, "Can't load the project")
                 }
@@ -84,7 +83,6 @@ class ColtMenuBar extends MenuBar {
                     try {
                         // TODO: a handler must be defined by the user (AS, JS, etc)
                         COLTProjectManager.instance.create("AS", projectName, file)
-                        ChangingMonitor.instance.reset()
                     } catch (COLTException e) {
                         ErrorHandler.handle(e, "Can't create a new project")
                     }
@@ -152,7 +150,6 @@ class ColtMenuBar extends MenuBar {
             openRecentProjectItem.onAction = { actionEvent ->
                 try {
                     COLTProjectManager.instance.load(projectFile.path)
-                    ChangingMonitor.instance.reset()
                 } catch (COLTException e) {
                     ErrorHandler.handle(e, "Can't load a project " + recentProjectsPath)
                 }

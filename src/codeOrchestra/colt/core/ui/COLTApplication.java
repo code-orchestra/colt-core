@@ -170,7 +170,6 @@ public class COLTApplication extends Application {
             if (projectFile.exists()) {
                 try {
                     COLTProjectManager.getInstance().load(projectFile.getPath());
-                    ChangingMonitor.getInstance().reset();
                     break;
                 } catch (COLTException e) {
                     // ignore

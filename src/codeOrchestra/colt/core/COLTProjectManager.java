@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.COLTProject;
 import codeOrchestra.colt.core.model.COLTProjectHandlerIdParser;
 import codeOrchestra.colt.core.model.listener.ProjectListener;
+import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
 import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.ProjectHelper;
 
@@ -98,6 +99,8 @@ public class COLTProjectManager {
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         currentProject = handler.parseProject(coltProjectHandlerIdParser.getNode(), path);
 
+        ChangingMonitor.getInstance().reset();
+
         fireProjectLoaded();
     }
 
@@ -108,6 +111,7 @@ public class COLTProjectManager {
             fileWriter = new FileWriter(file);
             fileWriter.write(currentProject.toXmlString());
             fileWriter.close();
+            ChangingMonitor.getInstance().reset();
         } catch (IOException e) {
             throw new COLTException("Can't write COLT project file to " + file.getPath());
         }
@@ -140,6 +144,8 @@ public class COLTProjectManager {
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         currentProject = handler.importProject(file);
         currentProject.setPath(file.getPath());
+
+        ChangingMonitor.getInstance().reset();
 
         fireProjectLoaded();
     }
