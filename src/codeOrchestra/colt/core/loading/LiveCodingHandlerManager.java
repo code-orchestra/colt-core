@@ -4,9 +4,8 @@ import codeOrchestra.colt.core.LiveCodingLanguageHandler;
 import codeOrchestra.colt.core.ServiceProvider;
 import codeOrchestra.colt.core.loading.impl.IdeaDevLiveCodingHandlerLoader;
 import codeOrchestra.colt.core.logging.Logger;
-import codeOrchestra.colt.core.rpc.COLTRemoteService;
-import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
-import codeOrchestra.colt.core.ui.COLTApplication;
+import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
+import codeOrchestra.colt.core.ui.ColtApplication;
 
 /**
  * @author Alexander Eliseyev
@@ -47,12 +46,12 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
         currentHandler = getLoader().load(id);
 
         // Start the RPC service
-        COLTRemoteServiceServlet.getInstance().refreshService();
+        ColtRemoteServiceServlet.getInstance().refreshService();
 
         currentHandler.initHandler();
 
         try {
-            COLTApplication.get().setPluginPane(currentHandler.getPane());
+            ColtApplication.get().setPluginPane(currentHandler.getPane());
         } catch (Exception e) {
             throw new LiveCodingHandlerLoadingException("Couldn't init the live coding handler UI", e);
         }

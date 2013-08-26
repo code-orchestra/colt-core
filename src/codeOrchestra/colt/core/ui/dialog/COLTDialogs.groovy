@@ -13,7 +13,7 @@ import org.controlsfx.dialog.Dialog
 /**
  * @author Dima Kruk
  */
-class COLTDialogs {
+class ColtDialogs {
 
     public static Action showCloseProjectDialog(Window owner) {
         Action save = Dialog.Actions.YES

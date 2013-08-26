@@ -1,6 +1,6 @@
 package codeOrchestra.colt.core.rpc.command;
 
-import codeOrchestra.colt.core.controller.COLTControllerCallbackEx;
+import codeOrchestra.colt.core.controller.ColtControllerCallbackEx;
 
 /**
  * @author Alexander Eliseyev
@@ -8,6 +8,6 @@ import codeOrchestra.colt.core.controller.COLTControllerCallbackEx;
 public interface RemoteAsyncCommand<T> {
     String getName();
 
-    void execute(COLTControllerCallbackEx<T> callback);
+    void execute(ColtControllerCallbackEx<T> callback);
 }
 

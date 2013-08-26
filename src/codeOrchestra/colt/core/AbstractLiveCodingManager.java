@@ -1,6 +1,6 @@
 package codeOrchestra.colt.core;
 
-import codeOrchestra.colt.core.model.COLTProject;
+import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.session.LiveCodingSession;
 import codeOrchestra.colt.core.session.listener.LiveCodingListener;
 
@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * @author Alexander Eliseyev
  */
-public abstract class AbstractLiveCodingManager<P extends COLTProject, S> implements LiveCodingManager<P, S> {
+public abstract class AbstractLiveCodingManager<P extends Project, S> implements LiveCodingManager<P, S> {
 
     private Object listenerMonitor = new Object();
 

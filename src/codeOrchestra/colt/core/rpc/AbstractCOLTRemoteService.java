@@ -1,11 +1,11 @@
 package codeOrchestra.colt.core.rpc;
 
-import codeOrchestra.colt.core.controller.COLTControllerCallbackEx;
+import codeOrchestra.colt.core.controller.ColtControllerCallbackEx;
 import codeOrchestra.colt.core.errorhandling.ErrorHandler;
-import codeOrchestra.colt.core.model.COLTProject;
+import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.rpc.command.RemoteAsyncCommand;
 import codeOrchestra.colt.core.rpc.command.RemoteCommand;
-import codeOrchestra.colt.core.rpc.security.COLTRemoteSecurityManager;
+import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityManager;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.core.rpc.security.InvalidShortCodeException;
 import codeOrchestra.colt.core.rpc.security.TooManyFailedCodeTypeAttemptsException;
@@ -14,23 +14,23 @@ import javafx.application.Platform;
 /**
  * @author Alexander Eliseyev
  */
-public abstract class AbstractCOLTRemoteService<P extends COLTProject> implements COLTRemoteService<P> {
+public abstract class AbstractColtRemoteService<P extends Project> implements ColtRemoteService<P> {
 
     private final Object monitor = new Object();
 
     @Override
     public String obtainAuthToken(String shortCode) throws TooManyFailedCodeTypeAttemptsException, InvalidShortCodeException {
-        return COLTRemoteSecurityManager.getInstance().obtainAuthToken(shortCode);
+        return ColtRemoteSecurityManager.getInstance().obtainAuthToken(shortCode);
     }
 
     @Override
-    public void requestShortCode(final String requestor) throws COLTRemoteTransferableException {
-        COLTRemoteSecurityManager.getInstance().createNewTokenAndGetShortCode(requestor);
+    public void requestShortCode(final String requestor) throws ColtRemoteTransferableException {
+        ColtRemoteSecurityManager.getInstance().createNewTokenAndGetShortCode(requestor);
     }
 
     @Override
     public void checkAuth(String securityToken) throws InvalidAuthTokenException {
-        if (!COLTRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
+        if (!ColtRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
             throw new InvalidAuthTokenException();
         }
     }
@@ -41,14 +41,14 @@ public abstract class AbstractCOLTRemoteService<P extends COLTProject> implement
     }
 
     protected  <T> T executeInDisplayAsyncAndWait(final RemoteAsyncCommand<T> command)
-            throws COLTRemoteTransferableException {
+            throws ColtRemoteTransferableException {
         final Throwable[] exception = new Throwable[1];
         final Object[] result = new Object[1];
 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                command.execute(new COLTControllerCallbackEx<T>() {
+                command.execute(new ColtControllerCallbackEx<T>() {
                     @Override
                     public void onComplete(T successResult) {
                         result[0] = successResult;
@@ -82,18 +82,18 @@ public abstract class AbstractCOLTRemoteService<P extends COLTProject> implement
         if (exception[0] != null) {
             exception[0].printStackTrace();
 
-            if (exception[0] instanceof COLTRemoteTransferableException) {
-                throw (COLTRemoteTransferableException) exception[0];
+            if (exception[0] instanceof ColtRemoteTransferableException) {
+                throw (ColtRemoteTransferableException) exception[0];
             }
 
             ErrorHandler.handle(exception[0], "Error while handling remote command: " + command.getName());
-            throw new COLTUnhandledException(exception[0]);
+            throw new ColtUnhandledException(exception[0]);
         }
 
         return (T) result[0];
     }
 
-    protected <T> T executeInDisplayAndWait(final RemoteCommand<T> command) throws COLTRemoteTransferableException {
+    protected <T> T executeInDisplayAndWait(final RemoteCommand<T> command) throws ColtRemoteTransferableException {
         final Throwable[] exception = new Throwable[1];
         final Object[] result = new Object[1];
 
@@ -123,40 +123,40 @@ public abstract class AbstractCOLTRemoteService<P extends COLTProject> implement
         if (exception[0] != null) {
             exception[0].printStackTrace();
 
-            if (exception[0] instanceof COLTRemoteTransferableException) {
-                throw (COLTRemoteTransferableException) exception[0];
+            if (exception[0] instanceof ColtRemoteTransferableException) {
+                throw (ColtRemoteTransferableException) exception[0];
             }
 
             ErrorHandler.handle(exception[0], "Error while handling remote command: " + command.getName());
-            throw new COLTUnhandledException(exception[0]);
+            throw new ColtUnhandledException(exception[0]);
         }
 
         return (T) result[0];
     }
 
     protected <T> T executeSecurily(String securityToken, final RemoteCommand<T> command)
-            throws COLTRemoteTransferableException {
-        if (!COLTRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
+            throws ColtRemoteTransferableException {
+        if (!ColtRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
             throw new InvalidAuthTokenException();
         }
 
         try {
             return command.execute();
-        } catch (COLTRemoteException e) {
+        } catch (ColtRemoteException e) {
             e.printStackTrace();
 
-            if (e instanceof COLTRemoteTransferableException) {
-                throw (COLTRemoteTransferableException) e;
+            if (e instanceof ColtRemoteTransferableException) {
+                throw (ColtRemoteTransferableException) e;
             }
 
             ErrorHandler.handle(e, "Error while handling remote command: " + command.getName());
-            throw new COLTUnhandledException(e);
+            throw new ColtUnhandledException(e);
         }
     }
 
     protected <T> T executeSecurilyInUI(String securityToken, final RemoteCommand<T> command)
-            throws COLTRemoteTransferableException {
-        if (!COLTRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
+            throws ColtRemoteTransferableException {
+        if (!ColtRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
             throw new InvalidAuthTokenException();
         }
 
@@ -164,8 +164,8 @@ public abstract class AbstractCOLTRemoteService<P extends COLTProject> implement
     }
 
     protected <T> T executeSecurilyAsyncInUI(String securityToken, final RemoteAsyncCommand<T> command)
-            throws COLTRemoteTransferableException {
-        if (!COLTRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
+            throws ColtRemoteTransferableException {
+        if (!ColtRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
             throw new InvalidAuthTokenException();
         }
 

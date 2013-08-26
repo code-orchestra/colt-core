@@ -1,7 +1,7 @@
 package codeOrchestra.colt.core.errorhandling;
 
 import codeOrchestra.colt.core.logging.Logger;
-import codeOrchestra.colt.core.ui.COLTApplication;
+import codeOrchestra.colt.core.ui.ColtApplication;
 import javafx.application.Platform;
 import org.controlsfx.dialog.Dialogs;
 
@@ -16,7 +16,7 @@ public class ErrorHandler {
             Dialogs.create()
 //                .lightweight()
                     .title("Error")
-                    .owner(COLTApplication.get().getPrimaryStage())
+                    .owner(ColtApplication.get().getPrimaryStage())
                     .nativeTitleBar()
                     .showException(t);
         };
@@ -31,7 +31,7 @@ public class ErrorHandler {
             Dialogs.create()
 //                .lightweight()
                     .title("Error")
-                    .owner(COLTApplication.get().getPrimaryStage())
+                    .owner(ColtApplication.get().getPrimaryStage())
                     .message(message)
                     .nativeTitleBar()
                     .showException(t);
@@ -54,7 +54,7 @@ public class ErrorHandler {
                 Dialogs.create()
 //                .lightweight()
                         .title(title)
-                        .owner(COLTApplication.get().getPrimaryStage())
+                        .owner(ColtApplication.get().getPrimaryStage())
                         .message(message)
                         .nativeTitleBar()
                         .showError();

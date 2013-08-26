@@ -3,7 +3,6 @@ package codeOrchestra.colt.core.tasks;
 import codeOrchestra.colt.core.logging.Logger;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.ProgressIndicator;
 import org.controlsfx.dialog.Dialogs;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -34,7 +33,7 @@ public class TasksManager {
      */
     private final Object myLock = new Object();
 
-    private ConcurrentLinkedQueue<COLTTask> tasksQueue = new ConcurrentLinkedQueue<COLTTask>();
+    private ConcurrentLinkedQueue<ColtTask> tasksQueue = new ConcurrentLinkedQueue<ColtTask>();
 
     public TasksManager() {
         executorThread = new Executor();
@@ -50,7 +49,7 @@ public class TasksManager {
             super("Executor");
         }
 
-        private class COLTTaskEventHandler implements EventHandler<WorkerStateEvent> {
+        private class ColtTaskEventHandler implements EventHandler<WorkerStateEvent> {
 
             private boolean disposed;
 
@@ -60,7 +59,7 @@ public class TasksManager {
                     workerStateEvent.getEventType() == WorkerStateEvent.WORKER_STATE_CANCELLED ||
                     workerStateEvent.getEventType() == WorkerStateEvent.WORKER_STATE_FAILED) {
 
-                    COLTTask doneTask;
+                    ColtTask doneTask;
                     synchronized (myLock) {
                         if (disposed) {
                             return;
@@ -102,11 +101,11 @@ public class TasksManager {
                             continue;
                         }
 
-                        COLTTask first = tasksQueue.peek();
+                        ColtTask first = tasksQueue.peek();
                         if (first != null) {
                             workerStarted = true;
 
-                            EventHandler<WorkerStateEvent> eventHandler = new COLTTaskEventHandler();
+                            EventHandler<WorkerStateEvent> eventHandler = new ColtTaskEventHandler();
 
                             first.setOnSucceeded(eventHandler);
                             first.setOnCancelled(eventHandler);
@@ -122,7 +121,7 @@ public class TasksManager {
         }
     }
 
-    private void schedule(final COLTTask task) {
+    private void schedule(final ColtTask task) {
         synchronized (myLock) {
             if (tasksQueue.isEmpty()) {
                 myLock.notifyAll();
@@ -131,8 +130,8 @@ public class TasksManager {
         }
     }
 
-    public void scheduleModalTask(COLTTask task) {
-        if (task instanceof COLTTaskWithProgress) {
+    public void scheduleModalTask(ColtTask task) {
+        if (task instanceof ColtTaskWithProgress) {
             throw new IllegalArgumentException("Can't start a modal task that is progress bar aware");
         }
         Dialogs.create()
@@ -143,7 +142,7 @@ public class TasksManager {
         schedule(task);
     }
 
-    public void scheduleBackgroundTask(COLTTask task) {
+    public void scheduleBackgroundTask(ColtTask task) {
         schedule(task);
     }
 

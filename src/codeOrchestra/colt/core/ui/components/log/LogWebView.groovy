@@ -50,8 +50,6 @@ class LogWebView extends VBox {
 
     LogWebView() {
 
-        println("log view")
-
 //        Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 12); //todo: загружать нужно в html - @font-face
 
         String htmlPage = this.class.getResource("html/log-webview.html").toExternalForm()

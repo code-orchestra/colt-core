@@ -1,6 +1,6 @@
 package codeOrchestra.colt.core.license;
 
-import codeOrchestra.colt.core.ui.COLTApplication;
+import codeOrchestra.colt.core.ui.ColtApplication;
 import codeOrchestra.util.StringUtils;
 import org.controlsfx.dialog.Dialogs;
 
@@ -22,7 +22,7 @@ public class StartupInterceptor {
         if (StringUtils.isNotEmpty(CodeOrchestraLicenseManager.getLegacySerialNumber())) {
             if (expirationStrategy.isTrialOnly() && !new ActivationReporter(CodeOrchestraLicenseManager.getLegacySerialNumber()).report()) {
                 Dialogs.create()
-                        .owner(COLTApplication.get().getPrimaryStage())
+                        .owner(ColtApplication.get().getPrimaryStage())
                         .title("COLT License")
                         .message("COLT beta version requires an active internet connection to start.")
                         .nativeTitleBar()
@@ -54,7 +54,7 @@ public class StartupInterceptor {
             } else {
                 if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
                     Dialogs.create()
-                            .owner(COLTApplication.get().getPrimaryStage())
+                            .owner(ColtApplication.get().getPrimaryStage())
                             .title("Evaluation License")
                             .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
                             .nativeTitleBar()
@@ -81,7 +81,7 @@ public class StartupInterceptor {
             if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
                 String title = expirationStrategy.isSubscriptionBased() ? "COLT Subscription" : "Evaluation License";
                 Dialogs.create()
-                        .owner(COLTApplication.get().getPrimaryStage())
+                        .owner(ColtApplication.get().getPrimaryStage())
                         .title(title)
                         .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
                         .nativeTitleBar()
@@ -111,7 +111,7 @@ public class StartupInterceptor {
         if (expirationStrategy.allowsDemo() && expirationStrategy.isSubscriptionBased()) {
             if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
                 Dialogs.create()
-                        .owner(COLTApplication.get().getPrimaryStage())
+                        .owner(ColtApplication.get().getPrimaryStage())
                         .title("COLT Subscription")
                         .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
                         .nativeTitleBar()

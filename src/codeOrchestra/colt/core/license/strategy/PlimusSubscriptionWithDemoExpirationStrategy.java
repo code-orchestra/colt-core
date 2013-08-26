@@ -7,7 +7,7 @@ import codeOrchestra.colt.core.license.ExpirationStrategy;
 import codeOrchestra.colt.core.license.plimus.PlimusHelper;
 import codeOrchestra.colt.core.license.plimus.PlimusResponse;
 import codeOrchestra.colt.core.license.plimus.PlimusResponseStatus;
-import codeOrchestra.colt.core.ui.COLTApplication;
+import codeOrchestra.colt.core.ui.ColtApplication;
 import codeOrchestra.util.DateUtils;
 import codeOrchestra.util.StringUtils;
 import org.controlsfx.control.action.Action;
@@ -48,7 +48,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 
     public boolean showSerialNumberDialog() {
         String serialNumber = Dialogs.create()
-                .owner(COLTApplication.get().getPrimaryStage())
+                .owner(ColtApplication.get().getPrimaryStage())
                 .title("Serial number")
                 .message("Please type the serial number purchased")
 //                .lightweight()
@@ -64,7 +64,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
             keyRegistrationResponse = PlimusHelper.registerKey(serialNumber);
         } catch (IOException e) {
             Dialogs.create()
-                    .owner(COLTApplication.get().getPrimaryStage())
+                    .owner(ColtApplication.get().getPrimaryStage())
 //                    .lightweight()
                     .title("COLT License")
                     .message("Can't reach the validation server. Make sure your internet connection is active.")
@@ -76,7 +76,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_INVALIDKEY) {
             Dialogs.create()
-                    .owner(COLTApplication.get().getPrimaryStage())
+                    .owner(ColtApplication.get().getPrimaryStage())
 //                    .lightweight()
                     .title("Serial number")
                     .message("The serial number entered is invalid.")
@@ -87,7 +87,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_INVALIDPRODUCT) {
             Dialogs.create()
-                    .owner(COLTApplication.get().getPrimaryStage())
+                    .owner(ColtApplication.get().getPrimaryStage())
 //                    .lightweight()
                     .title("Serial number")
                     .message("The serial number entered can't be validated.")
@@ -98,7 +98,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_EXPIREDKEY) {
             Dialogs.create()
-                    .owner(COLTApplication.get().getPrimaryStage())
+                    .owner(ColtApplication.get().getPrimaryStage())
                     .lightweight().title("Serial number")
                     .message("The serial number entered had expired " + Math.abs(keyRegistrationResponse.getDaysTillExpiration()) + " days ago.")
                     .nativeTitleBar()
@@ -108,7 +108,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_MAXCOUNT) {
             Dialogs.create()
-                    .owner(COLTApplication.get().getPrimaryStage())
+                    .owner(ColtApplication.get().getPrimaryStage())
 //                    .lightweight()
                     .title("Serial number")
                     .message("The key entered has already been registered the maximum number of times.")
@@ -119,7 +119,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.SUCCESS) {
             Dialogs.create()
-                    .owner(COLTApplication.get().getPrimaryStage())
+                    .owner(ColtApplication.get().getPrimaryStage())
 //                    .lightweight()
                     .title("COLT License")
                     .message("Thank you for choosing the Code Orchestra Livecoding Tool!")
@@ -129,7 +129,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
             return true;
         } else {
             Dialogs.create()
-                    .owner(COLTApplication.get().getPrimaryStage())
+                    .owner(ColtApplication.get().getPrimaryStage())
 //                    .lightweight()
                     .title("Serial number")
                     .message("The serial number entered can't be validated (" + keyRegistrationResponse.getStatus() + ").")
@@ -168,7 +168,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
         String expireMessage = String.format("COLT is in Demo mode. Compilations count is limited to %d.", DemoHelper.get().getMaxCompilationsCount() - 1);
 
         Dialogs.create()
-                .owner(COLTApplication.get().getPrimaryStage())
+                .owner(ColtApplication.get().getPrimaryStage())
                 .title("COLT License")
 //                .lightweight()
                 .message(expireMessage)
@@ -191,7 +191,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
             String expireMessage = "Key validation requires an active internet connection. COLT will be launched in Demo mode";
 
             Dialogs.create()
-                    .owner(COLTApplication.get().getPrimaryStage())
+                    .owner(ColtApplication.get().getPrimaryStage())
                     .title("COLT License")
                     .message(expireMessage)
                     .nativeTitleBar()
@@ -211,7 +211,7 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
                         "Browse to www.codeorchestra.com to purchase one"));
 
         Action response = Dialogs.create()
-                .owner(COLTApplication.get().getPrimaryStage())
+                .owner(ColtApplication.get().getPrimaryStage())
                 .title("COLT License")
                 .message(expireMessage)
 //                .lightweight()

@@ -3,7 +3,7 @@ package codeOrchestra.colt.core.ui.components;
 /**
  * @author Alexander Eliseyev
  */
-public interface ICOLTProgressIndicator {
+public interface IProgressIndicator {
 
     void start();
 

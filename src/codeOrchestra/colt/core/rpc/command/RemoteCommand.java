@@ -1,6 +1,6 @@
 package codeOrchestra.colt.core.rpc.command;
 
-import codeOrchestra.colt.core.rpc.COLTRemoteException;
+import codeOrchestra.colt.core.rpc.ColtRemoteException;
 
 /**
  * @author Alexander Eliseyev
@@ -8,5 +8,5 @@ import codeOrchestra.colt.core.rpc.COLTRemoteException;
 public interface RemoteCommand<T> {
     String getName();
 
-    T execute() throws COLTRemoteException;
+    T execute() throws ColtRemoteException;
 }

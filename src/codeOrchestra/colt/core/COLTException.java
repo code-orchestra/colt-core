@@ -3,24 +3,24 @@ package codeOrchestra.colt.core;
 /**
  * @author Alexander Eliseyev
  */
-public class COLTException extends Exception {
+public class ColtException extends Exception {
 
-    public COLTException() {
+    public ColtException() {
     }
 
-    public COLTException(String message) {
+    public ColtException(String message) {
         super(message);
     }
 
-    public COLTException(String message, Throwable cause) {
+    public ColtException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public COLTException(Throwable cause) {
+    public ColtException(Throwable cause) {
         super(cause);
     }
 
-    public COLTException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public ColtException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

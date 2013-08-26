@@ -9,24 +9,24 @@ import java.util.prefs.Preferences;
 /**
  * @author Alexander Eliseyev
  */
-public class COLTRemoteSecurityManager {
+public class ColtRemoteSecurityManager {
 
   private static final String TOKENS_KEY = "coltRPCAuthKeys";
   private static final int MAX_TOKENS_COUNT = 100;
   private static final int MAX_FAILED_ATTEMPTS = 3;  
   
-  private static COLTRemoteSecurityManager instance;
+  private static ColtRemoteSecurityManager instance;
   
-  public synchronized static COLTRemoteSecurityManager getInstance() {
+  public synchronized static ColtRemoteSecurityManager getInstance() {
     if (instance == null) {
-      instance = new COLTRemoteSecurityManager();
+      instance = new ColtRemoteSecurityManager();
     }
     return instance;
   }
   
-  private final Preferences preferences = Preferences.userNodeForPackage(COLTRemoteSecurityManager.class);
+  private final Preferences preferences = Preferences.userNodeForPackage(ColtRemoteSecurityManager.class);
   
-  private List<COLTRemoteSecurityListener> listeners = new ArrayList<COLTRemoteSecurityListener>();
+  private List<ColtRemoteSecurityListener> listeners = new ArrayList<ColtRemoteSecurityListener>();
   
   private transient Map<String, String> shortCodeToToken = new HashMap<String, String>();
   private transient List<String> tokensCache;
@@ -34,22 +34,22 @@ public class COLTRemoteSecurityManager {
   private int failedAttempts;
   private boolean forcePause;
   
-  public void addListener(COLTRemoteSecurityListener listener) {
+  public void addListener(ColtRemoteSecurityListener listener) {
     listeners.add(listener);
   }
 
-  public void removeListener(COLTRemoteSecurityListener listener) {
+  public void removeListener(ColtRemoteSecurityListener listener) {
     listeners.remove(listener);
   }
 
   private void fireRequestEvent(String shortCode, String requestor) {
-    for (COLTRemoteSecurityListener listener : listeners) {
+    for (ColtRemoteSecurityListener listener : listeners) {
       listener.onNewRequest(requestor, shortCode);
     }
   }
   
   private void fireSucessfullAuthEvent(String shortCode) {
-    for (COLTRemoteSecurityListener listener : listeners) {
+    for (ColtRemoteSecurityListener listener : listeners) {
       listener.onSuccessfulActivation(shortCode);
     }
   }
@@ -103,7 +103,7 @@ public class COLTRemoteSecurityManager {
   }
   
   public static void main(String[] args) {
-    COLTRemoteSecurityManager.getInstance().clearAuthData();
+    ColtRemoteSecurityManager.getInstance().clearAuthData();
   }
   
   @SuppressWarnings("unchecked")

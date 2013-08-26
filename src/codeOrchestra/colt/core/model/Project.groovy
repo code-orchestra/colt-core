@@ -6,7 +6,7 @@ import groovy.xml.MarkupBuilder
 /**
  * @author Dima Kruk
  */
-abstract class COLTProject implements IModelElement {
+abstract class Project implements IModelElement {
 
     @FXBindable String name
     String path
@@ -14,9 +14,9 @@ abstract class COLTProject implements IModelElement {
     boolean disposed
 
     // Default aspects
-    abstract COLTProjectPaths getProjectPaths()
-    abstract COLTProjectLiveSettings getProjectLiveSettings()
-    abstract COLTProjectBuildSettings getProjectBuildSettings()
+    abstract ProjectPaths getProjectPaths()
+    abstract ProjectLiveSettings getProjectLiveSettings()
+    abstract ProjectBuildSettings getProjectBuildSettings()
 
     abstract String getProjectType();
 

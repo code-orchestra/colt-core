@@ -3,7 +3,7 @@ package codeOrchestra.colt.core.rpc.security;
 /**
  * @author Alexander Eliseyev
  */
-public interface COLTRemoteSecurityListener {
+public interface ColtRemoteSecurityListener {
 
   void onNewRequest(String requestor, String shortCode);
   

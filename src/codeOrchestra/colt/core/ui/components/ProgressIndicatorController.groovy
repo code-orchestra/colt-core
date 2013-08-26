@@ -9,18 +9,18 @@ import javafx.scene.control.Tooltip
 /**
  * @author Dima Kruk
  */
-class COLTProgressIndicatorController implements ICOLTProgressIndicator {
+class ProgressIndicatorController implements IProgressIndicator {
 
-    private static COLTProgressIndicatorController ourInstance = new COLTProgressIndicatorController()
+    private static ProgressIndicatorController ourInstance = new ProgressIndicatorController()
 
-    public static COLTProgressIndicatorController getInstance() {
+    public static ProgressIndicatorController getInstance() {
         return ourInstance
     }
 
     private Tooltip tooltip
     private ProgressBar progressBar
 
-    private COLTProgressIndicatorController() {
+    private ProgressIndicatorController() {
 
         progressBar = new ProgressBar()
 

@@ -1,13 +1,14 @@
 package codeOrchestra.colt.core.ui
 
-import codeOrchestra.colt.core.COLTException
-import codeOrchestra.colt.core.COLTProjectManager
+import codeOrchestra.colt.core.ColtException
+import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.errorhandling.ErrorHandler
 import codeOrchestra.colt.core.license.CodeOrchestraLicenseManager
 import codeOrchestra.colt.core.license.ExpirationHelper
 import codeOrchestra.colt.core.license.LicenseListener
-import codeOrchestra.colt.core.model.COLTProject
+import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
+import codeOrchestra.colt.core.ui.dialog.ColtDialogs
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.Menu
@@ -37,8 +38,8 @@ class ColtMenuBar extends MenuBar {
             File file = fileChooser.showOpenDialog(scene.window)
             if (file != null) {
                 try {
-                    COLTProjectManager.instance.load(file.getPath())
-                } catch (COLTException e) {
+                    ColtProjectManager.instance.load(file.getPath())
+                } catch (ColtException e) {
                     ErrorHandler.handle(e, "Can't load the project")
                 }
             }
@@ -49,36 +50,40 @@ class ColtMenuBar extends MenuBar {
         saveProjectMenuItem.onAction = { t ->
             println("save project")
             try {
-                COLTProjectManager.getInstance().save()
-            } catch (COLTException e) {
+                ColtProjectManager.getInstance().save()
+            } catch (ColtException e) {
                 ErrorHandler.handle(e, "Can't save the project")
             }
         } as EventHandler<ActionEvent>
         saveProjectMenuItem.disable = true
-        COLTProjectManager.instance.addProjectListener(new ProjectListener() {
+        ColtProjectManager.instance.addProjectListener(new ProjectListener() {
             @Override
-            public void onProjectLoaded(COLTProject project) {
+            public void onProjectLoaded(Project project) {
                 saveProjectMenuItem.disable = false
             }
 
             @Override
-            public void onProjectUnloaded(COLTProject project) {
+            public void onProjectUnloaded(Project project) {
                 saveProjectMenuItem.disable = true
             }
         })
 
         MenuItem newProjectMenuItem = new MenuItem("New Project")
         newProjectMenuItem.onAction = { t ->
-            FileChooser fileChooser = new FileChooser()
-//                fileChooser.initialFileName = "untitled"
-            fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
-            File file = fileChooser.showSaveDialog(scene.window)
-            if (file != null) {
-                try {
-                    // TODO: a handler must be defined by the user (AS, JS, etc)
-                    COLTProjectManager.instance.create("AS", file.name[0..-6], file)
-                } catch (COLTException e) {
-                    ErrorHandler.handle(e, "Can't create a new project")
+            String projectName = ColtDialogs.showCreateProjectDialog(scene.window)
+
+            if (projectName != null) {
+                FileChooser fileChooser = new FileChooser()
+                fileChooser.initialFileName = projectName
+                fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
+                File file = fileChooser.showSaveDialog(scene.window)
+                if (file != null) {
+                    try {
+                        // TODO: a handler must be defined by the user (AS, JS, etc)
+                        ColtProjectManager.instance.create("AS", projectName, file)
+                    } catch (ColtException e) {
+                        ErrorHandler.handle(e, "Can't create a new project")
+                    }
                 }
             }
         } as EventHandler<ActionEvent>
@@ -90,14 +95,14 @@ class ColtMenuBar extends MenuBar {
 
         recentProjectsSubMenu = new Menu("Open Recent")
         refreshRecentProjectsMenu()
-        COLTProjectManager.instance.addProjectListener(new ProjectListener() {
+        ColtProjectManager.instance.addProjectListener(new ProjectListener() {
             @Override
-            public void onProjectLoaded(COLTProject project) {
+            public void onProjectLoaded(Project project) {
                 refreshRecentProjectsMenu()
             }
 
             @Override
-            public void onProjectUnloaded(COLTProject project) {
+            public void onProjectUnloaded(Project project) {
             }
         })
 
@@ -142,8 +147,8 @@ class ColtMenuBar extends MenuBar {
 
             openRecentProjectItem.onAction = { actionEvent ->
                 try {
-                    COLTProjectManager.instance.load(projectFile.path)
-                } catch (COLTException e) {
+                    ColtProjectManager.instance.load(projectFile.path)
+                } catch (ColtException e) {
                     ErrorHandler.handle(e, "Can't load a project " + recentProjectsPath)
                 }
             } as EventHandler<ActionEvent>

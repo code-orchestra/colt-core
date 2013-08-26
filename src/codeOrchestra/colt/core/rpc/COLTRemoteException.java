@@ -3,21 +3,21 @@ package codeOrchestra.colt.core.rpc;
 /**
  * @author Alexander Eliseyev
  */
-public class COLTRemoteException extends Exception {
+public class ColtRemoteException extends Exception {
 
-  public COLTRemoteException() {
+  public ColtRemoteException() {
     super();
   }
 
-  public COLTRemoteException(String message, Throwable cause) {
+  public ColtRemoteException(String message, Throwable cause) {
     super(message, cause);
   }
 
-  public COLTRemoteException(String message) {
+  public ColtRemoteException(String message) {
     super(message);
   }
 
-  public COLTRemoteException(Throwable cause) {
+  public ColtRemoteException(Throwable cause) {
     super(cause);
   }
 

@@ -5,11 +5,11 @@ import javafx.application.Platform;
 /**
  * @author Alexander Eliseyev
  */
-public class FxThreadCOLTProgressIndicatorWrapper implements ICOLTProgressIndicator {
+public class FxThreadProgressIndicatorWrapper implements IProgressIndicator {
 
-    private ICOLTProgressIndicator progressIndicator;
+    private IProgressIndicator progressIndicator;
 
-    public FxThreadCOLTProgressIndicatorWrapper(ICOLTProgressIndicator progressIndicator) {
+    public FxThreadProgressIndicatorWrapper(IProgressIndicator progressIndicator) {
         this.progressIndicator = progressIndicator;
     }
 

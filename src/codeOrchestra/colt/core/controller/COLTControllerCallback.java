@@ -3,7 +3,7 @@ package codeOrchestra.colt.core.controller;
 /**
  * @author Alexander Eliseyev
  */
-public interface COLTControllerCallback<S, E> {
+public interface ColtControllerCallback<S, E> {
   
   void onComplete(S successResult);
   

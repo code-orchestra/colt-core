@@ -1,12 +1,12 @@
 package codeOrchestra.colt.core;
 
-import codeOrchestra.colt.core.controller.COLTController;
+import codeOrchestra.colt.core.controller.ColtController;
 import codeOrchestra.colt.core.launch.LiveLauncher;
 import codeOrchestra.colt.core.logging.LoggerService;
-import codeOrchestra.colt.core.model.COLTProject;
-import codeOrchestra.colt.core.rpc.COLTRemoteService;
+import codeOrchestra.colt.core.model.Project;
+import codeOrchestra.colt.core.rpc.ColtRemoteService;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
-import codeOrchestra.colt.core.ui.components.ICOLTProgressIndicator;
+import codeOrchestra.colt.core.ui.components.IProgressIndicator;
 import groovy.util.slurpersupport.GPathResult;
 import javafx.scene.Node;
 
@@ -15,7 +15,7 @@ import java.io.File;
 /**
  * @author Alexander Eliseyev
  */
-public interface LiveCodingLanguageHandler<P extends COLTProject> {
+public interface LiveCodingLanguageHandler<P extends Project> {
 
     String getId();
 
@@ -41,13 +41,13 @@ public interface LiveCodingLanguageHandler<P extends COLTProject> {
 
     Node getPane() throws Exception;
 
-    ICOLTProgressIndicator getProgressIndicator();
+    IProgressIndicator getProgressIndicator();
 
     // Services
 
-    COLTController<P> createCOLTController();
+    ColtController<P> createColtController();
 
-    COLTRemoteService<P> createRPCService();
+    ColtRemoteService<P> createRPCService();
 
     LiveLauncher<P> createLauncher();
 

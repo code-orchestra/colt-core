@@ -1,14 +1,14 @@
 package codeOrchestra.colt.core;
 
-import codeOrchestra.colt.core.model.COLTProject;
+import codeOrchestra.colt.core.model.Project;
 
 /**
  * @author Alexander Eliseyev
  */
-public abstract class AbstractLiveCodingLanguageHandler<P extends COLTProject> implements LiveCodingLanguageHandler<P> {
+public abstract class AbstractLiveCodingLanguageHandler<P extends Project> implements LiveCodingLanguageHandler<P> {
 
     @Override
     public P getCurrentProject() {
-        return (P) COLTProjectManager.getInstance().getCurrentProject();
+        return (P) ColtProjectManager.getInstance().getCurrentProject();
     }
 }

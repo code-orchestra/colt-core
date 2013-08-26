@@ -1,10 +1,10 @@
 package codeOrchestra.colt.core.controller;
 
-import codeOrchestra.colt.core.COLTService;
-import codeOrchestra.colt.core.model.COLTProject;
+import codeOrchestra.colt.core.ColtService;
+import codeOrchestra.colt.core.model.Project;
 
 /**
  * @author Alexander Eliseyev
  */
-public interface COLTController<P extends COLTProject> extends COLTService<P> {
+public interface ColtController<P extends Project> extends ColtService<P> {
 }

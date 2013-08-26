@@ -1,7 +1,7 @@
 package codeOrchestra.colt.core.rpc.security.ui
 
-import codeOrchestra.colt.core.rpc.security.COLTRemoteSecurityListener
-import codeOrchestra.colt.core.rpc.security.COLTRemoteSecurityManager
+import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityListener
+import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityManager
 import javafx.event.ActionEvent
 import javafx.scene.Node as FXNode
 import javafx.scene.input.Clipboard
@@ -21,7 +21,7 @@ class ShortCodeNotification {
     static NotificationPane initNotification(FXNode content) {
         notificationPane.setContent(content)
 
-        COLTRemoteSecurityManager.instance.addListener(new COLTRemoteSecurityListener() {
+        ColtRemoteSecurityManager.instance.addListener(new ColtRemoteSecurityListener() {
             @Override
             void onNewRequest(String requestor, String shortCode) {
                 TextFlow textFlow = new TextFlow()

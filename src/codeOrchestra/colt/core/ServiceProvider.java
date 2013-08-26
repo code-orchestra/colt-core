@@ -1,10 +1,9 @@
 package codeOrchestra.colt.core;
 
-import codeOrchestra.colt.core.controller.COLTController;
+import codeOrchestra.colt.core.controller.ColtController;
 import codeOrchestra.colt.core.launch.LiveLauncher;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
-import codeOrchestra.colt.core.logging.LoggerService;
-import codeOrchestra.colt.core.rpc.COLTRemoteService;
+import codeOrchestra.colt.core.rpc.ColtRemoteService;
 import codeOrchestra.colt.core.session.sourcetracking.SourceFileFactory;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,31 +18,31 @@ import java.util.Map;
  */
 public class ServiceProvider {
 
-    private static Map<String, COLTService> cache = new HashMap<String, COLTService>();
+    private static Map<String, ColtService> cache = new HashMap<String, ColtService>();
 
     public static synchronized void dispose() {
-        for (COLTService coltService : cache.values()) {
+        for (ColtService coltService : cache.values()) {
             coltService.dispose();
         }
 
         cache.clear();
     }
 
-    public static List<Class<? extends COLTService>> KNOWN_SERVICES = new ArrayList<Class<? extends COLTService>>() {{
+    public static List<Class<? extends ColtService>> KNOWN_SERVICES = new ArrayList<Class<? extends ColtService>>() {{
         add(LiveLauncher.class);
         add(LiveCodingManager.class);
         add(SourceFileFactory.class);
-        add(COLTRemoteService.class);
-        add(COLTController.class);
+        add(ColtRemoteService.class);
+        add(ColtController.class);
     }};
 
-    public static synchronized <T extends COLTService> T get(Class<T> clazz) {
+    public static synchronized <T extends ColtService> T get(Class<T> clazz) {
         if (cache.containsKey(clazz.getCanonicalName())) {
             return (T) cache.get(clazz.getCanonicalName());
         }
 
-        Class<? extends COLTService> existingService = null;
-        for (Class<? extends COLTService> knownService : KNOWN_SERVICES) {
+        Class<? extends ColtService> existingService = null;
+        for (Class<? extends ColtService> knownService : KNOWN_SERVICES) {
             if (clazz.getSimpleName().equals(knownService.getSimpleName())) {
                 existingService = knownService;
             }

@@ -6,12 +6,12 @@ import groovy.util.slurpersupport.GPathResult
  * @author Dima Kruk
  * @author Alexander Eliseyev
  */
-class COLTProjectHandlerIdParser {
+class ProjectHandlerIdParser {
 
     String source
     GPathResult node;
 
-    COLTProjectHandlerIdParser(String source) {
+    ProjectHandlerIdParser(String source) {
         this.source = source
         node = new XmlSlurper().parseText(source)
     }

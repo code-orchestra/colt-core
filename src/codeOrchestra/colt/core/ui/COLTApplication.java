@@ -1,7 +1,7 @@
 package codeOrchestra.colt.core.ui;
 
-import codeOrchestra.colt.core.COLTException;
-import codeOrchestra.colt.core.COLTProjectManager;
+import codeOrchestra.colt.core.ColtException;
+import codeOrchestra.colt.core.ColtProjectManager;
 import codeOrchestra.colt.core.RecentProjects;
 import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
@@ -9,10 +9,10 @@ import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
 import codeOrchestra.colt.core.license.*;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
-import codeOrchestra.colt.core.rpc.COLTRemoteServiceServlet;
+import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.tracker.GAController;
-import codeOrchestra.colt.core.ui.dialog.COLTDialogs;
-import codeOrchestra.lcs.license.COLTRunningKey;
+import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
+import codeOrchestra.lcs.license.ColtRunningKey;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -38,9 +38,9 @@ import java.io.File;
 /**
  * @author Alexander Eliseyev
  */
-public class COLTApplication extends Application {
+public class ColtApplication extends Application {
 
-    private static COLTApplication instance;
+    private static ColtApplication instance;
 
     private static final int SPLASH_WIDTH = 480;
     private static final int SPLASH_HEIGHT = 320;
@@ -48,7 +48,7 @@ public class COLTApplication extends Application {
 
     private ColtMenuBar menuBar;
 
-    public static COLTApplication get() {
+    public static ColtApplication get() {
         return instance;
     }
 
@@ -102,14 +102,14 @@ public class COLTApplication extends Application {
         mainStage = new Stage(StageStyle.DECORATED);
         mainStage.setOnCloseRequest(windowEvent -> {
             if (ChangingMonitor.getInstance().isChanged()) {
-                Action action = COLTDialogs.showCloseProjectDialog(primaryStage);
+                Action action = ColtDialogs.showCloseProjectDialog(primaryStage);
 
                 if (action == Dialog.Actions.CANCEL) {
                     windowEvent.consume();
                 } else if (action == Dialog.Actions.YES) {
                     try {
-                        COLTProjectManager.getInstance().save();
-                    } catch (COLTException e) {
+                        ColtProjectManager.getInstance().save();
+                    } catch (ColtException e) {
                         ErrorHandler.handle(e, "Can't save project");
                     }
                 }
@@ -132,7 +132,7 @@ public class COLTApplication extends Application {
     }
 
     private void dispose() {
-        COLTRunningKey.setRunning(false);
+        ColtRunningKey.setRunning(false);
 
         LiveCodingHandlerManager.getInstance().dispose();
         CodeOrchestraResourcesHttpServer.getInstance().dispose();
@@ -151,12 +151,12 @@ public class COLTApplication extends Application {
             System.exit(1);
         }
 
-        COLTRunningKey.setRunning(true);
+        ColtRunningKey.setRunning(true);
 
         CodeOrchestraResourcesHttpServer.getInstance().init();
 
         CodeOrchestraRPCHttpServer.getInstance().init();
-        CodeOrchestraRPCHttpServer.getInstance().addServlet(COLTRemoteServiceServlet.getInstance(), "/coltService");
+        CodeOrchestraRPCHttpServer.getInstance().addServlet(ColtRemoteServiceServlet.getInstance(), "/coltService");
 
         primaryStage.hide();
 
@@ -169,9 +169,9 @@ public class COLTApplication extends Application {
             File projectFile = new File(recentProjectPath);
             if (projectFile.exists()) {
                 try {
-                    COLTProjectManager.getInstance().load(projectFile.getPath());
+                    ColtProjectManager.getInstance().load(projectFile.getPath());
                     break;
-                } catch (COLTException e) {
+                } catch (ColtException e) {
                     // ignore
                 }
             }
