@@ -395,13 +395,16 @@
                     e.preventDefault();
                 });
             } else {
-                element = $('<input type="text" class="' + typeprefix + '-input" autocomplete="off" />').val(self.value ? self.value[1] : '').appendTo(bit);
+                element = $('<input type="text" class="' + typeprefix + '-input" autocomplete="off" size="3"/>').val(self.value ? self.value[1] : '').appendTo(bit);
                 if (chk(options.tabIndex)) element.tabIndex = options.tabIndex;
                 element.focus(function () {
                     focus(true);
                 }).blur(function () {
                         blur(true);
                         if (options.addOnBlur) toBox();
+                }).keyup(function(){
+                        var size = Math.max(3, $(this).val().length);
+                        $(this).attr('size', size);
                     });
 
                 if (options.addKeys || options.stopEnter) {

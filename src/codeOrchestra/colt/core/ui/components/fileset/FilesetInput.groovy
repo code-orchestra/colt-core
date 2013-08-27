@@ -218,7 +218,7 @@ class FilesetInput extends AnchorPane {
     }
 
     private void add(String el) {
-        getJSTopObject().call("add", el)
+        getJSTopObject().call("addFile", el)
     }
 
     private void addFile(File file) {
