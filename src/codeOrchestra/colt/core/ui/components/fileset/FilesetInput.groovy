@@ -3,9 +3,7 @@ package codeOrchestra.colt.core.ui.components.fileset
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
-import javafx.beans.InvalidationListener
 import javafx.beans.value.ChangeListener
-import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Side
@@ -164,12 +162,14 @@ class FilesetInput extends AnchorPane {
                             new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
                                 startDirectory = it.parentFile
                                 addFile(it)
+                                files = getFilesetHtmlValue()
                             }
                         } else {
                             def it = new FileChooser(initialDirectory: getBaseDir()).showOpenDialog(scene.window)
                             if (it) {
                                 startDirectory = it.parentFile
                                 addFile(it)
+                                files = getFilesetHtmlValue()
                             }
                         }
                     } as EventHandler<ActionEvent>))
@@ -182,6 +182,7 @@ class FilesetInput extends AnchorPane {
                         if (it) {
                             startDirectory = it?.parentFile
                             addFile(it)
+                            files = getFilesetHtmlValue()
                         }
 
                     } as EventHandler<ActionEvent>))
@@ -193,6 +194,8 @@ class FilesetInput extends AnchorPane {
                         new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
                             startDirectory = it?.parentFile
                             excludeFile(it)
+                            files = getFilesetHtmlValue()
+
                         }
                     } as EventHandler<ActionEvent>))
         }
@@ -204,6 +207,7 @@ class FilesetInput extends AnchorPane {
                         if (it) {
                             startDirectory = it.parentFile
                             excludeFile(it)
+                            files = getFilesetHtmlValue()
                         }
                     } as EventHandler<ActionEvent>))
         }
@@ -217,16 +221,16 @@ class FilesetInput extends AnchorPane {
         (JSObject) webView.engine.executeScript("window")
     }
 
-    private void add(String el) {
+    private void addFile(String el) {
         getJSTopObject().call("addFile", el)
     }
 
     private void addFile(File file) {
-        add(createPattern(file))
+        addFile(createPattern(file))
     }
 
     private void excludeFile(File file) {
-        add("-" + createPattern(file))
+        addFile("-" + createPattern(file))
     }
 
     String getFilesetHtmlValue() {
