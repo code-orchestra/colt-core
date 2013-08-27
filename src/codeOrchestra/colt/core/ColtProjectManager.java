@@ -2,6 +2,7 @@ package codeOrchestra.colt.core;
 
 import codeOrchestra.colt.core.loading.LiveCodingHandlerLoadingException;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
+import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.model.ProjectHandlerIdParser;
 import codeOrchestra.colt.core.model.listener.ProjectListener;
@@ -12,8 +13,11 @@ import codeOrchestra.util.ProjectHelper;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Alexander Eliseyev
@@ -38,6 +42,8 @@ public class ColtProjectManager {
             @Override
             public void onProjectLoaded(Project project) {
                 RecentProjects.addRecentProject(project.getPath());
+                Logger.getLogger(ColtProjectManager.class).info("Loaded " + project.getProjectType() + " project " + project.getName() + " on "
+                        + DateFormat.getTimeInstance(DateFormat.DEFAULT, Locale.US).format(new Date()));
             }
 
             @Override
