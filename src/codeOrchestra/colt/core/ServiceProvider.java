@@ -57,7 +57,11 @@ public class ServiceProvider {
             if (method.getName().startsWith("create") && method.getReturnType().equals(existingService)) {
                 try {
                     T service = (T) method.invoke(currentHandler);
-                    cache.put(existingService.getCanonicalName(), service);
+
+                    if (service != null) {
+                        cache.put(existingService.getCanonicalName(), service);
+                    }
+
                     return service;
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
