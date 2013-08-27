@@ -11,7 +11,7 @@
 <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="94" styleClass="player-box">
     <children>
-      <HBox spacing="10">
+      <HBox spacing="10" prefHeight="58" minHeight="58" maxHeight="58" >
         <children>
           <ToggleButton fx:id="pause" contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefHeight="24" prefWidth="20" styleClass="btn-player-pause" text="Pause">
             <HBox.margin>

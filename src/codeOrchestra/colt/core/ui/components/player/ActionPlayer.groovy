@@ -43,7 +43,7 @@ class ActionPlayer extends AnchorPane {
     }
 
     void showAdd(boolean b) {
-        separator.visible = b
+        separator.visible = separator.managed = b
         add.visible = add.managed = b
     }
 }
