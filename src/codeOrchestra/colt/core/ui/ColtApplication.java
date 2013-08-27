@@ -134,6 +134,7 @@ public class ColtApplication extends Application {
     private void dispose() {
         ColtRunningKey.setRunning(false);
 
+        ColtProjectManager.getInstance().dispose();
         LiveCodingHandlerManager.getInstance().dispose();
         CodeOrchestraResourcesHttpServer.getInstance().dispose();
         CodeOrchestraRPCHttpServer.getInstance().dispose();

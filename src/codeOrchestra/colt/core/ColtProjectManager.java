@@ -29,6 +29,8 @@ public class ColtProjectManager {
         return instance;
     }
 
+    private List<ProjectListener> projectListeners = new ArrayList<>();
+
     private Project currentProject;
 
     private ColtProjectManager() {
@@ -47,8 +49,6 @@ public class ColtProjectManager {
     public synchronized Project getCurrentProject() {
         return currentProject;
     }
-
-    private List<ProjectListener> projectListeners = new ArrayList<>();
 
     public synchronized void fireProjectLoaded() {
         for (ProjectListener projectListener : projectListeners) {
@@ -152,6 +152,18 @@ public class ColtProjectManager {
 
     public synchronized void unload() throws ColtException {
         // TODO: implement
+        fireProjectClosed();
+    }
+
+    public synchronized void dispose() {
+        try {
+            unload();
+        } catch (ColtException e) {
+            // ignore
+        }
+
+        projectListeners.clear();
+        currentProject = null;
     }
 
 }
