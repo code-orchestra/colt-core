@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui
 
 import codeOrchestra.colt.core.ColtException
 import codeOrchestra.colt.core.ColtProjectManager
+import codeOrchestra.colt.core.RecentProjects
 import codeOrchestra.colt.core.errorhandling.ErrorHandler
 import codeOrchestra.colt.core.license.CodeOrchestraLicenseManager
 import codeOrchestra.colt.core.license.ExpirationHelper
@@ -25,6 +26,8 @@ import static codeOrchestra.colt.core.RecentProjects.getRecentProjectsPaths
 class ColtMenuBar extends MenuBar {
 
     private Menu recentProjectsSubMenu
+    private MenuItem clearRecentProjects
+
     ArrayList<MenuItem> popupMenuItems = new ArrayList<>()
 
     ColtMenuBar() {
@@ -94,6 +97,12 @@ class ColtMenuBar extends MenuBar {
         } as EventHandler<ActionEvent>
 
         recentProjectsSubMenu = new Menu("Open Recent")
+        clearRecentProjects = new MenuItem("Clear List")
+        clearRecentProjects.onAction = { t ->
+            RecentProjects.clear(ColtProjectManager.instance.currentProject?.path)
+            refreshRecentProjectsMenu()
+        } as EventHandler<ActionEvent>
+
         refreshRecentProjectsMenu()
         ColtProjectManager.instance.addProjectListener(new ProjectListener() {
             @Override
@@ -127,33 +136,27 @@ class ColtMenuBar extends MenuBar {
     }
 
     private void refreshRecentProjectsMenu() {
-        recentProjectsSubMenu.items.removeAll()
+        recentProjectsSubMenu.items.clear()
 
         List<String> recentProjectsPaths = recentProjectsPaths
-        if (recentProjectsPaths.empty) {
-            recentProjectsSubMenu.disable = true
-            return
-        }
-
-        recentProjectsSubMenu.disable = false
-
-        for (String recentProjectsPath : recentProjectsPaths) {
-            MenuItem openRecentProjectItem = new MenuItem(recentProjectsPath)
-
-            final File projectFile = new File(recentProjectsPath)
-            if (!projectFile.exists() || projectFile.isDirectory()) {
-                continue
-            }
-
+        String curProjectPath = ColtProjectManager.instance.currentProject?.path
+        recentProjectsPaths.findAll {
+            final File projectFile = new File(it)
+            it != curProjectPath && projectFile.exists() && !projectFile.isDirectory()
+        }.each {
+            MenuItem openRecentProjectItem = new MenuItem(it)
             openRecentProjectItem.onAction = { actionEvent ->
                 try {
-                    ColtProjectManager.instance.load(projectFile.path)
+                    ColtProjectManager.instance.load(it)
                 } catch (ColtException e) {
-                    ErrorHandler.handle(e, "Can't load a project " + recentProjectsPath)
+                    ErrorHandler.handle(e, "Can't load a project " + it)
                 }
             } as EventHandler<ActionEvent>
-
             recentProjectsSubMenu.items.add(openRecentProjectItem)
         }
+
+        clearRecentProjects.disable = recentProjectsSubMenu.items.size() == 0
+        recentProjectsSubMenu.items.add(new SeparatorMenuItem())
+        recentProjectsSubMenu.items.add(clearRecentProjects)
     }
 }

@@ -66,4 +66,8 @@ public class RecentProjects {
         return result;
     }
 
+    public static void clear(String leave) {
+        preferences.put(RECENT_COLT_PROJECTS, leave != null ? leave : "");
+    }
+
 }
