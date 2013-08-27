@@ -9,7 +9,7 @@
 <?import javafx.scene.paint.*?>
 
 <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
-  <StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="94" prefWidth="206" styleClass="player-box">
+  <StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="94" styleClass="player-box">
     <children>
       <HBox spacing="10">
         <children>
@@ -28,7 +28,7 @@
               <Insets top="7" />
             </HBox.margin>
           </ToggleButton>
-          <Separator minHeight="-Infinity" orientation="VERTICAL" prefHeight="38" prefWidth="1" />
+          <Separator fx:id="separator" minHeight="-Infinity" orientation="VERTICAL" prefHeight="38" prefWidth="1" />
           <Button fx:id="add" contentDisplay="graphic_only" focusTraversable="false" prefHeight="24" prefWidth="20" styleClass="btn-player-add" text="Add">
             <HBox.margin>
               <Insets top="7" />
