@@ -9,7 +9,6 @@ import codeOrchestra.colt.core.license.ExpirationHelper
 import codeOrchestra.colt.core.license.LicenseListener
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
-import codeOrchestra.colt.core.ui.dialog.ColtDialogs
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.Menu
@@ -73,20 +72,17 @@ class ColtMenuBar extends MenuBar {
 
         MenuItem newProjectMenuItem = new MenuItem("New Project")
         newProjectMenuItem.onAction = { t ->
-            String projectName = ColtDialogs.showCreateProjectDialog(scene.window)
+            FileChooser fileChooser = new FileChooser()
+//                fileChooser.initialFileName = "untitled"
+            fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
+            File file = fileChooser.showSaveDialog(scene.window)
+            if (file != null) {
+                try {
+                    // TODO: a handler must be defined by the user (AS, JS, etc)
 
-            if (projectName != null) {
-                FileChooser fileChooser = new FileChooser()
-                fileChooser.initialFileName = projectName
-                fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
-                File file = fileChooser.showSaveDialog(scene.window)
-                if (file != null) {
-                    try {
-                        // TODO: a handler must be defined by the user (AS, JS, etc)
-                        ColtProjectManager.instance.create("AS", projectName, file)
-                    } catch (ColtException e) {
-                        ErrorHandler.handle(e, "Can't create a new project")
-                    }
+                    ColtProjectManager.instance.create("AS", file.name[0..-6], file)
+                } catch (ColtException e) {
+                    ErrorHandler.handle(e, "Can't create a new project")
                 }
             }
         } as EventHandler<ActionEvent>
