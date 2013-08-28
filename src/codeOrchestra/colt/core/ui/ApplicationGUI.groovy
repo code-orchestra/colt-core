@@ -37,6 +37,7 @@ import javafx.scene.layout.HBox
 abstract class ApplicationGUI extends BorderPane{
 
     @FXML protected Label projectTitle
+    @FXML protected Label projectType
 
     @FXML protected BorderPane root
 
