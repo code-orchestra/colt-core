@@ -52,7 +52,7 @@ public class RecentProjects {
     }
 
     private static List<String> parseString(String stringList) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         if (StringUtils.isEmpty(stringList)) {
             return result;
