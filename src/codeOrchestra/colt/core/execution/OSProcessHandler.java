@@ -39,7 +39,7 @@ public class OSProcessHandler extends ProcessHandler {
     private static final ExecutorService ourThreadExecutorsService = createServiceImpl();
 
     private static ThreadPoolExecutor createServiceImpl() {
-      return new ThreadPoolExecutor(10, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), new ThreadFactory() {
+      return new ThreadPoolExecutor(10, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<>(), new ThreadFactory() {
         @SuppressWarnings({"HardCodedStringLiteral"})
         public Thread newThread(Runnable r) {
           return new Thread(r, "OSProcessHandler pooled thread");
@@ -65,7 +65,7 @@ public class OSProcessHandler extends ProcessHandler {
 
   private class ProcessWaitFor {
     private final Future<?> myWaitForThreadFuture;
-    private final BlockingQueue<Consumer<Integer>> myTerminationCallback = new ArrayBlockingQueue<Consumer<Integer>>(1);
+    private final BlockingQueue<Consumer<Integer>> myTerminationCallback = new ArrayBlockingQueue<>(1);
 
     public void detach() {
       myWaitForThreadFuture.cancel(true);

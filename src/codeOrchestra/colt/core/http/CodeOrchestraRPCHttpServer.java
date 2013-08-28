@@ -30,7 +30,7 @@ public class CodeOrchestraRPCHttpServer {
   
   private ServletHandler servletHandler = new ServletHandler();
 
-  private Map<String, Handler> handlersMap = new HashMap<String, Handler>();
+  private Map<String, Handler> handlersMap = new HashMap<>();
 
   public void init() {
     server = new Server(PORT); // TODO: make configurable

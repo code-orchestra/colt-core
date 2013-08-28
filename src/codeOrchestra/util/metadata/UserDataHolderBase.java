@@ -90,7 +90,7 @@ public class UserDataHolderBase implements UserDataHolderEx, Cloneable {
   }
 
   protected ConcurrentMap<String, Object> createDataMap(int initialCapacity) {
-    return new ConcurrentHashMap<String, Object>(initialCapacity);
+    return new ConcurrentHashMap<>(initialCapacity);
   }
 
   public <T> T getCopyableUserData(String key) {

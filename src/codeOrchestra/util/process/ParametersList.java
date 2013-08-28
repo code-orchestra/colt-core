@@ -25,9 +25,9 @@ public class ParametersList implements Cloneable{
   
   private static final Logger LOG = Logger.getLogger("#com.intellij.execution.configurations.ParametersList");
   
-  private List<String> myParameters = new ArrayList<String>();
+  private List<String> myParameters = new ArrayList<>();
   private Map<String, String> myMacroMap = null;
-  private List<ParamsGroup> myGroups = new ArrayList<ParamsGroup>();
+  private List<ParamsGroup> myGroups = new ArrayList<>();
 
   public boolean hasParameter(final String param) {
     return myParameters.contains(param);
@@ -171,7 +171,7 @@ public class ParametersList implements Cloneable{
       return Collections.unmodifiableList(myParameters);
     }
 
-    final List<String> params = new ArrayList<String>();
+    final List<String> params = new ArrayList<>();
 
     // params
     params.addAll(myParameters);
@@ -205,8 +205,8 @@ public class ParametersList implements Cloneable{
   public ParametersList clone() {
     try {
       final ParametersList clone = (ParametersList)super.clone();
-      clone.myParameters = new ArrayList<String>(myParameters);
-      clone.myGroups = new ArrayList<ParamsGroup>(myGroups.size() + 1);
+      clone.myParameters = new ArrayList<>(myParameters);
+      clone.myGroups = new ArrayList<>(myGroups.size() + 1);
       for (ParamsGroup group : myGroups) {
         clone.myGroups.add(group.clone());
       }
@@ -224,7 +224,7 @@ public class ParametersList implements Cloneable{
 
   private static class ParametersTokenizer {
     private final String myParamsString;
-    private final List<String> myArray = new ArrayList<String>();
+    private final List<String> myArray = new ArrayList<>();
     private final StringBuffer myBuffer = new StringBuffer(128);
     private boolean myTokenStarted = false;
     private boolean myUnquotedSlash = false;
