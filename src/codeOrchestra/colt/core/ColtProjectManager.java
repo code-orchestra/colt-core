@@ -133,6 +133,7 @@ public class ColtProjectManager {
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         currentProject = handler.createProject(pName, pFile);
         currentProject.setPath(pFile.getPath());
+        currentProject.setNewProject(true);
 
         save();
 
