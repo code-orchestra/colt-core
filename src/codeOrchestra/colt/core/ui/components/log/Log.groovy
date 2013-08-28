@@ -25,16 +25,5 @@ class Log implements LoggerService {
         ArrayList<LogMessage> newMessages = logWebView.logMessages.asList().grep{LogMessage m ->  m.level == level }
         logWebView.logMessages.clear()
         logWebView.logMessages.addAll(newMessages)
-
-        //todo: нужно clear чтобы убрать? почему тогда фильтр по уровня соообщения?
-        //todo спросить у Саши что он имел ввиду, полагаю это загадочный Log.ALL нужен чтобы работала очистка
-        //todo: полагаю потом нужно убрать аргумент и оставить только строчку logWebView.logMessages.clear()
-//        def iterator = logWebView.logMessages.iterator()
-//        while (iterator.hasNext()) {
-//            def message = iterator.next()
-//            if (level == message.getLevel()) {
-//                iterator.remove();
-//            }
-//        }
     }
 }
