@@ -36,8 +36,12 @@ public class SourcesTrackerThread extends Thread {
 			}
 			
 			for (SourceFile changedFile : sourcesTracker.getChangedFiles()) {
-				callback.sourceFileChanged(changedFile);
-			}
+                try {
+                    callback.sourceFileChanged(changedFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 		}
 	}
 	
