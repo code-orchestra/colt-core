@@ -1,8 +1,7 @@
-package codeOrchestra.colt.core.ui.window
+package codeOrchestra.colt.core.ui
 
 import codeOrchestra.colt.core.logging.Level
 import codeOrchestra.colt.core.rpc.security.ui.ShortCodeNotification
-import codeOrchestra.colt.core.ui.ColtApplication
 import codeOrchestra.colt.core.ui.components.ProgressIndicatorController
 import codeOrchestra.colt.core.ui.components.log.Log
 import codeOrchestra.colt.core.ui.components.log.LogFilter
@@ -78,11 +77,12 @@ abstract class ApplicationGUI extends BorderPane{
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        Platform.runLater({initialize()})
+        initLog();
+        Platform.runLater{initialize()}
     }
 
     protected void initialize() {
-        initLog(); initGoogleAnalytics()
+        initGoogleAnalytics()
 
         // build ui
 

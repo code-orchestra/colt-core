@@ -1,22 +1,16 @@
 package codeOrchestra.colt.core.ui.components.log
 
 import codeOrchestra.colt.core.ui.components.logVisualizer.LogVisualizer
-import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList as OL
 import javafx.event.EventHandler
-import javafx.geometry.HPos
-import javafx.geometry.Insets
-import javafx.geometry.VPos
-import javafx.scene.control.ScrollPane
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import javafx.scene.text.Font
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
@@ -47,7 +41,6 @@ class LogWebView extends VBox {
     }
 
     private void init(){
-        String htmlPage = this.class.getResource("html/log-webview.html").toExternalForm()
         WebEngine engine = webView.engine
         engine.documentProperty().addListener({ o, oldValue,  newValue ->
             htmlLoaded = true
@@ -57,7 +50,7 @@ class LogWebView extends VBox {
             }
 
         } as ChangeListener)
-        engine.load(htmlPage)
+        engine.load(this.class.getResource("html/log-webview.html").toExternalForm())
         visualizer.logMessages = logMessages
         children.add(visualizer)
         children.add(webView)
