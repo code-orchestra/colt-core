@@ -76,4 +76,8 @@ public class PathUtils {
         return new File(getApplicationBaseDir(), "templates");
     }
 
+    public static File getLibrariesDir() {
+        return new File(getApplicationBaseDir(), "lib");
+    }
+
 }
