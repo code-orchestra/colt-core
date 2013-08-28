@@ -1,5 +1,10 @@
 package codeOrchestra.colt.core.ui.window
 
+import codeOrchestra.colt.core.logging.Level
+import codeOrchestra.colt.core.ui.components.log.Log
+import codeOrchestra.colt.core.ui.components.log.LogFilter
+import codeOrchestra.colt.core.ui.components.log.LogMessage
+import codeOrchestra.colt.core.ui.components.log.LogWebView
 import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -41,6 +46,9 @@ abstract class ApplicationGUI extends BorderPane{
     @FXML protected ProgressIndicator progressIndicator
     @FXML protected ImageView sessionIndicator
 
+    @Lazy LogWebView logView = Log.instance.logWebView
+    List<ToggleButton> allFilters
+
     ApplicationGUI() {
         println "ApplicationGUI"
         FXMLLoader fxmlLoader = new FXMLLoader(ApplicationGUI.class.getResource("main_gui.fxml"))
@@ -57,6 +65,30 @@ abstract class ApplicationGUI extends BorderPane{
 
     protected void initialize() {
 
+        navigationToggleGroup.toggles.addAll(runButton, buildButton, settingsButton)
+
+        allFilters = [logFilterAll, logFilterErrors, logFilterWarnings, logFilterInfo, logFilterLog]
+        logFilterToggleGroup.toggles.addAll(allFilters)
+
+    }
+
+    protected void updateLogFilter() {
+        if (!logFilterToggleGroup.selectedToggle) {
+            logFilterAll.selected = true
+            return
+        }
+
+        int filterIndex = allFilters.indexOf(logFilterToggleGroup.selectedToggle)
+        logView.filter(LogFilter.values()[filterIndex])
+        logFilterErrors.text = "Errors" + logFilterPrefix(Level.ERROR)
+        logFilterWarnings.text = "Warnings" + logFilterPrefix(Level.WARN)
+        logFilterInfo.text = "Info" + logFilterPrefix(Level.INFO)
+        logFilterLog.text = "Log" + logFilterPrefix(Level.COMPILATION, Level.LIVE)
+    }
+
+    private String logFilterPrefix(Level... levels) {
+        if(logView.logMessages.empty || logFiltersContainer.width < 300) return  ""
+        " (" + logView.logMessages.grep { LogMessage m -> m.level in levels }.size() + ")"
     }
 
 }
