@@ -13,6 +13,8 @@ abstract class Project implements IModelElement {
 
     boolean disposed
 
+    @FXBindable boolean newProject
+
     // Default aspects
     abstract ProjectPaths getProjectPaths()
     abstract ProjectLiveSettings getProjectLiveSettings()
