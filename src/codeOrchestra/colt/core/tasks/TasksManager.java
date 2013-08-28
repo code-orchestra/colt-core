@@ -33,7 +33,7 @@ public class TasksManager {
      */
     private final Object myLock = new Object();
 
-    private ConcurrentLinkedQueue<ColtTask> tasksQueue = new ConcurrentLinkedQueue<ColtTask>();
+    private ConcurrentLinkedQueue<ColtTask> tasksQueue = new ConcurrentLinkedQueue<>();
 
     public TasksManager() {
         executorThread = new Executor();

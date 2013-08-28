@@ -10,7 +10,7 @@ import java.util.Map;
 public class TemplateProcessor {
   
   private File file;  
-  private Map<String, String> tokens = new HashMap<String, String>();
+  private Map<String, String> tokens = new HashMap<>();
   
   public TemplateProcessor(File file, Map<String, String> tokens) {
     this.file = file;

@@ -53,7 +53,7 @@ public class JavaLauncher {
     }
 
     if (classPath == null) {
-      myClassPath = new ArrayList<String>();
+      myClassPath = new ArrayList<>();
     } else {
       myClassPath = classPath;
     }
@@ -87,7 +87,7 @@ public class JavaLauncher {
 
   public static List<String> getJavaHomes() {
     String systemJavaHome = System.getProperty("java.home");
-    List<String> homes = new LinkedList<String>();
+    List<String> homes = new LinkedList<>();
     String systemJdkHome = systemJavaHome.substring(0, systemJavaHome.length() - "/jre".length());
     if (systemJavaHome.endsWith("jre") && new File(systemJdkHome + File.separator + "bin").exists()) {
       homes.add(systemJdkHome);

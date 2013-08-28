@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProcessHandlerBuilder {
-  private final List<String> myCommandLine = new ArrayList<String>();
+  private final List<String> myCommandLine = new ArrayList<>();
 
   public ProcessHandlerBuilder() {
   }
@@ -108,7 +108,7 @@ public class ProcessHandlerBuilder {
   }
 
   public static Iterable<String> splitCommandInParts(String command) {
-    List<String> result = new ArrayList<String>();
+    List<String> result = new ArrayList<>();
     boolean insideQuotes = false;
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < command.length(); i++) {

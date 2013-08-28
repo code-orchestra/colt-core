@@ -13,7 +13,7 @@ public class LoggerMessage {
 
   private Level severity;
   private String message;
-  private List<LoggerScopeWrapper> scopes = new ArrayList<LoggerScopeWrapper>();
+  private List<LoggerScopeWrapper> scopes = new ArrayList<>();
   private String rootFQName;
   private long timestamp;
   private String command;
@@ -68,7 +68,7 @@ public class LoggerMessage {
   public static class Builder {
     private Level severity;
     private String message;
-    private List<LoggerScopeWrapper> scopes = new ArrayList<LoggerScopeWrapper>();
+    private List<LoggerScopeWrapper> scopes = new ArrayList<>();
     private String rootFQName;
     private long timestamp;
     public String command;

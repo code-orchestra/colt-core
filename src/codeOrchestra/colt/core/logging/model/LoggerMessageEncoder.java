@@ -33,7 +33,7 @@ public final class LoggerMessageEncoder {
   private static Map<String, Level> severityMap;
 
   static {
-    severityMap = new HashMap<String, Level>();
+    severityMap = new HashMap<>();
     severityMap.put("fatal", Level.ERROR);
     severityMap.put("error", Level.ERROR);
     severityMap.put("warn", Level.WARN);
@@ -88,7 +88,7 @@ public final class LoggerMessageEncoder {
     }
 
     // Scopes
-    List<LoggerScopeWrapper> scopesList = new ArrayList<LoggerScopeWrapper>();
+    List<LoggerScopeWrapper> scopesList = new ArrayList<>();
     NodeList scopeRootElementNodeList = logMessageRootElement.getElementsByTagName(SCOPES_ELEMENT);
     if (scopeRootElementNodeList != null && scopeRootElementNodeList.getLength() > 0) {
       Element scopeRootElement = (Element) scopeRootElementNodeList.item(0);

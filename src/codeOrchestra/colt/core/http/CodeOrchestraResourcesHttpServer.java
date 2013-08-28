@@ -27,7 +27,7 @@ public class CodeOrchestraResourcesHttpServer {
     private Server server;
     private HandlerList activeHandlers;
 
-    private Map<String, Handler> handlersMap = new HashMap<String, Handler>();
+    private Map<String, Handler> handlersMap = new HashMap<>();
 
     private boolean mustStopReloadThread;
 

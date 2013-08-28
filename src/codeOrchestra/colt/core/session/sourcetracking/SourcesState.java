@@ -27,8 +27,8 @@ public class SourcesState {
 		return sourcesState;
 	}
 	
-	private Map<String, Long> state = new HashMap<String, Long>();
-	private Map<String, SourceFile> pathToWrapper = new HashMap<String, SourceFile>();
+	private Map<String, Long> state = new HashMap<>();
+	private Map<String, SourceFile> pathToWrapper = new HashMap<>();
 	
 	private SourcesState() {		
 	}

@@ -34,7 +34,7 @@ public abstract class ProcessHandler extends UserDataHolderBase {
   
   private static final Logger LOG = Logger.getLogger(ProcessHandler.class);
   
-  private final List<ProcessListener> myListeners = new CopyOnWriteArrayList<ProcessListener>();
+  private final List<ProcessListener> myListeners = new CopyOnWriteArrayList<>();
 
   private static final int STATE_INITIAL     = 0;
   private static final int STATE_RUNNING     = 1;
@@ -196,7 +196,7 @@ public abstract class ProcessHandler extends UserDataHolderBase {
   }
   
   private final class TasksRunner extends ProcessAdapter {
-    private final List<Runnable> myPendingTasks = new ArrayList<Runnable>();
+    private final List<Runnable> myPendingTasks = new ArrayList<>();
     
     public void startNotified(ProcessEvent event) {
       removeProcessListener(this);
