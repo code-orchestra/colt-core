@@ -87,6 +87,23 @@ class ColtMenuBar extends MenuBar {
             }
         } as EventHandler<ActionEvent>
 
+        MenuItem newJSProjectMenuItem = new MenuItem("New JS Project")
+        newJSProjectMenuItem.onAction = { t ->
+            FileChooser fileChooser = new FileChooser()
+//                fileChooser.initialFileName = "untitled"
+            fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
+            File file = fileChooser.showSaveDialog(scene.window)
+            if (file != null) {
+                try {
+                    // TODO: a handler must be defined by the user (AS, JS, etc)
+
+                    ColtProjectManager.instance.create("JS", file.name[0..-6], file)
+                } catch (ColtException e) {
+                    ErrorHandler.handle(e, "Can't create a new project")
+                }
+            }
+        } as EventHandler<ActionEvent>
+
         MenuItem exitMenuItem = new MenuItem("Exit")
         exitMenuItem.onAction = { t ->
             System.exit(0)
@@ -113,7 +130,7 @@ class ColtMenuBar extends MenuBar {
 
         popupMenuItems.addAll(newProjectMenuItem, openProjectMenuItem, saveProjectMenuItem)
 
-        fileMenu.items.addAll(newProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, recentProjectsSubMenu, saveProjectMenuItem, new SeparatorMenuItem(), exitMenuItem)
+        fileMenu.items.addAll(newProjectMenuItem, newJSProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, recentProjectsSubMenu, saveProjectMenuItem, new SeparatorMenuItem(), exitMenuItem)
 
         Menu helpMenu = new Menu("Help")
         final MenuItem enterSerialItem = new MenuItem("Enter Serial Number")
