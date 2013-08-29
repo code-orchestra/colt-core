@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui.components.log
 
+import codeOrchestra.colt.core.tracker.GAController
 import codeOrchestra.colt.core.ui.components.logVisualizer.LogVisualizer
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -41,6 +42,8 @@ class LogWebView extends VBox {
     }
 
     private void init(){
+        GAController.instance.registerPage(this, "/log.html", "log")
+
         WebEngine engine = webView.engine
         engine.documentProperty().addListener({ o, oldValue,  newValue ->
             htmlLoaded = true

@@ -12,7 +12,6 @@ class Log implements LoggerService {
     @Lazy LogWebView logWebView = new LogWebView()
 
     private Log() {
-//        GAController.instance.registerPage(logWebView, "/as/asLog.html", "asLog")
     }
 
     @Override
