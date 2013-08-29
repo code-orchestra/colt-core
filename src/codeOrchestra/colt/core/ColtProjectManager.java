@@ -124,6 +124,10 @@ public class ColtProjectManager {
     }
 
     public synchronized void create(String handlerId, String pName, File pFile) throws ColtException {
+        if (currentProject != null) {
+            unload();
+        }
+
         try {
             LiveCodingHandlerManager.getInstance().load(handlerId);
         } catch (LiveCodingHandlerLoadingException e) {
@@ -141,6 +145,10 @@ public class ColtProjectManager {
     }
 
     private synchronized void importProject(File file) throws ColtException {
+        if (currentProject != null) {
+            unload();
+        }
+
         String handlerId = "AS";
         try {
             LiveCodingHandlerManager.getInstance().load(handlerId);
