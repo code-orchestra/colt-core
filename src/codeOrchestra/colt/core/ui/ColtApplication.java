@@ -13,6 +13,7 @@ import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.tracker.GAController;
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 import codeOrchestra.lcs.license.ColtRunningKey;
+import com.sun.javafx.css.StyleManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -66,6 +67,8 @@ public class ColtApplication extends Application {
         instance = this;
 
         this.primaryStage = primaryStage;
+
+        StyleManager.getInstance().addUserAgentStylesheet("/codeOrchestra/colt/core/ui/style/main.css");
 
         GAController.getInstance().start(primaryStage);
         initSplash();

@@ -153,7 +153,6 @@ abstract class ApplicationGUI extends BorderPane{
 
     protected initActionPlayerPopup() {
         actionPlayerPopup = new ActionPlayerPopup()
-        actionPlayerPopup.actionPlayer.stylesheets.addAll(stylesheets)
     }
 
     protected void updateLogFilter() {
