@@ -581,7 +581,7 @@
     -fx-effect: dropshadow(gaussian, #f1f4f8,  0, 0, 0, 1px);
     -fx-text-fill: #515458; }
 
-.button { -fx-padding: 8px 6px 0 6px; }
+.button { -fx-padding: 8px 6px 6px 6px; }
 .choice-box { -fx-padding: 0 6px 0 6px; }
 
 .choice-box .label { -fx-padding: 8px 0 7px 0; }
@@ -612,13 +612,26 @@
     -fx-effect: innershadow(gaussian, rgba(0, 0, 0, .4), 8, 0, 0, 2);
     -fx-padding: 9px 6px 0 6px; }
 
+.button:default {
+    -fx-background-color: #0073bf, #19b2f2, linear-gradient(#0da6e5, #0066cc 90%, #006ed4 100%);  /* Border, highlight, main */
+    -fx-text-fill: #fff; }
+
+.button:default .text { -fx-effect: dropshadow( gaussian, #0059a6,  0, 0, 0, -1px); }
+
+.button:default:hover {
+    -fx-background-color: #0073bf, #26bfff, linear-gradient(#19b2f2, #0073d9 90%, #007be1 100%); }
+
+.button:default:pressed {
+    -fx-background-color: #0073bf, #0066cc;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 51, .4), 8, 0, 0, 2); }
+
 /*.button:focused:pressed {
     -fx-background-color: #c9ccd0, #e4e5e7;
     -fx-background-insets: 0, 1;
     -fx-effect: innershadow(gaussian, rgba(0, 0, 0, .4), 8, 0, 0, 2);
     -fx-padding: 10px 6px 0 6px; }*/
 
-    .button .text { -fx-effect: dropshadow( gaussian, #fff,  0, 0, 0, 1px); }
+.button .text { -fx-effect: dropshadow( gaussian, #fff,  0, 0, 0, 1px); }
 
 .btn-add {
     -fx-background-image: url('images/btns/add.png');
@@ -630,19 +643,6 @@
     -fx-background-position: 0 1px; }
 
 .toggle-button:disabled, .button:disabled { -fx-opacity: .44; }
-
-.btn-done {
-    -fx-background-color: #0073bf, #19b2f2, linear-gradient(#0da6e5, #0066cc 90%, #006ed4 100%);  /* Border, highlight, main */
-    -fx-text-fill: #fff; }
-
-    .btn-done .text { -fx-effect: dropshadow( gaussian, #0059a6,  0, 0, 0, -1px); }
-
-.btn-done:hover {
-    -fx-background-color: #0073bf, #26bfff, linear-gradient(#19b2f2, #0073d9 90%, #007be1 100%); }
-
-.btn-done:pressed {
-    -fx-background-color: #0073bf, #0066cc;
-    -fx-effect: innershadow(gaussian, rgba(0, 0, 51, .4), 8, 0, 0, 2); }
 
 /* Advanced settings */
 .fieldset-advanced-caption { -fx-background-color: #dde0e4; }
