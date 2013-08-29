@@ -89,7 +89,7 @@ abstract class ApplicationGUI extends BorderPane{
 
         root.top = ShortCodeNotification.initNotification(root.top)
 
-        intiActionPlayerPopup()
+        initActionPlayerPopup()
 
         navigationToggleGroup.toggles.addAll(runButton, buildButton, settingsButton)
 
@@ -151,7 +151,7 @@ abstract class ApplicationGUI extends BorderPane{
         })
     }
 
-    protected intiActionPlayerPopup() {
+    protected initActionPlayerPopup() {
         actionPlayerPopup = new ActionPlayerPopup()
         actionPlayerPopup.actionPlayer.stylesheets.addAll(stylesheets)
     }
