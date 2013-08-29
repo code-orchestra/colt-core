@@ -10,10 +10,10 @@ import javafx.scene.control.CheckBox
  */
 class CTBForm extends InputForm {
 
-    @FXML CheckBox checkBox
+    @FXML protected CheckBox checkBox
 
     CTBForm() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ctb_form.fxml"))
+        FXMLLoader fxmlLoader = new FXMLLoader(CTBForm.class.getResource("ctb_form.fxml"))
         initLoader(fxmlLoader)
 
         button.disableProperty().bind(checkBox.selectedProperty().not())

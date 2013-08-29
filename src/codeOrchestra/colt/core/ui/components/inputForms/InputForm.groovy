@@ -21,11 +21,6 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
     //hak for fxml
     String formType
 
-    enum BrowseType{
-        FILE,
-        DIRECTORY
-    }
-
     BrowseType browseType = BrowseType.FILE
 
     ArrayList<FileChooser.ExtensionFilter> extensionFilters = new ArrayList<>()

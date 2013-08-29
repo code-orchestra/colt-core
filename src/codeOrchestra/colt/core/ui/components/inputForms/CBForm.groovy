@@ -12,15 +12,15 @@ import javafx.scene.layout.AnchorPane
  * @author Dima Kruk
  */
 class CBForm extends AnchorPane implements ITypedForm{
-    @FXML Label label
-    @FXML CheckBox checkBox
-    @FXML ChoiceBox choiceBox
-    @FXML Label errorLabel
+    @FXML protected Label label
+    @FXML protected CheckBox checkBox
+    @FXML protected ChoiceBox choiceBox
+    @FXML protected Label errorLabel
 
     FormType type
 
     CBForm() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("cb_form.fxml"))
+        FXMLLoader fxmlLoader = new FXMLLoader(CBForm.class.getResource("cb_form.fxml"))
         fxmlLoader.root = this
         fxmlLoader.controller = this
 

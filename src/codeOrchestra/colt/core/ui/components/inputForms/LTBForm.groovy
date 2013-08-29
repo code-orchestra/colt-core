@@ -10,10 +10,10 @@ import javafx.scene.control.Label
  */
 class LTBForm extends InputForm{
 
-    @FXML Label label
+    @FXML protected Label label
 
     LTBForm() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ltb_form.fxml"))
+        FXMLLoader fxmlLoader = new FXMLLoader(LTBForm.class.getResource("ltb_form.fxml"))
         initLoader(fxmlLoader)
 
         type = FormType.TEXT_FIELD
