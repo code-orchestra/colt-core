@@ -23,16 +23,9 @@
             padding: 0;
         }
 
-        /*@font-face {
-            font-family: 'LucidaGrande';
-            src: url('lucida-grande.ttf') format('truetype');
-            font-weight: 300;
-            font-style: normal; }*/
-
         BODY, BUTTON, INPUT, LABEL, SELECT, TEXTAREA {
             color: #515458;
-            font: 13px/18px 'LucidaGrande', sans-serif;
-            /*'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'DejaVu Sans', 'Bitstream Vera Sans', 'Liberation Sans', Arial,*/
+            font: 81.3% / 1.385 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'DejaVu Sans', 'Bitstream Vera Sans', 'Liberation Sans', Arial, sans-serif;
         }
 
         :focus {
@@ -166,7 +159,7 @@
 
         }
 
-         @media print,
+        @media print,
         (-o-min-device-pixel-ratio: 5/4),
         (-webkit-min-device-pixel-ratio: 1.25),
         (min-resolution: 120dpi) {
@@ -177,22 +170,16 @@
 
             .log .error, .log .info, .log .warning {
                 -webkit-background-size: 48px 48px;
-                background-size: 16px 16px;
-            }
+                background-size: 16px 16px; }
 
-        .log .error {
-            background-image: url('error-x2.png');
-        }
+            .log .error {
+                background-image: url('error-x2.png'); }
 
-        .log .info {
-            background-image: url('info-x2.png');
-        }
+            .log .info {
+                background-image: url('info-x2.png'); }
 
-        .log .warning {
-            background-image: url('warning-x2.png');
-        }
-        }
-
+            .log .warning {
+                background-image: url('warning-x2.png'); }
         }
     </style>
     <link rel="stylesheet" href="../../shared/tipsy.css" type="text/css"/>
