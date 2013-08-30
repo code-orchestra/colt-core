@@ -33,4 +33,8 @@ class RTBForm extends InputForm {
     public StringProperty textProperty() {
         return radioButton.textProperty();
     }
+
+    RadioButton getRadioButton() {
+        return radioButton
+    }
 }
