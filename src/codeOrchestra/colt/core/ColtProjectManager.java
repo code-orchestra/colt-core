@@ -7,9 +7,6 @@ import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.model.ProjectHandlerIdParser;
 import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
-import codeOrchestra.colt.core.tasks.ColtTaskWithProgress;
-import codeOrchestra.colt.core.tasks.TasksManager;
-import codeOrchestra.colt.core.ui.components.IProgressIndicator;
 import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.ProjectHelper;
 
@@ -114,23 +111,6 @@ public class ColtProjectManager {
     }
 
     public synchronized void save() throws ColtException {
-        TasksManager.getInstance().scheduleBackgroundTask(new ColtTaskWithProgress() {
-            @Override
-            protected Object call(IProgressIndicator progressIndicator) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected String getName() {
-                return "Save Project";
-            }
-        });
-
         File file = new File(currentProject.getPath());
         FileWriter fileWriter = null;
         try {
