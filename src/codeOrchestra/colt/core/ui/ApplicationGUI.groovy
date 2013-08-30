@@ -65,7 +65,7 @@ abstract class ApplicationGUI extends BorderPane{
     @Lazy LogWebView logView = Log.instance.logWebView
     List<ToggleButton> allFilters
 
-    @FXBindable String applicationState
+    @FXBindable String applicationState = ""
 
     ApplicationGUI() {
         println "ApplicationGUI"
@@ -76,13 +76,13 @@ abstract class ApplicationGUI extends BorderPane{
         try {
             fxmlLoader.load()
         } catch (IOException exception) {
-            throw new RuntimeException(exception);
+            throw new RuntimeException(exception)
         }
-        initLog();
-        Platform.runLater{initialize()}
+        initLog()
+        init()
     }
 
-    protected void initialize() {
+    private void init() {
         initGoogleAnalytics()
 
         // build ui
