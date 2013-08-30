@@ -6,6 +6,7 @@ import codeOrchestra.colt.core.ui.components.inputForms.FormType
 import codeOrchestra.colt.core.ui.components.inputForms.ITypedForm
 import codeOrchestra.colt.core.ui.components.inputForms.LTBForm
 import codeOrchestra.colt.core.ui.components.inputForms.RTBForm
+import groovy.transform.Canonical
 import javafx.collections.ListChangeListener
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -23,12 +24,12 @@ class FormGroup extends VBox {
 
     private static final int SPASING = 22
 
-    @FXML private Label label
+    @FXML protected Label label
 
     String title
 
     FormGroup() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("form_group.fxml"))
+        FXMLLoader fxmlLoader = new FXMLLoader(FormGroup.class.getResource("form_group.fxml"))
         fxmlLoader.root = this
         fxmlLoader.controller = this
 
@@ -42,55 +43,56 @@ class FormGroup extends VBox {
 
         setSpacing(SPASING)
 
-        children.addListener(new ListChangeListener<FXNode>() {
-            @Override
-            void onChanged(ListChangeListener.Change<? extends FXNode> change) {
-                change.next()
-                if (change.from == 1) {
-                    if (!title){
-                        setMargin(change.addedSubList[0], new Insets(SPASING, 0, 0, 0))
-                    }
-                } else {
-                    FXNode prev = change.list[change.from - 1]
-                    FXNode cur = change.addedSubList[0]
-                    if (prev instanceof ITypedForm && cur instanceof ITypedForm) {
-                        if (cur instanceof CTBForm) {
-                            if (prev instanceof CTBForm) {
-                                if(prev.type == FormType.SIMPLE) {
-                                    setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
-                                } else {
-                                    setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
-                                }
-                            } else if(prev.type != FormType.SIMPLE) {
-                                setMargin(cur, new Insets(22 - SPASING, 0, 0, 0))
-                            }
-                            if (prev instanceof CBForm) {
-                                setMargin(cur, new Insets(24 - SPASING, 0, 0, 0))
-                            }
-                        }
-                        if (cur instanceof RTBForm) {
-                            if (prev instanceof RTBForm) {
-                                if(prev.type == FormType.SIMPLE) {
-                                    setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
-                                } else {
-                                    setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
-                                }
-                            }
-                        }
-                        if (cur instanceof LTBForm) {
-                            if(prev.type == FormType.SIMPLE) {
+        initListener()
+    }
+
+    private void initListener() {
+        children.addListener({ ListChangeListener.Change<? extends javafx.scene.Node> change ->
+            change.next()
+            if (change.from == 1) {
+                if (!title) {
+                    setMargin(change.addedSubList[0], new Insets(SPASING, 0, 0, 0))
+                }
+            } else {
+                FXNode prev = change.list[change.from - 1]
+                FXNode cur = change.addedSubList[0]
+                if (prev instanceof ITypedForm && cur instanceof ITypedForm) {
+                    if (cur instanceof CTBForm) {
+                        if (prev instanceof CTBForm) {
+                            if (prev.type == FormType.SIMPLE) {
                                 setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
                             } else {
-                                setMargin(cur, new Insets(26 - SPASING, 0, 0, 0))
+                                setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
+                            }
+                        } else if (prev.type != FormType.SIMPLE) {
+                            setMargin(cur, new Insets(22 - SPASING, 0, 0, 0))
+                        }
+                        if (prev instanceof CBForm) {
+                            setMargin(cur, new Insets(24 - SPASING, 0, 0, 0))
+                        }
+                    }
+                    if (cur instanceof RTBForm) {
+                        if (prev instanceof RTBForm) {
+                            if (prev.type == FormType.SIMPLE) {
+                                setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
+                            } else {
+                                setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
                             }
                         }
-                        if (cur instanceof CBForm) {
-                            setMargin(cur, new Insets(23 - SPASING, 0, 0, 0))
+                    }
+                    if (cur instanceof LTBForm) {
+                        if (prev.type == FormType.SIMPLE) {
+                            setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
+                        } else {
+                            setMargin(cur, new Insets(26 - SPASING, 0, 0, 0))
                         }
+                    }
+                    if (cur instanceof CBForm) {
+                        setMargin(cur, new Insets(23 - SPASING, 0, 0, 0))
                     }
                 }
             }
-        })
+        } as ListChangeListener)
     }
 
     private void makeTitled(boolean b) {
