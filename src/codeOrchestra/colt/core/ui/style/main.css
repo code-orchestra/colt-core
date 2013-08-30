@@ -610,7 +610,7 @@
     -fx-background-color: #c9ccd0, #e4e5e7;
     -fx-background-insets: 0, 1;
     -fx-effect: innershadow(gaussian, rgba(0, 0, 0, .4), 8, 0, 0, 2);
-    -fx-padding: 9px 6px 0 6px; }
+    -fx-padding: 9px 6px 6px 6px; }
 
 .button:default {
     -fx-background-color: #0073bf, #19b2f2, linear-gradient(#0da6e5, #0066cc 90%, #006ed4 100%);  /* Border, highlight, main */
