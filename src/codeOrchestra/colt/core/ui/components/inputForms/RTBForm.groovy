@@ -10,10 +10,10 @@ import javafx.scene.control.RadioButton
  */
 class RTBForm extends InputForm {
 
-    @FXML RadioButton radioButton
+    @FXML protected RadioButton radioButton
 
     RTBForm() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("rtb_form.fxml"))
+        FXMLLoader fxmlLoader = new FXMLLoader(RTBForm.class.getResource("rtb_form.fxml"))
         initLoader(fxmlLoader)
 
         button.disableProperty().bind(radioButton.selectedProperty().not())
@@ -32,5 +32,9 @@ class RTBForm extends InputForm {
 
     public StringProperty textProperty() {
         return radioButton.textProperty();
+    }
+
+    RadioButton getRadioButton() {
+        return radioButton
     }
 }
