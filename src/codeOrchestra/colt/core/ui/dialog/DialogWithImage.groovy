@@ -16,56 +16,28 @@ import javafx.stage.Window
 /**
  * @author Dima Kruk
  */
-class DialogWithImage extends VBox{
+class DialogWithImage extends Dialog{
 
-    @FXML ImageView imageView
-    @FXML Label label
-
-    @FXML Button ok_btn
-
-    Stage stage
+    ImageView imageView
 
     DialogWithImage(Window owner) {
-        super()
-
-        FXMLLoader fxmlLoader = new FXMLLoader(ExceptionDialog.class.getResource("dialog_with_image.fxml"))
-        fxmlLoader.root = this
-        fxmlLoader.controller = this
-        try {
-            fxmlLoader.load()
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        stage = new Stage()
-        stage.title = "Error"
-        stage.initModality(Modality.WINDOW_MODAL)
-        stage.initOwner(owner)
-
-        init()
+        super(owner)
     }
 
-    void init() {
-        ok_btn.onAction = {
-            stage.hide()
-        } as EventHandler
+    @Override
+    void initView() {
+        super.initView()
+
+        imageView = new ImageView(fitHeight: 48, fitWidth: 48, preserveRatio: true, smooth: false)
+
+        label.maxWidth = 470
+
+        header.children.clear()
+        header.spacing = 21
+        header.children.addAll(imageView, label)
     }
 
     void setImage(Image image) {
         imageView.image = image
-    }
-
-    void setTitle(String title) {
-        stage.title = title
-    }
-
-    void setMessage(String message) {
-        label.text = message
-    }
-
-    void show() {
-        stage.scene = new Scene(this)
-
-        stage.showAndWait()
     }
 }
