@@ -718,7 +718,7 @@
 .scroll-bar:vertical > .track-background,
 .scroll-bar:vertical:hover > .track-background,
 .scroll-bar:vertical:hover, .scroll-bar:vertical:focused:hover {
-    -fx-padding: 0; }
+    -fx-padding: 1px 0; }
 
 /* Buttons — hide them without using the display property */
 .scroll-bar > .increment-button,
