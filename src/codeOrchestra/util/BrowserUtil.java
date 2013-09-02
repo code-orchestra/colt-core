@@ -22,7 +22,7 @@ public class BrowserUtil {
   // We have to violate the RFC since we need to distinguish
   // real schemes from local Windows paths; The only difference
   // with RFC is that we do not allow schemes with length=1 (in other case
-  // local paths like "C:/temp/index.html" whould be erroneously interpreted as
+  // local paths like "C:/temp/welcome-screen.html" whould be erroneously interpreted as
   // external URLs.)
   private static final Pattern ourExternalPrefix = Pattern.compile("^[\\w\\+\\.\\-]{2,}:");
   private static final Pattern ourAnchorsuffix = Pattern.compile("#(.*)$");
