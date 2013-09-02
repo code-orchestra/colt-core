@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui.dialog
 
+import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -27,7 +28,21 @@ class Dialog extends VBox {
     Button ok_btn
 
     Dialog(Window owner) {
-        stage = new Stage()
+        VBox root = this
+        stage = new Stage() {
+            @Override public void showAndWait() {
+                Window stageOwner = getOwner();
+                if (stageOwner != null) {
+                    // because Stage does not seem to centre itself over its owner, we
+                    // do it here.
+                    final double x = stageOwner.getX() + (stageOwner.getWidth() / 2.0) - (540/ 2.0);
+                    final double y = stageOwner.getY() + (stageOwner.getHeight() / 2.0) - (root.prefHeight(-1)) / 2.0 - 50;
+                    setX(x);
+                    setY(y);
+                }
+                super.showAndWait();
+            }
+        }
         stage.initModality(Modality.WINDOW_MODAL)
         stage.initOwner(owner)
 
