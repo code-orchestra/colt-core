@@ -33,11 +33,13 @@ class LogVisualizer extends VBox {
 
         String htmlPage = this.class.getResource("html/log-visualizer-webview.html").toExternalForm()
         WebEngine engine = webView.engine
+
         engine.documentProperty().addListener({ o, oldValue, newValue ->
             // too early here
             //htmlLoaded = true
 
         } as ChangeListener)
+
         engine.load(htmlPage)
         children.add(webView)
         setVgrow(webView, Priority.ALWAYS)
@@ -55,10 +57,10 @@ class LogVisualizer extends VBox {
         }
 
         liveCodingManager.addListener([
-                onSessionStart: { LiveCodingSession session ->
+                onSessionStart: { session ->
                     start()
                 },
-                onSessionEnd: { LiveCodingSession session ->
+                onSessionEnd: { session ->
                     stop()
                 },
                 onSessionPause: {
