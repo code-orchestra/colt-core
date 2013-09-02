@@ -32,6 +32,8 @@ class ColtMenuBar extends MenuBar {
 
     ArrayList<MenuItem> popupMenuItems = new ArrayList<>()
 
+//    private Map<String, EventHandler<ActionEvent>> actions = [:]
+
     ColtMenuBar() {
         Menu fileMenu = new Menu("File")
 
@@ -76,20 +78,17 @@ class ColtMenuBar extends MenuBar {
             });
         } as EventHandler<ActionEvent>
         saveProjectMenuItem.disable = true
-        ColtProjectManager.instance.addProjectListener(new ProjectListener() {
-            @Override
-            public void onProjectLoaded(Project project) {
-                saveProjectMenuItem.disable = false
-            }
+        ColtProjectManager.instance.addProjectListener([
+                onProjectLoaded: { Project project ->
+                    saveProjectMenuItem.disable = false
+                },
+                onProjectUnloaded: { Project project ->
+                    saveProjectMenuItem.disable = true
+                }
+        ] as ProjectListener)
 
-            @Override
-            public void onProjectUnloaded(Project project) {
-                saveProjectMenuItem.disable = true
-            }
-        })
-
-        MenuItem newProjectMenuItem = new MenuItem("New Project")
-        newProjectMenuItem.onAction = { t ->
+        MenuItem newAsProjectMenuItem = new MenuItem("New Project")
+        newAsProjectMenuItem.onAction = { t ->
             FileChooser fileChooser = new FileChooser()
 //                fileChooser.initialFileName = "untitled"
             fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
@@ -135,20 +134,17 @@ class ColtMenuBar extends MenuBar {
         } as EventHandler<ActionEvent>
 
         refreshRecentProjectsMenu()
-        ColtProjectManager.instance.addProjectListener(new ProjectListener() {
-            @Override
-            public void onProjectLoaded(Project project) {
-                refreshRecentProjectsMenu()
-            }
+        ColtProjectManager.instance.addProjectListener([
+                onProjectLoaded: { Project project ->
+                    refreshRecentProjectsMenu()
+                },
+                onProjectUnloaded: { Project project ->
+                }
+        ] as ProjectListener)
 
-            @Override
-            public void onProjectUnloaded(Project project) {
-            }
-        })
+        popupMenuItems.addAll(newAsProjectMenuItem, openProjectMenuItem, saveProjectMenuItem)
 
-        popupMenuItems.addAll(newProjectMenuItem, openProjectMenuItem, saveProjectMenuItem)
-
-        fileMenu.items.addAll(newProjectMenuItem, newJSProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, recentProjectsSubMenu, saveProjectMenuItem, new SeparatorMenuItem(), exitMenuItem)
+        fileMenu.items.addAll(newAsProjectMenuItem, newJSProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, recentProjectsSubMenu, saveProjectMenuItem, new SeparatorMenuItem(), exitMenuItem)
 
         Menu helpMenu = new Menu("Help")
         final MenuItem enterSerialItem = new MenuItem("Enter Serial Number")
@@ -190,4 +186,15 @@ class ColtMenuBar extends MenuBar {
         recentProjectsSubMenu.items.add(new SeparatorMenuItem())
         recentProjectsSubMenu.items.add(clearRecentProjects)
     }
+
+//    private EventHandler<ActionEvent> addAction(String name, EventHandler<ActionEvent> action){
+//        action[name] = action
+//        return action;
+//    }
+//
+//    void executeAction(String name){
+//        actions[name].handle(null)
+//    }
+
+
 }

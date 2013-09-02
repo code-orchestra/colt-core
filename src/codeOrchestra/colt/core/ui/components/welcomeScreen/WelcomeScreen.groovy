@@ -52,8 +52,9 @@ class WelcomeScreen extends Pane {
                     int index = tokens[1] as int
                     ColtProjectManager.getInstance().load(recentProjects[index].getPath());
                 }else if (tokens[0] == "new-js") {
+                    //todo:
                 }else if (tokens[0] == "new-as") {
-
+                    //todo:
                 }
                 return
             }
