@@ -553,6 +553,12 @@
     -fx-background-radius: 1, 0, 0;
     -fx-padding: 0; }
 
+.error {
+    -fx-background-color: #c00, #f0f0f0, #fff;
+    -fx-background-insets: -1, 1, 2 1 1 1;
+    -fx-background-radius: 2, 0, 0;
+    -fx-padding: 0; }
+
 .text-field {
     -fx-alignment: top-left;
     -fx-padding: 8px 7px 0 7px; }
