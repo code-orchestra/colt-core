@@ -2,8 +2,8 @@ package codeOrchestra.colt.core.errorhandling;
 
 import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.ui.ColtApplication;
+import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 import javafx.application.Platform;
-import org.controlsfx.dialog.Dialogs;
 
 public class ErrorHandler {
 
@@ -12,14 +12,7 @@ public class ErrorHandler {
     public static void handle(final Throwable t) {
         logger.error(t);
 
-        Runnable runnable = () -> {
-            Dialogs.create()
-//                .lightweight()
-                    .title("Error")
-                    .owner(ColtApplication.get().getPrimaryStage())
-                    .nativeTitleBar()
-                    .showException(t);
-        };
+        Runnable runnable = () -> ColtDialogs.showException(ColtApplication.get().getPrimaryStage(), t);
 
         execInFXThread(runnable);
     }
@@ -27,15 +20,7 @@ public class ErrorHandler {
     public static void handle(final Throwable t, final String message) {
         logger.error(message, t);
 
-        Runnable runnable = () -> {
-            Dialogs.create()
-//                .lightweight()
-                    .title("Error")
-                    .owner(ColtApplication.get().getPrimaryStage())
-                    .message(message)
-                    .nativeTitleBar()
-                    .showException(t);
-        };
+        Runnable runnable = () -> ColtDialogs.showException(ColtApplication.get().getPrimaryStage(), t, message);
 
         execInFXThread(runnable);
     }
@@ -48,18 +33,7 @@ public class ErrorHandler {
     public static void handle(final String message, final String title) {
         logger.error(message);
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Dialogs.create()
-//                .lightweight()
-                        .title(title)
-                        .owner(ColtApplication.get().getPrimaryStage())
-                        .message(message)
-                        .nativeTitleBar()
-                        .showError();
-            }
-        };
+        Runnable runnable = () -> ColtDialogs.showError(ColtApplication.get().getPrimaryStage(), message, title);
 
         execInFXThread(runnable);
     }

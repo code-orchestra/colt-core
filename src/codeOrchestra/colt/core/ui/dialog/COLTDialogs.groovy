@@ -1,10 +1,6 @@
 package codeOrchestra.colt.core.ui.dialog
 
-import javafx.geometry.Insets
-import javafx.scene.control.Label
-import javafx.scene.control.TextField
-import javafx.scene.layout.Priority
-import javafx.scene.layout.VBox
+import javafx.scene.image.Image
 import javafx.stage.Window
 import org.controlsfx.control.ButtonBar
 import org.controlsfx.control.action.Action
@@ -29,10 +25,20 @@ class ColtDialogs {
         return dlg.show()
     }
 
-    private static CreateProjectDialog createProjectDialog = new CreateProjectDialog()
+    static void showException(Window owner, Throwable exception, String massage = null) {
+        ExceptionDialog dialog = new ExceptionDialog(owner)
+        dialog.initException(exception, massage)
 
-    public static String showCreateProjectDialog(Window owner) {
-        createProjectDialog.show(owner)
+        dialog.show()
+    }
+
+    static void showError(Window owner, String massage, String title) {
+        DialogWithImage dialog = new DialogWithImage(owner)
+        dialog.image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
+        dialog.title = title
+        dialog.message = massage
+
+        dialog.show()
     }
 
 }

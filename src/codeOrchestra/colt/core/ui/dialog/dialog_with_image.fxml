@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<fx:root type="javafx.scene.layout.VBox" minHeight="120" minWidth="540" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+    <AnchorPane>
+        <ImageView fx:id="imageView" fitHeight="48" fitWidth="48" preserveRatio="true" smooth="false" focusTraversable="true" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"/>
+        <Label fx:id="label" styleClass="h1" AnchorPane.topAnchor="17" AnchorPane.leftAnchor="69" AnchorPane.rightAnchor="0" />
+    </AnchorPane>
+
+    <AnchorPane>
+        <Button fx:id="ok_btn" text="OK" defaultButton="true" focusTraversable="true" prefWidth="67" AnchorPane.topAnchor="10" AnchorPane.rightAnchor="0" />
+    </AnchorPane>
+    <padding>
+        <Insets top="17" right="30" bottom="30" left="30" />
+    </padding>
+</fx:root>
