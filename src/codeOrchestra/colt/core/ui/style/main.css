@@ -572,7 +572,7 @@
     -fx-background-color: #cbcfd3, #f0f0f0, #fff;
     -fx-background-insets: 0, 1px, 2px 1px 1px 1px; }
 
-/* Buttons andd choics-box */
+/* Buttons andd choice-box */
 .button, .choice-box {
     -fx-alignment: top-center;
     -fx-background-color: #c9ccd0, #fff, linear-gradient(#f8f9fb, #e4e5e7 90%, #edeef0 100%);  /* Border, highlight, main */
@@ -670,6 +670,27 @@
     -fx-background-position: 2px 11px;
     -fx-padding: 9px 0 0 20px;
     -fx-opacity: 1; }
+
+/* List View */
+.list-view-simplified,
+.list-view-simplified .list-cell,
+.list-view-simplified .list-cell:odd,
+.list-view-simplified:focused .list-cell:focused,
+.list-view-simplified:focused .list-cell:focused:odd,
+.list-view-simplified:horizontal .list-cell:filled:selected:hover,
+.list-view-simplified:focused .list-cell:filled:focused:selected:hover,
+.list-view-simplified:horizontal .list-cell:filled:selected,
+.list-view-simplified:focused .list-cell:filled:focused:hover,
+.list-view-simplified:focused .list-cell:filled:selected:hover,
+.list-view-simplified .list-cell:filled:hover,
+.list-view-simplified:focused .list-cell:filled:focused:selected{
+    -fx-background-color: transparent;
+    -fx-background-insets: 0; }
+
+.list-view-simplified .list-cell {
+    -fx-opacity: 1;
+    -fx-padding: 6px;
+    -fx-text-fill: #515458; }
 
 /*
 |-------------------------------------------------------------------------------
@@ -803,7 +824,6 @@
 
 .h1 .text {
     -fx-font: bold 16px 'Arial'; }
-
 
 /*
 |-------------------------------------------------------------------------------
