@@ -9,6 +9,9 @@ import codeOrchestra.colt.core.license.ExpirationHelper
 import codeOrchestra.colt.core.license.LicenseListener
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
+import codeOrchestra.colt.core.tasks.ColtTaskWithProgress
+import codeOrchestra.colt.core.tasks.TasksManager
+import codeOrchestra.colt.core.ui.components.IProgressIndicator
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.Menu
@@ -50,12 +53,27 @@ class ColtMenuBar extends MenuBar {
         MenuItem saveProjectMenuItem = new MenuItem("Save Project")
         saveProjectMenuItem.accelerator = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN)
         saveProjectMenuItem.onAction = { t ->
-            println("save project")
-            try {
-                ColtProjectManager.getInstance().save()
-            } catch (ColtException e) {
-                ErrorHandler.handle(e, "Can't save the project")
-            }
+            TasksManager.getInstance().scheduleBackgroundTask(new ColtTaskWithProgress() {
+                @Override
+                protected Object call(IProgressIndicator progressIndicator) {
+                    try {
+                        ColtProjectManager.getInstance().save()
+                    } catch (ColtException e) {
+                        ErrorHandler.handle(e, "Can't save the project")
+                    }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected String getName() {
+                    return "Save Project";
+                }
+            });
         } as EventHandler<ActionEvent>
         saveProjectMenuItem.disable = true
         ColtProjectManager.instance.addProjectListener(new ProjectListener() {

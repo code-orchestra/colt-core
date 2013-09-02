@@ -8,7 +8,7 @@ import groovy.xml.MarkupBuilder
  */
 abstract class Project implements IModelElement {
 
-    @FXBindable String name
+    @FXBindable String name = ""
     String path
 
     boolean disposed

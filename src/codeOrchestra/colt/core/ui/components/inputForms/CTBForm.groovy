@@ -33,4 +33,8 @@ class CTBForm extends InputForm {
     public StringProperty textProperty() {
         return checkBox.textProperty();
     }
+
+    CheckBox getCheckBox() {
+        return checkBox
+    }
 }

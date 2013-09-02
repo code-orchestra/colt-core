@@ -6,99 +6,111 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alexander Eliseyev
  */
 public abstract class ServerSocketThread extends Thread {
 
-  private int port;
-  private ClientSocketHandlerFactory handlerFactory;
-  private ServerSocket serverSocket;
-  private boolean socketOpen;
-  
-  private Throwable socketInitException;
+    private int port;
+    private ClientSocketHandlerFactory handlerFactory;
+    private ServerSocket serverSocket;
+    private boolean socketOpen;
 
-  public ServerSocketThread(int port, ClientSocketHandlerFactory handlerFactory) {
-    assert handlerFactory != null;
-    this.handlerFactory = handlerFactory;
-    this.port = port;
-  }
-  
+    private List<ClientSocketHandler> clientSocketHandlers = new ArrayList<>();
+
+    private Throwable socketInitException;
+
+    public ServerSocketThread(int port, ClientSocketHandlerFactory handlerFactory) {
+        assert handlerFactory != null;
+        this.handlerFactory = handlerFactory;
+        this.port = port;
+    }
+
     public final void run() {
-    try {
-      serverSocket = new ServerSocket(port);
-      ClientSocketHandler lastHandler = null;
-      
-      socketOpen = true;
-
-      while (!serverSocket.isClosed()) {
-        // Wait to accept a new connection
-        Socket clientSocket = null;
         try {
-          clientSocket = serverSocket.accept();
-        } catch (SocketException e) {
-          if (ExceptionUtils.isSocketClosed(e)) {
-            return;
-          }
-          // TODO: improve logging
-          // LOG.warning("Couldn't accept a socket", e);
-          continue;
+            serverSocket = new ServerSocket(port);
+            ClientSocketHandler lastHandler = null;
+
+            socketOpen = true;
+
+            while (!serverSocket.isClosed()) {
+                // Wait to accept a new connection
+                Socket clientSocket = null;
+                try {
+                    clientSocket = serverSocket.accept();
+                } catch (SocketException e) {
+                    if (ExceptionUtils.isSocketClosed(e)) {
+                        return;
+                    }
+                    // TODO: improve logging
+                    // LOG.warning("Couldn't accept a socket", e);
+                    continue;
+                }
+
+                // Close the previous socket if the multiple logging clients are disabled
+                if (!allowMultipleConnections() && lastHandler != null) {
+                    try {
+                        lastHandler.close();
+                    } catch (IOException e) {
+                        // Ignore it
+                    }
+                }
+
+                lastHandler = handlerFactory.createHandler(clientSocket);
+
+                // Run the client socker handler thread
+                clientSocketHandlers.add(lastHandler);
+                new Thread(lastHandler).start();
+            }
+        } catch (IOException e) {
+            setSocketInitException(e);
+        }
+    }
+
+    public synchronized boolean isSocketOpen() {
+        return socketOpen;
+    }
+
+    protected abstract boolean allowMultipleConnections();
+
+    public synchronized void openSocket() {
+        if (socketOpen) {
+            throw new IllegalStateException("Socket is open");
         }
 
-        // Close the previous socket if the multiple logging clients are disabled
-        if (!allowMultipleConnections() && lastHandler != null) {
-          try {
-            lastHandler.close();
-          } catch (IOException e) {
-            // Ignore it
-          }
+        start();
+    }
+
+    public synchronized void closeSocket() {
+        if (!socketOpen) {
+            throw new IllegalStateException("Socket is closed");
         }
 
-        // Run the client socker handler thread
-        new Thread(lastHandler = handlerFactory.createHandler(clientSocket)).start();
-      }
-    } catch (IOException e) {
-      setSocketInitException(e);
-    }
-  }
+        socketOpen = false;
 
-  public synchronized boolean isSocketOpen() {
-    return socketOpen;
-  }
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                // throw new RuntimeException("Error while attempting to close a server socket", e);
+            }
+        }
 
-  protected abstract boolean allowMultipleConnections();
-
-  public synchronized void openSocket() {
-    if (socketOpen) {
-      throw new IllegalStateException("Socket is open");
+        for (ClientSocketHandler clientSocketHandler : clientSocketHandlers) {
+            clientSocketHandler.stopRightThere();
+        }
+        clientSocketHandlers.clear();
     }
 
-    start();
-  }
-
-  public synchronized void closeSocket() {
-    if (!socketOpen) {
-      throw new IllegalStateException("Socket is closed");
+    public Throwable getSocketInitException() {
+        return socketInitException;
     }
 
-    socketOpen = false;
-
-    if (serverSocket != null) {
-      try {
-        serverSocket.close();
-      } catch (IOException e) {
-        // throw new RuntimeException("Error while attempting to close a server socket", e);
-      }
+    private void setSocketInitException(Throwable socketInitException) {
+        this.socketInitException = socketInitException;
     }
-  }
-
-  public Throwable getSocketInitException() {
-    return socketInitException;
-  }
-
-  private void setSocketInitException(Throwable socketInitException) {
-    this.socketInitException = socketInitException;
-  }
 
 }
