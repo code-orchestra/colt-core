@@ -12,6 +12,7 @@ import codeOrchestra.colt.core.model.listener.ProjectListener
 import codeOrchestra.colt.core.tasks.ColtTaskWithProgress
 import codeOrchestra.colt.core.tasks.TasksManager
 import codeOrchestra.colt.core.ui.components.IProgressIndicator
+import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.Menu
@@ -40,42 +41,13 @@ class ColtMenuBar extends MenuBar {
         MenuItem openProjectMenuItem = new MenuItem("Open Project")
         openProjectMenuItem.accelerator = new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN)
         openProjectMenuItem.onAction = { t ->
-            FileChooser fileChooser = new FileChooser()
-            fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
-            File file = fileChooser.showOpenDialog(scene.window)
-            if (file != null) {
-                try {
-                    ColtProjectManager.instance.load(file.getPath())
-                } catch (ColtException e) {
-                    ErrorHandler.handle(e, "Can't load the project")
-                }
-            }
+            ProjectDialogs.openProjectDialog(scene)
         } as EventHandler<ActionEvent>
 
         MenuItem saveProjectMenuItem = new MenuItem("Save Project")
         saveProjectMenuItem.accelerator = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN)
         saveProjectMenuItem.onAction = { t ->
-            TasksManager.getInstance().scheduleBackgroundTask(new ColtTaskWithProgress() {
-                @Override
-                protected Object call(IProgressIndicator progressIndicator) {
-                    try {
-                        ColtProjectManager.getInstance().save()
-                    } catch (ColtException e) {
-                        ErrorHandler.handle(e, "Can't save the project")
-                    }
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-
-                @Override
-                protected String getName() {
-                    return "Save Project";
-                }
-            });
+            ProjectDialogs.saveProjectDialog()
         } as EventHandler<ActionEvent>
         saveProjectMenuItem.disable = true
         ColtProjectManager.instance.addProjectListener([
@@ -89,36 +61,12 @@ class ColtMenuBar extends MenuBar {
 
         MenuItem newAsProjectMenuItem = new MenuItem("New Project")
         newAsProjectMenuItem.onAction = { t ->
-            FileChooser fileChooser = new FileChooser()
-//                fileChooser.initialFileName = "untitled"
-            fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
-            File file = fileChooser.showSaveDialog(scene.window)
-            if (file != null) {
-                try {
-                    // TODO: a handler must be defined by the user (AS, JS, etc)
-
-                    ColtProjectManager.instance.create("AS", file.name[0..-6], file)
-                } catch (ColtException e) {
-                    ErrorHandler.handle(e, "Can't create a new project")
-                }
-            }
+            ProjectDialogs.newAsProjectDialog(scene)
         } as EventHandler<ActionEvent>
 
         MenuItem newJSProjectMenuItem = new MenuItem("New JS Project")
         newJSProjectMenuItem.onAction = { t ->
-            FileChooser fileChooser = new FileChooser()
-//                fileChooser.initialFileName = "untitled"
-            fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
-            File file = fileChooser.showSaveDialog(scene.window)
-            if (file != null) {
-                try {
-                    // TODO: a handler must be defined by the user (AS, JS, etc)
-
-                    ColtProjectManager.instance.create("JS", file.name[0..-6], file)
-                } catch (ColtException e) {
-                    ErrorHandler.handle(e, "Can't create a new project")
-                }
-            }
+            ProjectDialogs.newJsProjectDialog(scene)
         } as EventHandler<ActionEvent>
 
         MenuItem exitMenuItem = new MenuItem("Exit")

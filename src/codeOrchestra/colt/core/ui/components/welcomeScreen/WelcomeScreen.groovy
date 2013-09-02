@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.RecentProjects
 import codeOrchestra.colt.core.tracker.GAController
 import codeOrchestra.colt.core.ui.components.log.JSBridge
+import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
 import javafx.beans.value.ChangeListener
 import javafx.event.EventHandler
 import javafx.scene.layout.Pane
@@ -52,9 +53,13 @@ class WelcomeScreen extends Pane {
                     int index = tokens[1] as int
                     ColtProjectManager.getInstance().load(recentProjects[index].getPath());
                 }else if (tokens[0] == "new-js") {
-                    //todo:
+                    ProjectDialogs.newJsProjectDialog(scene)
                 }else if (tokens[0] == "new-as") {
-                    //todo:
+                    ProjectDialogs.newAsProjectDialog(scene)
+                }else if (tokens[0] == "open") {
+                    ProjectDialogs.openProjectDialog(scene)
+                }else if (tokens[0] == "open-demo") {
+                    ProjectDialogs.openDemoProjectDialog(scene)
                 }
                 return
             }
