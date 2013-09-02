@@ -1,11 +1,8 @@
 package codeOrchestra.colt.core.ui.dialog
 
 import javafx.event.Event
-import javafx.scene.control.Button
 import javafx.scene.image.Image
 import javafx.stage.Window
-import org.controlsfx.control.ButtonBar
-import org.controlsfx.control.action.Action
 
 /**
  * @author Dima Kruk
