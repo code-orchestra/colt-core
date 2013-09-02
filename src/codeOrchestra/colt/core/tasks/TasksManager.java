@@ -3,7 +3,6 @@ package codeOrchestra.colt.core.tasks;
 import codeOrchestra.colt.core.logging.Logger;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import org.controlsfx.dialog.Dialogs;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -134,11 +133,6 @@ public class TasksManager {
         if (task instanceof ColtTaskWithProgress) {
             throw new IllegalArgumentException("Can't start a modal task that is progress bar aware");
         }
-        Dialogs.create()
-                .title(task.getName())
-//                .lightweight()
-                .nativeTitleBar()
-                .showWorkerProgress(task);
         schedule(task);
     }
 

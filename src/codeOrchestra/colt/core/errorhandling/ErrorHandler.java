@@ -33,7 +33,7 @@ public class ErrorHandler {
     public static void handle(final String message, final String title) {
         logger.error(message);
 
-        Runnable runnable = () -> ColtDialogs.showError(ColtApplication.get().getPrimaryStage(), message, title);
+        Runnable runnable = () -> ColtDialogs.showError(ColtApplication.get().getPrimaryStage(), title, message);
 
         execInFXThread(runnable);
     }

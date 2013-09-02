@@ -1,8 +1,7 @@
 package codeOrchestra.colt.core.license;
 
 import codeOrchestra.colt.core.ui.ColtApplication;
-import codeOrchestra.util.StringUtils;
-import org.controlsfx.dialog.Dialogs;
+import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 
 /**
  * @author Alexander Eliseyev
@@ -25,12 +24,9 @@ public class StartupInterceptor {
                 return StartupInterceptType.EXIT_EXPIRED;
             } else {
                 if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
-                    Dialogs.create()
-                            .owner(ColtApplication.get().getPrimaryStage())
-                            .title("Evaluation License")
-                            .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
-                            .nativeTitleBar()
-                            .showError();
+                    ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
+                            "Evaluation License",
+                            "Something is wrong with the system clock\nCOLT was launched already on the currently set time.");
 
                     return StartupInterceptType.EXIT_UNKNOWN;
                 }
@@ -52,12 +48,9 @@ public class StartupInterceptor {
         if ((expirationStrategy.allowTrial() && CodeOrchestraLicenseManager.noSerialNumberPresent()) || (!expirationStrategy.allowsDemo() && expirationStrategy.isSubscriptionBased() && !CodeOrchestraLicenseManager.noSerialNumberPresent())) {
             if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
                 String title = expirationStrategy.isSubscriptionBased() ? "COLT Subscription" : "Evaluation License";
-                Dialogs.create()
-                        .owner(ColtApplication.get().getPrimaryStage())
-                        .title(title)
-                        .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
-                        .nativeTitleBar()
-                        .showError();
+                ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
+                        title,
+                        "Something is wrong with the system clock\nCOLT was launched already on the currently set time.");
 
                 return StartupInterceptType.EXIT_UNKNOWN;
             }
@@ -82,12 +75,9 @@ public class StartupInterceptor {
         // Demo version with subscription
         if (expirationStrategy.allowsDemo() && expirationStrategy.isSubscriptionBased()) {
             if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
-                Dialogs.create()
-                        .owner(ColtApplication.get().getPrimaryStage())
-                        .title("COLT Subscription")
-                        .message("Something is wrong with the system clock\nCOLT was launched already on the currently set time.")
-                        .nativeTitleBar()
-                        .showError();
+                ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
+                        "COLT Subscription",
+                        "Something is wrong with the system clock\nCOLT was launched already on the currently set time.");
 
                 return StartupInterceptType.EXIT_UNKNOWN;
             }

@@ -32,7 +32,7 @@ class ColtDialogs {
         dialog.show()
     }
 
-    static void showError(Window owner, String massage, String title) {
+    static void showError(Window owner, String title, String massage) {
         DialogWithImage dialog = new DialogWithImage(owner)
         dialog.image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
         dialog.title = title
@@ -41,4 +41,30 @@ class ColtDialogs {
         dialog.show()
     }
 
+    static void showWarning(Window owner, String title, String massage) {
+        DialogWithImage dialog = new DialogWithImage(owner)
+        dialog.image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/warning-48x48.png")
+        dialog.title = title
+        dialog.message = massage
+
+        dialog.show()
+    }
+
+    static void showInfo(Window owner, String title, String massage) {
+        DialogWithImage dialog = new DialogWithImage(owner)
+        dialog.image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/info-48x48.png")
+        dialog.title = title
+        dialog.message = massage
+
+        dialog.show()
+    }
+
+    static void showApplicationMessage(Window owner, String title, String massage) {
+        DialogWithImage dialog = new DialogWithImage(owner)
+        dialog.image = new Image("/codeOrchestra/colt/core/ui/style/images/ico-colt.png")
+        dialog.title = title
+        dialog.message = massage
+
+        dialog.show()
+    }
 }
