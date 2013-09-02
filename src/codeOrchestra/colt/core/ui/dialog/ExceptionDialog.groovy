@@ -1,0 +1,87 @@
+package codeOrchestra.colt.core.ui.dialog
+
+import javafx.event.EventHandler
+import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.geometry.Insets
+import javafx.scene.Scene
+import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.control.TextArea
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
+import javafx.scene.layout.AnchorPane
+import javafx.scene.layout.Priority
+import javafx.scene.layout.VBox
+import javafx.stage.Modality
+import javafx.stage.Stage
+import javafx.stage.Window
+import org.controlsfx.control.ButtonBar
+
+
+/**
+ * @author Dima Kruk
+ */
+class ExceptionDialog extends DialogWithImage {
+    private static final String HIDE_STYLE = "btn-hide-dialog"
+    private static final String SHOW_STYLE = "btn-show"
+
+    TextArea textArea
+    boolean showDetails
+
+    Button details_btn
+
+    ExceptionDialog(Window owner) {
+        super(owner)
+    }
+
+
+    @Override
+    void initView() {
+        super.initView()
+
+        title = "Error"
+        image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
+
+        textArea = new TextArea(prefHeight: 200,  wrapText: true)
+        setMargin(textArea, new Insets(17, 0, 0, 0))
+        setVgrow(textArea, Priority.ALWAYS)
+
+        details_btn = new Button(focusTraversable: false)
+        ButtonBar.setType(details_btn, ButtonBar.ButtonType.LEFT)
+        buttonBar.buttons.add(details_btn)
+        details_btn.onAction = {
+            showDetails = !showDetails
+        } as EventHandler
+        setShowDetails(false)
+
+        children.clear()
+        children.addAll(header, textArea, buttonBar)
+    }
+
+    void initException(Throwable exception, String massage = null) {
+
+        label.text = massage == null ? exception.message : massage
+
+        StringWriter sw = new StringWriter()
+        PrintWriter pw = new PrintWriter(sw)
+        exception.printStackTrace(pw)
+        textArea.text = sw.toString()
+    }
+
+    void setShowDetails(boolean showDetails) {
+        this.showDetails = showDetails
+        if (showDetails) {
+            details_btn.styleClass.remove(SHOW_STYLE)
+            details_btn.styleClass.add(HIDE_STYLE)
+            details_btn.text = "Hide details"
+        } else {
+            details_btn.styleClass.remove(HIDE_STYLE)
+            details_btn.styleClass.add(SHOW_STYLE)
+            details_btn.text = "Show details"
+        }
+        textArea.visible = textArea.managed = showDetails
+        stage.sizeToScene()
+    }
+
+}

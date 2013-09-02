@@ -7,7 +7,9 @@ import codeOrchestra.colt.core.license.ExpirationStrategy;
 import codeOrchestra.colt.core.license.plimus.PlimusHelper;
 import codeOrchestra.colt.core.license.plimus.PlimusResponse;
 import codeOrchestra.colt.core.license.plimus.PlimusResponseStatus;
+import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.ui.ColtApplication;
+import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 import codeOrchestra.util.DateUtils;
 import codeOrchestra.util.StringUtils;
 import org.controlsfx.control.action.Action;
@@ -23,6 +25,7 @@ import java.util.prefs.Preferences;
  * @author Alexander Eliseyev
  */
 public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationStrategy {
+    private static Logger logger = Logger.getLogger(ErrorHandler.class);
 
     private static final String EXPIRE_LOCALLY_MILLIS = "expireLocally";
     private static final String LAST_VALIDATION_DATE_STRING = "lastValidationDate";
@@ -63,78 +66,51 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
         try {
             keyRegistrationResponse = PlimusHelper.registerKey(serialNumber);
         } catch (IOException e) {
-            Dialogs.create()
-                    .owner(ColtApplication.get().getPrimaryStage())
-//                    .lightweight()
-                    .title("COLT License")
-                    .message("Can't reach the validation server. Make sure your internet connection is active.")
-                    .nativeTitleBar()
-                    .showError();
-            ErrorHandler.handle(e);
+            ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
+                    "COLT License",
+                    "Can't reach the validation server. Make sure your internet connection is active.");
+            logger.error(e);
             return showSerialNumberDialog();
         }
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_INVALIDKEY) {
-            Dialogs.create()
-                    .owner(ColtApplication.get().getPrimaryStage())
-//                    .lightweight()
-                    .title("Serial number")
-                    .message("The serial number entered is invalid.")
-                    .nativeTitleBar()
-                    .showError();
+            ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
+                    "Serial number",
+                    "The serial number entered is invalid.");
             return showSerialNumberDialog();
         }
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_INVALIDPRODUCT) {
-            Dialogs.create()
-                    .owner(ColtApplication.get().getPrimaryStage())
-//                    .lightweight()
-                    .title("Serial number")
-                    .message("The serial number entered can't be validated.")
-                    .nativeTitleBar()
-                    .showError();
+            ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
+                    "Serial number",
+                    "The serial number entered can't be validated.");
             return showSerialNumberDialog();
         }
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_EXPIREDKEY) {
-            Dialogs.create()
-                    .owner(ColtApplication.get().getPrimaryStage())
-                    .lightweight().title("Serial number")
-                    .message("The serial number entered had expired " + Math.abs(keyRegistrationResponse.getDaysTillExpiration()) + " days ago.")
-                    .nativeTitleBar()
-                    .showError();
+            ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
+                    "Serial number",
+                    "The serial number entered had expired " + Math.abs(keyRegistrationResponse.getDaysTillExpiration()) + " days ago.");
             return showSerialNumberDialog();
         }
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.ERROR_MAXCOUNT) {
-            Dialogs.create()
-                    .owner(ColtApplication.get().getPrimaryStage())
-//                    .lightweight()
-                    .title("Serial number")
-                    .message("The key entered has already been registered the maximum number of times.")
-                    .nativeTitleBar()
-                    .showError();
+            ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
+                    "Serial number",
+                    "The key entered has already been registered the maximum number of times.");
             return showSerialNumberDialog();
         }
 
         if (keyRegistrationResponse.getStatus() == PlimusResponseStatus.SUCCESS) {
-            Dialogs.create()
-                    .owner(ColtApplication.get().getPrimaryStage())
-//                    .lightweight()
-                    .title("COLT License")
-                    .message("Thank you for choosing the Code Orchestra Livecoding Tool!")
-                    .nativeTitleBar()
-                    .showInformation();
+            ColtDialogs.showApplicationMessage(ColtApplication.get().getPrimaryStage(),
+                    "COLT License",
+                    "Thank you for choosing the Code Orchestra Livecoding Tool!");
             registerProduct(serialNumber, keyRegistrationResponse);
             return true;
         } else {
-            Dialogs.create()
-                    .owner(ColtApplication.get().getPrimaryStage())
-//                    .lightweight()
-                    .title("Serial number")
-                    .message("The serial number entered can't be validated (" + keyRegistrationResponse.getStatus() + ").")
-                    .nativeTitleBar()
-                    .showError();
+            ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
+                    "Serial number",
+                    "The serial number entered can't be validated (" + keyRegistrationResponse.getStatus() + ").");
             return showSerialNumberDialog();
         }
     }
@@ -167,13 +143,9 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
 
         String expireMessage = String.format("COLT is in Demo mode. Compilations count is limited to %d.", DemoHelper.get().getMaxCompilationsCount() - 1);
 
-        Dialogs.create()
-                .owner(ColtApplication.get().getPrimaryStage())
-                .title("COLT License")
-//                .lightweight()
-                .message(expireMessage)
-                .nativeTitleBar()
-                .showInformation();
+        ColtDialogs.showInfo(ColtApplication.get().getPrimaryStage(),
+                "COLT License",
+                expireMessage);
     }
 
     private boolean haventValidatedOnServerForTooLong() {
@@ -190,12 +162,9 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
         if (haventValidatedOnServerForTooLong() && !CodeOrchestraLicenseManager.noSerialNumberPresent()) {
             String expireMessage = "Key validation requires an active internet connection. COLT will be launched in Demo mode";
 
-            Dialogs.create()
-                    .owner(ColtApplication.get().getPrimaryStage())
-                    .title("COLT License")
-                    .message(expireMessage)
-                    .nativeTitleBar()
-                    .showError();
+            ColtDialogs.showWarning(ColtApplication.get().getPrimaryStage(),
+                    "COLT License",
+                    expireMessage);
 
             return false;
         }
