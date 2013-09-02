@@ -105,17 +105,7 @@ public class ColtApplication extends Application {
         mainStage = new Stage(StageStyle.DECORATED);
         mainStage.setOnCloseRequest(windowEvent -> {
             if (ChangingMonitor.getInstance().isChanged()) {
-                Action action = ColtDialogs.showCloseProjectDialog(primaryStage);
-
-                if (action == Dialog.Actions.CANCEL) {
-                    windowEvent.consume();
-                } else if (action == Dialog.Actions.YES) {
-                    try {
-                        ColtProjectManager.getInstance().save();
-                    } catch (ColtException e) {
-                        ErrorHandler.handle(e, "Can't save project");
-                    }
-                }
+                ColtDialogs.showCloseProjectDialog(primaryStage, windowEvent);
             }
 
             if (!windowEvent.isConsumed()) {

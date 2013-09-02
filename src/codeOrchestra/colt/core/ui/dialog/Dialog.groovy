@@ -68,7 +68,7 @@ class Dialog extends VBox {
     }
 
     void setTitle(String title) {
-        stage.title = title
+//        stage.title = title
     }
 
     void show() {
