@@ -18,34 +18,6 @@ public class StartupInterceptor {
     public StartupInterceptType interceptStart() {
         final ExpirationStrategy expirationStrategy = ExpirationHelper.getExpirationStrategy();
 
-        // Report serial number every 10 seconds
-        if (StringUtils.isNotEmpty(CodeOrchestraLicenseManager.getLegacySerialNumber())) {
-            if (expirationStrategy.isTrialOnly() && !new ActivationReporter(CodeOrchestraLicenseManager.getLegacySerialNumber()).report()) {
-                Dialogs.create()
-                        .owner(ColtApplication.get().getPrimaryStage())
-                        .title("COLT License")
-                        .message("COLT beta version requires an active internet connection to start.")
-                        .nativeTitleBar()
-                        .showError();
-                return StartupInterceptType.EXIT_NO_CONNECTION;
-            }
-
-            new Thread() {
-                public void run() {
-                    while (true) {
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            // ignore
-                        }
-                        new ActivationReporter(CodeOrchestraLicenseManager.getLegacySerialNumber()).report();
-                    }
-                }
-
-                ;
-            }.start();
-        }
-
         // Trial-only (beta versions) - no serial number is checked
         if (expirationStrategy.isTrialOnly()) {
             if (ExpirationHelper.getExpirationStrategy().hasExpired()) {
