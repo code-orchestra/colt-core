@@ -16,7 +16,7 @@ class WelcomeScreenTestApp extends Application{
         primaryStage.setTitle("COLT — Code Orchestra Livecoding Tool (1.2)");
         Scene scene = new Scene(root, 600, 437)
         primaryStage.setScene(scene);
-        ScenicView.show(scene);
+//        ScenicView.show(scene);
         primaryStage.show();
     }
 
