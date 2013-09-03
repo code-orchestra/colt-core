@@ -60,6 +60,10 @@ class ProjectDialogs {
         //todo: open demo projects directories
     }
 
+    static void openWelcomeScreen(Scene scene){
+        closeProjectDialog()//todo: или оставить текущий проект?
+    }
+
     static void closeProjectDialog(){
         println "need implement: ProjectDialogs.closeProjectDialog()"
         //todo: open welcome screen

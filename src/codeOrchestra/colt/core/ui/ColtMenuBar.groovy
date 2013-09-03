@@ -39,7 +39,6 @@ class ColtMenuBar extends MenuBar {
             items.addAll(it)
         }
         menuExpando.initialize()
-
         Menu.metaClass = menuExpando
 
         MenuItem newJs
@@ -113,6 +112,12 @@ class ColtMenuBar extends MenuBar {
                                     ProjectDialogs.openDemoProjectDialog(scene)
                                 } as EventHandler<ActionEvent>
                         ),
+                        new MenuItem(
+                                text: "Open Welcome Screen",
+                                onAction: { t ->
+                                    ProjectDialogs.openWelcomeScreen(scene)
+                                } as EventHandler<ActionEvent>
+                        ),
                         new SeparatorMenuItem(),
                         serial = new MenuItem(
                                 text: "Enter Serial Number",
@@ -124,7 +129,6 @@ class ColtMenuBar extends MenuBar {
                         )
                 ])
         )
-
 
         ColtProjectManager.instance.addProjectListener([
                 onProjectLoaded: { Project project ->
