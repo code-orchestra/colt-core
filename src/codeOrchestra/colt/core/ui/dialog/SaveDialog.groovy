@@ -30,8 +30,8 @@ class SaveDialog extends DialogWithImage {
 
         message = 'Save changes to COLT "' + ColtProjectManager.instance.currentProject?.name + '" project before closing?'
 
-        ok_btn.text = "Save"
-        ok_btn.onAction = {
+        okButton.text = "Save"
+        okButton.onAction = {
             try {
                 ColtProjectManager.getInstance().save();
             } catch (ColtException e) {
