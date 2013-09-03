@@ -82,7 +82,9 @@ class Dialog extends VBox {
 
     protected void initButtons () {
         buttonBar = new ButtonBar()
+        buttonBar.buttonUniformSize = false
         ok_btn = new Button("OK")
+        ok_btn.prefWidth = 67
         ok_btn.onAction = {
             stage.hide()
         } as EventHandler
