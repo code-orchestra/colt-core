@@ -92,4 +92,8 @@ class ProjectDialogs {
             }
         });
     }
+
+    static void saveAsProjectDialog(){
+        //todo: implement
+    }
 }

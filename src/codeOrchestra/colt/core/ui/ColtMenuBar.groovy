@@ -44,6 +44,7 @@ class ColtMenuBar extends MenuBar {
         MenuItem newJs
         MenuItem newAs
         MenuItem save
+        MenuItem saveAs
         MenuItem serial
 
         menus.addAll(
@@ -89,12 +90,12 @@ class ColtMenuBar extends MenuBar {
                                 accelerator: new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN),
                                 disable: true
                         ),
-                        save = new MenuItem(
-                                text: "Close Project",
+                        saveAs = new MenuItem(
+                                text: "Save As...",
                                 onAction: { t ->
-                                    ProjectDialogs.closeProjectDialog()
+                                    ProjectDialogs.saveAsProjectDialog()
                                 } as EventHandler<ActionEvent>,
-                                accelerator: new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
+                                accelerator: new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN),
                                 disable: true
                         ),
                         new SeparatorMenuItem(),
@@ -104,6 +105,55 @@ class ColtMenuBar extends MenuBar {
                                     System.exit(0)
                                 } as EventHandler<ActionEvent>
                         ),
+                ]),
+                new Menu(text: "Run", newItems: [
+                        new Menu(text: "Livecoding Session", newItems: [
+                                new MenuItem(
+                                        text: "Start",
+                                        onAction: { t ->
+                                            //todo: implement
+                                        } as EventHandler<ActionEvent>
+                                ),
+                                new MenuItem(
+                                        text: "Stop",
+                                        onAction: { t ->
+                                            //todo: implement
+                                        } as EventHandler<ActionEvent>
+                                ),
+                                new MenuItem(
+                                        text: "Pause",
+                                        onAction: { t ->
+                                            //todo: implement
+                                        } as EventHandler<ActionEvent>
+                                ),
+                                new SeparatorMenuItem(),
+                                new MenuItem(
+                                        text: "Restart",
+                                        onAction: { t ->
+                                            //todo: implement
+                                        } as EventHandler<ActionEvent>
+                                )
+                        ]),
+                        new SeparatorMenuItem(),
+                        new MenuItem(
+                                text: "Open New Connection",
+                                onAction: { t ->
+                                    //todo: implement
+                                } as EventHandler<ActionEvent>
+                        ),
+                        new MenuItem(
+                                text: "Close All Connections",
+                                onAction: { t ->
+                                    //todo: implement
+                                } as EventHandler<ActionEvent>
+                        ),
+                        new SeparatorMenuItem(),
+                        new MenuItem(
+                                text: "Production Build",
+                                onAction: { t ->
+                                    //todo: implement
+                                } as EventHandler<ActionEvent>
+                        )
                 ]),
                 new Menu(text: "Help", newItems: [
                         new MenuItem(
@@ -149,7 +199,7 @@ class ColtMenuBar extends MenuBar {
                 }
         ] as ProjectListener)
 
-        popupMenuItems.addAll(newAs, newJs, save)
+        popupMenuItems.addAll(newAs, newJs, save, saveAs)
 
         CodeOrchestraLicenseManager.addListener({
             serial.disable = false
