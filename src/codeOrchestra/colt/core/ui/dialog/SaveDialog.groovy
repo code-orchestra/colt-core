@@ -22,7 +22,7 @@ class SaveDialog extends DialogWithImage {
     }
 
     @Override
-    void initView() {
+    protected void initView() {
         super.initView()
 
         message = 'Save changes to COLT "' + ColtProjectManager.instance.currentProject.name + '" project before closing?'
