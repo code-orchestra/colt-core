@@ -1,7 +1,5 @@
 package codeOrchestra.colt.core.ui.dialog
 
-import codeOrchestra.colt.core.ui.components.inputForms.FormType
-import codeOrchestra.colt.core.ui.components.inputForms.LTBForm
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.control.Button
@@ -17,6 +15,10 @@ import javafx.stage.Window
  */
 class SerialNumberDialog extends DialogWithImage {
     private HBox center
+
+    Label inputLabel
+    TextField serialNumber
+    Image errorImage = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
 
     SerialNumberDialog(Window owner) {
         super(owner)
@@ -51,27 +53,51 @@ class SerialNumberDialog extends DialogWithImage {
     protected void initButtons() {
         AnchorPane pane = new AnchorPane()
 
-        Label inputLabel = new Label("Or enter serial number:")
+        inputLabel = new Label("Or enter a serial number:")
         AnchorPane.setRightAnchor(inputLabel, 0)
         AnchorPane.setLeftAnchor(inputLabel, 69)
 
-        TextField textField = new TextField(prefHeight: 30)
-        AnchorPane.setTopAnchor(textField, 18)
-        AnchorPane.setRightAnchor(textField, 86)
-        AnchorPane.setLeftAnchor(textField, 63)
+        serialNumber = new TextField(prefHeight: 30)
+        AnchorPane.setTopAnchor(serialNumber, 18)
+        AnchorPane.setRightAnchor(serialNumber, 86)
+        AnchorPane.setLeftAnchor(serialNumber, 63)
 
         ok_btn = new Button(text: "OK", prefWidth: 67, defaultButton: true, focusTraversable: false)
         AnchorPane.setTopAnchor(ok_btn, 18)
         AnchorPane.setRightAnchor(ok_btn, 0)
 
-        pane.children.addAll(inputLabel, textField, ok_btn)
+        pane.children.addAll(inputLabel, serialNumber, ok_btn)
 
         children.add(pane)
 
         ok_btn.onAction = {
-            stage.hide()
+            if(serialNumber.text.isEmpty()) {
+                error("Error message")
+            } else {
+                stage.hide()
+            }
         } as EventHandler
+    }
 
+    void error(String message, String comment = "") {
+        this.message = message
+        this.comment = comment
 
+        if (children.contains(center)) {
+            children.remove(center)
+        }
+
+        inputLabel.text = "Enter a serial number:"
+        image = errorImage
+        stage.sizeToScene()
+    }
+
+    void showInput() {
+        message = "Please type the serial number purchased"
+        comment = ""
+        inputLabel.text = ""
+        children.remove(center)
+
+        super.show()
     }
 }

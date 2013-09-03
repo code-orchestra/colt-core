@@ -99,11 +99,16 @@ class Dialog extends VBox {
     }
 
     void setComment(String comment) {
-        if (!messageContainer.children.contains(commentLabel)) {
-            messageContainer.children.add(commentLabel)
+        if (comment == null || comment.isEmpty()) {
+            if (messageContainer.children.contains(commentLabel)) {
+                messageContainer.children.remove(commentLabel)
+            }
+        } else {
+            if (!messageContainer.children.contains(commentLabel)) {
+                messageContainer.children.add(commentLabel)
+            }
+            commentLabel.text = comment
         }
-
-        commentLabel.text = comment
     }
 
     void setTitle(String title) {
