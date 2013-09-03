@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane prefHeight="400" prefWidth="600" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+    <children>
+    <Button layoutX="10" layoutY="10" text="Button" styleClass="popup-bl">
+        <contextMenu>
+        <ContextMenu>
+        <items>
+            <MenuItem text="New…" />
+            <MenuItem text="Open…" />
+            <MenuItem text="Open Recent">
+                <graphic>
+                <Label text="Select">
+                    <contextMenu>
+                    <ContextMenu>
+                    <items>
+                    <MenuItem text="File #1" />
+                    <MenuItem text="File #2" />
+                    </items>
+                    </ContextMenu>
+                    </contextMenu>
+                </Label>
+                </graphic>
+            </MenuItem>
+            <MenuItem text="Save">
+                <graphic>
+                <Label text="⌘S" />
+                </graphic>
+            </MenuItem>
+            <MenuItem text="Save As…">
+                <graphic>
+                <Label text="⇧⌘S" />
+                </graphic>
+            </MenuItem>
+        </items>
+        <stylesheets>
+        <URL value="@../codeOrchestra/colt/core/ui/style/main.css" />
+        </stylesheets>
+        </ContextMenu>
+        </contextMenu>
+    </Button>
+    </children>
+
+    <stylesheets>
+        <URL value="@../codeOrchestra/colt/core/ui/style/main.css" />
+    </stylesheets>
+
+</AnchorPane>

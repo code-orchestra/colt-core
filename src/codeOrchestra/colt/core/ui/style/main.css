@@ -450,6 +450,8 @@
 
 .btn-more:pressed { -fx-background-image: url('images/btns/more-down.png'); }
 
+
+/* Popup Menu */
 .popup-bl {
     -fx-border-image-source: url('images/popup-menu-bl.png');
     -fx-border-image-slice: 40px 40px 40px 60px fill;
@@ -459,6 +461,37 @@
     -fx-border-image-source: url('images/popup-menu-br.png');
     -fx-border-image-slice: 40px 60px 40px 40px fill;
     -fx-border-image-width: 40px 60px 40px 40px; }
+
+.context-menu {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: .769em 0 .846em; }
+
+.popup-bl .context-menu {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0; }
+
+.context-menu .menu-item { -fx-padding: .385em 20px .308em; }
+
+.context-menu .menu-item .label {
+    -fx-padding: 0;
+    -fx-text-fill: #515458; }
+
+.context-menu .menu-item:disabled .label { -fx-opacity: .44; }
+
+.context-menu .menu-item:focused {
+     -fx-background: #0066cc;
+     -fx-background-color: #0066cc;
+     -fx-text-fill: white; }
+
+.context-menu .menu-item:focused .label,
+.context-menu .menu-item:hover .label {
+    -fx-effect: null;
+    -fx-text-fill: white; }
+
+.context-menu .menu-item:show-mnemonics .mnemonic-underline { -fx-stroke: null; }
 
 /* Player */
 .player-box {
