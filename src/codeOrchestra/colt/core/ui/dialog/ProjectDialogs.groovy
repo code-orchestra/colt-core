@@ -56,7 +56,13 @@ class ProjectDialogs {
     }
 
     static void openDemoProjectDialog(Scene scene){
-        // open demo projects directories
+        println "need implement: ProjectDialogs.openDemoProjectDialog()"
+        //todo: open demo projects directories
+    }
+
+    static void closeProjectDialog(){
+        println "need implement: ProjectDialogs.closeProjectDialog()"
+        //todo: open welcome screen
     }
 
     static void saveProjectDialog(){

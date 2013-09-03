@@ -34,7 +34,7 @@ class ColtMenuBar extends MenuBar {
     ArrayList<MenuItem> popupMenuItems = new ArrayList<>()
 
     ColtMenuBar() {
-        ExpandoMetaClass menuExpando = new ExpandoMetaClass(Menu.class, false)
+        ExpandoMetaClass menuExpando = new ExpandoMetaClass(Menu, false)
         menuExpando.setNewItems = {List<MenuItem> it ->
             items.addAll(it)
         }
@@ -90,6 +90,14 @@ class ColtMenuBar extends MenuBar {
                                 accelerator: new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN),
                                 disable: true
                         ),
+                        save = new MenuItem(
+                                text: "Close Project",
+                                onAction: { t ->
+                                    ProjectDialogs.closeProjectDialog()
+                                } as EventHandler<ActionEvent>,
+                                accelerator: new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
+                                disable: true
+                        ),
                         new SeparatorMenuItem(),
                         new MenuItem(
                                 text: "Exit",
@@ -97,21 +105,21 @@ class ColtMenuBar extends MenuBar {
                                     System.exit(0)
                                 } as EventHandler<ActionEvent>
                         ),
-
                 ]),
                 new Menu(text: "Help", newItems: [
+                        new MenuItem(
+                                text: "Open Demo Projects Directory",
+                                onAction: { t ->
+                                    ProjectDialogs.openDemoProjectDialog(scene)
+                                } as EventHandler<ActionEvent>
+                        ),
+                        new SeparatorMenuItem(),
                         serial = new MenuItem(
                                 text: "Enter Serial Number",
                                 id: "serial",
                                 disable: ExpirationHelper.expirationStrategy.trialOnly || !CodeOrchestraLicenseManager.noSerialNumberPresent(),
                                 onAction: { t ->
                                     ExpirationHelper.getExpirationStrategy().showSerialNumberDialog()
-                                } as EventHandler<ActionEvent>
-                        ),
-                        new MenuItem(
-                                text: "",
-                                onAction: { t ->
-
                                 } as EventHandler<ActionEvent>
                         )
                 ])
@@ -137,7 +145,7 @@ class ColtMenuBar extends MenuBar {
                 }
         ] as ProjectListener)
 
-        popupMenuItems.addAll(newJs, newAs, save)
+        popupMenuItems.addAll(newAs, newJs, save)
 
         CodeOrchestraLicenseManager.addListener({
             serial.disable = false
