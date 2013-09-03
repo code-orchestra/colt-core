@@ -304,7 +304,7 @@ class FilesetInput extends AnchorPane {
 
     private static File getBaseDir() {
         try{
-            return ProjectHelper?.currentProject?.baseDir
+            return ProjectHelper.currentProject?.baseDir
         }catch (Exception e){
             return new File("/Users/eugenepotapenko/Documents")
 
