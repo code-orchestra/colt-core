@@ -46,6 +46,7 @@ class Dialog extends VBox {
         stage.initModality(Modality.WINDOW_MODAL)
         stage.initOwner(owner)
         stage.resizable = false
+        stage.title = "COLT"
 
         initView()
     }
