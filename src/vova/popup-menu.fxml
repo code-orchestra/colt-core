@@ -70,10 +70,6 @@
 
     </children>
 
-    <padding>
-    <Insets />
-    </padding>
-
     </VBox>
 </children>
 
