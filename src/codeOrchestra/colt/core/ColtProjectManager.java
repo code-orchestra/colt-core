@@ -33,7 +33,7 @@ public class ColtProjectManager {
         return instance;
     }
 
-    private List<ProjectListener> projectListeners = new ArrayList<>();
+    private List<ProjectListener> projectListeners = new ArrayList();
 
     private Project currentProject;
 

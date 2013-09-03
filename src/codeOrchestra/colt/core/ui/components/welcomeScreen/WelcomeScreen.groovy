@@ -50,6 +50,8 @@ class WelcomeScreen extends Pane {
                 if (tokens[0] == "open") {
                     openBrowser(tokens[1])
                 }else if (tokens[0] == "open-project") {
+                    ProjectDialogs.openProjectDialog(scene)
+                }else if (tokens[0] == "open-recent") {
                     int index = tokens[1] as int
                     ColtProjectManager.getInstance().load(recentProjects[index].getPath());
                 }else if (tokens[0] == "new-js") {
