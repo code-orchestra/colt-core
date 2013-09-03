@@ -462,16 +462,40 @@
     -fx-border-image-slice: 40px 60px 40px 40px fill;
     -fx-border-image-width: 40px 60px 40px 40px; }
 
+.menu-v { -fx-padding: 10px 0 11px; }
+
+.menu-v .button {
+    -fx-alignment: top-left;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: .462em 20px; }
+
+.menu-v .button:hover { -fx-background-color: #0066cc; }
+
+.menu-v .button:hover,
+.menu-v .button:hover .label {
+    -fx-text-fill: white; }
+
+.menu-v .button:hover .text { -fx-effect: dropshadow(gaussian, #0052b8,  0, 0, 0, -1px); }
+
+.menu-v .button:pressed { -fx-effect: null; }
+
+.submenu-arrow {
+    -fx-background-image: url('images/btns/arrow-r.png');
+    -fx-background-position: 0 3px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 9px, 9px; }
+
+.menu-v .button:hover .submenu-arrow { -fx-background-image: url('images/btns/arrow-r-w.png'); }
+
+
+/* Context Menu */
 .context-menu {
     -fx-background-color: transparent;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
     -fx-padding: .769em 0 .846em; }
-
-.popup-bl .context-menu {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0; }
 
 .context-menu .menu-item { -fx-padding: .385em 20px .308em; }
 
