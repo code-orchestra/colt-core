@@ -33,60 +33,99 @@ class ColtMenuBar extends MenuBar {
 
     ArrayList<MenuItem> popupMenuItems = new ArrayList<>()
 
-//    private Map<String, EventHandler<ActionEvent>> actions = [:]
-
     ColtMenuBar() {
-        Menu fileMenu = new Menu("File")
+        ExpandoMetaClass menuExpando = new ExpandoMetaClass(Menu.class, false)
+        menuExpando.setNewItems = {List<MenuItem> it ->
+            items.addAll(it)
+        }
+        menuExpando.initialize()
 
-        MenuItem openProjectMenuItem = new MenuItem("Open Project")
-        openProjectMenuItem.accelerator = new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN)
-        openProjectMenuItem.onAction = { t ->
-            ProjectDialogs.openProjectDialog(scene)
-        } as EventHandler<ActionEvent>
+        Menu.metaClass = menuExpando
 
-        MenuItem saveProjectMenuItem = new MenuItem("Save Project")
-        saveProjectMenuItem.accelerator = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN)
+        MenuItem newJs
+        MenuItem newAs
+        MenuItem save
+        MenuItem serial
 
-        saveProjectMenuItem.onAction = { t ->
-            ProjectDialogs.saveProjectDialog()
-        } as EventHandler<ActionEvent>
+        menus.addAll(
+                new Menu(text: "File", newItems: [
+                        new Menu(text: "New Project", newItems: [
+                                newAs = new MenuItem(
+                                        text: "New AS Project",
+                                        id: "new-as",
+                                        onAction: { t ->
+                                            ProjectDialogs.newAsProjectDialog(scene)
+                                        } as EventHandler<ActionEvent>
+                                ),
+                                newJs = new MenuItem(
+                                        text: "New JS Project",
+                                        id: "new-js",
+                                        onAction: { t ->
+                                            ProjectDialogs.newJsProjectDialog(scene)
+                                        } as EventHandler<ActionEvent>
+                                )
+                        ]),
+                        new MenuItem(
+                                text: "Open Project",
+                                onAction: { t ->
+                                    ProjectDialogs.openProjectDialog(scene)
+                                } as EventHandler<ActionEvent>,
+                                accelerator: new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN)
+                        ),
+                        recentProjectsSubMenu = new Menu(text: "Open Recent", newItems: [
+                                clearRecentProjects = new MenuItem(
+                                        text: "Clear List",
+                                        onAction: { t ->
+                                            RecentProjects.clear(ColtProjectManager.instance.currentProject?.path)
+                                            refreshRecentProjectsMenu()
+                                        } as EventHandler<ActionEvent>
+                                ),
+                        ]),
+                        save = new MenuItem(
+                                text: "Save Project",
+                                id: "save",
+                                onAction: { t ->
+                                    ProjectDialogs.saveProjectDialog()
+                                } as EventHandler<ActionEvent>,
+                                accelerator: new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN),
+                                disable: true
+                        ),
+                        new SeparatorMenuItem(),
+                        new MenuItem(
+                                text: "Exit",
+                                onAction: { t ->
+                                    System.exit(0)
+                                } as EventHandler<ActionEvent>
+                        ),
 
-        saveProjectMenuItem.disable = true
+                ]),
+                new Menu(text: "Help", newItems: [
+                        serial = new MenuItem(
+                                text: "Enter Serial Number",
+                                id: "serial",
+                                disable: ExpirationHelper.expirationStrategy.trialOnly || !CodeOrchestraLicenseManager.noSerialNumberPresent(),
+                                onAction: { t ->
+                                    ExpirationHelper.getExpirationStrategy().showSerialNumberDialog()
+                                } as EventHandler<ActionEvent>
+                        ),
+                        new MenuItem(
+                                text: "",
+                                onAction: { t ->
+
+                                } as EventHandler<ActionEvent>
+                        )
+                ])
+        )
+
 
         ColtProjectManager.instance.addProjectListener([
                 onProjectLoaded: { Project project ->
-                    saveProjectMenuItem.disable = false
+                    save.disable = false
                 },
                 onProjectUnloaded: { Project project ->
-                    saveProjectMenuItem.disable = true
+                    save.disable = true
                 }
         ] as ProjectListener)
-
-        MenuItem newAsProjectMenuItem = new MenuItem("New Project")
-
-        newAsProjectMenuItem.onAction = { t ->
-            ProjectDialogs.newAsProjectDialog(scene)
-        } as EventHandler<ActionEvent>
-
-        MenuItem newJSProjectMenuItem = new MenuItem("New JS Project")
-
-        newJSProjectMenuItem.onAction = { t ->
-            ProjectDialogs.newJsProjectDialog(scene)
-        } as EventHandler<ActionEvent>
-
-        MenuItem exitMenuItem = new MenuItem("Exit")
-
-        exitMenuItem.onAction = { t ->
-            System.exit(0)
-        } as EventHandler<ActionEvent>
-
-        recentProjectsSubMenu = new Menu("Open Recent")
-        clearRecentProjects = new MenuItem("Clear List")
-
-        clearRecentProjects.onAction = { t ->
-            RecentProjects.clear(ColtProjectManager.instance.currentProject?.path)
-            refreshRecentProjectsMenu()
-        } as EventHandler<ActionEvent>
 
         refreshRecentProjectsMenu()
 
@@ -98,25 +137,12 @@ class ColtMenuBar extends MenuBar {
                 }
         ] as ProjectListener)
 
-        popupMenuItems.addAll(newAsProjectMenuItem, openProjectMenuItem, saveProjectMenuItem)
-        fileMenu.items.addAll(newAsProjectMenuItem, newJSProjectMenuItem, new SeparatorMenuItem(), openProjectMenuItem, recentProjectsSubMenu, saveProjectMenuItem, new SeparatorMenuItem(), exitMenuItem)
-
-        Menu helpMenu = new Menu("Help")
-        final MenuItem enterSerialItem = new MenuItem("Enter Serial Number")
-
-        enterSerialItem.onAction = { t ->
-            ExpirationHelper.getExpirationStrategy().showSerialNumberDialog()
-        } as EventHandler<ActionEvent>
-
-        enterSerialItem.disable = ExpirationHelper.expirationStrategy.trialOnly || !CodeOrchestraLicenseManager.noSerialNumberPresent()
+        popupMenuItems.addAll(newJs, newAs, save)
 
         CodeOrchestraLicenseManager.addListener({
-            enterSerialItem.disable = false
+            serial.disable = false
         } as LicenseListener)
 
-        helpMenu.items.add(enterSerialItem)
-        menus.add(fileMenu)
-        menus.add(helpMenu)
         setUseSystemMenuBar(true)
     }
 
@@ -144,15 +170,4 @@ class ColtMenuBar extends MenuBar {
         recentProjectsSubMenu.items.add(new SeparatorMenuItem())
         recentProjectsSubMenu.items.add(clearRecentProjects)
     }
-
-//    private EventHandler<ActionEvent> addAction(String name, EventHandler<ActionEvent> action){
-//        action[name] = action
-//        return action;
-//    }
-//
-//    void executeAction(String name){
-//        actions[name].handle(null)
-//    }
-
-
 }
