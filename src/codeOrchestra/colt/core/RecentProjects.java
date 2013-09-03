@@ -15,6 +15,7 @@ import java.util.prefs.Preferences;
 public class RecentProjects {
 
     private static final String RECENT_COLT_PROJECTS = "recentCOLTProjects";
+    private static final String RECENT_COLT_PROJECT = "recentCOLTProject";
 
     private static Preferences preferences = Preferences.userNodeForPackage(RecentProjects.class);
 
@@ -28,12 +29,28 @@ public class RecentProjects {
         paths.add(0, path);
 
         preferences.put(RECENT_COLT_PROJECTS, createList(paths));
+        recentProject(true);
 
         try {
             preferences.sync();
         } catch (BackingStoreException e) {
             // ignore
         }
+    }
+
+    public static void recentProject(Boolean value) {
+        preferences.put(RECENT_COLT_PROJECT, value.toString());
+        try {
+            preferences.sync();
+        } catch (BackingStoreException e) {
+            // ignore
+        }
+    }
+
+    public static boolean haveRecentProject() {
+        String str = preferences.get(RECENT_COLT_PROJECT, "");
+        System.out.println("str = " + str);
+        return preferences.get(RECENT_COLT_PROJECT, "").equals("true");
     }
 
     public static List<String> getRecentProjectsPaths() {

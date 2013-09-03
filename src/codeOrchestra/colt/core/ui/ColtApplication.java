@@ -53,12 +53,15 @@ public class ColtApplication extends Application {
         return instance;
     }
 
+    private Stage primaryStage;
+
     private StackPane splashLayout;
 
-    private Stage mainStage;
-    private VBox root;
+    private WelcomeScreenStage welcomeScreenStage;
+
+    private ProjectStage mainStage;
     private Node currentPluginNode;
-    private Stage primaryStage;
+
 
     public static long timeStarted;
 
@@ -72,7 +75,14 @@ public class ColtApplication extends Application {
 
         GAController.getInstance().start(primaryStage);
         initSplash();
-        initMainStage();
+
+        welcomeScreenStage = new WelcomeScreenStage();
+
+        menuBar = new ColtMenuBar();
+        menuBar.setUseSystemMenuBar(true);
+
+        mainStage = new ProjectStage();
+        mainStage.getRoot().getChildren().add(menuBar);
 
         showSplash();
 
@@ -99,29 +109,6 @@ public class ColtApplication extends Application {
         Image image = new Image(imagePath);
         splashLayout.getChildren().add(new ImageView(image));
         splashLayout.setEffect(new DropShadow());
-    }
-
-    private void initMainStage() {
-        mainStage = new Stage(StageStyle.DECORATED);
-        mainStage.setOnCloseRequest(windowEvent -> {
-            if (ChangingMonitor.getInstance().isChanged()) {
-                ColtDialogs.showCloseProjectDialog(primaryStage, windowEvent);
-            }
-
-            if (!windowEvent.isConsumed()) {
-                dispose();
-            }
-        });
-
-        root = new VBox();
-        root.setFillWidth(true);
-        root.setMaxHeight(Double.MAX_VALUE);
-        mainStage.setTitle("COLT - Code Orchestra Livecoding Tool (1.2)");
-        mainStage.setScene(new Scene(root, 506, 820));
-
-        menuBar = new ColtMenuBar();
-        root.getChildren().add(menuBar);
-
     }
 
     private void dispose() {
@@ -154,24 +141,39 @@ public class ColtApplication extends Application {
 
         primaryStage.hide();
 
-        primaryStage = mainStage;
-        GAController.getInstance().start(primaryStage);
-        primaryStage.show();
-
         // Open most recent project
-        for (String recentProjectPath : RecentProjects.getRecentProjectsPaths()) {
-            File projectFile = new File(recentProjectPath);
-            if (projectFile.exists()) {
-                try {
-                    ColtProjectManager.getInstance().load(projectFile.getPath());
-                    break;
-                } catch (ColtException e) {
-                    // ignore
+        boolean opened = false;
+        if (RecentProjects.haveRecentProject()) {
+            for (String recentProjectPath : RecentProjects.getRecentProjectsPaths()) {
+                File projectFile = new File(recentProjectPath);
+                if (projectFile.exists()) {
+                    try {
+                        ColtProjectManager.getInstance().load(projectFile.getPath());
+                        opened = true;
+                        break;
+                    } catch (ColtException e) {
+                        // ignore
+                    }
                 }
             }
         }
+        if (!opened) {
+            showWelcomeScreen();
+        }
 
 //        ScenicView.show(mainStage.getScene());
+    }
+
+    public void closeProject() {
+        if (mainStage.isShowing()) {
+            mainStage.hide();
+            RecentProjects.recentProject(false);
+        }
+    }
+
+    public void showWelcomeScreen() {
+        primaryStage = welcomeScreenStage;
+        primaryStage.show();
     }
 
     public Stage getPrimaryStage() {
@@ -179,13 +181,21 @@ public class ColtApplication extends Application {
     }
 
     public void setPluginPane(Node node) {
+        if (primaryStage == welcomeScreenStage) {
+            primaryStage.hide();
+        }
+        if (primaryStage != mainStage) {
+            primaryStage = mainStage;
+            GAController.getInstance().start(primaryStage);
+            primaryStage.show();
+        }
         if (currentPluginNode != null) {
-            root.getChildren().remove(currentPluginNode);
+            mainStage.getRoot().getChildren().remove(currentPluginNode);
         }
 
         currentPluginNode = node;
         VBox.setVgrow(currentPluginNode, Priority.ALWAYS);
-        root.getChildren().add(node);
+        mainStage.getRoot().getChildren().add(node);
     }
 
     public static void main(String[] args) {
