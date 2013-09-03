@@ -26,7 +26,8 @@ public class StartupInterceptor {
                 if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
                     ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
                             "Evaluation License",
-                            "Something is wrong with the system clock\nCOLT was launched already on the currently set time.");
+                            "Something is wrong with the system clock",
+                            "COLT was launched already on the currently set time.");
 
                     return StartupInterceptType.EXIT_UNKNOWN;
                 }
@@ -50,7 +51,8 @@ public class StartupInterceptor {
                 String title = expirationStrategy.isSubscriptionBased() ? "COLT Subscription" : "Evaluation License";
                 ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
                         title,
-                        "Something is wrong with the system clock\nCOLT was launched already on the currently set time.");
+                        "Something is wrong with the system clock",
+                        "COLT was launched already on the currently set time.");
 
                 return StartupInterceptType.EXIT_UNKNOWN;
             }
@@ -77,7 +79,8 @@ public class StartupInterceptor {
             if (UsagePeriods.getInstance().isCurrentTimePresentInUsagePeriods()) {
                 ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
                         "COLT Subscription",
-                        "Something is wrong with the system clock\nCOLT was launched already on the currently set time.");
+                        "Something is wrong with the system clock",
+                        "COLT was launched already on the currently set time.");
 
                 return StartupInterceptType.EXIT_UNKNOWN;
             }

@@ -21,11 +21,12 @@ class ColtDialogs {
         dialog.show()
     }
 
-    static void showError(Window owner, String title, String massage) {
+    static void showError(Window owner, String title, String massage, String comment = "") {
         DialogWithImage dialog = new DialogWithImage(owner)
         dialog.image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
         dialog.title = title
         dialog.message = massage
+        dialog.comment = comment
 
         dialog.show()
     }

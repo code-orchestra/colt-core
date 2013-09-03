@@ -68,8 +68,12 @@ class ExceptionDialog extends DialogWithImage {
     }
 
     void initException(Throwable exception, String massage = null) {
-
-        label.text = massage == null ? exception.message : massage
+        if (massage) {
+            this.message = massage
+            comment = exception.message
+        } else {
+            this.message = exception.message
+        }
 
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
