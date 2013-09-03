@@ -95,8 +95,14 @@ class ColtMenuBar extends MenuBar {
                                 onAction: { t ->
                                     ProjectDialogs.saveAsProjectDialog()
                                 } as EventHandler<ActionEvent>,
-                                accelerator: new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN),
-                                disable: true
+                                accelerator: new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN),
+                        ),
+                        new MenuItem(
+                                text: "Close Project",
+                                onAction: { t ->
+                                    ProjectDialogs.closeProjectDialog()
+                                } as EventHandler<ActionEvent>,
+                                accelerator: new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
                         ),
                         new SeparatorMenuItem(),
                         new MenuItem(
