@@ -93,7 +93,7 @@ class ColtMenuBar extends MenuBar {
                         saveAs = new MenuItem(
                                 text: "Save As...",
                                 onAction: { t ->
-                                    ProjectDialogs.saveAsProjectDialog()
+                                    ProjectDialogs.saveAsProjectDialog(scene)
                                 } as EventHandler<ActionEvent>,
                                 accelerator: new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN),
                         ),
@@ -189,9 +189,11 @@ class ColtMenuBar extends MenuBar {
         ColtProjectManager.instance.addProjectListener([
                 onProjectLoaded: { Project project ->
                     save.disable = false
+                    saveAs.disable = false
                 },
                 onProjectUnloaded: { Project project ->
                     save.disable = true
+                    saveAs.disable = true
                 }
         ] as ProjectListener)
 

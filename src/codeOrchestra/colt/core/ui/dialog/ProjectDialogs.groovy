@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.ui.dialog
 import codeOrchestra.colt.core.ColtException
 import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.errorhandling.ErrorHandler
+import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.tasks.ColtTaskWithProgress
 import codeOrchestra.colt.core.tasks.TasksManager
 import codeOrchestra.colt.core.ui.components.IProgressIndicator
@@ -93,7 +94,16 @@ class ProjectDialogs {
         });
     }
 
-    static void saveAsProjectDialog(){
-        //todo: implement
+    static void saveAsProjectDialog(Scene scene){
+        FileChooser fileChooser = new FileChooser()
+        fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
+        Project project = ColtProjectManager.getInstance().currentProject
+        fileChooser.initialDirectory = new File(project.path).parentFile
+        File file = fileChooser.showSaveDialog(scene.window)
+        if (file != null){
+            project.path = file.path
+            project.name = file.name[0..-6]
+            saveProjectDialog()
+        }
     }
 }
