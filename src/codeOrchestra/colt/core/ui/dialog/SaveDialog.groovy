@@ -6,6 +6,7 @@ import codeOrchestra.colt.core.errorhandling.ErrorHandler
 import javafx.event.Event
 import javafx.event.EventHandler
 import javafx.scene.control.Button
+import javafx.scene.image.Image
 import javafx.stage.Window
 import org.controlsfx.control.ButtonBar
 
@@ -22,10 +23,12 @@ class SaveDialog extends DialogWithImage {
     }
 
     @Override
-    void initView() {
+    protected void initView() {
         super.initView()
 
-        message = 'Save changes to COLT "' + ColtProjectManager.instance.currentProject.name + '" project before closing?'
+        image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/warning-48x48.png")
+
+        message = 'Save changes to COLT "' + ColtProjectManager.instance.currentProject?.name + '" project before closing?'
 
         ok_btn.text = "Save"
         ok_btn.onAction = {
@@ -38,6 +41,7 @@ class SaveDialog extends DialogWithImage {
         } as EventHandler
 
         Button cancel = new Button("Cancel")
+        cancel.prefWidth = 67
         ButtonBar.setType(cancel, ButtonBar.ButtonType.CANCEL_CLOSE)
         cancel.onAction = {
             flowEvent.consume()

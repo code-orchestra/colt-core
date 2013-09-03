@@ -37,15 +37,27 @@ class ExceptionDialog extends DialogWithImage {
 
 
     @Override
-    void initView() {
+    protected void initView() {
         super.initView()
 
         title = "Error"
         image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
 
+        setShowDetails(false)
+    }
+
+    @Override
+    protected void initCenter() {
         textArea = new TextArea(prefHeight: 200,  wrapText: true)
         setMargin(textArea, new Insets(17, 0, 0, 0))
         setVgrow(textArea, Priority.ALWAYS)
+
+        children.add(textArea)
+    }
+
+    @Override
+    protected void initButtons() {
+        super.initButtons()
 
         details_btn = new Button(focusTraversable: false)
         ButtonBar.setType(details_btn, ButtonBar.ButtonType.LEFT)
@@ -53,15 +65,15 @@ class ExceptionDialog extends DialogWithImage {
         details_btn.onAction = {
             showDetails = !showDetails
         } as EventHandler
-        setShowDetails(false)
-
-        children.clear()
-        children.addAll(header, textArea, buttonBar)
     }
 
     void initException(Throwable exception, String massage = null) {
-
-        label.text = massage == null ? exception.message : massage
+        if (massage) {
+            this.message = massage
+            comment = exception.message
+        } else {
+            this.message = exception.message
+        }
 
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)

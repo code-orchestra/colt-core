@@ -68,7 +68,8 @@ public class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationS
         } catch (IOException e) {
             ColtDialogs.showError(ColtApplication.get().getPrimaryStage(),
                     "COLT License",
-                    "Can't reach the validation server. Make sure your internet connection is active.");
+                    "Can't reach the validation server.",
+                    "Make sure your internet connection is active.");
             logger.error(e);
             return showSerialNumberDialog();
         }

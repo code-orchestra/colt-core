@@ -1,9 +1,7 @@
 package codeOrchestra.colt.core.ui.dialog
 
-import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.geometry.Insets
-import javafx.geometry.Pos
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -22,7 +20,9 @@ class Dialog extends VBox {
     Stage stage
 
     protected HBox header
+    protected VBox messageContainer
     protected Label label
+    protected Label commentLabel
 
     ButtonBar buttonBar
     Button ok_btn
@@ -45,28 +45,46 @@ class Dialog extends VBox {
         }
         stage.initModality(Modality.WINDOW_MODAL)
         stage.initOwner(owner)
+        stage.resizable = false
 
         initView()
     }
 
-    void initView() {
+    protected void initView() {
         setMinHeight(120)
         setMinWidth(540)
         setPadding(new Insets(17, 30, 30, 30))
 
+        initHeader()
+        initCenter()
+        initButtons()
+    }
+
+    protected void initHeader () {
         header = new HBox()
         header.minHeight = Double.NEGATIVE_INFINITY
-        label = new Label()
-        label.setAlignment(Pos.TOP_LEFT);
-        label.setTextAlignment(TextAlignment.LEFT);
-        label.maxWidth = 540
-        label.wrapText = true
+        label = new Label(maxWidth: 540, wrapText: true, textAlignment: TextAlignment.LEFT)
         label.styleClass.add("h1")
-        HBox.setMargin(label, new Insets(17, 0, 0, 0))
-        header.children.add(label)
 
+        commentLabel = new Label(maxWidth: 540, wrapText: true, textAlignment: TextAlignment.LEFT)
+
+        messageContainer = new VBox()
+        messageContainer.children.add(label)
+        HBox.setMargin(messageContainer, new Insets(17, 0, 0, 0))
+        header.children.add(messageContainer)
+
+        children.add(header)
+    }
+
+    protected void initCenter() {
+
+    }
+
+    protected void initButtons () {
         buttonBar = new ButtonBar()
+        buttonBar.buttonUniformSize = false
         ok_btn = new Button("OK")
+        ok_btn.prefWidth = 67
         ok_btn.onAction = {
             stage.hide()
         } as EventHandler
@@ -75,11 +93,24 @@ class Dialog extends VBox {
         buttonBar.buttons.add(ok_btn)
         setMargin(buttonBar, new Insets(10, 0, 0, 0))
 
-        children.addAll(header, buttonBar)
+        children.add(buttonBar)
     }
 
     void setMessage(String message) {
         label.text = message
+    }
+
+    void setComment(String comment) {
+        if (comment == null || comment.isEmpty()) {
+            if (messageContainer.children.contains(commentLabel)) {
+                messageContainer.children.remove(commentLabel)
+            }
+        } else {
+            if (!messageContainer.children.contains(commentLabel)) {
+                messageContainer.children.add(commentLabel)
+            }
+            commentLabel.text = comment
+        }
     }
 
     void setTitle(String title) {
