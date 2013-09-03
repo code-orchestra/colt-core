@@ -21,7 +21,6 @@ class ProjectDialogs {
         if (file != null) {
             try {
                 // TODO: a handler must be defined by the user (AS, JS, etc)
-
                 ColtProjectManager.instance.create("AS", file.name[0..-6], file)
             } catch (ColtException e) {
                 ErrorHandler.handle(e, "Can't create a new project")
@@ -36,7 +35,6 @@ class ProjectDialogs {
         if (file != null) {
             try {
                 // TODO: a handler must be defined by the user (AS, JS, etc)
-
                 ColtProjectManager.instance.create("JS", file.name[0..-6], file)
             } catch (ColtException e) {
                 ErrorHandler.handle(e, "Can't create a new project")
