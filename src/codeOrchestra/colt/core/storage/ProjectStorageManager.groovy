@@ -56,8 +56,7 @@ class ProjectStorageManager {
         String currentPath = ProjectHelper.currentProject.path
 
         List<ProjectStorageDescriptor> descriptors = storageDescriptors
-
-        descriptors.each {
+        for (ProjectStorageDescriptor it : descriptors) {
             if (it.projectPath.equals(currentPath)) {
                 return getOrCreateProjectStorageDirBySubDir(it.storageSubDir)
             }
