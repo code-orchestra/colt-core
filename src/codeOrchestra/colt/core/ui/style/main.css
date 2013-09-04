@@ -625,8 +625,12 @@
 .error-input {
     -fx-background-color: #c00, #f0f0f0, #fff;
     -fx-background-insets: -1, 1, 2 1 1 1;
-    -fx-background-radius: 2, 0, 0;
-    -fx-padding: 0; }
+    -fx-background-radius: 2, 0, 0; }
+
+.error-input:focused {
+    -fx-background-color: #f33, #c00, #f0f0f0, #fff;
+    -fx-background-insets: -1.4, 0, 1, 2 1 1 1;
+    -fx-background-radius: 2.4, 1, 0, 0; }
 
 .error-label {
     -fx-background-image: url('images/messages/error.png');
