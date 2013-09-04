@@ -8,10 +8,9 @@ import codeOrchestra.colt.core.ui.components.log.LogFilter
 import codeOrchestra.colt.core.ui.components.log.LogMessage
 import codeOrchestra.colt.core.ui.components.log.LogWebView
 import codeOrchestra.colt.core.ui.components.player.ActionPlayerPopup
-import codeOrchestra.colt.core.ui.components.popupmenu.MyContextMenu
+import codeOrchestra.colt.core.ui.components.popupmenu.PopupMenu
 import codeOrchestra.colt.core.ui.components.sessionIndicator.SessionIndicatorController
 import codeOrchestra.groovyfx.FXBindable
-import javafx.application.Platform
 import javafx.beans.InvalidationListener
 import javafx.beans.binding.StringBinding
 import javafx.beans.property.StringProperty
@@ -20,7 +19,6 @@ import javafx.collections.ListChangeListener
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
-import javafx.geometry.Point2D
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
@@ -103,14 +101,12 @@ abstract class ApplicationGUI extends BorderPane{
         sessionIndicator.visibleProperty().bind(progressIndicator.visibleProperty().not())
         SessionIndicatorController.instance.indicator = sessionIndicator
 
-        MyContextMenu contextMenu = new MyContextMenu()
-        contextMenu.setStyle("-fx-background-color: transparent;");
+        PopupMenu popupMenu = new PopupMenu()
         ArrayList<MenuItem> items = ColtApplication.get().menuBar.popupMenuItems
-        contextMenu.items.addAll(items)
+        items.each {popupMenu.menuContent.add(it)}
 
         popupMenuButton.onAction = {
-            Point2D point = popupMenuButton.parent.localToScreen(popupMenuButton.layoutX, popupMenuButton.layoutY)
-            contextMenu.show(popupMenuButton, point.x + 5, point.y - 15 - items.size() * 25)
+            popupMenu.isShowing() ? popupMenu.hide() : popupMenu.show(popupMenuButton)
         } as EventHandler
 
         // data binding

@@ -8,72 +8,65 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane prefHeight="400" prefWidth="600" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
-<children>
-    <VBox styleClass="menu-v">
-    <children>
-
-        <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefWidth="220">
-        <graphic>
-        <AnchorPane>
-        <children>
-            <Label text="New…" AnchorPane.leftAnchor="0" />
-            <Label text="⌘N" AnchorPane.rightAnchor="0" />
-        </children>
-        </AnchorPane>
-        </graphic>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <Pane layoutX="63.0" layoutY="44.0" prefHeight="198.0" prefWidth="254.0" styleClass="popup-bl" />
+    <VBox layoutX="80.0" layoutY="60.0" styleClass="menu-v">
+      <children>
+        <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefWidth="220.0">
+          <graphic>
+            <AnchorPane>
+              <children>
+                <Label text="New…" AnchorPane.leftAnchor="0.0" />
+                <Label text="⌘N" AnchorPane.rightAnchor="0.0" />
+              </children>
+            </AnchorPane>
+          </graphic>
         </Button>
-
-        <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefWidth="220">
-        <graphic>
-        <AnchorPane>
-        <children>
-            <Label text="Open…" AnchorPane.leftAnchor="0" />
-            <Label text="⌘O" AnchorPane.rightAnchor="0" />
-        </children>
-        </AnchorPane>
-        </graphic>
+        <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefWidth="220.0">
+          <graphic>
+            <AnchorPane>
+              <children>
+                <Label text="Open…" AnchorPane.leftAnchor="0.0" />
+                <Label text="⌘O" AnchorPane.rightAnchor="0.0" />
+              </children>
+            </AnchorPane>
+          </graphic>
         </Button>
-
-        <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefWidth="220">
-        <graphic>
-        <AnchorPane>
-        <children>
-            <Label text="Open Recent" AnchorPane.leftAnchor="0" />
-            <Label contentDisplay="GRAPHIC_ONLY" styleClass="submenu-arrow" prefHeight="12" prefWidth="9"  AnchorPane.rightAnchor="0" />
-        </children>
-        </AnchorPane>
-        </graphic>
+        <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefWidth="220.0">
+          <graphic>
+            <AnchorPane>
+              <children>
+                <Label text="Open Recent" AnchorPane.leftAnchor="0.0" />
+                <Label contentDisplay="GRAPHIC_ONLY" prefHeight="12.0" prefWidth="9.0" styleClass="submenu-arrow" AnchorPane.rightAnchor="0.0" />
+              </children>
+            </AnchorPane>
+          </graphic>
         </Button>
-
-        <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefWidth="220">
-        <graphic>
-        <AnchorPane>
-        <children>
-            <Label text="Save" AnchorPane.leftAnchor="0" />
-            <Label text="⌘S" AnchorPane.rightAnchor="0" />
-        </children>
-        </AnchorPane>
-        </graphic>
+        <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefWidth="220.0">
+          <graphic>
+            <AnchorPane>
+              <children>
+                <Label text="Save" AnchorPane.leftAnchor="0.0" />
+                <Label text="⌘S" AnchorPane.rightAnchor="0.0" />
+              </children>
+            </AnchorPane>
+          </graphic>
         </Button>
-
-        <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefWidth="220">
-        <graphic>
-        <AnchorPane>
-        <children>
-            <Label text="Save As…" AnchorPane.leftAnchor="0" />
-            <Label text="⇧⌘S" AnchorPane.rightAnchor="0" />
-        </children>
-        </AnchorPane>
-        </graphic>
+        <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" prefWidth="220.0">
+          <graphic>
+            <AnchorPane>
+              <children>
+                <Label text="Save As…" AnchorPane.leftAnchor="0.0" />
+                <Label text="⇧⌘S" AnchorPane.rightAnchor="0.0" />
+              </children>
+            </AnchorPane>
+          </graphic>
         </Button>
-
-    </children>
-
+      </children>
     </VBox>
-</children>
-
-    <stylesheets>
+  </children>
+  <stylesheets>
     <URL value="@../codeOrchestra/colt/core/ui/style/main.css" />
-    </stylesheets>
+  </stylesheets>
 </AnchorPane>
