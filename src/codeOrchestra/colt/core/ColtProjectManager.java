@@ -7,6 +7,7 @@ import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.model.ProjectHandlerIdParser;
 import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
+import codeOrchestra.colt.core.storage.ProjectStorageManager;
 import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.ProjectHelper;
 
@@ -42,6 +43,7 @@ public class ColtProjectManager {
             @Override
             public void onProjectLoaded(Project project) {
                 RecentProjects.addRecentProject(project.getPath());
+                ProjectStorageManager.getOrCreateProjectStorageDir();
                 Logger.getLogger(ColtProjectManager.class).info("Loaded " + project.getProjectType() + " project " + project.getName() + " on "
                         + DateFormat.getTimeInstance(DateFormat.DEFAULT, Locale.US).format(new Date()));
             }
@@ -95,11 +97,7 @@ public class ColtProjectManager {
             throw new ColtException("Can't figure out the handler ID for the project path " + path);
         }
 
-        try {
-            LiveCodingHandlerManager.getInstance().load(handlerId);
-        } catch (LiveCodingHandlerLoadingException e) {
-            throw new ColtException("Can't load the handler for the project type " + handlerId);
-        }
+        loadHandler(handlerId);
 
         // Parse the project
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
@@ -128,11 +126,7 @@ public class ColtProjectManager {
             unload();
         }
 
-        try {
-            LiveCodingHandlerManager.getInstance().load(handlerId);
-        } catch (LiveCodingHandlerLoadingException e) {
-            throw new ColtException("Can't load the handler for the project type " + handlerId);
-        }
+        loadHandler(handlerId);
 
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         currentProject = handler.createProject(pName, pFile);
@@ -150,11 +144,7 @@ public class ColtProjectManager {
         }
 
         String handlerId = "AS";
-        try {
-            LiveCodingHandlerManager.getInstance().load(handlerId);
-        } catch (LiveCodingHandlerLoadingException e) {
-            throw new ColtException("Can't load the handler for the project type " + handlerId);
-        }
+        loadHandler(handlerId);
 
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         currentProject = handler.importProject(file);
@@ -179,6 +169,14 @@ public class ColtProjectManager {
 
         projectListeners.clear();
         currentProject = null;
+    }
+
+    private void loadHandler(String handlerId) throws ColtException {
+        try {
+            LiveCodingHandlerManager.getInstance().load(handlerId);
+        } catch (LiveCodingHandlerLoadingException e) {
+            throw new ColtException("Can't load the handler for the project type " + handlerId, e);
+        }
     }
 
 }
