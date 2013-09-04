@@ -189,7 +189,7 @@
         function addRecentProject(name, index) {
             var item = $("<li/>");
             var link = $("<a/>", {
-                href: "javascript:alert('open-project: " + index + "')"
+                href: "javascript:alert('open-recent: " + index + "')"
             })
             link.text(name)
             item.append(link)
@@ -214,7 +214,7 @@
         </ul>
 
         <ul class="m-open">
-            <li><a href="javascript:alert('open:0')">Open</a></li>
+            <li><a href="javascript:alert('open-project:0')">Open</a></li>
             <li><a href="javascript:alert('open-demo:0')">Open Demo Project</a></li>
             <li id="recent-projects" class="submenu-title">Open a Recent Project
                 <ul>

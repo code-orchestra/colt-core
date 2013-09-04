@@ -2,10 +2,12 @@ package codeOrchestra.colt.core.ui.dialog
 
 import codeOrchestra.colt.core.ColtException
 import codeOrchestra.colt.core.ColtProjectManager
+import codeOrchestra.colt.core.RecentProjects
 import codeOrchestra.colt.core.errorhandling.ErrorHandler
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.tasks.ColtTaskWithProgress
 import codeOrchestra.colt.core.tasks.TasksManager
+import codeOrchestra.colt.core.ui.ColtApplication
 import codeOrchestra.colt.core.ui.components.IProgressIndicator
 import javafx.scene.Scene
 import javafx.stage.FileChooser
@@ -66,8 +68,8 @@ class ProjectDialogs {
     }
 
     static void closeProjectDialog(){
-        println "need implement: ProjectDialogs.closeProjectDialog()"
-        //todo: open welcome screen
+        ColtApplication.get().showWelcomeScreen()
+        ColtApplication.get().closeProject()
     }
 
     static void saveProjectDialog(){

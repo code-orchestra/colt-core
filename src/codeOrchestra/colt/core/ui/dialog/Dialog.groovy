@@ -25,7 +25,7 @@ class Dialog extends VBox {
     protected Label commentLabel
 
     ButtonBar buttonBar
-    Button ok_btn
+    Button okButton
 
     Dialog(Window owner) {
         VBox root = this
@@ -84,14 +84,14 @@ class Dialog extends VBox {
     protected void initButtons () {
         buttonBar = new ButtonBar()
         buttonBar.buttonUniformSize = false
-        ok_btn = new Button("OK")
-        ok_btn.prefWidth = 67
-        ok_btn.onAction = {
+        okButton = new Button("OK")
+        okButton.prefWidth = 67
+        okButton.onAction = {
             stage.hide()
         } as EventHandler
-        ok_btn.defaultButton = true
-        ButtonBar.setType(ok_btn, ButtonBar.ButtonType.OK_DONE)
-        buttonBar.buttons.add(ok_btn)
+        okButton.defaultButton = true
+        ButtonBar.setType(okButton, ButtonBar.ButtonType.OK_DONE)
+        buttonBar.buttons.add(okButton)
         setMargin(buttonBar, new Insets(10, 0, 0, 0))
 
         children.add(buttonBar)

@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui.dialog
 
+import codeOrchestra.colt.core.license.DemoHelper
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.control.Button
@@ -20,8 +21,17 @@ class SerialNumberDialog extends DialogWithImage {
     TextField serialNumber
     Image errorImage = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
 
+    EventHandler<SerialNumberEvent> onInput
+    boolean disposed
+
     SerialNumberDialog(Window owner) {
         super(owner)
+
+        stage.onCloseRequest = {
+            if (!disposed) {
+                onInput.handle(new SerialNumberEvent())
+            }
+        } as EventHandler
     }
 
     @Override
@@ -36,7 +46,7 @@ class SerialNumberDialog extends DialogWithImage {
         super.initHeader()
 
         message = "This is a demo version of COLT"
-        comment = "10 compilations have remained."
+        comment = String.format("Compilations count would be limited to %d.", DemoHelper.get().getMaxCompilationsCount() - 1)
     }
 
     @Override
@@ -44,6 +54,11 @@ class SerialNumberDialog extends DialogWithImage {
         center = new HBox(spacing: 8, padding: new Insets(22, 0, 24, 68))
         Button purchase = new Button(text: "Purchase", prefWidth: 204, focusTraversable: false)
         Button demo = new Button(text: "Continue With Demo", prefWidth: 204, focusTraversable: false)
+        demo.onAction = {
+            hide()
+            onInput.handle(new SerialNumberEvent())
+
+        } as EventHandler
         center.children.addAll(purchase, demo)
 
         children.add(center)
@@ -62,21 +77,27 @@ class SerialNumberDialog extends DialogWithImage {
         AnchorPane.setRightAnchor(serialNumber, 86)
         AnchorPane.setLeftAnchor(serialNumber, 63)
 
-        ok_btn = new Button(text: "OK", prefWidth: 67, defaultButton: true, focusTraversable: false)
-        AnchorPane.setTopAnchor(ok_btn, 18)
-        AnchorPane.setRightAnchor(ok_btn, 0)
+        okButton = new Button(text: "OK", prefWidth: 67, defaultButton: true, focusTraversable: false)
+        AnchorPane.setTopAnchor(okButton, 18)
+        AnchorPane.setRightAnchor(okButton, 0)
 
-        pane.children.addAll(inputLabel, serialNumber, ok_btn)
+        pane.children.addAll(inputLabel, serialNumber, okButton)
 
         children.add(pane)
 
-        ok_btn.onAction = {
-            if(serialNumber.text.isEmpty()) {
-                error("Error message")
+        okButton.onAction = {
+            if (serialNumber.text.isEmpty()) {
+                error("The serial number entered is empty")
             } else {
-                stage.hide()
+                hide()
+                onInput.handle(new SerialNumberEvent(serialNumber.text))
             }
         } as EventHandler
+    }
+
+    void hide() {
+        stage.hide()
+        disposed = true
     }
 
     void error(String message, String comment = "") {

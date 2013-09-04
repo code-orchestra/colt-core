@@ -4,6 +4,8 @@ import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
+import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Side
@@ -68,13 +70,15 @@ class FilesetInput extends AnchorPane {
 
         focusRectangle.toBack()
         focusRectangle.prefHeightProperty().bind(webView.prefHeightProperty().add(2))
-        webView.focusedProperty().addListener({ o, old, focused ->
+        ChangeListener focusListener = { o, old, f ->
             focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
             focusRectangle.styleClass.add(focused ? "fileset-webview-focus" : "fileset-webview")
-            if(focused){
+            if (focused) {
                 getJSTopObject().call("requestFocus")
             }
-        } as ChangeListener)
+        } as ChangeListener
+        webView.focusedProperty().addListener(focusListener)
+        widthProperty().addListener(focusListener)
 
         addButton.onAction = {
             ContextMenu cm = buildContextMenu()
@@ -128,6 +132,8 @@ class FilesetInput extends AnchorPane {
 //        webView.childrenUnmodifiable.addListener({ change ->
 //            webView.lookupAll(".scroll-bar")*.visible = false
 //        } as ListChangeListener)
+//
+//        focusRectangle.lookupAll(".scroll-bar")*.visible = false
 
         //binding
 
