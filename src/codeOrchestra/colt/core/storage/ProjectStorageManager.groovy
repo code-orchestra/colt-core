@@ -28,7 +28,7 @@ class ProjectStorageManager {
     static List<ProjectStorageDescriptor> getStorageDescriptors() {
         File descriptorsFile = getStorageDescriptorsFile()
         if (!descriptorsFile.exists()) {
-            return Collections.emptyList()
+            return new ArrayList<>()
         }
 
         List<ProjectStorageDescriptor> result = new ArrayList<>()
@@ -56,8 +56,7 @@ class ProjectStorageManager {
         String currentPath = ProjectHelper.currentProject.path
 
         List<ProjectStorageDescriptor> descriptors = storageDescriptors
-
-        descriptors.each {
+        for (ProjectStorageDescriptor it : descriptors) {
             if (it.projectPath.equals(currentPath)) {
                 return getOrCreateProjectStorageDirBySubDir(it.storageSubDir)
             }
