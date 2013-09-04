@@ -14,7 +14,7 @@ class WelcomeScreenStage extends Stage {
     WelcomeScreenStage() {
         root = new WelcomeScreen()
         setTitle("COLT — Code Orchestra Livecoding Tool (1.2)")
-        scene = new Scene(root, 600, 437)
+        scene = new Scene(root, 598, 437)
         setResizable(false)
     }
 }
