@@ -33,6 +33,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
+import org.scenicview.ScenicView;
 
 import java.io.File;
 
@@ -124,7 +125,7 @@ public class ColtApplication extends Application {
 
     private void doAfterUIInit() {
         // COLT-287
-        System.setProperty ("jsse.enableSNIExtension", "false");
+        System.setProperty("jsse.enableSNIExtension", "false");
 
         // Intercept start by license check
         StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
@@ -161,7 +162,7 @@ public class ColtApplication extends Application {
             showWelcomeScreen();
         }
 
-//        ScenicView.show(mainStage.getScene());
+        ScenicView.show(mainStage.getScene());
     }
 
     public void closeProject() {

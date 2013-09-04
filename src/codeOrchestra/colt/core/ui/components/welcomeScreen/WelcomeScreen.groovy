@@ -38,7 +38,6 @@ class WelcomeScreen extends Pane {
             if (layoutInited && htmlLoaded) {
                 init()
             }
-
         } as ChangeListener)
 
         engine.load(this.class.getResource("html/welcome-screen.html").toExternalForm())
@@ -53,7 +52,7 @@ class WelcomeScreen extends Pane {
                     ProjectDialogs.openProjectDialog(scene)
                 }else if (tokens[0] == "open-recent") {
                     int index = tokens[1] as int
-                    ColtProjectManager.getInstance().load(recentProjects[index].getPath());
+                    ColtProjectManager.instance.load(recentProjects[index].path);
                 }else if (tokens[0] == "new-js") {
                     ProjectDialogs.newJsProjectDialog(scene)
                 }else if (tokens[0] == "new-as") {
