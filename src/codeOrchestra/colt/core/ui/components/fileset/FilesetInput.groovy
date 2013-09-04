@@ -247,21 +247,21 @@ class FilesetInput extends AnchorPane {
         getJSTopObject().call("setFiles", str)
     }
 
-    public static List<File> getFilesFromString(String fileset) {
+    public static List<File> getFilesFromString(String fileset, File baseDir = getBaseDir()) {
         if (fileset.isEmpty()) return []
-        def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset)
+        def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
         result.addAll(getFilesFromFileset(filesets))
         return result.grep{File f -> !f.directory }
     }
 
-    public static List<File> getDirectoriesFromString(String fileset) {
+    public static List<File> getDirectoriesFromString(String fileset, File baseDir = getBaseDir()) {
         if (fileset.empty) return []
-        def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset)
+        def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
         result.addAll(getFilesFromFileset(filesets))
         return result.grep{File f -> f.directory }
     }
 
-    private static List collectFiles(String fileset) {
+    private static List collectFiles(String fileset, File baseDir) {
         List<File> result = []
         List<String> filesets = []
 
