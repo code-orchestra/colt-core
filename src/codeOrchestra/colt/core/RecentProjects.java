@@ -49,7 +49,6 @@ public class RecentProjects {
 
     public static boolean haveRecentProject() {
         String str = preferences.get(RECENT_COLT_PROJECT, "");
-        System.out.println("str = " + str);
         return preferences.get(RECENT_COLT_PROJECT, "").equals("true");
     }
 
