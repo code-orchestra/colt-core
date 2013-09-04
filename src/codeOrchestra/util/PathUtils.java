@@ -80,4 +80,14 @@ public class PathUtils {
         return new File(getApplicationBaseDir(), "lib");
     }
 
+    public static File getExamplesDir() {
+        File examplesDir = new File(getApplicationBaseDir(), "projects");
+        if (examplesDir.exists()) {
+            return examplesDir;
+        }
+
+        // Looks like we're starting COLT from sources
+        return new File(getApplicationBaseDir().getParentFile(), "livecoding_examples");
+    }
+
 }

@@ -9,6 +9,8 @@ import codeOrchestra.colt.core.tasks.ColtTaskWithProgress
 import codeOrchestra.colt.core.tasks.TasksManager
 import codeOrchestra.colt.core.ui.ColtApplication
 import codeOrchestra.colt.core.ui.components.IProgressIndicator
+import codeOrchestra.util.BrowserUtil
+import codeOrchestra.util.PathUtils
 import javafx.scene.Scene
 import javafx.stage.FileChooser
 
@@ -59,8 +61,17 @@ class ProjectDialogs {
     }
 
     static void openDemoProjectDialog(Scene scene){
-        println "need implement: ProjectDialogs.openDemoProjectDialog()"
-        //todo: open demo projects directories
+        File examplesDir = PathUtils.examplesDir
+        if (examplesDir == null || !examplesDir.exists()) {
+            ErrorHandler.handle("Can't locate the example projects folder");
+        }
+
+        ProcessBuilder launchBrowser = BrowserUtil.launchBrowser(examplesDir.getPath())
+        try {
+            launchBrowser.start()
+        } catch (IOException e) {
+            ErrorHandler.handle(e, "Error while opening example projects folder")
+        }
     }
 
     static void openWelcomeScreen(Scene scene){
