@@ -610,11 +610,18 @@
     -fx-background-radius: 1, 0, 0;
     -fx-padding: 0; }
 
-.error {
+.error-input {
     -fx-background-color: #c00, #f0f0f0, #fff;
     -fx-background-insets: -1, 1, 2 1 1 1;
     -fx-background-radius: 2, 0, 0;
     -fx-padding: 0; }
+
+.error-label {
+    -fx-background-image: url('images/messages/error.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 16px, 16px;
+    -fx-text-fill: #c00;
+    -fx-padding: 1px 0 1px 24px; }
 
 .text-field {
     -fx-alignment: top-left;

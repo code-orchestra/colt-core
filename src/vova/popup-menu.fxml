@@ -68,6 +68,8 @@
         </graphic>
         </Button>
 
+        <Label text="Error message" styleClass="error-label" />
+
     </children>
 
     </VBox>
