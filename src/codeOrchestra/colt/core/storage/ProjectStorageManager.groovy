@@ -4,6 +4,7 @@ import codeOrchestra.util.FileUtils
 import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.StringUtils
 import groovy.util.slurpersupport.GPathResult
+import groovy.xml.MarkupBuilder
 
 /**
  * @author Alexander Eliseyev
@@ -12,7 +13,7 @@ class ProjectStorageManager {
 
     public static final String COLT_DIR_NAME = ".colt"
 
-    File getOrCreateColtDir() {
+    static File getOrCreateColtDir() {
         File coltDir = new File(System.getProperty("user.home"), COLT_DIR_NAME)
         if (!coltDir.exists()) {
             coltDir.mkdir()
@@ -20,11 +21,11 @@ class ProjectStorageManager {
         return coltDir
     }
 
-    private File getStorageDescriptorsFile() {
+    private static File getStorageDescriptorsFile() {
         new File(getOrCreateColtDir(), "storage.xml")
     }
 
-    List<ProjectStorageDescriptor> getStorageDescriptors() {
+    static List<ProjectStorageDescriptor> getStorageDescriptors() {
         File descriptorsFile = getStorageDescriptorsFile()
         if (!descriptorsFile.exists()) {
             return Collections.emptyList()
@@ -37,11 +38,21 @@ class ProjectStorageManager {
         return result
     }
 
-    void saveStorageDescriptors(List<ProjectStorageDescriptor> descriptors) {
-        // TODO: implement
+    static void saveStorageDescriptors(List<ProjectStorageDescriptor> descriptors) {
+        File descriptorsFile = getStorageDescriptorsFile()
+
+        StringWriter writer = new StringWriter()
+        new MarkupBuilder(writer).xml() {
+            descriptors.each {
+                storage(path : it.projectPath, subDir : it.storageSubDir)
+            }
+        }
+        String content = writer.toString()
+
+        FileUtils.write(descriptorsFile, content)
     }
 
-    File getOrCreateProjectStorageDir() {
+    static File getOrCreateProjectStorageDir() {
         String currentPath = ProjectHelper.currentProject.path
 
         List<ProjectStorageDescriptor> descriptors = storageDescriptors
@@ -59,16 +70,12 @@ class ProjectStorageManager {
         return getOrCreateProjectStorageDirBySubDir(projectStorageDescriptor.storageSubDir)
     }
 
-    private File getOrCreateProjectStorageDirBySubDir(String subDirName) {
+    private static File getOrCreateProjectStorageDirBySubDir(String subDirName) {
         File dir = new File(getOrCreateColtDir(), "storage" + File.separator + subDirName)
         if (!dir.exists()) {
             dir.mkdirs()
         }
         return dir
-    }
-
-    public static void main(String[] args) {
-        new ProjectStorageManager().getStorageDescriptors().each { println(it.projectPath); println(it.storageSubDir) }
     }
 
 }
