@@ -1,6 +1,8 @@
 package codeOrchestra.colt.core.ui.components.inputForms
 
 import javafx.beans.property.StringProperty
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -24,6 +26,21 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
     BrowseType browseType = BrowseType.FILE
 
     ArrayList<FileChooser.ExtensionFilter> extensionFilters = new ArrayList<>()
+
+    boolean numeric
+
+    void setNumeric(boolean numeric) {
+        this.numeric = numeric
+        if (numeric) {
+            textField.textProperty().addListener({ ObservableValue<? extends String> observableValue, String oldValue, String newValue ->
+                try {
+                    newValue.toInteger()
+                } catch (NumberFormatException ignored) {
+                    textField.text = oldValue
+                }
+            } as ChangeListener)
+        }
+    }
 
     protected void initLoader(FXMLLoader loader) {
         loader.root = this
