@@ -13,6 +13,7 @@ import codeOrchestra.colt.core.tasks.ColtTaskWithProgress
 import codeOrchestra.colt.core.tasks.TasksManager
 import codeOrchestra.colt.core.ui.components.IProgressIndicator
 import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
+import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.Menu
@@ -34,12 +35,7 @@ class ColtMenuBar extends MenuBar {
     ArrayList<MenuItem> popupMenuItems = new ArrayList<>()
 
     ColtMenuBar() {
-        ExpandoMetaClass menuExpando = new ExpandoMetaClass(Menu, false)
-        menuExpando.setNewItems = {List<MenuItem> it ->
-            items.addAll(it)
-        }
-        menuExpando.initialize()
-        Menu.metaClass = menuExpando
+        GroovyDynamicMethods.init()
 
         MenuItem newJs
         MenuItem newAs
