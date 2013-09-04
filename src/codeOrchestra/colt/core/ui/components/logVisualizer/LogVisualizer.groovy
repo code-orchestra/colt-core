@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.annotation.Service
 import codeOrchestra.colt.core.session.LiveCodingSession
 import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
 import codeOrchestra.colt.core.ui.components.log.LogMessage
+import codeOrchestra.util.ThreadUtils
 import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.collections.ListChangeListener
@@ -58,16 +59,16 @@ class LogVisualizer extends VBox {
 
         liveCodingManager.addListener([
                 onSessionStart: { session ->
-                    start()
+                    ThreadUtils.executeInFXThread({ start() })
                 },
                 onSessionEnd: { session ->
-                    stop()
+                    ThreadUtils.executeInFXThread({ stop() })
                 },
                 onSessionPause: {
-                    pause()
+                    ThreadUtils.executeInFXThread({ pause() })
                 },
                 onSessionResume: {
-                    start()
+                    ThreadUtils.executeInFXThread({ start() })
                 }
         ] as LiveCodingAdapter)
     }
