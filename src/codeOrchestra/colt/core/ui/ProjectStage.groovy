@@ -19,7 +19,7 @@ class ProjectStage extends Stage {
         root = new StackPane()
 
         setTitle("COLT — Code Orchestra Livecoding Tool (1.2)")
-        scene = new Scene(root, 506, 820)
+        scene = new Scene(root, 480, 768)
 
         setOnCloseRequest({windowEvent ->
             if (ChangingMonitor.getInstance().isChanged()) {
