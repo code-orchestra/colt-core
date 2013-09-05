@@ -36,12 +36,12 @@ abstract class InputForm extends AnchorPane implements ITypedForm {
         textField.textProperty().bindBidirectional(text())
         button.textProperty().bindBidirectional(buttonText())
 
-        buttonDisable().addListener({ v, o, newValue ->
-            button.disable = newValue
+        buttonDisable().addListener({ v, o, d ->
+            button.disable = d
         } as ChangeListener)
 
-        textDisable().addListener({ v, o, newValue ->
-            textField.disable = newValue
+        textDisable().addListener({ v, o, d ->
+            textField.disable = d
         } as ChangeListener)
 
         error().addListener({ v, o, newValue ->
@@ -114,6 +114,20 @@ abstract class InputForm extends AnchorPane implements ITypedForm {
                 if (!children.contains(button)) {
                     children.add(button)
                 }
+                break
+        }
+    }
+
+    void setFormType(String formType) {
+        switch (formType) {
+            case "SIMPLE":
+                setType(FormType.SIMPLE)
+                break
+            case "TEXT_FIELD":
+                setType(FormType.TEXT_FIELD)
+                break
+            case "BUTTON":
+                setType(FormType.BUTTON)
                 break
         }
     }

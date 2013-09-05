@@ -1,8 +1,6 @@
 package codeOrchestra.colt.core.ui.components.inputForms
 
-import javafx.beans.property.StringProperty
-import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
+import codeOrchestra.groovyfx.FXBindable
 import javafx.scene.control.CheckBox
 
 /**
@@ -11,6 +9,8 @@ import javafx.scene.control.CheckBox
 class CTBForm extends InputForm {
 
     protected CheckBox checkBox = new CheckBox()
+
+    @FXBindable boolean selected
 
     /*
     <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
@@ -31,9 +31,8 @@ class CTBForm extends InputForm {
         textDisable().bind(checkBox.selectedProperty().not())
 
         type = FormType.SIMPLE
-    }
 
-     CheckBox getCheckBox() {
-        return checkBox
+        selected().bindBidirectional(checkBox.selectedProperty())
+
     }
 }
