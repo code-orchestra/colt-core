@@ -17,5 +17,5 @@
     </children>
   </HBox>
   <ChoiceBox fx:id="choiceBox" layoutY="22.0" AnchorPane.leftAnchor="10.0" />
-  <Label fx:id="errorLabel" layoutY="30.0" styleClass="error-label" text="Incorrect Flex SDK path specified" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="10.0" />
+  <Label fx:id="errorLabel" layoutY="30.0" styleClass="error-label" text="Incorrect Flex SDK path specified" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="10.0" />
 </fx:root>
