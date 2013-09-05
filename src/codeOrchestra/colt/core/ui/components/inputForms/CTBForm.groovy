@@ -22,11 +22,11 @@ class CTBForm extends InputForm {
 
     CTBForm() {
         children.addAll(checkBox, textField, button)
-        init()
 
         setLeftAnchor(checkBox, 10)
         setRightAnchor(checkBox, 10)
 
+        checkBox.textProperty().bindBidirectional(title())
         buttonDisable().bind(checkBox.selectedProperty().not())
         textDisable().bind(checkBox.selectedProperty().not())
 

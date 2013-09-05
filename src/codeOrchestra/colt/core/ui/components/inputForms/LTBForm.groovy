@@ -11,8 +11,6 @@ class LTBForm extends InputForm {
 
     protected Label label = new Label()
 
-    @FXBindable String title;
-
     /*
     <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
       <Label fx:id="label" AnchorPane.leftAnchor="19" AnchorPane.rightAnchor="48" />
@@ -23,12 +21,11 @@ class LTBForm extends InputForm {
 
     LTBForm() {
         children.addAll(label, textField, button)
-        init()
 
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
 
-        title().bindBidirectional(label.textProperty())
+        label.textProperty().bindBidirectional(title())
 
         type = FormType.TEXT_FIELD
     }

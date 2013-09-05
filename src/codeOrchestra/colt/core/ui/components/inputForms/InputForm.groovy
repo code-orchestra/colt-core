@@ -14,11 +14,12 @@ import javafx.stage.FileChooser
  * @author Dima Kruk
  */
 abstract class InputForm extends AnchorPane implements ITypedForm {
-    protected final TextField textField = new TextField()
-    protected final Button button = new Button()
+    protected final TextField textField = new TextField(layoutY: 23, prefHeight: 30)
+    protected final Button button = new Button(focusTraversable: false, layoutY: 23, prefHeight: 30, prefWidth: 67)
 
+    @FXBindable String title
     @FXBindable String text
-    @FXBindable String buttonText
+    @FXBindable String buttonText = "Browse"
     @FXBindable Boolean buttonDisable
     @FXBindable Boolean textDisable
     @FXBindable Boolean error
@@ -28,16 +29,8 @@ abstract class InputForm extends AnchorPane implements ITypedForm {
     String formType
 
     InputForm() {
-        textField.layoutY = 23
-        textField.prefHeight = 30
         setLeftAnchor(textField, 10)
         setRightAnchor(textField, 86)
-
-        button.focusTraversable = false
-        button.layoutY = 23
-        button.prefHeight = 30
-        button.prefWidth = 67
-        button.text = "Browse"
         setRightAnchor(button, 10)
 
         textField.textProperty().bindBidirectional(text())
@@ -52,8 +45,29 @@ abstract class InputForm extends AnchorPane implements ITypedForm {
         } as ChangeListener)
 
         error().addListener({ v, o, newValue ->
-            newValue ? textField.styleClass.remove("error-input") : textField.styleClass.addAll("error-input")
+            textField.styleClass.remove("error-input")
+            if (newValue) textField.styleClass.addAll("error-input")
         } as ChangeListener)
+
+        action = {
+            switch (browseType) {
+                case BrowseType.FILE:
+                    FileChooser fileChooser = new FileChooser()
+                    fileChooser.extensionFilters.addAll(extensionFilters)
+                    File file = fileChooser.showOpenDialog(button.scene.window)
+                    if (file) {
+                        textField.text = file.path
+                    }
+                    break
+                case BrowseType.DIRECTORY:
+                    DirectoryChooser directoryChooser = new DirectoryChooser()
+                    File file = directoryChooser.showDialog(button.scene.window)
+                    if (file) {
+                        textField.text = file.path
+                    }
+                    break
+            }
+        } as EventHandler<ActionEvent>
     }
 
     BrowseType browseType = BrowseType.FILE // todo: переносить в детей
@@ -73,28 +87,6 @@ abstract class InputForm extends AnchorPane implements ITypedForm {
                 }
             } as ChangeListener)
         }
-    }
-
-    protected void init() {
-        button.onAction = {
-            switch (browseType) {
-                case BrowseType.FILE:
-                    FileChooser fileChooser = new FileChooser()
-                    fileChooser.extensionFilters.addAll(extensionFilters)
-                    File file = fileChooser.showOpenDialog(button.scene.window)
-                    if (file) {
-                        textField.text = file.path
-                    }
-                    break
-                case BrowseType.DIRECTORY:
-                    DirectoryChooser directoryChooser = new DirectoryChooser()
-                    File file = directoryChooser.showDialog(button.scene.window)
-                    if (file) {
-                        textField.text = file.path
-                    }
-                    break
-            }
-        } as EventHandler
     }
 
     void setButtonWidth(double value) {

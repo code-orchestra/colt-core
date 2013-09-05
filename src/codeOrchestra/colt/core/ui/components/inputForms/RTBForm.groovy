@@ -22,11 +22,11 @@ class RTBForm extends InputForm {
 
     RTBForm() {
         children.addAll(radioButton, textField, button)
-        init()
 
         setLeftAnchor(radioButton, 10)
         setRightAnchor(radioButton, 10)
 
+        radioButton.textProperty().bindBidirectional(title())
         buttonDisable().bind(radioButton.selectedProperty().not())
         textDisable().bind(radioButton.selectedProperty().not())
 
