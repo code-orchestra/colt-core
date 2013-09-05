@@ -21,6 +21,7 @@ class CTBForm extends InputForm {
      */
 
     CTBForm() {
+        children.addAll(checkBox, textField, button)
         init()
 
         setLeftAnchor(checkBox, 10)

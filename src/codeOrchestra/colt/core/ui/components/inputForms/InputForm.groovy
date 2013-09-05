@@ -13,7 +13,7 @@ import javafx.stage.FileChooser
 /**
  * @author Dima Kruk
  */
-abstract class InputForm extends AnchorPane implements ITypedForm{
+abstract class InputForm extends AnchorPane implements ITypedForm {
     protected final TextField textField = new TextField()
     protected final Button button = new Button()
 
@@ -28,22 +28,17 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
     String formType
 
     InputForm() {
-        textField.with{
-            layoutY = 23
-            prefHeight = 30
-            setLeftAnchor(this, 10)
-            setRightAnchor(this, 86)
-        }
+        textField.layoutY = 23
+        textField.prefHeight = 30
+        setLeftAnchor(textField, 10)
+        setRightAnchor(textField, 86)
 
-        button.with{
-            focusTraversable = false
-            layoutY = 23
-            prefHeight = 30
-            prefWidth = 67
-            styleClass.add("button")
-            text = "Browse"
-            setRightAnchor(this, 10)
-        }
+        button.focusTraversable = false
+        button.layoutY = 23
+        button.prefHeight = 30
+        button.prefWidth = 67
+        button.text = "Browse"
+        setRightAnchor(button, 10)
 
         textField.textProperty().bindBidirectional(text())
         button.textProperty().bindBidirectional(buttonText())
@@ -57,7 +52,7 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
         } as ChangeListener)
 
         error().addListener({ v, o, newValue ->
-            newValue ? textField.styleClass.remove("error-input")  : textField.styleClass.addAll("error-input")
+            newValue ? textField.styleClass.remove("error-input") : textField.styleClass.addAll("error-input")
         } as ChangeListener)
     }
 
@@ -70,7 +65,7 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
     void setNumeric(boolean numeric) {
         this.numeric = numeric
         if (numeric) {
-            textField.textProperty().addListener({ ob, oldValue, String newValue->
+            textField.textProperty().addListener({ ob, oldValue, String newValue ->
                 try {
                     newValue.toInteger()
                 } catch (NumberFormatException ignored) {
@@ -87,14 +82,14 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
                     FileChooser fileChooser = new FileChooser()
                     fileChooser.extensionFilters.addAll(extensionFilters)
                     File file = fileChooser.showOpenDialog(button.scene.window)
-                    if(file) {
+                    if (file) {
                         textField.text = file.path
                     }
                     break
                 case BrowseType.DIRECTORY:
                     DirectoryChooser directoryChooser = new DirectoryChooser()
                     File file = directoryChooser.showDialog(button.scene.window)
-                    if(file) {
+                    if (file) {
                         textField.text = file.path
                     }
                     break
@@ -116,12 +111,12 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
                 break
             case FormType.TEXT_FIELD:
                 children.remove(button)
-                if(!children.contains(textField)) {
+                if (!children.contains(textField)) {
                     children.add(textField)
                 }
                 break
             case FormType.BUTTON:
-                if(!children.contains(textField)) {
+                if (!children.contains(textField)) {
                     children.add(textField)
                 }
                 if (!children.contains(button)) {
@@ -131,7 +126,7 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
         }
     }
 
-    void setAction(EventHandler<ActionEvent> action){
+    void setAction(EventHandler<ActionEvent> action) {
         button.onAction = action
     }
 }

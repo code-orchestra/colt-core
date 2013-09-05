@@ -22,6 +22,7 @@ class LTBForm extends InputForm {
      */
 
     LTBForm() {
+        children.addAll(label, textField, button)
         init()
 
         setLeftAnchor(label, 19)

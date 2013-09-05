@@ -21,6 +21,7 @@ class RTBForm extends InputForm {
      */
 
     RTBForm() {
+        children.addAll(radioButton, textField, button)
         init()
 
         setLeftAnchor(radioButton, 10)
