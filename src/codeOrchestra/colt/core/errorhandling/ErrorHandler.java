@@ -15,18 +15,12 @@ public class ErrorHandler {
 
     public static void handle(final Throwable t) {
         logger.error(t);
-
-        Runnable runnable = () -> ColtDialogs.showException(ColtApplication.get().getPrimaryStage(), t);
-
-        execInFXThreadByTimeout(runnable);
+        execInFXThreadByTimeout(() -> ColtDialogs.showException(ColtApplication.get().getPrimaryStage(), t));
     }
 
     public static void handle(final Throwable t, final String message) {
         logger.error(message, t);
-
-        Runnable runnable = () -> ColtDialogs.showException(ColtApplication.get().getPrimaryStage(), t, message);
-
-        execInFXThreadByTimeout(runnable);
+        execInFXThreadByTimeout(() -> ColtDialogs.showException(ColtApplication.get().getPrimaryStage(), t, message));
     }
 
     public static void handle(final String message) {
@@ -36,10 +30,7 @@ public class ErrorHandler {
 
     public static void handle(final String message, final String title) {
         logger.error(message);
-
-        Runnable runnable = () -> ColtDialogs.showError(ColtApplication.get().getPrimaryStage(), title, message);
-
-        execInFXThreadByTimeout(runnable);
+        execInFXThreadByTimeout(() -> ColtDialogs.showError(ColtApplication.get().getPrimaryStage(), title, message));
     }
 
     private static void execInFXThreadByTimeout(Runnable runnable) {
