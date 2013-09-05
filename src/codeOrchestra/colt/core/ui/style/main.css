@@ -512,8 +512,8 @@
      -fx-background-color: #0066cc;
      -fx-text-fill: white; }
 
-.context-menu .menu-item:focused .text,
-.context-menu .menu-item:hover .text {
+.context-menu .menu-item:focused .label,
+.context-menu .menu-item:hover .label {
     -fx-effect: dropshadow(gaussian, #0052b8,  0, 0, 0, -1px);
     -fx-text-fill: white; }
 
