@@ -7,5 +7,6 @@ public enum FormType {
     SIMPLE,
     TEXT_FIELD,
     BUTTON,
-    CHOICE_BOX
+    CHOICE_BOX,
+    FILE_SET
 }

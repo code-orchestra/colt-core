@@ -26,7 +26,6 @@ class GroovyDynamicMethods {
         ExpandoMetaClass parentExpando = new ExpandoMetaClass(Parent, false)
         parentExpando.setNewChildren = {List<Node> it ->
             children.addAll(it)
-            println "{children.size()} = ${children.size()}"
         }
         parentExpando.initialize()
         Parent.metaClass = parentExpando
