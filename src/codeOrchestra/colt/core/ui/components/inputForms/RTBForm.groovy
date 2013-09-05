@@ -10,28 +10,26 @@ import javafx.scene.control.RadioButton
  */
 class RTBForm extends InputForm {
 
-    @FXML protected RadioButton radioButton
+    protected RadioButton radioButton = new RadioButton()
+
+    /*
+    <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
+      <RadioButton fx:id="radioButton" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" />
+      <TextField fx:id="textField" layoutY="23" prefHeight="30" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="86" />
+      <Button fx:id="button" focusTraversable="false" layoutY="23" prefHeight="30" prefWidth="67" styleClass="button" text="Browse" AnchorPane.rightAnchor="10" />
+    </fx:root>
+     */
 
     RTBForm() {
-        FXMLLoader fxmlLoader = new FXMLLoader(RTBForm.class.getResource("rtb_form.fxml"))
-        initLoader(fxmlLoader)
+        init()
 
-        button.disableProperty().bind(radioButton.selectedProperty().not())
-        textField.disableProperty().bind(radioButton.selectedProperty().not())
+        setLeftAnchor(radioButton, 10)
+        setRightAnchor(radioButton, 10)
+
+        buttonDisable().bind(radioButton.selectedProperty().not())
+        textDisable().bind(radioButton.selectedProperty().not())
 
         type = FormType.SIMPLE
-    }
-
-    public String getText() {
-        return radioButton.textProperty().get();
-    }
-
-    public void setText(String value) {
-        radioButton.textProperty().set(value);
-    }
-
-    public StringProperty textProperty() {
-        return radioButton.textProperty();
     }
 
     RadioButton getRadioButton() {

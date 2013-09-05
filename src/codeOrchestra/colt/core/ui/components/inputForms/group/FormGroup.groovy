@@ -1,20 +1,14 @@
 package codeOrchestra.colt.core.ui.components.inputForms.group
 
 import codeOrchestra.colt.core.ui.components.fileset.FilesetInput
-import codeOrchestra.colt.core.ui.components.inputForms.CBForm
-import codeOrchestra.colt.core.ui.components.inputForms.CTBForm
-import codeOrchestra.colt.core.ui.components.inputForms.FormType
-import codeOrchestra.colt.core.ui.components.inputForms.ITypedForm
-import codeOrchestra.colt.core.ui.components.inputForms.LTBForm
-import codeOrchestra.colt.core.ui.components.inputForms.RTBForm
-import groovy.transform.Canonical
+import codeOrchestra.colt.core.ui.components.inputForms.*
 import javafx.collections.ListChangeListener
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
+import javafx.scene.Node as FXNode
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
-import javafx.scene.Node as FXNode
 
 /**
  * @author Dima Kruk
@@ -28,6 +22,16 @@ class FormGroup extends VBox {
     @FXML protected Label label
 
     String title
+
+    /*
+    <fx:root type="javafx.scene.layout.VBox" styleClass="fieldset" maxWidth="640.0" xmlns:fx="http://javafx.com/fxml">
+      <Label fx:id="label" styleClass="legend">
+        <VBox.margin>
+          <Insets bottom="-2" left="19" />
+        </VBox.margin>
+      </Label>
+    </fx:root>
+     */
 
     FormGroup() {
         FXMLLoader fxmlLoader = new FXMLLoader(FormGroup.class.getResource("form_group.fxml"))

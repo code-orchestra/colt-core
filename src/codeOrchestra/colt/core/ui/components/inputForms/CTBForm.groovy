@@ -10,31 +10,29 @@ import javafx.scene.control.CheckBox
  */
 class CTBForm extends InputForm {
 
-    @FXML protected CheckBox checkBox
+    protected CheckBox checkBox = new CheckBox()
+
+    /*
+    <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
+      <CheckBox fx:id="checkBox" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" />
+      <TextField fx:id="textField" layoutY="23" prefHeight="30" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="86" />
+      <Button fx:id="button" focusTraversable="false" layoutY="23" prefHeight="30" prefWidth="67" styleClass="button" text="Browse" AnchorPane.rightAnchor="10" />
+    </fx:root>
+     */
 
     CTBForm() {
-        FXMLLoader fxmlLoader = new FXMLLoader(CTBForm.class.getResource("ctb_form.fxml"))
-        initLoader(fxmlLoader)
+        init()
 
-        button.disableProperty().bind(checkBox.selectedProperty().not())
-        textField.disableProperty().bind(checkBox.selectedProperty().not())
+        setLeftAnchor(checkBox, 10)
+        setRightAnchor(checkBox, 10)
+
+        buttonDisable().bind(checkBox.selectedProperty().not())
+        textDisable().bind(checkBox.selectedProperty().not())
 
         type = FormType.SIMPLE
     }
 
-    public String getText() {
-        return checkBox.textProperty().get();
-    }
-
-    public void setText(String value) {
-        checkBox.textProperty().set(value);
-    }
-
-    public StringProperty textProperty() {
-        return checkBox.textProperty();
-    }
-
-    CheckBox getCheckBox() {
+     CheckBox getCheckBox() {
         return checkBox
     }
 }

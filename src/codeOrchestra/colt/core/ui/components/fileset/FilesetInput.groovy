@@ -60,6 +60,8 @@ class FilesetInput extends AnchorPane implements ITypedForm {
 
     FilesetInput() {
 
+        styleClass.add("fileset-input")
+
         setRightAnchor(addButton, 10)
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)

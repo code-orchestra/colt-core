@@ -1,11 +1,9 @@
 package codeOrchestra.colt.core.ui.components.inputForms
 
-import javafx.beans.property.StringProperty
+import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.value.ChangeListener
-import javafx.beans.value.ObservableValue
+import javafx.event.ActionEvent
 import javafx.event.EventHandler
-import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import javafx.scene.layout.AnchorPane
@@ -16,23 +14,63 @@ import javafx.stage.FileChooser
  * @author Dima Kruk
  */
 abstract class InputForm extends AnchorPane implements ITypedForm{
-    @FXML protected TextField textField
-    @FXML protected Button button
+    protected final TextField textField = new TextField()
+    protected final Button button = new Button()
+
+    @FXBindable String text
+    @FXBindable String buttonText
+    @FXBindable Boolean buttonDisable
+    @FXBindable Boolean textDisable
+    @FXBindable Boolean error
 
     FormType type
     //hak for fxml
     String formType
 
-    BrowseType browseType = BrowseType.FILE
+    InputForm() {
+        textField.with{
+            layoutY = 23
+            prefHeight = 30
+            setLeftAnchor(this, 10)
+            setRightAnchor(this, 86)
+        }
 
-    ArrayList<FileChooser.ExtensionFilter> extensionFilters = new ArrayList<>()
+        button.with{
+            focusTraversable = false
+            layoutY = 23
+            prefHeight = 30
+            prefWidth = 67
+            styleClass.add("button")
+            text = "Browse"
+            setRightAnchor(this, 10)
+        }
+
+        textField.textProperty().bindBidirectional(text())
+        button.textProperty().bindBidirectional(buttonText())
+
+        buttonDisable().addListener({ v, o, newValue ->
+            button.disable = newValue
+        } as ChangeListener)
+
+        textDisable().addListener({ v, o, newValue ->
+            textField.disable = newValue
+        } as ChangeListener)
+
+        error().addListener({ v, o, newValue ->
+            newValue ? textField.styleClass.remove("error-input")  : textField.styleClass.addAll("error-input")
+        } as ChangeListener)
+    }
+
+    BrowseType browseType = BrowseType.FILE // todo: переносить в детей
+
+    ArrayList<FileChooser.ExtensionFilter> extensionFilters = new ArrayList<>()// todo: переносить в детей
 
     boolean numeric
 
     void setNumeric(boolean numeric) {
         this.numeric = numeric
         if (numeric) {
-            textField.textProperty().addListener({ ObservableValue<? extends String> observableValue, String oldValue, String newValue ->
+            textField.textProperty().addListener({ ob, oldValue, String newValue->
                 try {
                     newValue.toInteger()
                 } catch (NumberFormatException ignored) {
@@ -42,16 +80,7 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
         }
     }
 
-    protected void initLoader(FXMLLoader loader) {
-        loader.root = this
-        loader.controller = this
-
-        try {
-            loader.load()
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-
+    protected void init() {
         button.onAction = {
             switch (browseType) {
                 case BrowseType.FILE:
@@ -73,33 +102,9 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
         } as EventHandler
     }
 
-    void setFormType(String type) {
-        setType(FormType.valueOf(type))
-    }
-
-    String getButtonText() {
-        return button.textProperty().get();
-    }
-
-    void setButtonText(String value) {
-        button.textProperty().set(value);
-    }
-
-    void changeButtonWidth(double value) {
+    void setButtonWidth(double value) {
         setRightAnchor(textField, 86 + value - 67)
         button.prefWidth = value
-    }
-
-    StringProperty buttonTextProperty() {
-        return button.textProperty();
-    }
-
-    Button getButton() {
-        return button
-    }
-
-    TextField getTextField() {
-        return textField
     }
 
     @Override
@@ -124,5 +129,9 @@ abstract class InputForm extends AnchorPane implements ITypedForm{
                 }
                 break
         }
+    }
+
+    void setAction(EventHandler<ActionEvent> action){
+        button.onAction = action
     }
 }
