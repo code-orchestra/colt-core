@@ -59,6 +59,7 @@ class FilesetInput extends AnchorPane implements ITypedForm {
     private ContextMenu contextMenu
 
     FilesetInput() {
+
         setRightAnchor(addButton, 10)
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)

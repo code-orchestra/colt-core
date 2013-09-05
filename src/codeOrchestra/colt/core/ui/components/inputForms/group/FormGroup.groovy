@@ -89,11 +89,7 @@ class FormGroup extends VBox {
                         }
                     }
                     if (cur instanceof FilesetInput) {
-                        if (prev.type == FormType.SIMPLE) {
-                            setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
-                        } else {
-                            setMargin(cur, new Insets(26 - SPASING, 0, 0, 0))
-                        }
+                       //todo:
                     }
                     if (cur instanceof CBForm) {
                         setMargin(cur, new Insets(23 - SPASING, 0, 0, 0))
