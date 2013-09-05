@@ -54,6 +54,8 @@ class FilesetInput extends AnchorPane {
 
     @FXBindable String files = ""
 
+    private ContextMenu contextMenu
+
     FilesetInput() {
         setRightAnchor(addButton, 10)
         setLeftAnchor(label, 19)
@@ -81,11 +83,13 @@ class FilesetInput extends AnchorPane {
         widthProperty().addListener(focusListener)
 
         addButton.onAction = {
-            ContextMenu cm = buildContextMenu()
-            if (cm.items.size() > 1) {
-                cm.show(addButton, Side.RIGHT, 0, 0)
+            buildContextMenu()
+            if (contextMenu.items.size() > 1) {
+                if(!contextMenu.isShowing()) {
+                    contextMenu.show(addButton, Side.RIGHT, 0, 0)
+                }
             } else {
-                cm.items.first().onAction.handle(null)
+                contextMenu.items.first().onAction.handle(null)
             }
         } as EventHandler
 
@@ -159,10 +163,14 @@ class FilesetInput extends AnchorPane {
         } as EventHandler
     }
 
-    private ContextMenu buildContextMenu() {
-        ContextMenu cm = new ContextMenu()
+    private void buildContextMenu() {
+        if (contextMenu != null) {
+            return
+        }
+
+        contextMenu = new ContextMenu()
         if (useFiles) {
-            cm.items.add(
+            contextMenu.items.add(
                     new MenuItem(text: "Add Files", onAction: { e ->
                         if (useMultiply) {
                             new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
@@ -182,7 +190,7 @@ class FilesetInput extends AnchorPane {
         }
 
         if (useDirectory) {
-            cm.items.add(
+            contextMenu.items.add(
                     new MenuItem(text: "Add Directory", onAction: { e ->
                         def it = new DirectoryChooser(initialDirectory: getBaseDir()).showDialog(scene.window)
                         if (it) {
@@ -195,7 +203,7 @@ class FilesetInput extends AnchorPane {
         }
 
         if (useFiles && useExcludes) {
-            cm.items.add(
+            contextMenu.items.add(
                     new MenuItem(text: "Exclude Files", onAction: { e ->
                         new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
                             startDirectory = it?.parentFile
@@ -207,7 +215,7 @@ class FilesetInput extends AnchorPane {
         }
 
         if (useDirectory && useExcludes) {
-            cm.items.add(
+            contextMenu.items.add(
                     new MenuItem(text: "Exclude Directory", onAction: { e ->
                         def it = new DirectoryChooser(initialDirectory: getBaseDir()).showDialog(scene.window)
                         if (it) {
@@ -218,9 +226,7 @@ class FilesetInput extends AnchorPane {
                     } as EventHandler<ActionEvent>))
         }
 
-        cm.setStyle("-fx-background-color: rgba(255, 255, 255, .9);");
-
-        return cm
+        contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, .9);");
     }
 
     private JSObject getJSTopObject() {
