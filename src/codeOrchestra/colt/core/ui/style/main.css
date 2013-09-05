@@ -491,7 +491,13 @@
 
 /* Context Menu */
 .context-menu {
-    -fx-padding: .769em 0 .846em; }
+    -fx-background-color:
+        rgba(0, 0, 0, .3),
+        rgba(247, 247, 247, .9),
+        rgba(239, 239, 239, .9);
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 5, 4, 3;
+    -fx-padding: .769em 1px .846em; }
 
 .context-menu .menu-item { -fx-padding: .385em 20px .308em; }
 
