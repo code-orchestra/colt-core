@@ -9,6 +9,6 @@ import java.io.File;
  */
 public interface SourceFileFactory<S extends SourceFile> extends ColtService {
 
-    S createSourceFile(File file, File baseDir);
+    S createSourceFile(File file, File baseDir, boolean skipPatternCheck);
 
 }
