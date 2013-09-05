@@ -7,14 +7,18 @@ import javafx.application.Platform;
 
 public class ErrorHandler {
 
+    private static final long ERROR_DIALOG_TIMEOUT = 1500;
+
     private static Logger logger = Logger.getLogger(ErrorHandler.class);
+
+    private static long lastTimeDialogWasShown;
 
     public static void handle(final Throwable t) {
         logger.error(t);
 
         Runnable runnable = () -> ColtDialogs.showException(ColtApplication.get().getPrimaryStage(), t);
 
-        execInFXThread(runnable);
+        execInFXThreadByTimeout(runnable);
     }
 
     public static void handle(final Throwable t, final String message) {
@@ -22,7 +26,7 @@ public class ErrorHandler {
 
         Runnable runnable = () -> ColtDialogs.showException(ColtApplication.get().getPrimaryStage(), t, message);
 
-        execInFXThread(runnable);
+        execInFXThreadByTimeout(runnable);
     }
 
     public static void handle(final String message) {
@@ -35,14 +39,21 @@ public class ErrorHandler {
 
         Runnable runnable = () -> ColtDialogs.showError(ColtApplication.get().getPrimaryStage(), title, message);
 
-        execInFXThread(runnable);
+        execInFXThreadByTimeout(runnable);
     }
 
-    private static void execInFXThread(Runnable runnable) {
+    private static void execInFXThreadByTimeout(Runnable runnable) {
+        Runnable theRunnable = () -> {
+            if (System.currentTimeMillis() - lastTimeDialogWasShown > ERROR_DIALOG_TIMEOUT) {
+                runnable.run();
+            }
+            lastTimeDialogWasShown = System.currentTimeMillis();
+        };
+
         if (Platform.isFxApplicationThread()) {
-            runnable.run();
+            theRunnable.run();
         } else {
-            Platform.runLater(runnable);
+            Platform.runLater(theRunnable);
         }
     }
 
