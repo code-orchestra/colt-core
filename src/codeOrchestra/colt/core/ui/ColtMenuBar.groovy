@@ -3,7 +3,9 @@ package codeOrchestra.colt.core.ui
 import codeOrchestra.colt.core.ColtException
 import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.RecentProjects
+import codeOrchestra.colt.core.ServiceProvider
 import codeOrchestra.colt.core.errorhandling.ErrorHandler
+import codeOrchestra.colt.core.facade.ColtFacade
 import codeOrchestra.colt.core.license.CodeOrchestraLicenseManager
 import codeOrchestra.colt.core.license.ExpirationHelper
 import codeOrchestra.colt.core.license.LicenseListener
@@ -113,26 +115,26 @@ class ColtMenuBar extends MenuBar {
                                 new MenuItem(
                                         text: "Start",
                                         onAction: { t ->
-                                            //todo: implement
+                                            coltFacade.runSession()
                                         } as EventHandler<ActionEvent>
                                 ),
                                 new MenuItem(
                                         text: "Stop",
                                         onAction: { t ->
-                                            //todo: implement
+                                            coltFacade.stopSession()
                                         } as EventHandler<ActionEvent>
                                 ),
                                 new MenuItem(
                                         text: "Pause",
                                         onAction: { t ->
-                                            //todo: implement
+                                            coltFacade.pauseSession()
                                         } as EventHandler<ActionEvent>
                                 ),
                                 new SeparatorMenuItem(),
                                 new MenuItem(
                                         text: "Restart",
                                         onAction: { t ->
-                                            //todo: implement
+                                            coltFacade.restartSession()
                                         } as EventHandler<ActionEvent>
                                 )
                         ]),
@@ -140,20 +142,20 @@ class ColtMenuBar extends MenuBar {
                         new MenuItem(
                                 text: "Open New Connection",
                                 onAction: { t ->
-                                    //todo: implement
+                                    coltFacade.openNewConnection()
                                 } as EventHandler<ActionEvent>
                         ),
                         new MenuItem(
                                 text: "Close All Connections",
                                 onAction: { t ->
-                                    //todo: implement
+                                    coltFacade.closeAllConnections()
                                 } as EventHandler<ActionEvent>
                         ),
                         new SeparatorMenuItem(),
                         new MenuItem(
                                 text: "Production Build",
                                 onAction: { t ->
-                                    //todo: implement
+                                    coltFacade.runProductionBuild()
                                 } as EventHandler<ActionEvent>
                         )
                 ]),
@@ -210,6 +212,10 @@ class ColtMenuBar extends MenuBar {
         } as LicenseListener)
 
         setUseSystemMenuBar(true)
+    }
+
+    private ColtFacade getColtFacade() {
+        ServiceProvider.get(ColtFacade.class)
     }
 
     private void refreshRecentProjectsMenu() {
