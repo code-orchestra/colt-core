@@ -79,6 +79,12 @@
 
     <TextField prefHeight="30" AnchorPane.topAnchor="300" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="40" />
 
+    <ChoiceBox fx:id="playerVersionCB" layoutY="33" AnchorPane.topAnchor="340" AnchorPane.leftAnchor="10">
+    <String fx:value="15.1.1" />
+    <String fx:value="/2" />
+    <String fx:value="/3"/>
+    <String fx:value="/4"/>
+    </ChoiceBox>
 
 </children>
 

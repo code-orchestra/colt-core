@@ -489,12 +489,8 @@
 
 .menu-v .button:hover .submenu-arrow { -fx-background-image: url('images/btns/arrow-r-w.png'); }
 
-
 /* Context Menu */
 .context-menu {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
     -fx-padding: .769em 0 .846em; }
 
 .context-menu .menu-item { -fx-padding: .385em 20px .308em; }
