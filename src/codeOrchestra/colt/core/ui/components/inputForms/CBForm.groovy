@@ -45,4 +45,16 @@ class CBForm extends AnchorPane implements ITypedForm{
     public StringProperty textProperty() {
         return label.textProperty();
     }
+
+    CheckBox getCheckBox() {
+        return checkBox
+    }
+
+    ChoiceBox getChoiceBox() {
+        return choiceBox
+    }
+
+    Label getErrorLabel() {
+        return errorLabel
+    }
 }
