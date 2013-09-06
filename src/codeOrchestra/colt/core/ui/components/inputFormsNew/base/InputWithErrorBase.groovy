@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui.components.inputFormsNew.base
 
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MInput
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.InvalidationListener
 import javafx.beans.value.ChangeListener
@@ -8,7 +9,7 @@ import javafx.scene.control.TextField
 /**
  * @author Dima Kruk
  */
-abstract class InputWithErrorBase extends TitledInputBase {
+abstract class InputWithErrorBase extends TitledInputBase implements MInput {
     protected final TextField textField = new TextField(layoutY: 23, prefHeight: 30)
 
     @FXBindable String text

@@ -1,12 +1,13 @@
 package codeOrchestra.colt.core.ui.components.inputFormsNew
 
 import codeOrchestra.colt.core.ui.components.inputFormsNew.base.ActionInputBase
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MLabeled
 import javafx.scene.control.Label
 
 /**
  * @author Dima Kruk
  */
-class LabeledActionInput extends ActionInputBase {
+class LabeledActionInput extends ActionInputBase implements MLabeled {
 
     protected final Label label = new Label()
 

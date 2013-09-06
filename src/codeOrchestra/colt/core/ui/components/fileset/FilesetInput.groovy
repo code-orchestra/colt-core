@@ -2,6 +2,8 @@ package codeOrchestra.colt.core.ui.components.fileset
 
 import codeOrchestra.colt.core.ui.components.inputForms.FormType
 import codeOrchestra.colt.core.ui.components.inputForms.ITypedForm
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MInput
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
@@ -36,7 +38,7 @@ import netscape.javascript.JSObject
 /**
  * @author Eugene Potapenko
  */
-class FilesetInput extends AnchorPane implements ITypedForm {
+class FilesetInput extends AnchorPane implements MInput, MLabeled {
 
     @FXBindable String title = "Library Paths:"
 

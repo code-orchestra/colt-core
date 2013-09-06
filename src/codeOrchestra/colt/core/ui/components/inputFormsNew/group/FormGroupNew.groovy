@@ -1,15 +1,11 @@
 package codeOrchestra.colt.core.ui.components.inputFormsNew.group
 
-import codeOrchestra.colt.core.ui.components.fileset.FilesetInput
 import codeOrchestra.colt.core.ui.components.inputForms.CBForm
-import codeOrchestra.colt.core.ui.components.inputForms.CTBForm
-import codeOrchestra.colt.core.ui.components.inputForms.FormType
-import codeOrchestra.colt.core.ui.components.inputForms.ITypedForm
-import codeOrchestra.colt.core.ui.components.inputForms.LTBForm
-import codeOrchestra.colt.core.ui.components.inputForms.RTBForm
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MLabeled
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MSelectable
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MSimple
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.Markered
 import javafx.collections.ListChangeListener
-import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
@@ -42,6 +38,7 @@ class FormGroupNew extends VBox {
         label = new Label()
         label.styleClass.add("legend")
         setMargin(label, new Insets(0, 0, -2, 19))
+        children.add(label)
 
         setFirst(false)
         makeTitled(false)
@@ -77,41 +74,32 @@ class FormGroupNew extends VBox {
     }
 
     public void initMargins(javafx.scene.Node prev, javafx.scene.Node cur) {
-//        if (prev instanceof ITypedForm && cur instanceof ITypedForm) {
-//            if (cur instanceof CTBForm) {
-//                if (prev instanceof CTBForm) {
-//                    if (prev.type == FormType.SIMPLE) {
-//                        setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
-//                    } else {
-//                        setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
-//                    }
-//                } else if (prev.type != FormType.SIMPLE) {
-//                    setMargin(cur, new Insets(22 - SPASING, 0, 0, 0))
-//                }
-//                if (prev instanceof CBForm) {
-//                    setMargin(cur, new Insets(24 - SPASING, 0, 0, 0))
-//                }
-//            }
-//            if (cur instanceof RTBForm) {
-//                if (prev instanceof RTBForm) {
-//                    if (prev.type == FormType.SIMPLE) {
-//                        setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
-//                    } else {
-//                        setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
-//                    }
-//                }
-//            }
-//            if (cur instanceof LTBForm || cur instanceof FilesetInput) {
-//                if (prev.type == FormType.SIMPLE) {
-//                    setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
-//                } else {
-//                    setMargin(cur, new Insets(19 - SPASING, 0, 0, 0))
-//                }
-//            }
-//            if (cur instanceof CBForm) {
-//                setMargin(cur, new Insets(23 - SPASING, 0, 0, 0))
-//            }
-//        }
+        if (prev instanceof Markered && cur instanceof Markered) {
+            if (cur instanceof MSelectable) {
+                if (prev instanceof MSelectable) {
+                    if (prev instanceof MSimple) {
+                        setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
+                    } else {
+                        setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
+                    }
+                }
+                if (prev instanceof CBForm) {
+                    setMargin(cur, new Insets(24 - SPASING, 0, 0, 0))
+                }
+            }
+
+            if (cur instanceof MLabeled) {
+                if (prev instanceof MSimple) {
+                    setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
+                } else {
+                    setMargin(cur, new Insets(19 - SPASING, 0, 0, 0))
+                }
+            }
+
+            if (cur instanceof CBForm) {
+                setMargin(cur, new Insets(23 - SPASING, 0, 0, 0))
+            }
+        }
     }
 
     private void makeTitled(boolean b) {
