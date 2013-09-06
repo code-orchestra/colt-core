@@ -8,14 +8,14 @@ import javafx.scene.control.TextField
 /**
  * @author Dima Kruk
  */
-class InputForm extends TitledForm {
+abstract class TitledInputWithErrorBase extends TitledInputBase {
     protected final TextField textField = new TextField(layoutY: 23, prefHeight: 30)
 
     @FXBindable String text
 
     @FXBindable Boolean error
 
-    InputForm() {
+    TitledInputWithErrorBase() {
         setLeftAnchor(textField, 10)
         setRightAnchor(textField, 86)
 

@@ -1,16 +1,15 @@
 package codeOrchestra.colt.core.ui.components.inputFormsNew
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.base.ActionForm
+import codeOrchestra.colt.core.ui.components.inputFormsNew.base.TitledInputBase
 import javafx.scene.control.Label
 
 /**
  * @author Dima Kruk
  */
-class LActionFrom extends ActionForm {
-
+class LabeledInput extends TitledInputBase {
     protected final Label label = new Label()
 
-    LActionFrom() {
+    LabeledInput() {
 
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
@@ -20,3 +19,6 @@ class LActionFrom extends ActionForm {
         children.add(label)
     }
 }
+
+
+

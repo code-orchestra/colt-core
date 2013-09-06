@@ -11,7 +11,7 @@ import javafx.stage.FileChooser
 /**
  * @author Dima Kruk
  */
-class ActionForm extends InputForm {
+abstract class TitledActionInputBase extends TitledInputWithErrorBase {
     protected final Button button = new Button(focusTraversable: false, layoutY: 23, prefHeight: 30, prefWidth: 67)
 
     @FXBindable String buttonText = "Browse"
@@ -19,7 +19,7 @@ class ActionForm extends InputForm {
     BrowseType browseType = BrowseType.FILE
     ArrayList<FileChooser.ExtensionFilter> extensionFilters = new ArrayList<>()
 
-    ActionForm() {
+    TitledActionInputBase() {
         button.textProperty().bindBidirectional(buttonText())
         setRightAnchor(button, 10)
         children.add(button)

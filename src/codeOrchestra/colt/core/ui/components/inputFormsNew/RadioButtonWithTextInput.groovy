@@ -1,31 +1,29 @@
 package codeOrchestra.colt.core.ui.components.inputFormsNew
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.base.InputForm
+import codeOrchestra.colt.core.ui.components.inputFormsNew.base.TitledInputWithErrorBase
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
-import javafx.scene.control.CheckBox
+import javafx.scene.control.RadioButton
 
 /**
  * @author Dima Kruk
  */
-class CInputForm extends InputForm {
+class RadioButtonWithTextInput extends TitledInputWithErrorBase {
     @FXBindable boolean selected
 
-    protected final CheckBox checkBox = new CheckBox()
+    protected final RadioButton radioButton = new RadioButton()
 
-    CInputForm() {
-        setLeftAnchor(checkBox, 10)
-        setRightAnchor(checkBox, 10)
+    RadioButtonWithTextInput() {
+        setLeftAnchor(radioButton, 10)
+        setRightAnchor(radioButton, 10)
 
-        checkBox.textProperty().bindBidirectional(title())
-        checkBox.selectedProperty().bindBidirectional(selected())
+        radioButton.textProperty().bindBidirectional(title())
+        radioButton.selectedProperty().bindBidirectional(selected())
 
         textField.disableProperty().bind(selected().not())
 
-
-        children.add(checkBox)
-
+        children.add(radioButton)
     }
 
     @Override

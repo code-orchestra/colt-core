@@ -6,6 +6,6 @@ import javafx.scene.layout.AnchorPane
 /**
  * @author Dima Kruk
  */
-class TitledForm extends AnchorPane {
+abstract class TitledInputBase extends AnchorPane {
     @FXBindable String title
 }
