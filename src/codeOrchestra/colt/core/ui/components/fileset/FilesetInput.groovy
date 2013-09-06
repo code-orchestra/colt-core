@@ -1,15 +1,11 @@
 package codeOrchestra.colt.core.ui.components.fileset
 
-import codeOrchestra.colt.core.ui.components.inputForms.FormType
-import codeOrchestra.colt.core.ui.components.inputForms.ITypedForm
-import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MInput
-import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MLabeled
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MInput
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import javafx.beans.value.ChangeListener
-import javafx.beans.value.ObservableValue
-import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Side
@@ -336,15 +332,5 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
 
     public static String createFilesetString(List<File> files){
         return files.collect{createPattern(it)}.join(", ")
-    }
-
-    @Override
-    FormType getType() {
-        return FormType.BUTTON
-    }
-
-    @Override
-    void setType(FormType type) {
-        //ignore
     }
 }

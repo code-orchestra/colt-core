@@ -1,6 +1,6 @@
 package codeOrchestra.colt.core.ui.components.inputForms
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MChoiceBox
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MChoiceBox
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.value.ChangeListener
@@ -71,15 +71,5 @@ class CBForm extends AnchorPane implements MChoiceBox {
             errorLabel.visible = !value.empty
             errorLabel.text = value
         } as ChangeListener)
-    }
-
-    @Override
-    FormType getType() {
-        return FormType.BUTTON
-    }
-
-    @Override
-    void setType(FormType type) {
-        //ignore
     }
 }

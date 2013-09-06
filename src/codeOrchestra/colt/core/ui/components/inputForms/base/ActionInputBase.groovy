@@ -1,6 +1,5 @@
-package codeOrchestra.colt.core.ui.components.inputFormsNew.base
+package codeOrchestra.colt.core.ui.components.inputForms.base
 
-import codeOrchestra.colt.core.ui.components.inputForms.BrowseType
 import codeOrchestra.groovyfx.FXBindable
 import javafx.event.ActionEvent
 import javafx.event.EventHandler

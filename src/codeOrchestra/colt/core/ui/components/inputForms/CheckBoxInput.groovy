@@ -1,9 +1,9 @@
-package codeOrchestra.colt.core.ui.components.inputFormsNew
+package codeOrchestra.colt.core.ui.components.inputForms
 
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.base.TitledInputBase
-import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MSelectable
-import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MSimple
+import codeOrchestra.colt.core.ui.components.inputForms.base.TitledInputBase
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MSelectable
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MSimple
 import codeOrchestra.groovyfx.FXBindable
 import javafx.scene.control.CheckBox
 

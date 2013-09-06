@@ -1,29 +1,30 @@
 package codeOrchestra.colt.core.ui.components.inputForms.group
 
-import codeOrchestra.colt.core.ui.components.fileset.FilesetInput
-import codeOrchestra.colt.core.ui.components.inputForms.*
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MChoiceBox
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MSelectable
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MSimple
+import codeOrchestra.colt.core.ui.components.inputForms.markers.Marked
 import javafx.collections.ListChangeListener
-import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
-import javafx.scene.Node as FXNode
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
 
 /**
  * @author Dima Kruk
  */
-class FormGroup extends VBox {
+class FormGroupNew extends VBox {
     private static final Insets TITLED = new Insets(26, 0, 23, 0)
     private static final Insets NOT_TITLED = new Insets(3, 0, 23, 0)
 
     private static final int SPASING = 22
 
-    @FXML protected Label label
+    protected Label label
 
     String title
 
-    /*
+    boolean first
+/*
     <fx:root type="javafx.scene.layout.VBox" styleClass="fieldset" maxWidth="640.0" xmlns:fx="http://javafx.com/fxml">
       <Label fx:id="label" styleClass="legend">
         <VBox.margin>
@@ -33,19 +34,16 @@ class FormGroup extends VBox {
     </fx:root>
      */
 
-    FormGroup() {
-        FXMLLoader fxmlLoader = new FXMLLoader(FormGroup.class.getResource("form_group.fxml"))
-        fxmlLoader.root = this
-        fxmlLoader.controller = this
+    FormGroupNew() {
+        label = new Label()
+        label.styleClass.add("legend")
+        setMargin(label, new Insets(0, 0, -2, 19))
+        children.add(label)
 
-        try {
-            fxmlLoader.load()
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-
+        setFirst(false)
         makeTitled(false)
 
+        setMaxWidth(640.0)
         setSpacing(SPASING)
 
         initListener()
@@ -75,39 +73,30 @@ class FormGroup extends VBox {
         } as ListChangeListener)
     }
 
-    public void initMargins(FXNode prev, FXNode cur) {
-        if (prev instanceof ITypedForm && cur instanceof ITypedForm) {
-            if (cur instanceof CTBForm) {
-                if (prev instanceof CTBForm) {
-                    if (prev.type == FormType.SIMPLE) {
+    public void initMargins(javafx.scene.Node prev, javafx.scene.Node cur) {
+        if (prev instanceof Marked && cur instanceof Marked) {
+            if (cur instanceof MSelectable) {
+                if (prev instanceof MSelectable) {
+                    if (prev instanceof MSimple) {
                         setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
                     } else {
                         setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
                     }
-                } else if (prev.type != FormType.SIMPLE) {
-                    setMargin(cur, new Insets(22 - SPASING, 0, 0, 0))
                 }
-                if (prev instanceof CBForm) {
+                if (prev instanceof MChoiceBox) {
                     setMargin(cur, new Insets(24 - SPASING, 0, 0, 0))
                 }
             }
-            if (cur instanceof RTBForm) {
-                if (prev instanceof RTBForm) {
-                    if (prev.type == FormType.SIMPLE) {
-                        setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
-                    } else {
-                        setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
-                    }
-                }
-            }
-            if (cur instanceof LTBForm || cur instanceof FilesetInput) {
-                if (prev.type == FormType.SIMPLE) {
+
+            if (cur instanceof MLabeled) {
+                if (prev instanceof MSimple) {
                     setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
                 } else {
                     setMargin(cur, new Insets(19 - SPASING, 0, 0, 0))
                 }
             }
-            if (cur instanceof CBForm) {
+
+            if (cur instanceof MChoiceBox) {
                 setMargin(cur, new Insets(23 - SPASING, 0, 0, 0))
             }
         }
@@ -130,5 +119,10 @@ class FormGroup extends VBox {
         } else {
             makeTitled(false)
         }
+    }
+
+    void setFirst(boolean first) {
+        this.first = first
+        first ? styleClass.remove("fieldset") : styleClass.add("fieldset")
     }
 }

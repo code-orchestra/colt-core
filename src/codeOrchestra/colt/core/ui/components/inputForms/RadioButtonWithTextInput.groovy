@@ -1,7 +1,7 @@
-package codeOrchestra.colt.core.ui.components.inputFormsNew
+package codeOrchestra.colt.core.ui.components.inputForms
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.base.ActionInputBase
-import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MSelectable
+import codeOrchestra.colt.core.ui.components.inputForms.base.InputWithErrorBase
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MSelectable
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -10,12 +10,12 @@ import javafx.scene.control.RadioButton
 /**
  * @author Dima Kruk
  */
-class RadioButtonActionInput extends ActionInputBase implements MSelectable {
+class RadioButtonWithTextInput extends InputWithErrorBase implements MSelectable {
     @FXBindable boolean selected
 
     protected final RadioButton radioButton = new RadioButton()
 
-    RadioButtonActionInput() {
+    RadioButtonWithTextInput() {
         setLeftAnchor(radioButton, 10)
         setRightAnchor(radioButton, 10)
 
@@ -23,13 +23,8 @@ class RadioButtonActionInput extends ActionInputBase implements MSelectable {
         radioButton.selectedProperty().bindBidirectional(selected())
 
         textField.disableProperty().bind(selected().not())
-        button.disableProperty().bind(selected().not())
 
         children.add(radioButton)
-    }
-
-    RadioButton getRadioButton(){
-        return radioButton
     }
 
     @Override

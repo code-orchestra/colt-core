@@ -1,4 +1,4 @@
-package codeOrchestra.colt.core.ui.components.inputFormsNew.base
+package codeOrchestra.colt.core.ui.components.inputForms.base
 
 import codeOrchestra.groovyfx.FXBindable
 import javafx.scene.layout.AnchorPane

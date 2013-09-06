@@ -1,4 +1,4 @@
-package codeOrchestra.colt.core.ui.components.inputFormsNew.markers
+package codeOrchestra.colt.core.ui.components.inputForms.markers
 
 /**
  * @author Dima Kruk

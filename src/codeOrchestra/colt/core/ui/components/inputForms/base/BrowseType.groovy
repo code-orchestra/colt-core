@@ -1,4 +1,4 @@
-package codeOrchestra.colt.core.ui.components.inputForms
+package codeOrchestra.colt.core.ui.components.inputForms.base
 
 /**
  * @author Dima Kruk

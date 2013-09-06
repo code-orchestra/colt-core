@@ -1,7 +1,7 @@
-package codeOrchestra.colt.core.ui.components.inputFormsNew
+package codeOrchestra.colt.core.ui.components.inputForms
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.base.InputWithErrorBase
-import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MSelectable
+import codeOrchestra.colt.core.ui.components.inputForms.base.InputWithErrorBase
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MSelectable
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue

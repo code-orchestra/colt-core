@@ -1,8 +1,8 @@
-package codeOrchestra.colt.core.ui.components.inputFormsNew
+package codeOrchestra.colt.core.ui.components.inputForms
 
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.base.InputWithErrorBase
-import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MLabeled
+import codeOrchestra.colt.core.ui.components.inputForms.base.InputWithErrorBase
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
 import javafx.scene.control.Label
 
 /**
