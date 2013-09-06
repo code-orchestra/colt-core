@@ -83,7 +83,7 @@ class GAController {
         eventsMap[target] = new GAEventInfo(category, action)
     }
 
-    void setPageContainer(ObjectProperty<FXNode> container) {
+    void setPageContainer(ObjectProperty container) {
         container.addListener({observableValue, FXNode oldNode, FXNode newNode ->
             GAPageInfo info = pagesMap[newNode]
             if (info) {

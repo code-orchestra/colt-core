@@ -1,8 +1,5 @@
 package codeOrchestra.colt.core.annotation;
 
-import codeOrchestra.colt.core.LiveCodingManager;
-import codeOrchestra.colt.core.ServiceProvider;
-import codeOrchestra.colt.core.annotation.ast.AnyClass;
 import groovy.ui.Console;
 
 /**
