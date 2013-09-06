@@ -1,6 +1,6 @@
 package codeOrchestra.colt.core.ui.components.inputFormsNew
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.base.TitledInputWithErrorBase
+import codeOrchestra.colt.core.ui.components.inputFormsNew.base.InputWithErrorBase
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -9,7 +9,7 @@ import javafx.scene.control.RadioButton
 /**
  * @author Dima Kruk
  */
-class RadioButtonWithTextInput extends TitledInputWithErrorBase {
+class RadioButtonWithTextInput extends InputWithErrorBase {
     @FXBindable boolean selected
 
     protected final RadioButton radioButton = new RadioButton()

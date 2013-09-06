@@ -1,6 +1,6 @@
 package codeOrchestra.colt.core.ui.components.inputFormsNew
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.base.TitledInputWithErrorBase
+import codeOrchestra.colt.core.ui.components.inputFormsNew.base.InputWithErrorBase
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -9,7 +9,7 @@ import javafx.scene.control.CheckBox
 /**
  * @author Dima Kruk
  */
-class CheckBoxWithTextInput extends TitledInputWithErrorBase {
+class CheckBoxWithTextInput extends InputWithErrorBase {
     @FXBindable boolean selected
 
     protected final CheckBox checkBox = new CheckBox()
