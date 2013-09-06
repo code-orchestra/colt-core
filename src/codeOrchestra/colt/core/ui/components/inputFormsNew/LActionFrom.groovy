@@ -11,7 +11,6 @@ class LActionFrom extends ActionForm {
     protected final Label label = new Label()
 
     LActionFrom() {
-        children.addAll(label)
 
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)

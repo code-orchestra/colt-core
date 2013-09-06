@@ -11,7 +11,6 @@ class LInputForm extends InputForm {
     protected final Label label = new Label()
 
     LInputForm() {
-        children.addAll(label)
 
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)

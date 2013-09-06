@@ -21,7 +21,7 @@ class ActionForm extends InputForm {
 
     ActionForm() {
         button.textProperty().bindBidirectional(buttonText())
-
+        setRightAnchor(button, 10)
         children.add(button)
 
         action = {

@@ -10,7 +10,6 @@ class LabelForm extends TitledForm {
     protected final Label label = new Label()
 
     LabelForm() {
-        children.addAll(label)
 
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
