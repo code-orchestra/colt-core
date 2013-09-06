@@ -95,7 +95,10 @@ public class ProcessHandlerBuilder {
 
   private GeneralCommandLine getCommandLine(String workingDirectory) {
     GeneralCommandLine commandLine = new GeneralCommandLine();
-    commandLine.setExePath(myCommandLine.get(0));
+
+    if (myCommandLine.size() > 0) {
+      commandLine.setExePath(myCommandLine.get(0));
+    }
     commandLine.setWorkDirectory(workingDirectory);
     
     if (myCommandLine.size() > 1) {
