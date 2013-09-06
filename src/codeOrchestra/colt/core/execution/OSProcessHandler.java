@@ -48,6 +48,10 @@ public class OSProcessHandler extends ProcessHandler {
     }
   }
 
+  public static void dispose() {
+      ExecutorServiceHolder.ourThreadExecutorsService.shutdown();
+  }
+
   /**
    * Override this method in order to execute the task with a custom pool
    *
@@ -83,7 +87,7 @@ public class OSProcessHandler extends ProcessHandler {
                 break;
               }
               catch (InterruptedException e) {
-                LOG.debug(e);
+                return;
               }
             }
           }

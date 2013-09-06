@@ -4,6 +4,7 @@ import codeOrchestra.colt.core.ColtException;
 import codeOrchestra.colt.core.ColtProjectManager;
 import codeOrchestra.colt.core.RecentProjects;
 import codeOrchestra.colt.core.errorhandling.ErrorHandler;
+import codeOrchestra.colt.core.execution.OSProcessHandler;
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
 import codeOrchestra.colt.core.license.*;
@@ -126,6 +127,7 @@ public class ColtApplication extends Application {
         LiveCodingHandlerManager.getInstance().dispose();
         CodeOrchestraResourcesHttpServer.getInstance().dispose();
         CodeOrchestraRPCHttpServer.getInstance().dispose();
+        OSProcessHandler.dispose();
 
         Platform.exit();
     }
