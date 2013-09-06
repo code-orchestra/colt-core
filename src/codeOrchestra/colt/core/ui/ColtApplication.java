@@ -18,6 +18,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -30,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
@@ -84,6 +86,9 @@ public class ColtApplication extends Application {
 
         mainStage = new ProjectStage();
         mainStage.getRoot().getChildren().add(menuBar);
+        mainStage.setOnCloseRequest(windowEvent -> {
+            dispose();
+        });
 
         showSplash();
 
