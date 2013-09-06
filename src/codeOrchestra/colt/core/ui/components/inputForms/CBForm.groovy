@@ -65,14 +65,13 @@ class CBForm extends AnchorPane implements ITypedForm {
 
         checkBox.selectedProperty().bindBidirectional(selected())
         choiceBox.valueProperty().bindBidirectional(value())
+        values = choiceBox.items
 
         errorMessage().addListener({ v, o, newValue ->
             String value = newValue ?: ""
             errorLabel.visible = !value.empty
             errorLabel.text = value
         } as ChangeListener)
-
-        choiceBox.valueProperty().bind(values())
 
         type = FormType.CHOICE_BOX
     }

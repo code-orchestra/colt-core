@@ -1,6 +1,9 @@
 package codeOrchestra.colt.core.ui.components.inputForms
 
 import codeOrchestra.groovyfx.FXBindable
+import javafx.beans.InvalidationListener
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.scene.control.CheckBox
 
 /**
@@ -33,6 +36,17 @@ class CTBForm extends InputForm {
         type = FormType.SIMPLE
 
         selected().bindBidirectional(checkBox.selectedProperty())
+    }
 
+    @Override
+    void activateValidation() {
+        super.activateValidation()
+        checkBox.selectedProperty().addListener({ ObservableValue<? extends Boolean> observableValue, Boolean t, Boolean t1 ->
+            if (t1) {
+                validateValue()
+            } else {
+                error = false
+            }
+        } as ChangeListener)
     }
 }

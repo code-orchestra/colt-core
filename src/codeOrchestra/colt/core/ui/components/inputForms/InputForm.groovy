@@ -1,6 +1,7 @@
 package codeOrchestra.colt.core.ui.components.inputForms
 
 import codeOrchestra.groovyfx.FXBindable
+import javafx.beans.InvalidationListener
 import javafx.beans.value.ChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -25,8 +26,6 @@ abstract class InputForm extends AnchorPane implements ITypedForm {
     @FXBindable Boolean error
 
     FormType type
-    //hak for fxml
-    String formType
 
     InputForm() {
         setLeftAnchor(textField, 10)
@@ -118,21 +117,61 @@ abstract class InputForm extends AnchorPane implements ITypedForm {
         }
     }
 
-    void setFormType(String formType) {
-        switch (formType) {
-            case "SIMPLE":
-                setType(FormType.SIMPLE)
-                break
-            case "TEXT_FIELD":
-                setType(FormType.TEXT_FIELD)
-                break
-            case "BUTTON":
-                setType(FormType.BUTTON)
-                break
+    void setAction(EventHandler<ActionEvent> action) {
+        button.onAction = action
+    }
+
+    protected boolean canBeEmpty = false
+
+    void activateValidation(boolean canBeEmpty) {
+        this.canBeEmpty = canBeEmpty
+        activateValidation()
+    }
+
+    void activateValidation() {
+        text().addListener({ javafx.beans.Observable observable ->
+            if (type == FormType.TEXT_FIELD) {
+                validateIsNotEmpty()
+            } else {
+                validateIsExists()
+            }
+        } as InvalidationListener)
+
+    }
+
+    boolean validateValue() {
+        if (type == FormType.TEXT_FIELD) {
+            validateIsNotEmpty()
+        } else {
+            validateIsExists()
         }
     }
 
-    void setAction(EventHandler<ActionEvent> action) {
-        button.onAction = action
+    protected boolean validateIsNotEmpty() {
+        if (textField.disable) {
+            error = false
+            return error
+        }
+
+        if (text) {
+            error = false
+        } else {
+            error = true
+        }
+        return error
+    }
+
+    protected boolean validateIsExists() {
+        if (textField.disable) {
+            error = false
+            return error
+        }
+        if (text) {
+            File file = new File(text)
+            error = !(file.exists() && (browseType == BrowseType.FILE ? file.isFile() : file.isDirectory()))
+        } else {
+            error = !canBeEmpty
+        }
+        return error
     }
 }

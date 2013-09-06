@@ -1,6 +1,8 @@
 package codeOrchestra.colt.core.ui.components.inputForms
 
 import javafx.beans.property.StringProperty
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.control.RadioButton
@@ -35,5 +37,17 @@ class RTBForm extends InputForm {
 
     RadioButton getRadioButton() {
         return radioButton
+    }
+
+    @Override
+    void activateValidation() {
+        super.activateValidation()
+        radioButton.selectedProperty().addListener({ ObservableValue<? extends Boolean> observableValue, Boolean t, Boolean t1 ->
+            if (t1) {
+                validateValue()
+            } else {
+                error = false
+            }
+        } as ChangeListener)
     }
 }

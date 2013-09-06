@@ -26,8 +26,6 @@ class GAController {
 
     Stage curStage
 
-    private ObjectProperty<FXNode> pageContainer
-
     class GAPageInfo {
         String url
         String title
@@ -86,8 +84,7 @@ class GAController {
     }
 
     void setPageContainer(ObjectProperty<FXNode> container) {
-        pageContainer = container
-        pageContainer.addListener({observableValue, FXNode oldNode, FXNode newNode ->
+        container.addListener({observableValue, FXNode oldNode, FXNode newNode ->
             GAPageInfo info = pagesMap[newNode]
             if (info) {
                 tracker.trackPageView(info.url, info.title)
