@@ -1,10 +1,11 @@
 package codeOrchestra.colt.core.ui.components.inputFormsNew.group
 
 import codeOrchestra.colt.core.ui.components.inputForms.CBForm
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MChoiceBox
 import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MSelectable
 import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MSimple
-import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.Markered
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.Marked
 import javafx.collections.ListChangeListener
 import javafx.geometry.Insets
 import javafx.scene.control.Label
@@ -74,7 +75,7 @@ class FormGroupNew extends VBox {
     }
 
     public void initMargins(javafx.scene.Node prev, javafx.scene.Node cur) {
-        if (prev instanceof Markered && cur instanceof Markered) {
+        if (prev instanceof Marked && cur instanceof Marked) {
             if (cur instanceof MSelectable) {
                 if (prev instanceof MSelectable) {
                     if (prev instanceof MSimple) {
@@ -83,7 +84,7 @@ class FormGroupNew extends VBox {
                         setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
                     }
                 }
-                if (prev instanceof CBForm) {
+                if (prev instanceof MChoiceBox) {
                     setMargin(cur, new Insets(24 - SPASING, 0, 0, 0))
                 }
             }
@@ -96,7 +97,7 @@ class FormGroupNew extends VBox {
                 }
             }
 
-            if (cur instanceof CBForm) {
+            if (cur instanceof MChoiceBox) {
                 setMargin(cur, new Insets(23 - SPASING, 0, 0, 0))
             }
         }

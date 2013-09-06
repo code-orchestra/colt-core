@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui.components.inputForms
 
+import codeOrchestra.colt.core.ui.components.inputFormsNew.markers.MChoiceBox
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.value.ChangeListener
@@ -11,7 +12,7 @@ import javafx.scene.layout.HBox
 /**
  * @author Dima Kruk
  */
-class CBForm extends AnchorPane implements ITypedForm {
+class CBForm extends AnchorPane implements MChoiceBox {
     protected CheckBox checkBox = new CheckBox(prefWidth: -1.0, text: "use the latest version")
     protected ChoiceBox choiceBox = new ChoiceBox(layoutY: 22.0)
     protected Label errorLabel = new Label(layoutY:30.0, text:"Incorrect Flex SDK path specified" )
