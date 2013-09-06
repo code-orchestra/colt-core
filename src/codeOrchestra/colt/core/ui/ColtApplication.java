@@ -10,6 +10,7 @@ import codeOrchestra.colt.core.license.*;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
+import codeOrchestra.colt.core.tasks.TasksManager;
 import codeOrchestra.colt.core.tracker.GAController;
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 import codeOrchestra.lcs.license.ColtRunningKey;
@@ -120,6 +121,7 @@ public class ColtApplication extends Application {
     private void dispose() {
         ColtRunningKey.setRunning(false);
 
+        TasksManager.getInstance().dispose();
         ColtProjectManager.getInstance().dispose();
         LiveCodingHandlerManager.getInstance().dispose();
         CodeOrchestraResourcesHttpServer.getInstance().dispose();

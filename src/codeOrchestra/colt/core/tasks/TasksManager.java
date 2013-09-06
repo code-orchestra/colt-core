@@ -24,7 +24,7 @@ public class TasksManager {
         return instance;
     }
 
-    private final Thread executorThread;
+    private final Executor executorThread;
 
     /*  Notified when:
      *    tasksQueue queue becomes non-empty
@@ -40,12 +40,25 @@ public class TasksManager {
         executorThread.start();
     }
 
+    public void dispose() {
+        executorThread.stopRightThere();
+        synchronized (myLock) {
+            myLock.notifyAll();
+        }
+    }
+
     private class Executor extends Thread {
 
         private volatile boolean workerStarted = false;
 
+        private boolean mustStop;
+
         private Executor() {
             super("Executor");
+        }
+
+        public void stopRightThere() {
+            mustStop = true;
         }
 
         private class ColtTaskEventHandler implements EventHandler<WorkerStateEvent> {
@@ -87,7 +100,7 @@ public class TasksManager {
 
         public void run() {
             try {
-                while (true) {
+                while (!mustStop) {
                     synchronized (myLock) {
                         if (workerStarted || tasksQueue.isEmpty()) {
                             try {
@@ -95,6 +108,9 @@ public class TasksManager {
                             } catch (InterruptedException e) {
                                 /* ignore */
                             }
+                        }
+                        if (mustStop) {
+                            return;
                         }
                         if (workerStarted) {
                             continue;
