@@ -25,6 +25,19 @@ public class FileUtils {
         }
     };
 
+    public static String getFileExtension(File file) {
+        if (file.isDirectory()) {
+            return null;
+        }
+
+        String fileName = file.getName();
+        if (fileName.lastIndexOf('.') > 0) {
+            return fileName.substring(fileName.lastIndexOf('.') +1);
+        } else {
+            return null;
+        }
+    }
+
     public static String unixify(String path) {
         return path.replace("\\", "/");
     }
