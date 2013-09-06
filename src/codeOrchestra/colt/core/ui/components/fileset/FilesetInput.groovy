@@ -40,10 +40,10 @@ class FilesetInput extends AnchorPane implements ITypedForm {
 
     @FXBindable String title = "Library Paths:"
 
-    private Label label = new Label(layoutY: 23)
-    private WebView webView = new WebView(id: "fileset-webview", layoutY: 47, prefHeight: 30);
-    private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 46, focusTraversable: false, editable: false)
-    private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 46, prefHeight: 30, prefWidth: 30, text: "Add")
+    private Label label = new Label()
+    private WebView webView = new WebView(id: "fileset-webview", layoutY: 24, prefHeight: 30);
+    private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 23, focusTraversable: false, editable: false)
+    private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 23, prefHeight: 30, prefWidth: 30, text: "Add")
     private JSBridge bridge
     private boolean htmlLoaded
 
@@ -338,11 +338,11 @@ class FilesetInput extends AnchorPane implements ITypedForm {
 
     @Override
     FormType getType() {
-        return null
+        return FormType.BUTTON
     }
 
     @Override
     void setType(FormType type) {
-        FormType.FILE_SET
+        //ignore
     }
 }

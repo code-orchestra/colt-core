@@ -16,8 +16,6 @@ class CBForm extends AnchorPane implements ITypedForm {
     protected ChoiceBox choiceBox = new ChoiceBox(layoutY: 22.0)
     protected Label errorLabel = new Label(layoutY:30.0, text:"Incorrect Flex SDK path specified" )
 
-    FormType type
-
     /*
     <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
       <HBox id="HBox" alignment="CENTER_LEFT" layoutY="-1.0" spacing="0.0" AnchorPane.leftAnchor="19.0">
@@ -72,7 +70,15 @@ class CBForm extends AnchorPane implements ITypedForm {
             errorLabel.visible = !value.empty
             errorLabel.text = value
         } as ChangeListener)
+    }
 
-        type = FormType.CHOICE_BOX
+    @Override
+    FormType getType() {
+        return FormType.BUTTON
+    }
+
+    @Override
+    void setType(FormType type) {
+        //ignore
     }
 }

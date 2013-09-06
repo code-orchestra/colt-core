@@ -52,55 +52,65 @@ class FormGroup extends VBox {
     }
 
     private void initListener() {
+
         children.addListener({ ListChangeListener.Change<? extends javafx.scene.Node> change ->
             change.next()
             if (change.from == 1) {
                 if (!title) {
                     setMargin(change.addedSubList[0], new Insets(SPASING, 0, 0, 0))
                 }
+            }
+
+            if (change.from == 1 && !title) {
+                setMargin(change.addedSubList[0], new Insets(SPASING, 0, 0, 0))
             } else {
-                FXNode prev = change.list[change.from - 1]
-                FXNode cur = change.addedSubList[0]
-                if (prev instanceof ITypedForm && cur instanceof ITypedForm) {
-                    if (cur instanceof CTBForm) {
-                        if (prev instanceof CTBForm) {
-                            if (prev.type == FormType.SIMPLE) {
-                                setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
-                            } else {
-                                setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
-                            }
-                        } else if (prev.type != FormType.SIMPLE) {
-                            setMargin(cur, new Insets(22 - SPASING, 0, 0, 0))
-                        }
-                        if (prev instanceof CBForm) {
-                            setMargin(cur, new Insets(24 - SPASING, 0, 0, 0))
-                        }
-                    }
-                    if (cur instanceof RTBForm) {
-                        if (prev instanceof RTBForm) {
-                            if (prev.type == FormType.SIMPLE) {
-                                setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
-                            } else {
-                                setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
-                            }
-                        }
-                    }
-                    if (cur instanceof LTBForm) {
-                        if (prev.type == FormType.SIMPLE) {
-                            setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
-                        } else {
-                            setMargin(cur, new Insets(26 - SPASING, 0, 0, 0))
-                        }
-                    }
-                    if (cur instanceof FilesetInput) {
-                       //todo:
-                    }
-                    if (cur instanceof CBForm) {
-                        setMargin(cur, new Insets(23 - SPASING, 0, 0, 0))
-                    }
+                initMargins(change.list[change.from - 1] , change.addedSubList[0])
+            }
+            Label
+            if (change.addedSubList.size() > 1) {
+                for (int i = 1; i < change.addedSubList.size(); i++) {
+                    initMargins(change.addedSubList[i - 1], change.addedSubList[i])
                 }
             }
         } as ListChangeListener)
+    }
+
+    public void initMargins(FXNode prev, FXNode cur) {
+        if (prev instanceof ITypedForm && cur instanceof ITypedForm) {
+            if (cur instanceof CTBForm) {
+                if (prev instanceof CTBForm) {
+                    if (prev.type == FormType.SIMPLE) {
+                        setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
+                    } else {
+                        setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
+                    }
+                } else if (prev.type != FormType.SIMPLE) {
+                    setMargin(cur, new Insets(22 - SPASING, 0, 0, 0))
+                }
+                if (prev instanceof CBForm) {
+                    setMargin(cur, new Insets(24 - SPASING, 0, 0, 0))
+                }
+            }
+            if (cur instanceof RTBForm) {
+                if (prev instanceof RTBForm) {
+                    if (prev.type == FormType.SIMPLE) {
+                        setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
+                    } else {
+                        setMargin(cur, new Insets(25 - SPASING, 0, 0, 0))
+                    }
+                }
+            }
+            if (cur instanceof LTBForm || cur instanceof FilesetInput) {
+                if (prev.type == FormType.SIMPLE) {
+                    setMargin(cur, new Insets(18 - SPASING, 0, 0, 0))
+                } else {
+                    setMargin(cur, new Insets(19 - SPASING, 0, 0, 0))
+                }
+            }
+            if (cur instanceof CBForm) {
+                setMargin(cur, new Insets(23 - SPASING, 0, 0, 0))
+            }
+        }
     }
 
     private void makeTitled(boolean b) {
