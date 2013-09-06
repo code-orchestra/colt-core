@@ -1,6 +1,6 @@
 package codeOrchestra.colt.core.ui.components.inputFormsNew
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.base.InputForm
+import codeOrchestra.colt.core.ui.components.inputFormsNew.base.ActionForm
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -9,12 +9,12 @@ import javafx.scene.control.CheckBox
 /**
  * @author Dima Kruk
  */
-class CInputForm extends InputForm {
+class CActionFrom extends ActionForm {
     @FXBindable boolean selected
 
     protected final CheckBox checkBox = new CheckBox()
 
-    CInputForm() {
+    CActionFrom() {
         setLeftAnchor(checkBox, 10)
         setRightAnchor(checkBox, 10)
 
@@ -23,9 +23,7 @@ class CInputForm extends InputForm {
 
         textField.disableProperty().bind(selected().not())
 
-
         children.add(checkBox)
-
     }
 
     @Override

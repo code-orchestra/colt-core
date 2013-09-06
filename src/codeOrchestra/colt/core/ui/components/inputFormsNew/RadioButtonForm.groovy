@@ -1,12 +1,16 @@
 package codeOrchestra.colt.core.ui.components.inputFormsNew
 
-import codeOrchestra.colt.core.ui.components.inputFormsNew.base.SelectableForm
+
+import codeOrchestra.colt.core.ui.components.inputFormsNew.base.TitledForm
+import codeOrchestra.groovyfx.FXBindable
 import javafx.scene.control.RadioButton
 
 /**
  * @author Dima Kruk
  */
-class RadioButtonForm extends SelectableForm {
+class RadioButtonForm extends TitledForm {
+    @FXBindable boolean selected
+
     protected final RadioButton radioButton = new RadioButton()
 
     RadioButtonForm() {
