@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 
+import codeOrchestra.util.SocketUtil;
 import org.mortbay.jetty.Handler;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ContextHandler;
@@ -17,7 +18,7 @@ import org.mortbay.jetty.servlet.ServletHolder;
  */
 public class CodeOrchestraRPCHttpServer {
 
-  public static final int PORT = 8092;
+  public static final int PORT = SocketUtil.findAvailablePortStartingFrom(8092);
   
   private static CodeOrchestraRPCHttpServer instance = new CodeOrchestraRPCHttpServer();
   
@@ -33,7 +34,7 @@ public class CodeOrchestraRPCHttpServer {
   private Map<String, Handler> handlersMap = new HashMap<>();
 
   public void init() {
-    server = new Server(PORT); // TODO: make configurable
+    server = new Server(PORT);
 
     activeHandlers = new HandlerList();
     server.setHandler(activeHandlers);

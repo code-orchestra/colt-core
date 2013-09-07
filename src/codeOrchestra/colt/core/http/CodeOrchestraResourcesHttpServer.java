@@ -1,6 +1,7 @@
 package codeOrchestra.colt.core.http;
 
 import codeOrchestra.util.PathUtils;
+import codeOrchestra.util.SocketUtil;
 import org.mortbay.jetty.Handler;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ContextHandler;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public class CodeOrchestraResourcesHttpServer {
 
-    public static final int PORT = 8091;
+    public static final int PORT = SocketUtil.findAvailablePortStartingFrom(9091);
 
     private static CodeOrchestraResourcesHttpServer instance = new CodeOrchestraResourcesHttpServer();
 
