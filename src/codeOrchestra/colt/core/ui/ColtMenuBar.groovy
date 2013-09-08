@@ -13,6 +13,7 @@ import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
 import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
+import codeOrchestra.util.ApplicationUtil
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.Menu
@@ -43,6 +44,14 @@ class ColtMenuBar extends MenuBar {
 
         menus.addAll(
                 new Menu(text: "File", newItems: [
+                        new MenuItem(
+                                text: "New Window",
+                                onAction: { t ->
+                                    RecentProjects.setMustOpenRecentProject(false)
+                                    ApplicationUtil.restartColt()
+                                } as EventHandler<ActionEvent>,
+                                accelerator: new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN)
+                        ),
                         new Menu(text: "New Project", newItems: [
                                 newAs = new MenuItem(
                                         text: "New AS Project",
@@ -59,6 +68,7 @@ class ColtMenuBar extends MenuBar {
                                         } as EventHandler<ActionEvent>
                                 )
                         ]),
+                        new SeparatorMenuItem(),
                         new MenuItem(
                                 text: "Open Project",
                                 onAction: { t ->
@@ -75,6 +85,7 @@ class ColtMenuBar extends MenuBar {
                                         } as EventHandler<ActionEvent>
                                 ),
                         ]),
+                        new SeparatorMenuItem(),
                         save = new MenuItem(
                                 text: "Save Project",
                                 id: "save",
