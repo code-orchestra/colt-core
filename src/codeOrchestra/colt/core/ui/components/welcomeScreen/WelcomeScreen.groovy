@@ -7,6 +7,7 @@ import codeOrchestra.colt.core.tracker.GAController
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
 import javafx.beans.value.ChangeListener
+import javafx.concurrent.Worker
 import javafx.event.EventHandler
 import javafx.scene.layout.Pane
 import javafx.scene.web.PopupFeatures
@@ -32,11 +33,13 @@ class WelcomeScreen extends Pane {
         GAController.instance.registerPage(this, "/welcome.html", "welcome")
 
         WebEngine engine = webView.engine
-        engine.documentProperty().addListener({ o, oldValue, newValue ->
-            htmlLoaded = true
-            JSBridge.create(engine)
-            if (layoutInited && htmlLoaded) {
-                init()
+        engine.getLoadWorker().stateProperty().addListener({ o, oldValue, newState ->
+            if (newState == Worker.State.SUCCEEDED) {
+                htmlLoaded = true
+                JSBridge.create(engine)
+                if (layoutInited && htmlLoaded) {
+                    init()
+                }
             }
         } as ChangeListener)
 
@@ -48,18 +51,18 @@ class WelcomeScreen extends Pane {
             if (tokens.size() == 2) {
                 if (tokens[0] == "open") {
                     openBrowser(tokens[1])
-                }else if (tokens[0] == "open-project") {
+                } else if (tokens[0] == "open-project") {
                     ProjectDialogs.openProjectDialog(scene)
-                }else if (tokens[0] == "open-recent") {
+                } else if (tokens[0] == "open-recent") {
                     int index = tokens[1] as int
                     ColtProjectManager.instance.load(recentProjects[index].path);
-                }else if (tokens[0] == "new-js") {
+                } else if (tokens[0] == "new-js") {
                     ProjectDialogs.newJsProjectDialog(scene)
-                }else if (tokens[0] == "new-as") {
+                } else if (tokens[0] == "new-as") {
                     ProjectDialogs.newAsProjectDialog(scene)
-                }else if (tokens[0] == "open") {
+                } else if (tokens[0] == "open") {
                     ProjectDialogs.openProjectDialog(scene)
-                }else if (tokens[0] == "open-demo") {
+                } else if (tokens[0] == "open-demo") {
                     ProjectDialogs.openDemoProjectDialog(scene)
                 }
                 return

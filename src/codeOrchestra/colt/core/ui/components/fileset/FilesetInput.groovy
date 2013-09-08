@@ -6,6 +6,7 @@ import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import javafx.beans.value.ChangeListener
+import javafx.concurrent.Worker
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Side
@@ -90,7 +91,7 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
         addButton.onAction = {
             buildContextMenu()
             if (contextMenu.items.size() > 1) {
-                if(!contextMenu.isShowing()) {
+                if (!contextMenu.isShowing()) {
                     contextMenu.show(addButton, Side.RIGHT, 0, 0)
                 }
             } else {
@@ -102,16 +103,18 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
 
         String htmlPage = this.class.getResource("html/fileset-webview.html").toExternalForm()
         WebEngine engine = webView.engine
-        engine.documentProperty().addListener({ o, oldValue, newValue ->
-            htmlLoaded = true
-            bridge = new JSBridge(webView.engine) {
-                @Override
-                void resize(int height) {
-                    webView.prefHeight = height
+        engine.getLoadWorker().stateProperty().addListener({ o, oldValue, newState ->
+            if (newState == Worker.State.SUCCEEDED) {
+                htmlLoaded = true
+                bridge = new JSBridge(webView.engine) {
+                    @Override
+                    void resize(int height) {
+                        webView.prefHeight = height
+                    }
                 }
-            }
-            if (files) {
-                setFilesetHtmlValue(files)
+                if (files) {
+                    setFilesetHtmlValue(files)
+                }
             }
 
         } as ChangeListener)
@@ -139,7 +142,7 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
 
         filesProperty.addListener({ o, old, String newValue ->
             String oldValue = getFilesetHtmlValue()
-            if(oldValue != files){
+            if (oldValue != files) {
                 setFilesetHtmlValue(newValue)
             }
         } as ChangeListener)
@@ -253,14 +256,14 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
         if (fileset.isEmpty()) return []
         def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
         result.addAll(getFilesFromFileset(filesets))
-        return result.grep{File f -> !f.directory }
+        return result.grep { File f -> !f.directory }
     }
 
     public static List<File> getDirectoriesFromString(String fileset, File baseDir = getBaseDir()) {
         if (fileset.empty) return []
         def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
         result.addAll(getFilesFromFileset(filesets))
-        return result.grep{File f -> f.directory }
+        return result.grep { File f -> f.directory }
     }
 
     private static List collectFiles(String fileset, File baseDir) {
@@ -311,9 +314,9 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
     }
 
     private static File getBaseDir() {
-        try{
+        try {
             return ProjectHelper.currentProject?.baseDir
-        }catch (Exception e){
+        } catch (Exception e) {
             return new File("/Users/eugenepotapenko/Documents")
 
         }
@@ -323,7 +326,7 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
         return getBaseDir().toURI().relativize(file.toURI()).path
     }
 
-    public static String createFilesetString(List<File> files){
-        return files.collect{createPattern(it)}.join(", ")
+    public static String createFilesetString(List<File> files) {
+        return files.collect { createPattern(it) }.join(", ")
     }
 }
