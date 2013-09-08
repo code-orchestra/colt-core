@@ -7,6 +7,7 @@ import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.SetTimeoutUtil
+import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.concurrent.Worker
 import javafx.event.ActionEvent
@@ -59,6 +60,8 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
     private ContextMenu contextMenu
 
+    boolean fromHtmlUpdate = false
+
     FilesetInput() {
 
 //        styleClass.add("fileset-input")
@@ -78,13 +81,15 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
         focusRectangle.toBack()
         focusRectangle.prefHeightProperty().bind(webView.prefHeightProperty().add(2))
+
         webView.focusedProperty().addListener({ o, old, f ->
             focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
             focusRectangle.styleClass.add(f ? "fileset-webview-focus" : "fileset-webview")
             if (f) {
-                getJSTopObject().call("requestFocus")
+                requestFocusInHtml()
             }
         } as ChangeListener)
+
         widthProperty().addListener({ o, old, f ->
             focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
             focusRectangle.styleClass.add(focused ? "fileset-webview-focus" : "fileset-webview")
@@ -121,10 +126,12 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                     if (files) {
                         setFilesetHtmlValue(files)
                     }
-                }else if(tokens[1] == ("update")){
+                } else if (tokens[1] == ("update")) {
                     String newValue = getFilesetHtmlValue()
                     if (newValue != files) {
+                        fromHtmlUpdate = true
                         files = newValue
+                        fromHtmlUpdate = false
                     }
                 }
                 return
@@ -140,7 +147,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         //binding
 
         filesProperty.addListener({ o, old, String newValue ->
-            if (htmlLoaded) {
+            if (htmlLoaded && !fromHtmlUpdate) {
                 String oldValue = getFilesetHtmlValue()
                 if (oldValue != files) {
                     setFilesetHtmlValue(newValue)
@@ -169,6 +176,13 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
     double getInputRightAnchor() {
         return getRightAnchor(webView)
+    }
+
+    private void requestFocusInHtml() {
+        try {
+            getJSTopObject()?.call("requestFocus")
+        } catch (Exception ignored) {
+        }
     }
 
     private void buildContextMenu() {
@@ -238,11 +252,15 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     }
 
     private JSObject getJSTopObject() {
-        (JSObject) webView.engine.executeScript("window")
+        try {
+            return (JSObject) webView.engine.executeScript("window")
+        } catch (Exception ignored) {
+            return null
+        }
     }
 
     private void addFile(String el) {
-        getJSTopObject().call("addFile", el)
+        getJSTopObject()?.call("addFile", el)
     }
 
     private void addFile(File file) {
@@ -254,11 +272,11 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     }
 
     String getFilesetHtmlValue() {
-        "" + getJSTopObject().call("getFiles")
+        "" + getJSTopObject()?.call("getFiles")
     }
 
     void setFilesetHtmlValue(String str) {
-        getJSTopObject().call("setFiles", str)
+        getJSTopObject()?.call("setFiles", str)
     }
 
     public static List<File> getFilesFromString(String fileset, File baseDir = getBaseDir()) {

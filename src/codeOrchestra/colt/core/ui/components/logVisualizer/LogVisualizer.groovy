@@ -36,13 +36,6 @@ class LogVisualizer extends VBox {
         String htmlPage = this.class.getResource("html/log-visualizer-webview.html").toExternalForm()
         WebEngine engine = webView.engine
 
-        engine.getLoadWorker().stateProperty().addListener({ o, oldValue, newState ->
-            if (newState == Worker.State.SUCCEEDED) {
-                // too early here
-                //htmlLoaded = true
-            }
-        } as ChangeListener)
-
         engine.load(htmlPage)
         children.add(webView)
         setVgrow(webView, Priority.ALWAYS)
