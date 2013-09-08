@@ -48,15 +48,19 @@ class ProjectDialogs {
         }
     }
 
-    static void openProjectDialog(Scene scene) {
+    static void openProjectDialog(Scene scene, boolean sameInstance = true) {
         FileChooser fileChooser = new FileChooser()
         fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
         File file = fileChooser.showOpenDialog(scene.window)
         if (file != null) {
             try {
-                RecentProjects.addRecentProject(file.path)
-                RecentProjects.mustOpenRecentProject = true
-                ApplicationUtil.restartColt()
+                if (sameInstance) {
+                    ColtProjectManager.instance.load(file.getPath())
+                } else {
+                    RecentProjects.addRecentProject(file.path)
+                    RecentProjects.mustOpenRecentProject = true
+                    ApplicationUtil.restartColt()
+                }
             } catch (ColtException e) {
                 ErrorHandler.handle(e, "Can't load the project")
             }

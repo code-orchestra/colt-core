@@ -113,7 +113,7 @@ public class ColtApplication extends Application {
         splashLayout.setEffect(new DropShadow());
     }
 
-    private synchronized void dispose() {
+    public synchronized void dispose() {
         if (disposed) {
             return;
         }

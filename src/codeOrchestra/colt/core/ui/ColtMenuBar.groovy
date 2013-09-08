@@ -72,7 +72,7 @@ class ColtMenuBar extends MenuBar {
                         new MenuItem(
                                 text: "Open Project",
                                 onAction: { t ->
-                                    ProjectDialogs.openProjectDialog(scene)
+                                    ProjectDialogs.openProjectDialog(scene, false)
                                 } as EventHandler<ActionEvent>,
                                 accelerator: new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN)
                         ),
