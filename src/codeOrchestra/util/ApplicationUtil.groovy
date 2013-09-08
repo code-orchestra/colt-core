@@ -33,6 +33,11 @@ class ApplicationUtil {
 
     static void restartColt() throws IOException {
         startAnotherColtInstance()
+
+        exitColt()
+    }
+
+    static void exitColt() {
         ColtApplication.get().dispose()
         Platform.exit()
     }
