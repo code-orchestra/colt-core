@@ -30,11 +30,11 @@ abstract class InputWithErrorBase extends TitledInputBase implements MInput {
         } as ChangeListener)
     }
 
-    void setTextFieldRightAnchor(double value) {
+    void setInputRightAnchor(double value) {
         setRightAnchor(textField, value)
     }
 
-    double getTextFieldRightAnchor() {
+    double getInputRightAnchor() {
         return getRightAnchor(textField)
     }
 

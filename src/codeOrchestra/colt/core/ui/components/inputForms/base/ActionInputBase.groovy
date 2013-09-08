@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui.components.inputForms.base
 
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
 import codeOrchestra.groovyfx.FXBindable
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -10,7 +11,7 @@ import javafx.stage.FileChooser
 /**
  * @author Dima Kruk
  */
-abstract class ActionInputBase extends InputWithErrorBase {
+abstract class ActionInputBase extends InputWithErrorBase implements MAction {
     protected final Button button = new Button(focusTraversable: false, layoutY: 23, prefHeight: 30, prefWidth: 67)
 
     @FXBindable String buttonText = "Browse"
@@ -46,7 +47,7 @@ abstract class ActionInputBase extends InputWithErrorBase {
     }
 
     void setButtonWidth(double value) {
-        setTextFieldRightAnchor(86 + value - 67)
+        setInputRightAnchor(86 + value - 67)
         button.prefWidth = value
     }
 

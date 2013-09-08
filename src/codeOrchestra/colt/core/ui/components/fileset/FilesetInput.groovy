@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui.components.fileset
 
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MInput
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.log.JSBridge
@@ -36,7 +37,7 @@ import netscape.javascript.JSObject
 /**
  * @author Eugene Potapenko
  */
-class FilesetInput extends AnchorPane implements MInput, MLabeled {
+class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
     @FXBindable String title = "Library Paths:"
 
@@ -160,6 +161,14 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
         this.onDragDetected = { DragEvent event ->
             println("drag detected:  " + event)
         } as EventHandler
+    }
+
+    void setInputRightAnchor(double value) {
+        setRightAnchor(webView, value)
+    }
+
+    double getInputRightAnchor() {
+        return getRightAnchor(webView)
     }
 
     private void buildContextMenu() {

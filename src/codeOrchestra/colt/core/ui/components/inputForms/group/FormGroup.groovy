@@ -1,6 +1,8 @@
 package codeOrchestra.colt.core.ui.components.inputForms.group
 
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MChoiceBox
+import codeOrchestra.colt.core.ui.components.inputForms.markers.MInput
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MSelectable
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MSimple
@@ -71,6 +73,22 @@ class FormGroup extends VBox {
                 }
             }
         } as ListChangeListener)
+    }
+
+    @Override
+    protected void layoutChildren() {
+        double w = 10
+        children.each {
+            if(it instanceof MAction) {
+                w = Double.max(w, (it as MAction).inputRightAnchor)
+            }
+        }
+        children.each {
+            if((it instanceof MInput) && !(it instanceof MAction)) {
+                (it as MInput).inputRightAnchor = w
+            }
+        }
+        super.layoutChildren()
     }
 
     public void initMargins(javafx.scene.Node prev, javafx.scene.Node cur) {
