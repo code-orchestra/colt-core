@@ -85,7 +85,7 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
             focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
             focusRectangle.styleClass.add(f ? "fileset-webview-focus" : "fileset-webview")
             if (f) {
-                getJSTopObject().call("requestFocus")
+                requestFocusInHtml()
             }
         } as ChangeListener)
 
@@ -169,6 +169,13 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
         } as EventHandler
     }
 
+    private void requestFocusInHtml() {
+        try {
+            getJSTopObject()?.call("requestFocus")
+        } catch (Exception ignored) {
+        }
+    }
+
     private void buildContextMenu() {
         if (contextMenu != null) {
             return
@@ -236,11 +243,15 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
     }
 
     private JSObject getJSTopObject() {
-        (JSObject) webView.engine.executeScript("window")
+        try {
+            return (JSObject) webView.engine.executeScript("window")
+        } catch (Exception ignored) {
+            return null
+        }
     }
 
     private void addFile(String el) {
-        getJSTopObject().call("addFile", el)
+        getJSTopObject()?.call("addFile", el)
     }
 
     private void addFile(File file) {
@@ -252,11 +263,11 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
     }
 
     String getFilesetHtmlValue() {
-        "" + getJSTopObject().call("getFiles")
+        "" + getJSTopObject()?.call("getFiles")
     }
 
     void setFilesetHtmlValue(String str) {
-        getJSTopObject().call("setFiles", str)
+        getJSTopObject()?.call("setFiles", str)
     }
 
     public static List<File> getFilesFromString(String fileset, File baseDir = getBaseDir()) {
