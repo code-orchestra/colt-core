@@ -1,5 +1,7 @@
 package codeOrchestra.util
 
+import javafx.application.Platform
+
 import java.awt.*
 
 /**
@@ -26,6 +28,15 @@ class ApplicationUtil {
         }
 
         return false
+    }
+
+    static void restartColt() throws IOException {
+        if (!startAnotherColtInstance()) {
+            ApplicationRestarter.restart()
+            return
+        }
+
+        Platform.exit()
     }
 
     private static void startExecutable(String executable, String... args) {
