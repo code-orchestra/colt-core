@@ -40,14 +40,21 @@ abstract class InputWithErrorBase extends TitledInputBase implements MInput {
         } as ChangeListener)
     }
 
+    protected InvalidationListener validationListener = { javafx.beans.Observable observable ->
+        if (!validateValue()) {
+            text().removeListener(validationListener)
+        }
+    } as InvalidationListener
+
     void activateValidation() {
-        text().addListener({ javafx.beans.Observable observable ->
-            validateValue()
-        } as InvalidationListener)
+        text().addListener(validationListener)
     }
 
     boolean validateValue() {
-        return validateIsNotEmpty()
+        if (validateIsNotEmpty()) {
+            activateValidation()
+        }
+        return error
     }
 
     protected boolean validateIsNotEmpty() {
