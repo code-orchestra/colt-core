@@ -29,7 +29,7 @@ public class RecentProjects {
         paths.add(0, path);
 
         preferences.put(RECENT_COLT_PROJECTS, createList(paths));
-        recentProject(true);
+        setMustOpenRecentProject(true);
 
         try {
             preferences.sync();
@@ -38,7 +38,7 @@ public class RecentProjects {
         }
     }
 
-    public static void recentProject(Boolean value) {
+    public static void setMustOpenRecentProject(Boolean value) {
         preferences.put(RECENT_COLT_PROJECT, value.toString());
         try {
             preferences.sync();
@@ -47,8 +47,7 @@ public class RecentProjects {
         }
     }
 
-    public static boolean haveRecentProject() {
-        String str = preferences.get(RECENT_COLT_PROJECT, "");
+    public static boolean mustOpenRecentProject() {
         return preferences.get(RECENT_COLT_PROJECT, "").equals("true");
     }
 

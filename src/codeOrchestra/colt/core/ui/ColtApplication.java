@@ -3,17 +3,14 @@ package codeOrchestra.colt.core.ui;
 import codeOrchestra.colt.core.ColtException;
 import codeOrchestra.colt.core.ColtProjectManager;
 import codeOrchestra.colt.core.RecentProjects;
-import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.execution.OSProcessHandler;
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
 import codeOrchestra.colt.core.license.*;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
-import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.tasks.TasksManager;
 import codeOrchestra.colt.core.tracker.GAController;
-import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 import codeOrchestra.lcs.license.ColtRunningKey;
 import codeOrchestra.util.StringUtils;
 import com.sun.javafx.css.StyleManager;
@@ -21,7 +18,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -34,11 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.scenicview.ScenicView;
 
 import java.io.File;
 
@@ -154,7 +146,7 @@ public class ColtApplication extends Application {
 
         // Open most recent project
         boolean opened = false;
-        if (RecentProjects.haveRecentProject()) {
+        if (RecentProjects.mustOpenRecentProject()) {
             for (String recentProjectPath : RecentProjects.getRecentProjectsPaths()) {
                 File projectFile = new File(recentProjectPath);
                 if (projectFile.exists()) {
@@ -178,7 +170,7 @@ public class ColtApplication extends Application {
     public void closeProject() {
         if (mainStage.isShowing()) {
             mainStage.hide();
-            RecentProjects.recentProject(false);
+            RecentProjects.setMustOpenRecentProject(false);
         }
     }
 
