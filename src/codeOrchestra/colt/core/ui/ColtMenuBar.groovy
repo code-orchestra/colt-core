@@ -23,6 +23,7 @@ import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
+import javafx.stage.WindowEvent
 
 import static codeOrchestra.colt.core.RecentProjects.getRecentProjectsPaths
 
@@ -105,8 +106,15 @@ class ColtMenuBar extends MenuBar {
                         new MenuItem(
                                 text: "Close Project",
                                 onAction: { t ->
-                                    RecentProjects.mustOpenRecentProject = true
-                                    ApplicationUtil.restartColt()
+                                    ProjectStage mainStage = ColtApplication.get().mainStage
+                                    WindowEvent event = new WindowEvent(mainStage, WindowEvent.WINDOW_CLOSE_REQUEST)
+                                    if (mainStage.isShowing()) {
+                                        mainStage.fireEvent(event)
+                                    }
+                                    if (mainStage.disposed) {
+                                        RecentProjects.mustOpenRecentProject = false
+                                        ApplicationUtil.restartColt()
+                                    }
                                 } as EventHandler<ActionEvent>,
                                 accelerator: new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
                         ),

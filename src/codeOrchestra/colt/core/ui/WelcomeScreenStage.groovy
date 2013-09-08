@@ -8,6 +8,7 @@ import codeOrchestra.colt.core.loading.LiveCodingHandlerManager
 import codeOrchestra.colt.core.tasks.TasksManager
 import codeOrchestra.colt.core.ui.components.welcomeScreen.WelcomeScreen
 import codeOrchestra.lcs.license.ColtRunningKey
+import codeOrchestra.util.ApplicationUtil
 import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.scene.Scene
@@ -20,7 +21,6 @@ import javafx.stage.WindowEvent
 class WelcomeScreenStage extends Stage {
 
     WelcomeScreen root
-    private boolean disposed
 
     WelcomeScreenStage() {
         root = new WelcomeScreen()
@@ -34,21 +34,6 @@ class WelcomeScreenStage extends Stage {
     }
 
     public synchronized void dispose() {
-        if (disposed) {
-            return;
-        }
-
-        ColtRunningKey.setRunning(false);
-
-        TasksManager.getInstance().dispose();
-        ColtProjectManager.getInstance().dispose();
-        LiveCodingHandlerManager.getInstance().dispose();
-        CodeOrchestraResourcesHttpServer.getInstance().dispose();
-        CodeOrchestraRPCHttpServer.getInstance().dispose();
-        OSProcessHandler.dispose();
-
-        disposed = true;
-
-        Platform.exit();
+        ApplicationUtil.exitColt()
     }
 }

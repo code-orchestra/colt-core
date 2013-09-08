@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui
 
+import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs
 import javafx.event.EventHandler
@@ -15,6 +16,9 @@ import javafx.stage.WindowEvent
 class ProjectStage extends Stage {
 
     Pane root
+
+    boolean disposed
+
 
     ProjectStage() {
         root = new StackPane()
@@ -34,6 +38,7 @@ class ProjectStage extends Stage {
     }
 
     private void dispose() {
-        //todo: implement
+        ColtProjectManager.instance.unload()
+        disposed = true
     }
 }

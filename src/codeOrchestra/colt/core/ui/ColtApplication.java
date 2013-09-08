@@ -64,6 +64,10 @@ public class ColtApplication extends Application {
 
     public static long timeStarted;
 
+    public ProjectStage getMainStage() {
+        return mainStage;
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         instance = this;
