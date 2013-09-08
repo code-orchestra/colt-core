@@ -114,7 +114,7 @@ class ColtMenuBar extends MenuBar {
                         new MenuItem(
                                 text: "Exit",
                                 onAction: { t ->
-                                    System.exit(0)
+                                    ApplicationUtil.exitColt()
                                 } as EventHandler<ActionEvent>
                         ),
                 ]),
@@ -238,7 +238,9 @@ class ColtMenuBar extends MenuBar {
             MenuItem openRecentProjectItem = new MenuItem(it)
             openRecentProjectItem.onAction = { actionEvent ->
                 try {
-                    ColtProjectManager.instance.load(it)
+                    RecentProjects.addRecentProject(it)
+                    RecentProjects.mustOpenRecentProject = true
+                    ApplicationUtil.restartColt()
                 } catch (ColtException e) {
                     ErrorHandler.handle(e, "Can't load a project " + it)
                 }
