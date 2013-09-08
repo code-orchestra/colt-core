@@ -72,7 +72,7 @@ class ColtMenuBar extends MenuBar {
                         new MenuItem(
                                 text: "Open Project",
                                 onAction: { t ->
-                                    ProjectDialogs.openProjectDialog(scene)
+                                    ProjectDialogs.openProjectDialog(scene, false)
                                 } as EventHandler<ActionEvent>,
                                 accelerator: new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN)
                         ),
@@ -105,7 +105,8 @@ class ColtMenuBar extends MenuBar {
                         new MenuItem(
                                 text: "Close Project",
                                 onAction: { t ->
-                                    ProjectDialogs.closeProjectDialog()
+                                    RecentProjects.mustOpenRecentProject = true
+                                    ApplicationUtil.restartColt()
                                 } as EventHandler<ActionEvent>,
                                 accelerator: new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
                         ),

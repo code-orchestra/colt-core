@@ -1,5 +1,6 @@
 package codeOrchestra.util
 
+import codeOrchestra.colt.core.ui.ColtApplication
 import javafx.application.Platform
 
 import java.awt.*
@@ -32,6 +33,12 @@ class ApplicationUtil {
 
     static void restartColt() throws IOException {
         startAnotherColtInstance()
+
+        exitColt()
+    }
+
+    static void exitColt() {
+        ColtApplication.get().dispose()
         Platform.exit()
     }
 
