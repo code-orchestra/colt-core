@@ -75,7 +75,13 @@ public class PathUtils {
     public static File getApplicationBaseDir() {
         String coltBaseDirProp = System.getProperty("colt.base.dir");
 
-        if ("$APP_PACKAGE".equals(coltBaseDirProp)) {
+        if (StringUtils.isEmpty(coltBaseDirProp)) {
+            File file = new File(PathUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath().toString());
+            while (!new File(file, "flex_sdk").exists()) {
+              file = file.getParentFile();
+            }
+            return file;
+        } else if ("$APP_PACKAGE".equals(coltBaseDirProp)) {
             if (applicationBaseDirCached != null) {
                 return applicationBaseDirCached;
             }
