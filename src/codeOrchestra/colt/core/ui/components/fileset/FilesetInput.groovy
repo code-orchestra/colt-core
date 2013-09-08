@@ -139,9 +139,11 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
         //binding
 
         filesProperty.addListener({ o, old, String newValue ->
-            String oldValue = getFilesetHtmlValue()
-            if (oldValue != files) {
-                setFilesetHtmlValue(newValue)
+            if (htmlLoaded) {
+                String oldValue = getFilesetHtmlValue()
+                if (oldValue != files) {
+                    setFilesetHtmlValue(newValue)
+                }
             }
         } as ChangeListener)
 
