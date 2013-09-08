@@ -44,7 +44,7 @@ class SaveDialog extends DialogWithImage {
         cancel.prefWidth = 67
         ButtonBar.setType(cancel, ButtonBar.ButtonType.CANCEL_CLOSE)
         cancel.onAction = {
-            flowEvent.consume()
+            flowEvent?.consume()
             hide()
         } as EventHandler
 
@@ -58,7 +58,7 @@ class SaveDialog extends DialogWithImage {
 
         stage.onCloseRequest = {
             if(!action){
-                flowEvent.consume()
+                flowEvent?.consume()
             }
         } as EventHandler
 
