@@ -11,6 +11,15 @@
     <script src="../../shared/jquery-resize.js" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
+
+        window.onerror = function myErrorFunction(message, url, linenumber) {
+            alert("------------------------------------")
+            alert("js error (message): " + message)
+            alert("js error (url): " + url)
+            alert("js error (line number): " + linenumber)
+            alert("------------------------------------")
+        }
+
         var textbox
         var currentValue
         var inputFromUser = true
@@ -83,13 +92,7 @@
             // todo: mark file as
         }
 
-        window.onerror = function myErrorFunction(message, url, linenumber) {
-            alert("------------------------------------")
-            alert("js error (message): " + message)
-            alert("js error (url): " + url)
-            alert("js error (line number): " + linenumber)
-            alert("------------------------------------")
-        }
+
 
     </script>
 </head>
