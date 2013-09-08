@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox
 /**
  * @author Dima Kruk
  */
-class FormGroupNew extends VBox {
+class FormGroup extends VBox {
     private static final Insets TITLED = new Insets(26, 0, 23, 0)
     private static final Insets NOT_TITLED = new Insets(3, 0, 23, 0)
 
@@ -34,7 +34,7 @@ class FormGroupNew extends VBox {
     </fx:root>
      */
 
-    FormGroupNew() {
+    FormGroup() {
         label = new Label()
         label.styleClass.add("legend")
         setMargin(label, new Insets(0, 0, -2, 19))
