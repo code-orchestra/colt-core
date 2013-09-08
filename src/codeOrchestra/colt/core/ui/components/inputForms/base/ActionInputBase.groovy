@@ -14,6 +14,7 @@ abstract class ActionInputBase extends InputWithErrorBase {
     protected final Button button = new Button(focusTraversable: false, layoutY: 23, prefHeight: 30, prefWidth: 67)
 
     @FXBindable String buttonText = "Browse"
+    boolean canBeEmpty
 
     BrowseType browseType = BrowseType.FILE
     ArrayList<FileChooser.ExtensionFilter> extensionFilters = new ArrayList<>()
@@ -53,13 +54,6 @@ abstract class ActionInputBase extends InputWithErrorBase {
         button.onAction = action
     }
 
-    boolean canBeEmpty
-
-    void activateValidation(boolean canBeEmpty) {
-        this.canBeEmpty = canBeEmpty
-        activateValidation()
-    }
-
     protected boolean validateIsExists() {
         if (textField.disable) {
             error = false
@@ -76,6 +70,9 @@ abstract class ActionInputBase extends InputWithErrorBase {
 
     @Override
     boolean validateValue() {
-        return validateIsExists()
+        if (validateIsExists()) {
+            activateValidation()
+        }
+        return error
     }
 }
