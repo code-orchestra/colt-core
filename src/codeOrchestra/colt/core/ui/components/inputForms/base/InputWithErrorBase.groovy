@@ -30,6 +30,14 @@ abstract class InputWithErrorBase extends TitledInputBase implements MInput {
         } as ChangeListener)
     }
 
+    void setTextFieldRightAnchor(double value) {
+        setRightAnchor(textField, value)
+    }
+
+    double getTextFieldRightAnchor() {
+        return getRightAnchor(textField)
+    }
+
     void setNumeric(boolean numeric) {
         textField.textProperty().addListener({ ob, oldValue, String newValue ->
             try {
