@@ -11,9 +11,6 @@ import codeOrchestra.colt.core.license.ExpirationHelper
 import codeOrchestra.colt.core.license.LicenseListener
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
-import codeOrchestra.colt.core.tasks.ColtTaskWithProgress
-import codeOrchestra.colt.core.tasks.TasksManager
-import codeOrchestra.colt.core.ui.components.IProgressIndicator
 import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import javafx.event.ActionEvent
@@ -25,7 +22,6 @@ import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
-import javafx.stage.FileChooser
 
 import static codeOrchestra.colt.core.RecentProjects.getRecentProjectsPaths
 
@@ -214,7 +210,7 @@ class ColtMenuBar extends MenuBar {
         setUseSystemMenuBar(true)
     }
 
-    private ColtFacade getColtFacade() {
+    private static ColtFacade getColtFacade() {
         ServiceProvider.get(ColtFacade.class)
     }
 

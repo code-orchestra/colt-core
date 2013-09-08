@@ -58,7 +58,7 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
 
     FilesetInput() {
 
-        styleClass.add("fileset-input")
+//        styleClass.add("fileset-input")
 
         setRightAnchor(addButton, 10)
         setLeftAnchor(label, 19)
@@ -75,15 +75,17 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
 
         focusRectangle.toBack()
         focusRectangle.prefHeightProperty().bind(webView.prefHeightProperty().add(2))
-        ChangeListener focusListener = { o, old, f ->
+        webView.focusedProperty().addListener({ o, old, f ->
             focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
-            focusRectangle.styleClass.add(focused ? "fileset-webview-focus" : "fileset-webview")
-            if (focused) {
+            focusRectangle.styleClass.add(f ? "fileset-webview-focus" : "fileset-webview")
+            if (f) {
                 getJSTopObject().call("requestFocus")
             }
-        } as ChangeListener
-        webView.focusedProperty().addListener(focusListener)
-        widthProperty().addListener(focusListener)
+        } as ChangeListener)
+        widthProperty().addListener({ o, old, f ->
+            focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
+            focusRectangle.styleClass.add(focused ? "fileset-webview-focus" : "fileset-webview")
+        } as ChangeListener)
 
         addButton.onAction = {
             buildContextMenu()
@@ -122,15 +124,6 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
                 if (newValue != files) {
                     files = newValue
                 }
-//                if (useFiles) {
-//                    getFilesFromString(files).each {
-//                        println("file >> " + it)
-//                    }
-//                }else{
-//                    getDirectoriesFromString(files).each {
-//                        println("file >> " + it)
-//                    }
-//                }
             } else {
                 println("alert >> " + data)
             }
@@ -292,7 +285,7 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
     private static List<File> getFilesFromFileset(List<String> values) {
         List<File> result = []
         if (values) {
-            String baseDir = getBaseDir().getAbsolutePath()
+            String baseDir = getBaseDir().absolutePath
             AntBuilder ant = new AntBuilder()
 
             def scanner = ant.fileScanner {
@@ -310,7 +303,7 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
             }
 
             scanner.each {
-                result << ((File) it).getAbsoluteFile()
+                result << ((File) it).absoluteFile
             }
         }
 
