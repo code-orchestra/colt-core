@@ -51,6 +51,8 @@ public class ColtApplication extends Application {
         return instance;
     }
 
+    private boolean disposed;
+
     private Stage primaryStage;
 
     private StackPane splashLayout;
@@ -59,7 +61,6 @@ public class ColtApplication extends Application {
 
     private ProjectStage mainStage;
     private Node currentPluginNode;
-
 
     public static long timeStarted;
 
@@ -112,7 +113,11 @@ public class ColtApplication extends Application {
         splashLayout.setEffect(new DropShadow());
     }
 
-    private void dispose() {
+    private synchronized void dispose() {
+        if (disposed) {
+            return;
+        }
+
         ColtRunningKey.setRunning(false);
 
         TasksManager.getInstance().dispose();
@@ -121,6 +126,8 @@ public class ColtApplication extends Application {
         CodeOrchestraResourcesHttpServer.getInstance().dispose();
         CodeOrchestraRPCHttpServer.getInstance().dispose();
         OSProcessHandler.dispose();
+
+        disposed = true;
 
         Platform.exit();
     }
