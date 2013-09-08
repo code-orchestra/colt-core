@@ -9,6 +9,7 @@ import codeOrchestra.colt.core.tasks.ColtTaskWithProgress
 import codeOrchestra.colt.core.tasks.TasksManager
 import codeOrchestra.colt.core.ui.ColtApplication
 import codeOrchestra.colt.core.ui.components.IProgressIndicator
+import codeOrchestra.util.ApplicationUtil
 import codeOrchestra.util.BrowserUtil
 import codeOrchestra.util.PathUtils
 import javafx.scene.Scene
@@ -19,7 +20,7 @@ import javafx.stage.FileChooser
  */
 class ProjectDialogs {
 
-    static void newAsProjectDialog(Scene scene){
+    static void newAsProjectDialog(Scene scene) {
         FileChooser fileChooser = new FileChooser()
         fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
         File file = fileChooser.showSaveDialog(scene.window)
@@ -33,7 +34,7 @@ class ProjectDialogs {
         }
     }
 
-    static void newJsProjectDialog(Scene scene){
+    static void newJsProjectDialog(Scene scene) {
         FileChooser fileChooser = new FileChooser()
         fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
         File file = fileChooser.showSaveDialog(scene.window)
@@ -47,20 +48,22 @@ class ProjectDialogs {
         }
     }
 
-    static void openProjectDialog(Scene scene){
+    static void openProjectDialog(Scene scene) {
         FileChooser fileChooser = new FileChooser()
         fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
         File file = fileChooser.showOpenDialog(scene.window)
         if (file != null) {
             try {
-                ColtProjectManager.instance.load(file.getPath())
+                RecentProjects.addRecentProject(file.path)
+                RecentProjects.mustOpenRecentProject = true
+                ApplicationUtil.restartColt()
             } catch (ColtException e) {
                 ErrorHandler.handle(e, "Can't load the project")
             }
         }
     }
 
-    static void openDemoProjectDialog(Scene scene){
+    static void openDemoProjectDialog(Scene scene) {
         File examplesDir = PathUtils.examplesDir
         if (examplesDir == null || !examplesDir.exists()) {
             ErrorHandler.handle("Can't locate the example projects folder");
@@ -74,16 +77,16 @@ class ProjectDialogs {
         }
     }
 
-    static void openWelcomeScreen(Scene scene){
+    static void openWelcomeScreen(Scene scene) {
         closeProjectDialog()//todo: или оставить текущий проект?
     }
 
-    static void closeProjectDialog(){
+    static void closeProjectDialog() {
         ColtApplication.get().showWelcomeScreen()
         ColtApplication.get().closeProject()
     }
 
-    static void saveProjectDialog(){
+    static void saveProjectDialog() {
         TasksManager.getInstance().scheduleBackgroundTask(new ColtTaskWithProgress() {
             @Override
             protected Object call(IProgressIndicator progressIndicator) {
@@ -107,13 +110,13 @@ class ProjectDialogs {
         });
     }
 
-    static void saveAsProjectDialog(Scene scene){
+    static void saveAsProjectDialog(Scene scene) {
         FileChooser fileChooser = new FileChooser()
         fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
         Project project = ColtProjectManager.getInstance().currentProject
         fileChooser.initialDirectory = new File(project.path).parentFile
         File file = fileChooser.showSaveDialog(scene.window)
-        if (file != null){
+        if (file != null) {
             project.path = file.path
             project.name = file.name[0..-6]
             saveProjectDialog()
