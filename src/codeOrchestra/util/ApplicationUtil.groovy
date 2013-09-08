@@ -9,33 +9,29 @@ import java.awt.*
  */
 class ApplicationUtil {
 
-    static boolean startAnotherColtInstance() throws IOException {
+    static void startAnotherColtInstance() throws IOException {
         if (SystemInfo.isMac) {
             File baseDir = PathUtils.applicationBaseDir
             if (baseDir.path.endsWith(".app")) {
                 Desktop.getDesktop().open(baseDir)
                 Runtime.getRuntime().exec("open -n -a " + baseDir.path)
-                return true
+                return
             }
         } else if (SystemInfo.isWindows) {
             File executable = PathUtils.applicationExecutable
             if (executable != null && executable.exists()) {
                 startExecutable(executable.path)
-                return true
+                return
             }
         } else {
             throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"))
         }
 
-        return false
+        ApplicationRestarter.start();
     }
 
     static void restartColt() throws IOException {
-        if (!startAnotherColtInstance()) {
-            ApplicationRestarter.restart()
-            return
-        }
-
+        startAnotherColtInstance()
         Platform.exit()
     }
 

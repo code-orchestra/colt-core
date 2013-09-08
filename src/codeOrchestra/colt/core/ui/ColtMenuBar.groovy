@@ -48,7 +48,7 @@ class ColtMenuBar extends MenuBar {
                                 text: "New Window",
                                 onAction: { t ->
                                     RecentProjects.setMustOpenRecentProject(false)
-                                    ApplicationUtil.restartColt()
+                                    ApplicationUtil.startAnotherColtInstance()
                                 } as EventHandler<ActionEvent>,
                                 accelerator: new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN)
                         ),

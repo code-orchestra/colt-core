@@ -14,7 +14,15 @@ public class ApplicationRestarter {
     public static final String SUN_JAVA_COMMAND = "sun.java.command";
 
     public static void restart() throws IOException {
-        final List<String> cmd = new ArrayList<String>();
+        exitWithHook(getStartCommand());
+    }
+
+    public static void start() throws IOException {
+        Runtime.getRuntime().exec(getStartCommand());
+    }
+
+    public static String[] getStartCommand() throws IOException {
+        final List<String> cmd = new ArrayList<>();
 
         // Java command
         cmd.add(protect(System.getProperty("java.home") + "/bin/java"));
@@ -47,17 +55,21 @@ public class ApplicationRestarter {
             cmd.add(mainCommand[i]);
         }
 
+        String[] commandArray = new String[cmd.size()];
+        int i = 0;
+        for (String commandBit : cmd) {
+            commandArray[i++] = commandBit;
+        }
+
+        return commandArray;
+    }
+
+    private static void exitWithHook(final String[] commandArray) {
         // Hook
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
                 try {
-                    String[] commandArray = new String[cmd.size()];
-                    int i = 0;
-                    for (String commandBit : cmd) {
-                        commandArray[i++] = commandBit;
-                    }
-
                     Runtime.getRuntime().exec(commandArray);
                 } catch (IOException e) {
                     e.printStackTrace();
