@@ -81,71 +81,17 @@
             // todo: mark file as
         }
 
-
-
+        window.onerror = function myErrorFunction(message, url, linenumber) {
+            alert("------------------------------------")
+            alert("js error (message): " + message)
+            alert("js error (url): " + url)
+            alert("js error (line number): " + linenumber)
+            alert("------------------------------------")
+        }
 
     </script>
-
-    <style type="text/css">
-        HTML {
-            font-size: 100%;
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%; }
-
-        BUTTON, INPUT, SELECT, TEXTAREA {
-            font-size: 100%;
-            line-height: inherit; }
-
-        BUTTON, INPUT, SELECT {
-            text-transform: none; }
-
-        BUTTON::-moz-focus-inner, INPUT::-moz-focus-inner {
-            border: 0;
-            padding: 0; }
-
-        BUTTON {
-            cursor: pointer; }
-
-        TEXTAREA {
-            overflow: auto;
-            resize: vertical;
-            vertical-align: top; }
-
-        BODY {
-            margin: 0;
-            overflow: hidden; }
-
-        .textboxlist, INPUT[type="text"], TEXTAREA {
-            font: 13px/18px 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'DejaVu Sans', 'Bitstream Vera Sans', 'Liberation Sans', Arial, sans-serif; }
-
-        .textboxlist-bits {
-            background: #fff;
-            -webkit-box-shadow: inset 0 1px 0 #f0f0f0;
-            box-shadow: inset 0 1px 0 #f0f0f0;
-            padding: 1px 4px; }
-
-        .textboxlist-bit { margin: 0 4px 0 0; }
-
-        .textboxlist-bit-box { margin-top: 3px; }
-
-        .textboxlist-bit INPUT[type="text"], .textboxlist-bit TEXTAREA {
-            background: transparent;
-            border: 0 none transparent;
-            margin: 0;
-            vertical-align: baseline;
-            width: 100%;
-            padding: 0;
-            outline: none;
-            min-height: 24px; }
-
-        TEXTAREA { resize: vertical; }
-
-        .form_tags { margin: 0; }
-
-        .textboxlist { width: 100%; }
-
-    </style>
 </head>
+
 <body>
 <form accept-charset="utf-8">
     <div class="form_tags">
