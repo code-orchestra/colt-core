@@ -7,6 +7,7 @@ import javafx.scene.Scene
 import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
 import javafx.stage.Stage
+import javafx.stage.WindowEvent
 
 /**
  * @author Dima Kruk
@@ -20,8 +21,7 @@ class ProjectStage extends Stage {
 
         setTitle("COLT — Code Orchestra Livecoding Tool (1.2)")
         scene = new Scene(root, 480, 768)
-
-        setOnCloseRequest({windowEvent ->
+        addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, {WindowEvent windowEvent ->
             if (ChangingMonitor.getInstance().isChanged()) {
                 ColtDialogs.showCloseProjectDialog(this, windowEvent)
             }
@@ -29,7 +29,7 @@ class ProjectStage extends Stage {
             if (!windowEvent.isConsumed()) {
                 dispose()
             }
-        } as EventHandler);
+        } as EventHandler)
     }
 
     private void dispose() {

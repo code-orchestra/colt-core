@@ -46,7 +46,7 @@ abstract class ActionInputBase extends InputWithErrorBase {
     }
 
     void setButtonWidth(double value) {
-        setRightAnchor(textField, 86 + value - 67)
+        setTextFieldRightAnchor(86 + value - 67)
         button.prefWidth = value
     }
 
