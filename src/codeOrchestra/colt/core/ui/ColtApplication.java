@@ -15,6 +15,7 @@ import codeOrchestra.colt.core.tasks.TasksManager;
 import codeOrchestra.colt.core.tracker.GAController;
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 import codeOrchestra.lcs.license.ColtRunningKey;
+import codeOrchestra.util.StringUtils;
 import com.sun.javafx.css.StyleManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -210,6 +211,11 @@ public class ColtApplication extends Application {
 
     public static void main(String[] args) {
         timeStarted = System.currentTimeMillis();
+
+        if (StringUtils.isEmpty(System.getProperty("colt.handlers"))) {
+            System.setProperty("colt.handlers", "AS:codeOrchestra.colt.as.ASLiveCodingLanguageHandler,JS:codeOrchestra.colt.js.JSLiveCodingLanguageHandler");
+        }
+
         launch(args);
     }
 
