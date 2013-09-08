@@ -104,9 +104,12 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
 
         String htmlPage = this.class.getResource("html/fileset-webview.html").toExternalForm()
         WebEngine engine = webView.engine
-        engine.getLoadWorker().stateProperty().addListener({ o, oldValue, newState ->
-            if (newState == Worker.State.SUCCEEDED) {
-                SetTimeoutUtil.setTimeout(100, {
+        engine.load(htmlPage)
+
+        engine.onAlert = { WebEvent<String> event ->
+            String[] tokens = event.data.split(":", 2)
+            if (tokens[0] == "command" && tokens.size() == 2) {
+                if (tokens[1] == ("ready")) {
                     htmlLoaded = true
                     bridge = new JSBridge(webView.engine) {
                         @Override
@@ -117,21 +120,13 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
                     if (files) {
                         setFilesetHtmlValue(files)
                     }
-                })
-            }
-
-        } as ChangeListener)
-        engine.load(htmlPage)
-
-        engine.onAlert = { WebEvent<String> event ->
-            String data = event.data
-            if (data.startsWith("command:update")) {
-                String newValue = getFilesetHtmlValue()
-                if (newValue != files) {
-                    files = newValue
+                }else if(tokens[1] == ("update")){
+                    String newValue = getFilesetHtmlValue()
+                    if (newValue != files) {
+                        files = newValue
+                    }
                 }
-            } else {
-                println("alert >> " + data)
+                return
             }
         } as EventHandler
 
