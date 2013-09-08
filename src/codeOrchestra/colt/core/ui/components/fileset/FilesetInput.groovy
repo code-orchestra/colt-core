@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
+import codeOrchestra.util.SetTimeoutUtil
 import javafx.beans.value.ChangeListener
 import javafx.concurrent.Worker
 import javafx.event.ActionEvent
@@ -105,16 +106,18 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
         WebEngine engine = webView.engine
         engine.getLoadWorker().stateProperty().addListener({ o, oldValue, newState ->
             if (newState == Worker.State.SUCCEEDED) {
-                htmlLoaded = true
-                bridge = new JSBridge(webView.engine) {
-                    @Override
-                    void resize(int height) {
-                        webView.prefHeight = height
+                SetTimeoutUtil.setTimeout(100, {
+                    htmlLoaded = true
+                    bridge = new JSBridge(webView.engine) {
+                        @Override
+                        void resize(int height) {
+                            webView.prefHeight = height
+                        }
                     }
-                }
-                if (files) {
-                    setFilesetHtmlValue(files)
-                }
+                    if (files) {
+                        setFilesetHtmlValue(files)
+                    }
+                })
             }
 
         } as ChangeListener)
