@@ -59,6 +59,8 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
 
     private ContextMenu contextMenu
 
+    boolean fromHtmlUpdate = false
+
     FilesetInput() {
 
 //        styleClass.add("fileset-input")
@@ -78,6 +80,7 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
 
         focusRectangle.toBack()
         focusRectangle.prefHeightProperty().bind(webView.prefHeightProperty().add(2))
+
         webView.focusedProperty().addListener({ o, old, f ->
             focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
             focusRectangle.styleClass.add(f ? "fileset-webview-focus" : "fileset-webview")
@@ -85,6 +88,7 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
                 getJSTopObject().call("requestFocus")
             }
         } as ChangeListener)
+
         widthProperty().addListener({ o, old, f ->
             focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
             focusRectangle.styleClass.add(focused ? "fileset-webview-focus" : "fileset-webview")
@@ -121,12 +125,12 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
                     if (files) {
                         setFilesetHtmlValue(files)
                     }
-                }else if(tokens[1] == ("update")){
-                    Platform.runLater{
-                        String newValue = getFilesetHtmlValue()
-                        if (newValue != files) {
-                            files = newValue
-                        }
+                } else if (tokens[1] == ("update")) {
+                    String newValue = getFilesetHtmlValue()
+                    if (newValue != files) {
+                        fromHtmlUpdate = true
+                        files = newValue
+                        fromHtmlUpdate = false
                     }
                 }
                 return
@@ -142,7 +146,7 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
         //binding
 
         filesProperty.addListener({ o, old, String newValue ->
-            if (htmlLoaded) {
+            if (htmlLoaded && !fromHtmlUpdate) {
                 String oldValue = getFilesetHtmlValue()
                 if (oldValue != files) {
                     setFilesetHtmlValue(newValue)
