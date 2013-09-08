@@ -10,6 +10,7 @@ import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList as OL
+import javafx.concurrent.Worker
 import javafx.event.EventHandler
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
@@ -35,10 +36,11 @@ class LogVisualizer extends VBox {
         String htmlPage = this.class.getResource("html/log-visualizer-webview.html").toExternalForm()
         WebEngine engine = webView.engine
 
-        engine.documentProperty().addListener({ o, oldValue, newValue ->
-            // too early here
-            //htmlLoaded = true
-
+        engine.getLoadWorker().stateProperty().addListener({ o, oldValue, newState ->
+            if (newState == Worker.State.SUCCEEDED) {
+                // too early here
+                //htmlLoaded = true
+            }
         } as ChangeListener)
 
         engine.load(htmlPage)
