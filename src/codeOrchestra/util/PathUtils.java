@@ -1,5 +1,7 @@
 package codeOrchestra.util;
 
+import codeOrchestra.colt.core.LiveCodingManager;
+
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +13,8 @@ public class PathUtils {
 
     private static final String PROJECT_TOKEN = "${project}";
     private static final String COLT_HOME_TOKEN = "${colt_home}";
+
+    private static File applicationBaseDirCached;
 
     private static Set<String> replacementTokens = new HashSet<String>() {{
         add(PROJECT_TOKEN);
@@ -69,7 +73,23 @@ public class PathUtils {
     }
 
     public static File getApplicationBaseDir() {
-        return new File(System.getProperty("colt.base.dir"));
+        String coltBaseDirProp = System.getProperty("colt.base.dir");
+
+        if ("$APP_PACKAGE".equals(coltBaseDirProp)) {
+            if (applicationBaseDirCached != null) {
+                return applicationBaseDirCached;
+            }
+
+            File file = new File(PathUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath().toString());
+            while (!file.getName().equals("COLT.app")) {
+                file = file.getParentFile();
+            }
+
+            applicationBaseDirCached = file;
+            return file;
+        }
+
+        return new File(coltBaseDirProp);
     }
 
     public static File getTemplatesDir() {
@@ -88,6 +108,18 @@ public class PathUtils {
 
         // Looks like we're starting COLT from sources
         return new File(getApplicationBaseDir().getParentFile(), "livecoding_examples");
+    }
+
+    public static File getApplicationExecutable() {
+        if (SystemInfo.isMac) {
+            File executable = new File(getApplicationBaseDir(), "Contents/MacOs/JavaAppLauncher");
+            return executable.exists() ? executable : null;
+        } else if (SystemInfo.isWindows) {
+            File executable = new File(getApplicationBaseDir(), "colt.exe");
+            return executable.exists() ? executable : null;
+        }
+
+        throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));
     }
 
 }
