@@ -6,6 +6,7 @@ import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.SetTimeoutUtil
+import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.concurrent.Worker
 import javafx.event.ActionEvent
@@ -121,9 +122,11 @@ class FilesetInput extends AnchorPane implements MInput, MLabeled {
                         setFilesetHtmlValue(files)
                     }
                 }else if(tokens[1] == ("update")){
-                    String newValue = getFilesetHtmlValue()
-                    if (newValue != files) {
-                        files = newValue
+                    Platform.runLater{
+                        String newValue = getFilesetHtmlValue()
+                        if (newValue != files) {
+                            files = newValue
+                        }
                     }
                 }
                 return
