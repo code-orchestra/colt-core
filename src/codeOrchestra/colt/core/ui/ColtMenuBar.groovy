@@ -11,9 +11,11 @@ import codeOrchestra.colt.core.license.ExpirationHelper
 import codeOrchestra.colt.core.license.LicenseListener
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
+import codeOrchestra.colt.core.rpc.ColtRemoteService
 import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import codeOrchestra.util.ApplicationUtil
+import codeOrchestra.util.SystemInfo
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.Menu
@@ -221,13 +223,21 @@ class ColtMenuBar extends MenuBar {
                 }
         ] as ProjectListener)
 
-        popupMenuItems.addAll(newAs, newJs, save, saveAs)
+        if (SystemInfo.isMac) {
+            popupMenuItems.addAll(newAs, newJs, save, saveAs)
+        } else {
+            //todo: implement
+        }
 
         CodeOrchestraLicenseManager.addListener({
             serial.disable = false
         } as LicenseListener)
 
         setUseSystemMenuBar(true)
+        if (!SystemInfo.isMac) {
+            setVisible(false)
+            setManaged(false)
+        }
     }
 
     private static ColtFacade getColtFacade() {
