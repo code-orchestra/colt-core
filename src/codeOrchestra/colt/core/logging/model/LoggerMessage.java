@@ -45,7 +45,11 @@ public class LoggerMessage {
     return scopes;
   }
 
-  public String getRootSimpleName() {
+  public String getRootFQName() {
+    return rootFQName;
+  }
+
+    public String getRootSimpleName() {
     if (rootFQName != null) {
       return NameUtil.shortNameFromLongName(rootFQName);
     }
