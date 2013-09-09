@@ -369,7 +369,10 @@
 .text, .scroll-pane {
     -fx-font: 13px 'Arial';
     -fx-font-smoothing-type: inherit; }
-
+.notification-text {
+    -fx-font: 11px 'Arial';
+    -fx-font-smoothing-type: inherit;
+}
 /*
 |-------------------------------------------------------------------------------
 | Sidebar

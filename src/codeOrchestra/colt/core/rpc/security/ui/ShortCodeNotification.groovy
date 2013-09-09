@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.rpc.security.ui
 import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityListener
 import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityManager
 import javafx.event.ActionEvent
+import javafx.geometry.Insets
 import javafx.scene.Node as FXNode
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
@@ -25,11 +26,16 @@ class ShortCodeNotification {
             @Override
             void onNewRequest(String requestor, String shortCode) {
                 TextFlow textFlow = new TextFlow()
+                textFlow.minWidth = Double.NEGATIVE_INFINITY
+                textFlow.padding = new Insets(7, 0, 0, 0)
+                textFlow.styleClass.add("notification-text")
                 textFlow.children.add(new Text("'" + requestor + "' has requested authorization to use COLT API.\nTo authorize, enter the following code into that tool: "))
                 Text shortCodeText = new Text(shortCode)
+
                 shortCodeText.setFill(Color.BLUE)
                 textFlow.children.add(shortCodeText)
                 notificationPane.setGraphic(textFlow)
+
 
                 notificationPane.actions.clear()
                 AbstractAction action = new AbstractAction("Copy") {
