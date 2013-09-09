@@ -2,6 +2,7 @@ package codeOrchestra.util;
 
 import codeOrchestra.colt.core.LiveCodingManager;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
@@ -73,6 +74,10 @@ public class PathUtils {
     }
 
     public static File getApplicationBaseDir() {
+        if (StringUtils.isNotEmpty(System.getProperty("application.home"))) {
+            return new File(System.getProperty("application.home"));
+        }
+
         String coltBaseDirProp = System.getProperty("colt.base.dir");
 
         if (StringUtils.isEmpty(coltBaseDirProp)) {
