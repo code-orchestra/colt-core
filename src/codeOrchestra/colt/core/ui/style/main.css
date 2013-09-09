@@ -749,6 +749,7 @@
 .list-view-simplified,
 .list-view-simplified .list-cell,
 .list-view-simplified .list-cell:odd,
+.list-view-simplified:focused,
 .list-view-simplified:focused .list-cell:focused,
 .list-view-simplified:focused .list-cell:focused:odd,
 .list-view-simplified:horizontal .list-cell:filled:selected:hover,
@@ -759,12 +760,14 @@
 .list-view-simplified .list-cell:filled:hover,
 .list-view-simplified:focused .list-cell:filled:focused:selected{
     -fx-background-color: transparent;
-    -fx-background-insets: 0; }
+    -fx-background-insets: 0;
+}
 
 .list-view-simplified .list-cell {
     -fx-opacity: 1;
     -fx-padding: 6px;
-    -fx-text-fill: #515458; }
+    -fx-text-fill: #515458;
+}
 
 /*
 |-------------------------------------------------------------------------------
