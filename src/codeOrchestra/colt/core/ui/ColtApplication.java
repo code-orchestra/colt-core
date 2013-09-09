@@ -173,7 +173,7 @@ public class ColtApplication extends Application {
                         opened = true;
                         break;
                     } catch (ColtException e) {
-                        // ignore
+                        e.printStackTrace();
                     }
                 }
             }
