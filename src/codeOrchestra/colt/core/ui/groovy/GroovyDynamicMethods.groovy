@@ -29,5 +29,13 @@ class GroovyDynamicMethods {
         }
         parentExpando.initialize()
         Parent.metaClass = parentExpando
+
+
+        ExpandoMetaClass nodeExpando = new ExpandoMetaClass(Node, false)
+        nodeExpando.setNewStyleClass = {String it ->
+            styleClass.add(it)
+        }
+        nodeExpando.initialize()
+        Node.metaClass = nodeExpando
     }
 }

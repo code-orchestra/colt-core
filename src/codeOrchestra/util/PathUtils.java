@@ -81,7 +81,7 @@ public class PathUtils {
               file = file.getParentFile();
             }
             return file;
-        } else if ("$APP_PACKAGE".equals(coltBaseDirProp)) {
+        } else if (SystemInfo.isMac && "$APP_PACKAGE".equals(coltBaseDirProp)) {
             if (applicationBaseDirCached != null) {
                 return applicationBaseDirCached;
             }
