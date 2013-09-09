@@ -71,6 +71,8 @@ abstract class ApplicationGUI extends BorderPane {
 
     ApplicationGUI() {
 
+        root.stylesheets.add("/codeOrchestra/colt/core/ui/style/main.css")
+
         root.bottom = new HBox(alignment: Pos.CENTER_RIGHT, prefHeight: -1.0, prefWidth: -1.0, spacing: 5.0, newStyleClass: "status-bar",
                 newChildren: [
                         logFiltersContainer = new HBox(prefHeight:-1.0, prefWidth:-1.0, newStyleClass:"filters", newChildren: [
