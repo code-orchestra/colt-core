@@ -23,6 +23,6 @@ class PopupMenu extends Popup {
 
     void show(javafx.scene.Node node) {
         Point2D point = node.parent.localToScreen(node.layoutX, node.layoutY)
-        super.show(node, point.x - 17, point.y - menuContent.height - 10)
+        super.show(node, point.x - 17, point.y - menuContent.height - 5)
     }
 }

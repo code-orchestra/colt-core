@@ -1,10 +1,15 @@
 package codeOrchestra.colt.core.ui.components.popupmenu
 
 import com.sun.javafx.scene.control.skin.KeystrokeUtils
+import javafx.event.EventHandler
+import javafx.geometry.Insets
+import javafx.geometry.Orientation
 import javafx.scene.control.Button
 import javafx.scene.control.ContentDisplay
 import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
+import javafx.scene.control.Separator
+import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
@@ -33,26 +38,35 @@ class PopupMenuContent extends Region {
     }
 
     void add(MenuItem item) {
-        Button btn = new Button(prefWidth: 220,
-                                contentDisplay: ContentDisplay.GRAPHIC_ONLY,
-                                focusTraversable: false)
+        if (item instanceof SeparatorMenuItem) {
+            Separator separator = new Separator(Orientation.HORIZONTAL)
+            separator.padding = new Insets(5, 0, 5, 0)
+            itemsContainer.children.add(separator)
+        } else {
+            Button btn = new Button(prefWidth: 220,
+                    contentDisplay: ContentDisplay.GRAPHIC_ONLY,
+                    focusTraversable: false)
 
-        btn.onAction = item.onAction
-        btn.disableProperty().bind(item.disableProperty())
+            btn.onAction = item.onAction
+            btn.onAction = {
+                println "btn.height = $btn.height"
+            } as EventHandler
+            btn.disableProperty().bind(item.disableProperty())
 
-        AnchorPane anchorPane = new AnchorPane()
+            AnchorPane anchorPane = new AnchorPane()
 
-        Label text = new Label(item.text)
-        AnchorPane.setLeftAnchor(text, 0)
+            Label text = new Label(item.text)
+            AnchorPane.setLeftAnchor(text, 0)
 
-        Label accelerator = new Label(KeystrokeUtils.toString(item.accelerator))
-        AnchorPane.setRightAnchor(accelerator, 0)
+            Label accelerator = new Label(KeystrokeUtils.toString(item.accelerator))
+            AnchorPane.setRightAnchor(accelerator, 0)
 
-        anchorPane.children.addAll(text, accelerator)
+            anchorPane.children.addAll(text, accelerator)
 
-        btn.graphic = anchorPane
+            btn.graphic = anchorPane
 
-        itemsContainer.children.add(btn)
+            itemsContainer.children.add(btn)
+        }
     }
 
     void addAll(MenuItem... items) {
@@ -61,6 +75,14 @@ class PopupMenuContent extends Region {
 
     @Override
     protected double computePrefHeight(double width) {
-        return itemsContainer.children.size() * 28 + 28
+        double h = 31
+        itemsContainer.children.each {
+            if (it instanceof Separator) {
+                h += 13
+            } else {
+                h += 28
+            }
+        }
+        return h
     }
 }
