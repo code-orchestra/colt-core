@@ -24,7 +24,7 @@ public interface LiveCodingLanguageHandler<P extends Project> {
 
     P parseProject(GPathResult gPathResult, String projectPath);
 
-    P createProject(String pName, File pFile);
+    P createProject(String pName, File pFile, boolean load);
 
     P importProject(File file);
 

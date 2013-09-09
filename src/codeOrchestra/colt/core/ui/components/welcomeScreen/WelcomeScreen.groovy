@@ -57,9 +57,9 @@ class WelcomeScreen extends Pane {
                     int index = tokens[1] as int
                     ColtProjectManager.instance.load(recentProjects[index].path);
                 } else if (tokens[0] == "new-js") {
-                    ProjectDialogs.newJsProjectDialog(scene)
+                    ProjectDialogs.newJsProjectDialog(scene, true)
                 } else if (tokens[0] == "new-as") {
-                    ProjectDialogs.newAsProjectDialog(scene)
+                    ProjectDialogs.newAsProjectDialog(scene, true)
                 } else if (tokens[0] == "open") {
                     ProjectDialogs.openProjectDialog(scene)
                 } else if (tokens[0] == "open-demo") {

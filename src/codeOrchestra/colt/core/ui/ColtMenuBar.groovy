@@ -58,14 +58,14 @@ class ColtMenuBar extends MenuBar {
                                         text: "New AS Project",
                                         id: "new-as",
                                         onAction: { t ->
-                                            ProjectDialogs.newAsProjectDialog(scene)
+                                            ProjectDialogs.newAsProjectDialog(scene, false)
                                         } as EventHandler<ActionEvent>
                                 ),
                                 newJs = new MenuItem(
                                         text: "New JS Project",
                                         id: "new-js",
                                         onAction: { t ->
-                                            ProjectDialogs.newJsProjectDialog(scene)
+                                            ProjectDialogs.newJsProjectDialog(scene, false)
                                         } as EventHandler<ActionEvent>
                                 )
                         ]),

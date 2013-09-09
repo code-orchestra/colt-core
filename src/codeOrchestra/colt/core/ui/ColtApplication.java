@@ -174,8 +174,6 @@ public class ColtApplication extends Application {
         if (!opened) {
             showWelcomeScreen();
         }
-
-//        ScenicView.show(mainStage.getScene());
     }
 
     public void closeProject() {
