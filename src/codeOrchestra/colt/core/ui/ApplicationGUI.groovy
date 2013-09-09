@@ -10,6 +10,7 @@ import codeOrchestra.colt.core.ui.components.log.LogWebView
 import codeOrchestra.colt.core.ui.components.player.ActionPlayerPopup
 import codeOrchestra.colt.core.ui.components.popupmenu.PopupMenu
 import codeOrchestra.colt.core.ui.components.sessionIndicator.SessionIndicatorController
+import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.InvalidationListener
 import javafx.beans.binding.StringBinding
@@ -17,67 +18,90 @@ import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
 import javafx.collections.ListChangeListener
 import javafx.event.EventHandler
-import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.MenuItem
-import javafx.scene.control.ProgressIndicator
-import javafx.scene.control.ToggleButton
-import javafx.scene.control.ToggleGroup
+import javafx.geometry.Pos
+import javafx.scene.control.*
 import javafx.scene.image.ImageView
-import javafx.scene.layout.BorderPane
-import javafx.scene.layout.HBox
+import javafx.scene.layout.*
+import javafx.scene.text.TextAlignment
 
 /**
  * @author Dima Kruk
  */
-abstract class ApplicationGUI extends BorderPane{
+abstract class ApplicationGUI extends BorderPane {
 
-    @FXML protected Label projectTitle
-    @FXML protected Label projectType
+    protected Label projectTitle = new Label(ellipsisString: "…", textAlignment: TextAlignment.CENTER)
+    protected Label projectType = new Label()
 
-    @FXML protected BorderPane root
+    protected BorderPane root = new BorderPane()
 
     protected ActionPlayerPopup actionPlayerPopup
 
     protected ToggleGroup navigationToggleGroup = new ToggleGroup()
-    @FXML protected ToggleButton runButton
-    @FXML protected ToggleButton buildButton
-    @FXML protected ToggleButton settingsButton
 
-    @FXML protected Button popupMenuButton
+    protected ToggleButton runButton = new ToggleButton(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Run", newStyleClass: "btn-run")
+    protected ToggleButton buildButton = new ToggleButton(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Build", newStyleClass: "btn-build")
+    protected ToggleButton settingsButton = new ToggleButton(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Settings", newStyleClass: "btn-settings")
 
-    @FXML protected HBox logFiltersContainer
+    protected Button popupMenuButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, text: "Menu", newStyleClass: "btn-more")
+
+    protected HBox logFiltersContainer
 
     protected ToggleGroup logFilterToggleGroup = new ToggleGroup()
-    @FXML protected ToggleButton logFilterAll
-    @FXML protected ToggleButton logFilterErrors
-    @FXML protected ToggleButton logFilterWarnings
-    @FXML protected ToggleButton logFilterInfo
-    @FXML protected ToggleButton logFilterLog
+    protected ToggleButton logFilterAll = new ToggleButton(mnemonicParsing: false, selected: true, text: "All", minWidth: Double.NEGATIVE_INFINITY)
+    protected ToggleButton logFilterErrors = new ToggleButton(mnemonicParsing: false, selected: true, text: "Errors", minWidth: Double.NEGATIVE_INFINITY)
+    protected ToggleButton logFilterWarnings = new ToggleButton(mnemonicParsing: false, selected: true, text: "Warnings", minWidth: Double.NEGATIVE_INFINITY)
+    protected ToggleButton logFilterInfo = new ToggleButton(mnemonicParsing: false, selected: true, text: "Info", minWidth: Double.NEGATIVE_INFINITY)
+    protected ToggleButton logFilterLog = new ToggleButton(mnemonicParsing: false, selected: true, text: "Log", minWidth: Double.NEGATIVE_INFINITY)
 
-    @FXML protected ProgressIndicator progressIndicator
-    @FXML protected ImageView sessionIndicator
+    protected ImageView sessionIndicator = new ImageView(fitHeight: 13.0, fitWidth: 13.0, layoutX: 1.0, layoutY: 3.0, pickOnBounds: true, preserveRatio: true)
+    protected ProgressIndicator progressIndicator = new ProgressIndicator(layoutX: 0.0, layoutY: 2.0, maxHeight: Double.NEGATIVE_INFINITY, maxWidth: Double.NEGATIVE_INFINITY, prefHeight: 15.0, prefWidth: 15.0, visible: false)
 
     @Lazy LogWebView logView = Log.instance.logWebView
+
     List<ToggleButton> allFilters
 
     @FXBindable String applicationState = ""
 
     ApplicationGUI() {
-        println "ApplicationGUI"
-        FXMLLoader fxmlLoader = new FXMLLoader(ApplicationGUI.class.getResource("main_gui.fxml"))
-        fxmlLoader.root = this
-        fxmlLoader.controller = this
 
-        try {
-            fxmlLoader.load()
-        } catch (IOException exception) {
-            throw new RuntimeException(exception)
-        }
-        initLog()
-        init()
+        println "start application gui"
+
+        GroovyDynamicMethods.init()
+
+        center = root
+        root.bottom = logFiltersContainer = new HBox(alignment: Pos.CENTER_RIGHT, prefHeight: -1.0, prefWidth: -1.0, spacing: 5.0, newStyleClass: "status-bar",
+                newChildren: [
+                        logFilterAll,
+                        logFilterErrors,
+                        logFilterWarnings,
+                        logFilterInfo,
+                        logFilterLog,
+                        new AnchorPane(prefWidth: -1.0, newChildren: [
+                                sessionIndicator, progressIndicator
+                        ]),
+                        projectType
+                ]
+        )
+        root.top = new HBox(alignment: Pos.CENTER, prefHeight: -1.0, prefWidth: 200.0, newStyleClass: "title-bar", newChildren: [
+                projectTitle
+        ])
+
+        VBox sidebar; Pane leftPane
+        left = sidebar = new VBox(
+                runButton,
+                buildButton,
+                settingsButton,
+                leftPane = new Pane(maxHeight: 1.7976931348623157E308),
+                popupMenuButton
+
+        )
+        VBox.setVgrow(leftPane, Priority.ALWAYS)
+        sidebar.maxWidth = Double.NEGATIVE_INFINITY
+        sidebar.styleClass.add("sidebar")
+
+        println "ApplicationGUI"
+
+        initLog(); init()
     }
 
     private void init() {
@@ -103,7 +127,7 @@ abstract class ApplicationGUI extends BorderPane{
 
         PopupMenu popupMenu = new PopupMenu()
         ArrayList<MenuItem> items = ColtApplication.get().menuBar.popupMenuItems
-        items.each {popupMenu.menuContent.add(it)}
+        items.each { popupMenu.menuContent.add(it) }
 
         popupMenuButton.onAction = {
             popupMenu.isShowing() ? popupMenu.hide() : popupMenu.show(popupMenuButton)
@@ -125,7 +149,7 @@ abstract class ApplicationGUI extends BorderPane{
         } as InvalidationListener)
 
         root.centerProperty().addListener({ o, old, javafx.scene.Node newValue ->
-            allFilters.each {it.visible = root.center == logView }
+            allFilters.each { it.visible = root.center == logView }
             updateLogFilter()
         } as ChangeListener)
 
@@ -140,6 +164,7 @@ abstract class ApplicationGUI extends BorderPane{
             {
                 super.bind(value, applicationState())
             }
+
             @Override
             protected String computeValue() {
                 value.get().capitalize() + " / " + getApplicationState()
@@ -166,7 +191,7 @@ abstract class ApplicationGUI extends BorderPane{
     }
 
     private String logFilterPrefix(Level... levels) {
-        if(logView.logMessages.empty || logFiltersContainer.width < 300) return  ""
+        if (logView.logMessages.empty || logFiltersContainer.width < 300) return ""
         " (" + logView.logMessages.grep { LogMessage m -> m.level in levels }.size() + ")"
     }
 
