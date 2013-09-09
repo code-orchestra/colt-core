@@ -10,7 +10,7 @@ import javafx.scene.control.TextField
  * @author Dima Kruk
  */
 abstract class InputWithErrorBase extends TitledInputBase implements MInput {
-    protected final TextField textField = new TextField(layoutY: 23, prefHeight: 30)
+    protected TextField textField = new TextField(layoutY: 23, prefHeight: 30)
 
     @FXBindable String text
 
