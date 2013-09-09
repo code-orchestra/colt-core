@@ -192,6 +192,51 @@ public class ColtApplication extends Application {
         }
     }
 
+    private void doAfterUIInitOld(){
+        // COLT-287
+        System.setProperty("jsse.enableSNIExtension", "false");
+
+        // Intercept start by license check
+        StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
+        if (startupInterceptType != StartupInterceptType.START) {
+            System.exit(1);
+        }
+
+        ColtRunningKey.setRunning(true);
+        new Thread(){
+            @Override
+            public void run() {
+                CodeOrchestraResourcesHttpServer.getInstance().init();
+
+                CodeOrchestraRPCHttpServer.getInstance().init();
+                CodeOrchestraRPCHttpServer.getInstance().addServlet(ColtRemoteServiceServlet.getInstance(), "/coltService");
+
+            }
+        }.start();
+
+        primaryStage.hide();
+
+        // Open most recent project
+        boolean opened = false;
+        if (RecentProjects.mustOpenRecentProject()) {
+            for (String recentProjectPath : RecentProjects.getRecentProjectsPaths()) {
+                File projectFile = new File(recentProjectPath);
+                if (projectFile.exists()) {
+                    try {
+                        ColtProjectManager.getInstance().load(projectFile.getPath());
+                        opened = true;
+                        break;
+                    } catch (ColtException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        if (!opened) {
+            showWelcomeScreen();
+        }
+    }
+
     public void closeProject() {
         if (mainStage.isShowing()) {
             mainStage.hide();
