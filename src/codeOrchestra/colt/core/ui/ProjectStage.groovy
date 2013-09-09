@@ -26,7 +26,6 @@ class ProjectStage extends Stage {
         setTitle("COLT — Code Orchestra Livecoding Tool (1.2)")
         scene = new Scene(root, 480, 768)
         addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, {WindowEvent windowEvent ->
-            println "windowEvent = $windowEvent"
             if (ChangingMonitor.getInstance().isChanged()) {
                 ColtDialogs.showCloseProjectDialog(this, windowEvent)
             }

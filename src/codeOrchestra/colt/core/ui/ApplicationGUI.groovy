@@ -71,8 +71,6 @@ abstract class ApplicationGUI extends BorderPane {
 
     ApplicationGUI() {
 
-        println "start application gui"
-
         root.bottom = new HBox(alignment: Pos.CENTER_RIGHT, prefHeight: -1.0, prefWidth: -1.0, spacing: 5.0, newStyleClass: "status-bar",
                 newChildren: [
                         logFiltersContainer = new HBox(prefHeight:-1.0, prefWidth:-1.0, newStyleClass:"filters", newChildren: [
@@ -108,8 +106,6 @@ abstract class ApplicationGUI extends BorderPane {
         VBox.setVgrow(leftPane, Priority.ALWAYS)
         sidebar.maxWidth = NEGATIVE_INFINITY
         sidebar.styleClass.add("sidebar")
-
-        println "ApplicationGUI"
 
         initLog(); init()
     }
