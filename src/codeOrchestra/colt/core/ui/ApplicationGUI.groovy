@@ -55,10 +55,10 @@ abstract class ApplicationGUI extends BorderPane {
 
     protected ToggleGroup logFilterToggleGroup = new ToggleGroup()
     protected ToggleButton logFilterAll = new ToggleButton(mnemonicParsing: false, selected: true, text: "All", minWidth: NEGATIVE_INFINITY)
-    protected ToggleButton logFilterErrors = new ToggleButton(mnemonicParsing: false, selected: true, text: "Errors", minWidth: NEGATIVE_INFINITY)
-    protected ToggleButton logFilterWarnings = new ToggleButton(mnemonicParsing: false, selected: true, text: "Warnings", minWidth: NEGATIVE_INFINITY)
-    protected ToggleButton logFilterInfo = new ToggleButton(mnemonicParsing: false, selected: true, text: "Info", minWidth: NEGATIVE_INFINITY)
-    protected ToggleButton logFilterLog = new ToggleButton(mnemonicParsing: false, selected: true, text: "Log", minWidth: NEGATIVE_INFINITY)
+    protected ToggleButton logFilterErrors = new ToggleButton(mnemonicParsing: false, selected: false, text: "Errors", minWidth: NEGATIVE_INFINITY)
+    protected ToggleButton logFilterWarnings = new ToggleButton(mnemonicParsing: false, selected: false, text: "Warnings", minWidth: NEGATIVE_INFINITY)
+    protected ToggleButton logFilterInfo = new ToggleButton(mnemonicParsing: false, selected: false, text: "Info", minWidth: NEGATIVE_INFINITY)
+    protected ToggleButton logFilterLog = new ToggleButton(mnemonicParsing: false, selected: false, text: "Log", minWidth: NEGATIVE_INFINITY)
 
     protected ImageView sessionIndicator = new ImageView(fitHeight: 13.0, fitWidth: 13.0, layoutX: 1.0, layoutY: 3.0, pickOnBounds: true, preserveRatio: true)
     protected ProgressIndicator progressIndicator = new ProgressIndicator(layoutX: 0.0, layoutY: 2.0, maxHeight: NEGATIVE_INFINITY, maxWidth: NEGATIVE_INFINITY, prefHeight: 15.0, prefWidth: 15.0, visible: false)
