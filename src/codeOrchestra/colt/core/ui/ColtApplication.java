@@ -12,6 +12,7 @@ import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.tasks.TasksManager;
 import codeOrchestra.colt.core.tracker.GAController;
 import codeOrchestra.lcs.license.ColtRunningKey;
+import codeOrchestra.util.ApplicationUtil;
 import codeOrchestra.util.StringUtils;
 import com.sun.javafx.css.StyleManager;
 import javafx.animation.KeyFrame;
@@ -54,13 +55,12 @@ public class ColtApplication extends Application {
     private boolean disposed;
 
     private Stage primaryStage;
-
     private StackPane splashLayout;
-
     private WelcomeScreenStage welcomeScreenStage;
-
     private ProjectStage mainStage;
     private Node currentPluginNode;
+
+    private boolean startWasRecentlyRequested = ApplicationUtil.coltStartWasRecentlyRequested();
 
     public static long timeStarted;
 
@@ -77,7 +77,10 @@ public class ColtApplication extends Application {
         StyleManager.getInstance().addUserAgentStylesheet("/codeOrchestra/colt/core/ui/style/main.css");
 
         GAController.getInstance().start(primaryStage);
-        initSplash();
+
+        if (!startWasRecentlyRequested) {
+            initSplash();
+        }
 
         welcomeScreenStage = new WelcomeScreenStage();
 
@@ -90,13 +93,16 @@ public class ColtApplication extends Application {
             dispose();
         });
 
-        showSplash();
-
-        timeline = new Timeline(new KeyFrame(new Duration(1000), actionEvent -> {
-            timeline.stop();
-            Platform.runLater(this::doAfterUIInit);
-        }));
-        timeline.play();
+        if (!startWasRecentlyRequested) {
+            showSplash();
+            timeline = new Timeline(new KeyFrame(new Duration(1000), actionEvent -> {
+                timeline.stop();
+                Platform.runLater(this::doAfterUIInit);
+            }));
+            timeline.play();
+        } else {
+            doAfterUIInit();
+        }
     }
 
     private void showSplash() {
@@ -174,8 +180,6 @@ public class ColtApplication extends Application {
         if (!opened) {
             showWelcomeScreen();
         }
-
-//        ScenicView.show(mainStage.getScene());
     }
 
     public void closeProject() {

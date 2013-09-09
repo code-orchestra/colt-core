@@ -33,6 +33,10 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
         return ideaDevLiveCodingHandlerLoader;
     }
 
+    public LiveCodingLanguageHandler get(String id) throws LiveCodingHandlerLoadingException {
+        return getLoader().load(id);
+    }
+
     @Override
     public LiveCodingLanguageHandler load(String id) throws LiveCodingHandlerLoadingException {
         if (currentHandler != null) {
@@ -43,20 +47,22 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
             dispose();
         }
 
-        currentHandler = getLoader().load(id);
+        currentHandler = get(id);
 
         // Start the RPC service
         ColtRemoteServiceServlet.getInstance().refreshService();
 
+        // Init
         currentHandler.initHandler();
 
+        // Load UI
         try {
             ColtApplication.get().setPluginPane(currentHandler.getPane());
         } catch (Exception e) {
             throw new LiveCodingHandlerLoadingException("Couldn't init the live coding handler UI", e);
         }
 
-        return getCurrentHandler();
+        return currentHandler;
     }
 
     public void dispose() {

@@ -1,5 +1,9 @@
 package codeOrchestra.util;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * @author Alexander Eliseyev
  */
@@ -16,4 +20,9 @@ public class DateUtils {
   public static final int RANGE_WEEK_CENTER = 4;
   public static final int RANGE_MONTH_SUNDAY = 5;
   public static final int RANGE_MONTH_MONDAY = 6;
+
+  public static String getCurrentDate() {
+      return DateFormat.getTimeInstance(DateFormat.DEFAULT, Locale.US).format(new Date());
+  }
+
 }

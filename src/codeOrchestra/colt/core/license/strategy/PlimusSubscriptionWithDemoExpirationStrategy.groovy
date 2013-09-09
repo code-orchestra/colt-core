@@ -12,6 +12,7 @@ import codeOrchestra.colt.core.ui.ColtApplication
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs
 import codeOrchestra.colt.core.ui.dialog.SerialNumberDialog
 import codeOrchestra.colt.core.ui.dialog.SerialNumberEvent
+import codeOrchestra.util.ApplicationUtil
 import codeOrchestra.util.DateUtils
 import codeOrchestra.util.StringUtils
 import javafx.event.EventHandler
@@ -142,13 +143,14 @@ class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationStrategy
 
     @Override
     void handleExpiration() {
-        demoMode = true;
+        demoMode = true
 
-        String expireMessage = String.format("COLT is in Demo mode. Compilations count is limited to %d.", DemoHelper.get().getMaxCompilationsCount() - 1);
-
-        ColtDialogs.showInfo(ColtApplication.get().getPrimaryStage(),
-                "COLT License",
-                expireMessage);
+        if (!ApplicationUtil.coltStartWasRecentlyRequested()) {
+            String expireMessage = String.format("COLT is in Demo mode. Compilations count is limited to %d.", DemoHelper.get().getMaxCompilationsCount() - 1);
+            ColtDialogs.showInfo(ColtApplication.get().getPrimaryStage(),
+                    "COLT License",
+                    expireMessage)
+        }
     }
 
     private boolean haventValidatedOnServerForTooLong() {
@@ -172,18 +174,22 @@ class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationStrategy
             return false;
         }
 
-        Boolean[] result = { false }
-        SerialNumberDialog serialNumberDialog = new SerialNumberDialog(ColtApplication.get().getPrimaryStage());
-        serialNumberDialog.onInput = { SerialNumberEvent t ->
-            if (t.cancelled) {
-                result[0] = false
-            } else if (processSerialNumber(t.serialNumber)) {
-                result[0] = true
-            }
-        } as EventHandler
-        serialNumberDialog.show()
+        if (!ApplicationUtil.coltStartWasRecentlyRequested()) {
+            Boolean[] result = { false }
+            SerialNumberDialog serialNumberDialog = new SerialNumberDialog(ColtApplication.get().getPrimaryStage());
+            serialNumberDialog.onInput = { SerialNumberEvent t ->
+                if (t.cancelled) {
+                    result[0] = false
+                } else if (processSerialNumber(t.serialNumber)) {
+                    result[0] = true
+                }
+            } as EventHandler
+            serialNumberDialog.show()
 
-        return result[0];
+            return result[0];
+        }
+
+        return false;
     }
 
     @Override

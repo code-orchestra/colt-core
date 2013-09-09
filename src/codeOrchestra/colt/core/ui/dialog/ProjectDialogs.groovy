@@ -20,28 +20,26 @@ import javafx.stage.FileChooser
  */
 class ProjectDialogs {
 
-    static void newAsProjectDialog(Scene scene) {
-        FileChooser fileChooser = new FileChooser()
-        fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
-        File file = fileChooser.showSaveDialog(scene.window)
-        if (file != null) {
-            try {
-                // TODO: a handler must be defined by the user (AS, JS, etc)
-                ColtProjectManager.instance.create("AS", file.name[0..-6], file)
-            } catch (ColtException e) {
-                ErrorHandler.handle(e, "Can't create a new project")
-            }
-        }
+    static void newAsProjectDialog(Scene scene, boolean load) {
+        newProjectDialog(scene, "AS", load)
     }
 
-    static void newJsProjectDialog(Scene scene) {
+    static void newJsProjectDialog(Scene scene, boolean load) {
+        newProjectDialog(scene, "JS", load)
+    }
+
+    private static void newProjectDialog(Scene scene, String handlerId, boolean load) {
         FileChooser fileChooser = new FileChooser()
         fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
         File file = fileChooser.showSaveDialog(scene.window)
         if (file != null) {
             try {
-                // TODO: a handler must be defined by the user (AS, JS, etc)
-                ColtProjectManager.instance.create("JS", file.name[0..-6], file)
+                ColtProjectManager.instance.create(handlerId, file.name[0..-6], file, load)
+                if (!load) {
+                    RecentProjects.mustOpenRecentProject = true
+                    RecentProjects.addRecentProject(file.path)
+                    ApplicationUtil.startAnotherColtInstance()
+                }
             } catch (ColtException e) {
                 ErrorHandler.handle(e, "Can't create a new project")
             }
