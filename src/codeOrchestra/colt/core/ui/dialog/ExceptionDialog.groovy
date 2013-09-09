@@ -49,6 +49,8 @@ class ExceptionDialog extends DialogWithImage {
     @Override
     protected void initCenter() {
         textArea = new TextArea(prefHeight: 200,  wrapText: true)
+        textArea.editable = false
+        textArea.stylesheets.add("/codeOrchestra/colt/core/ui/style/main.css")
         setMargin(textArea, new Insets(17, 0, 0, 0))
         setVgrow(textArea, Priority.ALWAYS)
 
