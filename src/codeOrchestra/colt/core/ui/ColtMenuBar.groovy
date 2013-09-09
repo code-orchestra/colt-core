@@ -233,8 +233,9 @@ class ColtMenuBar extends MenuBar {
             serial.disable = false
         } as LicenseListener)
 
-        setUseSystemMenuBar(true)
-        if (!SystemInfo.isMac) {
+        if (SystemInfo.isMac) {
+            setUseSystemMenuBar(true)
+        } else {
             setVisible(false)
             setManaged(false)
         }
