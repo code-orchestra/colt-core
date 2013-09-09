@@ -32,7 +32,7 @@ import static javafx.scene.control.ContentDisplay.*
  */
 abstract class ApplicationGUI extends BorderPane {
 
-    static{
+    static {
         GroovyDynamicMethods.init()
     }
 
@@ -73,33 +73,38 @@ abstract class ApplicationGUI extends BorderPane {
 
         println "start application gui"
 
-        setCenter(center)
-        root.bottom = logFiltersContainer = new HBox(alignment: Pos.CENTER_RIGHT, prefHeight: -1.0, prefWidth: -1.0, spacing: 5.0, newStyleClass: "status-bar",
+        root.bottom = new HBox(alignment: Pos.CENTER_RIGHT, prefHeight: -1.0, prefWidth: -1.0, spacing: 5.0, newStyleClass: "status-bar",
                 newChildren: [
-                        logFilterAll,
-                        logFilterErrors,
-                        logFilterWarnings,
-                        logFilterInfo,
-                        logFilterLog,
+                        logFiltersContainer = new HBox(prefHeight:-1.0, prefWidth:-1.0, newStyleClass:"filters", newChildren: [
+                                logFilterAll,
+                                logFilterErrors,
+                                logFilterWarnings,
+                                logFilterInfo,
+                                logFilterLog
+                        ]),
                         new AnchorPane(prefWidth: -1.0, newChildren: [
                                 sessionIndicator, progressIndicator
                         ]),
                         projectType
                 ]
         )
+        HBox.setHgrow(logFiltersContainer, Priority.ALWAYS)
+
         root.top = new HBox(alignment: Pos.CENTER, prefHeight: -1.0, prefWidth: 200.0, newStyleClass: "title-bar", newChildren: [
                 projectTitle
         ])
 
+        setCenter(root)
+
         VBox sidebar; Pane leftPane
-        left = sidebar = new VBox(
+        setLeft(sidebar = new VBox(
                 runButton,
                 buildButton,
                 settingsButton,
                 leftPane = new Pane(maxHeight: 1.7976931348623157E308),
                 popupMenuButton
 
-        )
+        ))
         VBox.setVgrow(leftPane, Priority.ALWAYS)
         sidebar.maxWidth = NEGATIVE_INFINITY
         sidebar.styleClass.add("sidebar")
