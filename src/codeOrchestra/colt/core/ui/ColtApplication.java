@@ -79,22 +79,11 @@ public class ColtApplication extends Application {
 
         GAController.getInstance().start(primaryStage);
 
-        if (!startWasRecentlyRequested) {
-            initSplash();
-        }
-
-        welcomeScreenStage = new WelcomeScreenStage();
-
         menuBar = new ColtMenuBar();
         menuBar.setUseSystemMenuBar(true);
 
-        mainStage = new ProjectStage();
-        mainStage.getRoot().getChildren().add(menuBar);
-        mainStage.setOnCloseRequest(windowEvent -> {
-            dispose();
-        });
-
         if (!startWasRecentlyRequested) {
+            initSplash();
             showSplash();
             timeline = new Timeline(new KeyFrame(new Duration(1000), actionEvent -> {
                 timeline.stop();
@@ -143,6 +132,8 @@ public class ColtApplication extends Application {
         Platform.exit();
     }
 
+    public String path;
+
     private void doAfterUIInit() {
         // COLT-287
         System.setProperty("jsse.enableSNIExtension", "false");
@@ -154,31 +145,49 @@ public class ColtApplication extends Application {
         }
 
         ColtRunningKey.setRunning(true);
+        new Thread(){
+            @Override
+            public void run() {
+                CodeOrchestraResourcesHttpServer.getInstance().init();
 
-        CodeOrchestraResourcesHttpServer.getInstance().init();
+                CodeOrchestraRPCHttpServer.getInstance().init();
+                CodeOrchestraRPCHttpServer.getInstance().addServlet(ColtRemoteServiceServlet.getInstance(), "/coltService");
 
-        CodeOrchestraRPCHttpServer.getInstance().init();
-        CodeOrchestraRPCHttpServer.getInstance().addServlet(ColtRemoteServiceServlet.getInstance(), "/coltService");
+            }
+        }.start();
 
         primaryStage.hide();
 
-        // Open most recent project
-        boolean opened = false;
         if (RecentProjects.mustOpenRecentProject()) {
             for (String recentProjectPath : RecentProjects.getRecentProjectsPaths()) {
                 File projectFile = new File(recentProjectPath);
                 if (projectFile.exists()) {
-                    try {
-                        ColtProjectManager.getInstance().load(projectFile.getPath());
-                        opened = true;
-                        break;
-                    } catch (ColtException e) {
-                        e.printStackTrace();
-                    }
+                    path = projectFile.getPath();
+                    break;
                 }
             }
         }
-        if (!opened) {
+
+        if (path != null) {
+            initProjectStage();
+            primaryStage = mainStage;
+            primaryStage.show();
+            new Thread(){
+                @Override
+                public void run() {
+                    // Open most recent project
+                    if (path != null) {
+                        Platform.runLater(() -> {
+                            try {
+                                ColtProjectManager.getInstance().load(path);
+                            } catch (ColtException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+                }
+            }.start();
+        } else {
             showWelcomeScreen();
         }
     }
@@ -191,6 +200,9 @@ public class ColtApplication extends Application {
     }
 
     public void showWelcomeScreen() {
+        if (welcomeScreenStage == null) {
+            welcomeScreenStage = new WelcomeScreenStage();
+        }
         primaryStage = welcomeScreenStage;
         primaryStage.show();
     }
@@ -199,9 +211,33 @@ public class ColtApplication extends Application {
         return primaryStage;
     }
 
+    private void initProjectStage() {
+        mainStage = new ProjectStage();
+        mainStage.getRoot().getChildren().add(menuBar);
+        mainStage.setOnCloseRequest(windowEvent -> {
+            dispose();
+        });
+//        currentPluginNode = new ApplicationGUI() {
+//            @Override
+//            protected void initLog() {
+//                //To change body of implemented methods use File | Settings | File Templates.
+//            }
+//
+//            @Override
+//            protected void initGoogleAnalytics() {
+//                //To change body of implemented methods use File | Settings | File Templates.
+//            }
+//
+//        };
+//        mainStage.getRoot().getChildren().add(currentPluginNode);
+    }
+
     public void setPluginPane(Node node) {
-        if (primaryStage == welcomeScreenStage) {
+        if (primaryStage instanceof WelcomeScreenStage) {
             primaryStage.hide();
+        }
+        if (mainStage == null) {
+            initProjectStage();
         }
         if (primaryStage != mainStage) {
             primaryStage = mainStage;
