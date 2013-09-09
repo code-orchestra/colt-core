@@ -13,11 +13,13 @@ import java.util.prefs.Preferences
 class ApplicationUtil {
 
     private static final String LAST_START_REQUEST_KEY = "last_start_request"
-    private static final int REQUEST_TIMEOUT = 3000
+    private static final int REQUEST_TIMEOUT = 5000
 
     private static Preferences preferences = Preferences.userNodeForPackage(ApplicationUtil.class)
 
     static void startAnotherColtInstance() throws IOException {
+        resetLastStartRequestDate()
+
         if (SystemInfo.isMac) {
             File baseDir = PathUtils.applicationBaseDir
             if (baseDir.path.endsWith(".app")) {
@@ -35,7 +37,6 @@ class ApplicationUtil {
             throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"))
         }
 
-        resetLastStartRequestDate()
         ApplicationRestarter.start()
     }
 
