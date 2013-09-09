@@ -80,7 +80,6 @@ public class ColtApplication extends Application {
         GAController.getInstance().start(primaryStage);
 
         menuBar = new ColtMenuBar();
-        menuBar.setUseSystemMenuBar(true);
 
         if (!startWasRecentlyRequested) {
             initSplash();

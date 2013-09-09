@@ -6,7 +6,7 @@ import codeOrchestra.colt.core.ui.dialog.ColtDialogs
 import javafx.event.EventHandler
 import javafx.scene.Scene
 import javafx.scene.layout.Pane
-import javafx.scene.layout.StackPane
+import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import javafx.stage.WindowEvent
 
@@ -21,7 +21,7 @@ class ProjectStage extends Stage {
 
 
     ProjectStage() {
-        root = new StackPane()
+        root = new VBox()
 
         setTitle("COLT — Code Orchestra Livecoding Tool (1.2)")
         scene = new Scene(root, 480, 768)
