@@ -48,9 +48,6 @@ class PopupMenuContent extends Region {
                     focusTraversable: false)
 
             btn.onAction = item.onAction
-            btn.onAction = {
-                println "btn.height = $btn.height"
-            } as EventHandler
             btn.disableProperty().bind(item.disableProperty())
 
             AnchorPane anchorPane = new AnchorPane()
