@@ -142,10 +142,17 @@ class ColtMenuBar extends MenuBar {
                                             coltFacade.stopSession()
                                         } as EventHandler<ActionEvent>
                                 ),
+                                new SeparatorMenuItem(),
                                 new MenuItem(
                                         text: "Pause",
                                         onAction: { t ->
                                             coltFacade.pauseSession()
+                                        } as EventHandler<ActionEvent>
+                                ),
+                                new MenuItem(
+                                        text: "Resume",
+                                        onAction: { t ->
+                                            coltFacade.resumeSession()
                                         } as EventHandler<ActionEvent>
                                 ),
                                 new SeparatorMenuItem(),

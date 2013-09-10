@@ -17,6 +17,8 @@ public abstract class AbstractLiveCodingManager<P extends Project, S> implements
 
     private List<LiveCodingListener> liveCodingListeners = new ArrayList<>();
 
+    protected boolean paused;
+
     @Override
     public List<LiveCodingSession<S>> getCurrentConnections() {
         List<LiveCodingSession<S>> liveCodingSessions = new ArrayList<>(currentSessions.values());
@@ -28,6 +30,28 @@ public abstract class AbstractLiveCodingManager<P extends Project, S> implements
         });
         return liveCodingSessions;
     }
+
+    @Override
+    public boolean isPaused() {
+        return paused;
+    }
+
+    @Override
+    public final void pause() {
+        paused = true;
+
+        fireSessionsPaused();
+    }
+
+    @Override
+    public final void flush() {
+        doFlush();
+
+        paused = false;
+        fireSessionsResumed();
+    }
+
+    protected abstract void doFlush();
 
     @Override
     public LiveCodingSession getSession(String clientId) {
@@ -57,6 +81,22 @@ public abstract class AbstractLiveCodingManager<P extends Project, S> implements
         synchronized (listenerMonitor) {
             for (LiveCodingListener listener : liveCodingListeners) {
                 listener.onSessionStart(session);
+            }
+        }
+    }
+
+    private void fireSessionsPaused() {
+        synchronized (listenerMonitor) {
+            for (LiveCodingListener listener : liveCodingListeners) {
+                listener.onSessionPause();
+            }
+        }
+    }
+
+    private void fireSessionsResumed() {
+        synchronized (listenerMonitor) {
+            for (LiveCodingListener listener : liveCodingListeners) {
+                listener.onSessionResume();
             }
         }
     }

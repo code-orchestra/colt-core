@@ -27,6 +27,12 @@ public interface LiveCodingManager<P extends Project, S> extends ColtService<P> 
 
     void removeListener(LiveCodingListener listener);
 
+    void pause();
+
+    void flush();
+
+    boolean isPaused();
+
     void dispose();
 
 }
