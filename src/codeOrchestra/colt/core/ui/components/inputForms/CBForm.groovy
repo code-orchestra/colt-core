@@ -56,7 +56,6 @@ class CBForm extends AnchorPane implements MChoiceBox {
         setLeftAnchor(hb, 19)
         setLeftAnchor(choiceBox, 10)
         setRightAnchor(checkBox, 10)
-        setLeftAnchor(choiceBox, 10)
         setLeftAnchor(errorLabel, 125)
         setRightAnchor(errorLabel, 10)
 
