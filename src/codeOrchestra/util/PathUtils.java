@@ -1,6 +1,7 @@
 package codeOrchestra.util;
 
 import codeOrchestra.colt.core.LiveCodingManager;
+import codeOrchestra.colt.core.model.Project;
 
 import javax.swing.*;
 import java.io.File;
@@ -31,7 +32,7 @@ public class PathUtils {
         return null;
     }
 
-    public static String makeRelative(String absolutePath) {
+    public static String makeRelative(String absolutePath, Project project) {
         if (absolutePath == null) {
             return null;
         }
@@ -41,7 +42,7 @@ public class PathUtils {
 
         String relativePath = absolutePath;
 
-        String projectPath = ProjectHelper.getCurrentProject().getBaseDir().getPath();
+        String projectPath = project.getBaseDir().getPath();
         if (relativePath.contains(projectPath)) {
             relativePath = absolutePath.replace(projectPath, PROJECT_TOKEN);
         }

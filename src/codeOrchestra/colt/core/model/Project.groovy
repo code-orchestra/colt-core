@@ -6,7 +6,7 @@ import groovy.xml.MarkupBuilder
 /**
  * @author Dima Kruk
  */
-abstract class Project implements IModelElement {
+abstract class Project {
 
     @FXBindable String name = ""
     String path
@@ -22,14 +22,13 @@ abstract class Project implements IModelElement {
 
     abstract String getProjectType();
 
-    @Override
     void buildModel(Object node) {
         name = node.@projectName
     }
 
     String toXmlString() {
         StringWriter writer = new StringWriter()
-        new MarkupBuilder(writer).xml(projectName:name, projectType:getProjectType(), buildXml())
+        new MarkupBuilder(writer).xml(projectName:name, projectType:getProjectType(), buildXml(this))
         writer.toString()
     }
 
