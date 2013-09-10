@@ -25,6 +25,14 @@ public class FileUtils {
         }
     };
 
+    public static String normalize(String path) {
+        if (SystemInfo.isWindows) {
+            return path.replace("/", "\\");
+        } else {
+            return path.replace("\\", "/");
+        }
+    }
+
     public static String getFileExtension(File file) {
         if (file.isDirectory()) {
             return null;

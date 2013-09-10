@@ -71,6 +71,8 @@ public class PathUtils {
             }
         }
 
+        absolutePath = FileUtils.normalize(absolutePath);
+
         return absolutePath;
     }
 
