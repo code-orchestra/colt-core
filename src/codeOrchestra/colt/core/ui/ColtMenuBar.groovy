@@ -234,6 +234,7 @@ class ColtMenuBar extends MenuBar {
             popupMenuItems.addAll(newAs, newJs, save, saveAs)
         } else {
             //todo: implement
+            popupMenuItems.addAll(menus)
         }
 
         CodeOrchestraLicenseManager.addListener({
