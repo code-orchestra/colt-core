@@ -135,7 +135,10 @@ abstract class ApplicationGUI extends BorderPane {
 
         PopupMenu popupMenu = new PopupMenu()
         ArrayList<MenuItem> items = ColtApplication.get().menuBar.popupMenuItems
-        items.each { popupMenu.menuContent.add(it) }
+        items.each {
+            popupMenu.menuContent.add(it)
+            popupMenu.contextMenu.items.add(it)
+        }
 
         popupMenuButton.onAction = {
             popupMenu.isShowing() ? popupMenu.hide() : popupMenu.show(popupMenuButton)

@@ -44,6 +44,7 @@ class PopupMenuContent extends Region {
             itemsContainer.children.add(separator)
         } else {
             Button btn = new Button(prefWidth: 220,
+                    prefHeight: 28,
                     contentDisplay: ContentDisplay.GRAPHIC_ONLY,
                     focusTraversable: false)
 
