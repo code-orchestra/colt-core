@@ -15,6 +15,8 @@ public interface ColtFacade extends ColtService {
 
     void pauseSession();
 
+    void resumeSession();
+
     void restartSession();
 
     // Connections

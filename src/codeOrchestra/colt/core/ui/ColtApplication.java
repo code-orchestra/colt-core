@@ -279,5 +279,4 @@ public class ColtApplication extends Application {
         return menuBar;
     }
 
-
 }
