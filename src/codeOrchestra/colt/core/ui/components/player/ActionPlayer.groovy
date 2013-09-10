@@ -1,5 +1,8 @@
 package codeOrchestra.colt.core.ui.components.player
 
+import javafx.beans.InvalidationListener
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.control.Button
@@ -38,6 +41,12 @@ class ActionPlayer extends AnchorPane {
 //        pause.disableProperty().bind(pause.selectedProperty())
         play.disableProperty().bind(play.selectedProperty())
         stop.disableProperty().bind(stop.selectedProperty())
+
+        stop.selectedProperty().addListener({ ObservableValue<? extends Boolean> observableValue, Boolean t, Boolean newValue ->
+            if (newValue) {
+                showAdd(false)
+            }
+        } as ChangeListener)
 
         showAdd(false)
     }
