@@ -1,7 +1,12 @@
 package codeOrchestra.colt.core.ui
 
+import codeOrchestra.colt.core.LiveCodingManager
+import codeOrchestra.colt.core.ServiceProvider
 import codeOrchestra.colt.core.logging.Level
 import codeOrchestra.colt.core.rpc.security.ui.ShortCodeNotification
+import codeOrchestra.colt.core.session.LiveCodingSession
+import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
+import codeOrchestra.colt.core.session.listener.LiveCodingListener
 import codeOrchestra.colt.core.ui.components.ProgressIndicatorController
 import codeOrchestra.colt.core.ui.components.log.Log
 import codeOrchestra.colt.core.ui.components.log.LogFilter
@@ -12,6 +17,7 @@ import codeOrchestra.colt.core.ui.components.popupmenu.PopupMenu
 import codeOrchestra.colt.core.ui.components.sessionIndicator.SessionIndicatorController
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import codeOrchestra.groovyfx.FXBindable
+import javafx.application.Platform
 import javafx.beans.InvalidationListener
 import javafx.beans.binding.StringBinding
 import javafx.beans.property.StringProperty
@@ -69,6 +75,19 @@ abstract class ApplicationGUI extends BorderPane {
 
     @FXBindable String applicationState = ""
 
+    private LiveCodingListener liveCodingListener = new LiveCodingAdapter() {
+        @Override
+        void onSessionEnd(LiveCodingSession session) {
+            LiveCodingManager liveCodingManager = getLiveCodingManager()
+            if (liveCodingManager.currentConnections.size() == 0) {
+                Platform.runLater({
+                    actionPlayerPopup.actionPlayer.stop.selected = true
+                    actionPlayerPopup.actionPlayer.disable = false
+                })
+            }
+        }
+    }
+
     ApplicationGUI() {
 
         root.stylesheets.add("/codeOrchestra/colt/core/ui/style/main.css")
@@ -111,6 +130,8 @@ abstract class ApplicationGUI extends BorderPane {
 
         initLog(); init()
     }
+
+    LiveCodingManager get
 
     private void init() {
         initGoogleAnalytics()
@@ -168,6 +189,7 @@ abstract class ApplicationGUI extends BorderPane {
             updateLogFilter()
         } as ChangeListener)
 
+        getLiveCodingManagerNoBullshit().addListener(liveCodingListener)
     }
 
     protected bindTitle(StringProperty value) {
@@ -209,5 +231,9 @@ abstract class ApplicationGUI extends BorderPane {
     abstract protected void initLog();
 
     abstract protected void initGoogleAnalytics();
+
+    LiveCodingManager getLiveCodingManagerNoBullshit() {
+        return ServiceProvider.get(LiveCodingManager.class)
+    }
 
 }
