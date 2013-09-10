@@ -23,7 +23,7 @@ class ProjectStage extends Stage {
     ProjectStage() {
         root = new VBox()
 
-        setTitle("COLT — Code Orchestra Livecoding Tool (1.2)")
+        setTitle("COLT — Code Orchestra Livecoding Tool (1.2) Beta")
         scene = new Scene(root, 480, 768)
         addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, {WindowEvent windowEvent ->
             if (ChangingMonitor.getInstance().isChanged()) {
