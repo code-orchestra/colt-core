@@ -20,7 +20,9 @@ abstract class Project {
     abstract ProjectLiveSettings getProjectLiveSettings()
     abstract ProjectBuildSettings getProjectBuildSettings()
 
-    abstract String getProjectType();
+    abstract String getProjectType()
+
+    abstract Closure buildXml()
 
     void buildModel(Object node) {
         name = node.@projectName
@@ -28,7 +30,7 @@ abstract class Project {
 
     String toXmlString() {
         StringWriter writer = new StringWriter()
-        new MarkupBuilder(writer).xml(projectName:name, projectType:getProjectType(), buildXml(this))
+        new MarkupBuilder(writer).xml(projectName:name, projectType:getProjectType(), buildXml())
         writer.toString()
     }
 
