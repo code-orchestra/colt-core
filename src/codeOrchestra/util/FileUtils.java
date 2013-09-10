@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class FileUtils {
 
     private static final String[] IGNORED_DIRS = new String[]{".svn", ".git", "_svn"};
-    private static final String[] IGNORED_FILES = new String[]{".DS_Store"};
+    private static final String[] IGNORED_FILES = new String[]{".DS_Store", ".colt"};
 
     public static final FileFilter FILES_ONLY_FILTER = new FileFilter() {
         public boolean accept(File file) {
