@@ -501,7 +501,9 @@
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 5, 4, 3;
     -fx-padding: .769em 1px .846em; }
-
+.context-menu .separator {
+    -fx-background: #dddddd;
+}
 .context-menu .menu-item { -fx-padding: .385em 20px .308em; }
 
 .context-menu .menu-item .label {
