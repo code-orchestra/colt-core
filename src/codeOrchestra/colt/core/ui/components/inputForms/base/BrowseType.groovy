@@ -5,5 +5,6 @@ package codeOrchestra.colt.core.ui.components.inputForms.base
  */
 public enum BrowseType {
     FILE,
-    DIRECTORY
+    DIRECTORY,
+    APPLICATION
 }

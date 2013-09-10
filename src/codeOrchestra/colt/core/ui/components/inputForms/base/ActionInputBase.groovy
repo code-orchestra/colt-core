@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui.components.inputForms.base
 
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
 import codeOrchestra.groovyfx.FXBindable
+import codeOrchestra.util.SystemInfo
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.control.Button
@@ -28,6 +29,7 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
         action = {
             switch (browseType) {
                 case BrowseType.FILE:
+                case BrowseType.APPLICATION:
                     FileChooser fileChooser = new FileChooser()
                     fileChooser.extensionFilters.addAll(extensionFilters)
                     File file = fileChooser.showOpenDialog(button.scene.window)
@@ -62,9 +64,17 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
         }
         if (text) {
             File file = new File(text)
-            error = !(file.exists() && (browseType == BrowseType.FILE ? file.isFile() : file.isDirectory()))
-        } else {
-            error = !canBeEmpty
+            switch (browseType) {
+                case BrowseType.FILE:
+                    error = !(file.exists() && file.isFile())
+                    break
+                case BrowseType.DIRECTORY:
+                    error = !(file.exists() && file.isDirectory())
+                    break
+                case BrowseType.APPLICATION:
+                    error = !(file.exists() && (SystemInfo.isMac ? file.isDirectory() : file.isFile()))
+                    break
+            }
         }
         return error
     }
