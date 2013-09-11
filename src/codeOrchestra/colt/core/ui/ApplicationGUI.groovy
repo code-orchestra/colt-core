@@ -42,7 +42,7 @@ abstract class ApplicationGUI extends BorderPane {
         GroovyDynamicMethods.init()
     }
 
-    protected Label projectTitle = new Label(ellipsisString: "…", textAlignment: TextAlignment.CENTER)
+    protected Label projectTitle
     protected Label projectType = new Label()
 
     protected BorderPane root = new BorderPane()
@@ -51,23 +51,23 @@ abstract class ApplicationGUI extends BorderPane {
 
     protected ToggleGroup navigationToggleGroup = new ToggleGroup()
 
-    protected ToggleButton runButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Run", newStyleClass: "btn-run")
-    protected ToggleButton buildButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Build", newStyleClass: "btn-build")
-    protected ToggleButton settingsButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Settings", newStyleClass: "btn-settings")
+    protected ToggleButton runButton
+    protected ToggleButton buildButton
+    protected ToggleButton settingsButton
 
-    protected Button popupMenuButton = new Button(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, text: "Menu", newStyleClass: "btn-more")
+    protected Button popupMenuButton
 
     protected HBox logFiltersContainer
 
     protected ToggleGroup logFilterToggleGroup = new ToggleGroup()
-    protected ToggleButton logFilterAll = new ToggleButton(mnemonicParsing: false, selected: true, text: "All", minWidth: NEGATIVE_INFINITY)
-    protected ToggleButton logFilterErrors = new ToggleButton(mnemonicParsing: false, selected: false, text: "Errors", minWidth: NEGATIVE_INFINITY)
-    protected ToggleButton logFilterWarnings = new ToggleButton(mnemonicParsing: false, selected: false, text: "Warnings", minWidth: NEGATIVE_INFINITY)
-    protected ToggleButton logFilterInfo = new ToggleButton(mnemonicParsing: false, selected: false, text: "Info", minWidth: NEGATIVE_INFINITY)
-    protected ToggleButton logFilterLog = new ToggleButton(mnemonicParsing: false, selected: false, text: "Log", minWidth: NEGATIVE_INFINITY)
+    protected ToggleButton logFilterAll
+    protected ToggleButton logFilterErrors
+    protected ToggleButton logFilterWarnings
+    protected ToggleButton logFilterInfo
+    protected ToggleButton logFilterLog
 
-    protected ImageView sessionIndicator = new ImageView(fitHeight: 13.0, fitWidth: 13.0, layoutX: 1.0, layoutY: 3.0, pickOnBounds: true, preserveRatio: true)
-    protected ProgressIndicator progressIndicator = new ProgressIndicator(layoutX: 0.0, layoutY: 2.0, maxHeight: NEGATIVE_INFINITY, maxWidth: NEGATIVE_INFINITY, prefHeight: 15.0, prefWidth: 15.0, visible: false)
+    protected ImageView sessionIndicator
+    protected ProgressIndicator progressIndicator
 
     @Lazy LogWebView logView = Log.instance.logWebView
 
@@ -97,14 +97,15 @@ abstract class ApplicationGUI extends BorderPane {
         root.bottom = new HBox(alignment: Pos.CENTER_RIGHT, prefHeight: -1.0, prefWidth: -1.0, spacing: 5.0, newStyleClass: "status-bar",
                 newChildren: [
                         logFiltersContainer = new HBox(prefHeight:-1.0, prefWidth:-1.0, newStyleClass:"filters", newChildren: [
-                                logFilterAll,
-                                logFilterErrors,
-                                logFilterWarnings,
-                                logFilterInfo,
-                                logFilterLog
+                                logFilterAll = new ToggleButton(mnemonicParsing: false, selected: true, text: "All", minWidth: NEGATIVE_INFINITY),
+                                logFilterErrors = new ToggleButton(mnemonicParsing: false, selected: false, text: "Errors", minWidth: NEGATIVE_INFINITY),
+                                logFilterWarnings = new ToggleButton(mnemonicParsing: false, selected: false, text: "Warnings", minWidth: NEGATIVE_INFINITY),
+                                logFilterInfo = new ToggleButton(mnemonicParsing: false, selected: false, text: "Info", minWidth: NEGATIVE_INFINITY),
+                                logFilterLog = new ToggleButton(mnemonicParsing: false, selected: false, text: "Log", minWidth: NEGATIVE_INFINITY)
                         ]),
                         new AnchorPane(prefWidth: -1.0, newChildren: [
-                                sessionIndicator, progressIndicator
+                                sessionIndicator = new ImageView(fitHeight: 13.0, fitWidth: 13.0, layoutX: 1.0, layoutY: 3.0, pickOnBounds: true, preserveRatio: true),
+                                progressIndicator = new ProgressIndicator(layoutX: 0.0, layoutY: 2.0, maxHeight: NEGATIVE_INFINITY, maxWidth: NEGATIVE_INFINITY, prefHeight: 15.0, prefWidth: 15.0, visible: false)
                         ]),
                         projectType
                 ]
@@ -112,18 +113,18 @@ abstract class ApplicationGUI extends BorderPane {
         HBox.setHgrow(logFiltersContainer, Priority.ALWAYS)
 
         root.top = new HBox(alignment: Pos.CENTER, prefHeight: -1.0, prefWidth: 200.0, newStyleClass: "title-bar", newChildren: [
-                projectTitle
+                projectTitle = new Label(ellipsisString: "…", textAlignment: TextAlignment.CENTER)
         ])
 
         setCenter(root)
 
         VBox sidebar; Pane leftPane
         setLeft(sidebar = new VBox(
-                runButton,
-                buildButton,
-                settingsButton,
+                runButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Run", newStyleClass: "btn-run"),
+                buildButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Build", newStyleClass: "btn-build"),
+                settingsButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Settings", newStyleClass: "btn-settings"),
                 leftPane = new Pane(maxHeight: 1.7976931348623157E308),
-                popupMenuButton
+                popupMenuButton = new Button(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, text: "Menu", newStyleClass: "btn-more")
 
         ))
         VBox.setVgrow(leftPane, Priority.ALWAYS)
