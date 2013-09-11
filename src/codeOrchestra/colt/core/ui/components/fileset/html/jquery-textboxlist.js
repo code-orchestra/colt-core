@@ -22,7 +22,9 @@
                 return $.grep($.map(o, function (v) {
                     v = (chk(v[0]) ? v[0] : v[1]);
                     return chk(v) ? v.toString().replace(/, */, '') : null;
-                }),function (o) { return o != undefined }).join(', ');
+                }),function (o) {
+                    return o != undefined
+                }).join(', ');
             },
             decode: function (o) {
                 return o.split(/, */);
@@ -37,7 +39,7 @@
             container = $('<div class="' + options.prefix + '" />')
                 .insertAfter(element)
                 .click(function (e) {
-                    if ((e.target == list.get(0) || e.target == container.get(0)) && (!focused || (current && current.toElement().get(0) != list.find(':last-child').get(0)))){
+                    if ((e.target == list.get(0) || e.target == container.get(0)) && (!focused || (current && current.toElement().get(0) != list.find(':last-child').get(0)))) {
                         e.stopPropagation();
                         e.preventDefault();
                         focusLast();
@@ -52,12 +54,12 @@
             self.plugins[name] = new $.TextboxList[camelCase(capitalize(name))](self, options);
         };
 
-        var clear = function(){
+        var clear = function () {
             list.children().remove()
             if (options.endEditableBit) create('editable', null, {tabIndex: original.tabIndex}).inject(list);
         }
 
-        var setNewValues = function(values){
+        var setNewValues = function (values) {
             clear()
             setValues(options.decode(values))
             update()
@@ -65,6 +67,7 @@
         }
 
         var clipboard;
+        var textEditMode = false;
 
         var afterInit = function () {
             if (options.endEditableBit) create('editable', null, {tabIndex: original.tabIndex}).inject(list);
@@ -115,61 +118,69 @@
                                 focusRelative('next');
                             }
                     }
-            }).dblclick(function(e){
+                }).dblclick(function (e) {
                     if (!focused || !current) return;
+                    textEditMode = true;
                     e.stopPropagation();
                     e.preventDefault();
                     var c = $(container).hide()
                     var textarea = $("<textarea style='resize: none;' class='" + options.prefix + "'>" + original.val() + "</textarea>")
                         .width(c.width()).height(c.height())
-                    var onBlur = function(){
+                    var onBlur = function () {
                         setNewValues(textarea.val())
                         $(container).show()
                         textarea.remove()
                     }
                     textarea.blur(onBlur)
-                    textarea.keydown(function(e){
-                        if(e.keyCode == 13 || e.keyCode == 27){
+                    textarea.keydown(function (e) {
+                        if (e.keyCode == 13 || e.keyCode == 27) {
+                            textEditMode = false;
                             onBlur()
                         }
                     })
                     textarea.insertAfter(original)
                     textarea.focus()
-            }).bind({
-                    copy : function(e){
-                        if (options.setClipboard) {
-                            if (current.is('box')) {
-                                options.setClipboard(current.value[1]);
+                }).bind({
+                    copy: function (e) {
+                        if (!textEditMode) {
+                            if (options.setClipboard) {
+                                if (current.is('box')) {
+                                    options.setClipboard(current.value[1]);
+                                }
                             }
                         }
                     },
-                    paste : function(e){
-                        if(options.getClipboard){
-                            e.stopPropagation();
-                            e.preventDefault();
-                            var newValues = options.decode(options.getClipboard())
-                            if(current.is("box")){
-                                focusRelative('next');
+                    paste: function (e) {
+                        if (!textEditMode) {
+                            if (options.getClipboard) {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                var newValues = options.decode(options.getClipboard())
+                                if (current.is("box")) {
+                                    focusRelative('next');
+                                }
+                                $.each(newValues, function () {
+                                    current.setValue([null, this, null])
+                                    current.toBox()
+                                })
                             }
-                            $.each(newValues, function(){
-                                current.setValue([null, this, null])
-                                current.toBox()
-                            })
                         }
                     },
-                    cut : function(e){
-                        if (options.setClipboard) {
-                            if (current.is('box')) {
-                                options.setClipboard(current.value[1]);
-                                current.remove();
+                    cut: function (e) {
+                        if (!textEditMode) {
+                            if (options.setClipboard) {
+                                if (current.is('box')) {
+                                    options.setClipboard(current.value[1]);
+                                    current.remove();
+                                }
                             }
                         }
                     }
-             });
+                });
 
             $(window).blur(
-                function(){
-                    if(current)current.blur()
+                function () {
+                    if (current)current.blur()
                 }
             )
 
@@ -351,7 +362,7 @@
         this.plugins = [];
         this.setNewValues = setNewValues;
 
-        this.requestFocus = function(){
+        this.requestFocus = function () {
             var last = list.children().last()
             $(last).focus()
         }
@@ -402,7 +413,7 @@
                 }).blur(function () {
                         blur(true);
                         if (options.addOnBlur) toBox();
-                }).keyup(function(){
+                    }).keyup(function () {
                         var size = Math.max(3, $(this).val().length);
                         $(this).attr('size', size);
                     });
@@ -532,7 +543,7 @@
 
             var toBox = function () {
                 var value = self.getValue();
-                if(value == "" || value == undefined || value == ",,")return
+                if (value == "" || value == undefined || value == ",,")return
                 var b = textboxlist.create('box', value);
                 if (b) {
                     b.inject(bit, 'before');
@@ -587,3 +598,6 @@
     });
 
 })(jQuery);
+
+
+
