@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.ui.components.inputForms.markers.MChoiceBox
 import codeOrchestra.groovyfx.FXBindable
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
+import javafx.collections.ObservableList as FXObservableList
 
 /**
  * @author Dima Kruk
@@ -15,7 +16,7 @@ class ChoiceBoxInput extends TitledInputBase implements MChoiceBox {
     protected ChoiceBox choiceBox = new ChoiceBox(layoutY: 22.0)
 
     @FXBindable String value
-    @FXBindable List<String> values
+    @FXBindable FXObservableList<String> values
 
     ChoiceBoxInput() {
         setLeftAnchor(label, 19)
@@ -28,6 +29,14 @@ class ChoiceBoxInput extends TitledInputBase implements MChoiceBox {
         label.textProperty().bindBidirectional(title())
 
         choiceBox.valueProperty().bindBidirectional(value())
-        values = choiceBox.items
+        values().bindBidirectional(choiceBox.itemsProperty())
     }
+
+    void setValues(List<String> values) {
+        this.values.clear()
+        values.each {
+            this.values.add(it)
+        }
+    }
+
 }
