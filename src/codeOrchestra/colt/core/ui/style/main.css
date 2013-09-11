@@ -600,7 +600,14 @@
 .fieldset {
     -fx-border-width: 1px 0 0 0;
     -fx-border-color: #c9ccd0;
-    -fx-border-style: solid; }
+    -fx-border-style: solid;
+}
+
+.fieldset-line-bottom {
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #c9ccd0;
+    -fx-border-style: solid;
+}
 
 .scroll-pane .legend, .legend .text { -fx-font-weight: bold; }
 

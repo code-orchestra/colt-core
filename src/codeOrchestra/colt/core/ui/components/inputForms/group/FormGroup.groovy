@@ -26,6 +26,7 @@ class FormGroup extends VBox {
     String title
 
     boolean first
+    boolean last
 /*
     <fx:root type="javafx.scene.layout.VBox" styleClass="fieldset" maxWidth="640.0" xmlns:fx="http://javafx.com/fxml">
       <Label fx:id="label" styleClass="legend">
@@ -142,5 +143,10 @@ class FormGroup extends VBox {
     void setFirst(boolean first) {
         this.first = first
         first ? styleClass.remove("fieldset") : styleClass.add("fieldset")
+    }
+
+    void setLast(boolean last) {
+        this.last = last
+        last ? styleClass.add("fieldset-line-bottom") : styleClass.remove("fieldset-line-bottom")
     }
 }
