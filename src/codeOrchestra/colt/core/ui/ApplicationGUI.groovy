@@ -75,10 +75,12 @@ abstract class ApplicationGUI extends BorderPane {
 
     @FXBindable String applicationState = ""
 
+    boolean isFirstTime = true
+
     private LiveCodingListener liveCodingListener = new LiveCodingAdapter() {
         @Override
         void onSessionEnd(LiveCodingSession session) {
-            LiveCodingManager liveCodingManager = getLiveCodingManager()
+            LiveCodingManager liveCodingManager = getLiveCodingManagerNoBullshit()
             if (liveCodingManager.currentConnections.size() == 0) {
                 Platform.runLater({
                     actionPlayerPopup.actionPlayer.stop.selected = true
