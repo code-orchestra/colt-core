@@ -23,6 +23,7 @@ class CheckBoxActionInput extends ActionInputBase implements MSelectable {
         checkBox.selectedProperty().bindBidirectional(selected())
 
         textField.disableProperty().bind(selected().not())
+        button.disableProperty().bind(selected().not())
 
         children.add(checkBox)
     }
