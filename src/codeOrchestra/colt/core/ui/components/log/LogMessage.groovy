@@ -13,6 +13,7 @@ class LogMessage {
     String source
     Level level
     String message
+    @Deprecated
     String stackTrace
     boolean visible = true
 
