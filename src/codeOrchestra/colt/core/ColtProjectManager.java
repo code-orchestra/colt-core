@@ -23,7 +23,10 @@ import java.util.List;
  */
 public class ColtProjectManager {
 
-    public static final Logger LOG = Logger.getLogger(ColtProjectManager.class);
+    public static final Logger getLogger() {
+        return Logger.getLogger(ColtProjectManager.class);
+    }
+
     private static ColtProjectManager instance;
 
     public static synchronized ColtProjectManager getInstance() {
@@ -44,7 +47,7 @@ public class ColtProjectManager {
                 RecentProjects.addRecentProject(project.getPath());
                 ProjectStorageManager.getOrCreateProjectStorageDir();
 
-                LOG.info("Loaded " + project.getProjectType() + " project " + project.getName() + " on " + DateUtils.getCurrentDate());
+                getLogger().info("Loaded " + project.getProjectType() + " project " + project.getName() + " on " + DateUtils.getCurrentDate());
             }
 
             @Override
