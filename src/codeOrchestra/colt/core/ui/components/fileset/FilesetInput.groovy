@@ -62,6 +62,8 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
     boolean fromHtmlUpdate = false
 
+    private JSObject windowObject
+
     FilesetInput() {
 
 //        styleClass.add("fileset-input")
@@ -113,10 +115,11 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         engine.load(htmlPage)
 
         engine.onAlert = { WebEvent<String> event ->
-            String[] tokens = event.data.split(":", 2)
-            if (tokens[0] == "command" && tokens.size() == 2) {
+            String[] tokens = event.data.split(":", 3)
+            if (tokens[0] == "command" && tokens.size() > 1) {
                 if (tokens[1] == ("ready")) {
                     htmlLoaded = true
+                    windowObject = (JSObject) webView.engine.executeScript("window")
                     bridge = new JSBridge(webView.engine) {
                         @Override
                         void resize(int height) {
@@ -124,25 +127,22 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                         }
                     }
                     if (files) {
-                        setFilesetHtmlValue(files)
+                        Platform.runLater{
+                            setFilesetHtmlValue(files)
+                        }
                     }
                 } else if (tokens[1] == ("update")) {
-                    String newValue = getFilesetHtmlValue()
+                    String newValue = tokens[2]
                     if (newValue != files) {
                         fromHtmlUpdate = true
                         files = newValue
                         fromHtmlUpdate = false
                     }
                 }
-                return
+            }else{
+                println "alert >> " + event.data
             }
         } as EventHandler
-
-//        webView.childrenUnmodifiable.addListener({ change ->
-//            webView.lookupAll(".scroll-bar")*.visible = false
-//        } as ListChangeListener)
-//
-//        focusRectangle.lookupAll(".scroll-bar")*.visible = false
 
         //binding
 
@@ -154,20 +154,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                 }
             }
         } as ChangeListener)
-
-        // drag & drop
-
-        this.onDragDropped = { DragEvent event ->
-            println("dropped:  " + event)
-        } as EventHandler
-
-        this.onDragDone = { DragEvent event ->
-            println("drag done:  " + event)
-        } as EventHandler
-
-        this.onDragDetected = { DragEvent event ->
-            println("drag detected:  " + event)
-        } as EventHandler
     }
 
     void setInputRightAnchor(double value) {
@@ -176,13 +162,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
     double getInputRightAnchor() {
         return getRightAnchor(webView)
-    }
-
-    private void requestFocusInHtml() {
-        try {
-            getJSTopObject()?.call("requestFocus")
-        } catch (Exception ignored) {
-        }
     }
 
     private void buildContextMenu() {
@@ -251,16 +230,12 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, .9);");
     }
 
-    private JSObject getJSTopObject() {
-        try {
-            return (JSObject) webView.engine.executeScript("window")
-        } catch (Exception ignored) {
-            return null
-        }
+    private void requestFocusInHtml() {
+        windowObject?.call("requestFocus")
     }
 
     private void addFile(String el) {
-        getJSTopObject()?.call("addFile", el)
+        windowObject?.call("addFile", el)
     }
 
     private void addFile(File file) {
@@ -272,11 +247,11 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     }
 
     String getFilesetHtmlValue() {
-        "" + getJSTopObject()?.call("getFiles")
+        "" + windowObject?.call("getFiles")
     }
 
     void setFilesetHtmlValue(String str) {
-        getJSTopObject()?.call("setFiles", str)
+        windowObject?.call("setFiles", str)
     }
 
     public static List<File> getFilesFromString(String fileset, File baseDir = getBaseDir()) {

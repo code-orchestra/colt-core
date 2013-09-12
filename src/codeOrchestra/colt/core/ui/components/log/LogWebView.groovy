@@ -30,6 +30,7 @@ class LogWebView extends VBox {
     private boolean layoutInited;
     private LogFilter logFilter
     private LogVisualizer visualizer = new LogVisualizer()
+    private JSObject windowObject
 
 
     @Override
@@ -45,14 +46,6 @@ class LogWebView extends VBox {
         GAController.instance.registerPage(this, "/log.html", "log")
 
         WebEngine engine = webView.engine
-        engine.documentProperty().addListener({ o, oldValue,  newValue ->
-            htmlLoaded = true
-            JSBridge.create(engine)
-            if (layoutInited && htmlLoaded) {
-                addLogMessages(logMessages.asList())
-            }
-
-        } as ChangeListener)
         engine.load(this.class.getResource("html/log-webview.html").toExternalForm())
         visualizer.logMessages = logMessages
         children.add(visualizer)
@@ -73,6 +66,7 @@ class LogWebView extends VBox {
                         List<LogMessage> newMessages = []
                         newMessages.addAll(c.getAddedSubList())
                         addLogMessages(newMessages)
+
                     }
                 }
             }
@@ -81,7 +75,19 @@ class LogWebView extends VBox {
         engine.onAlert = new EventHandler<WebEvent<String>>() {
             @Override
             void handle(WebEvent<String> event) {
-                println("alert >> " + event.data)
+                String[] tokens = event.data.split(":", 2)
+                if (tokens[0] == "command" && tokens.size() == 2) {
+                    if (tokens[1] == ("ready")) {
+                        htmlLoaded = true
+                        JSBridge.create(engine)
+                        if (layoutInited && htmlLoaded) {
+                            addLogMessages(logMessages.asList())
+                        }
+                        windowObject = (JSObject) webView.engine.executeScript("window")
+                    }
+                }else{
+                    println "alert >> " + event.data
+                }
             }
         }
 
@@ -95,26 +101,13 @@ class LogWebView extends VBox {
         } as ChangeListener)
     }
 
-    LogWebView() {
-
-//        Font.loadFont(this.class.getResource("html/Andale Mono.ttf").toExternalForm(), 12); //todo: загружать нужно в html - @font-face
-
-
-
-
-    }
-
-    private JSObject getJSTopObject() {
-        (JSObject) webView.engine.executeScript("window")
-    }
-
     private void addLogMessages(List<LogMessage> messages) {
         messages*.filter(logFilter ?: LogFilter.ALL)
-        getJSTopObject().call("addLogMessages", messages)
+        windowObject?.call("addLogMessages", messages)
     }
 
     private void clear() {
-        getJSTopObject().call("clear")
+        windowObject?.call("clear")
     }
 
     public void filter(LogFilter logFilter) {
@@ -126,12 +119,12 @@ class LogWebView extends VBox {
             }
         }
         if (updated && htmlLoaded) {
-            getJSTopObject().call("filter")
+            windowObject?.call("filter")
         }
     }
 
     private void fireApplicationResize() {
-        getJSTopObject().call("applicationResize")
+        windowObject?.call("applicationResize")
     }
 
     private void testLog() {

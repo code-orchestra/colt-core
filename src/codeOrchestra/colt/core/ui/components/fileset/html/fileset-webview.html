@@ -42,7 +42,7 @@
                 if(getFiles() != currentValue){
                     if(inputFromUser){
                         currentValue = getFiles()
-                        alert("command:update")
+                        alert("command:update:" + getFiles())
                     }
                 }
             }
@@ -66,8 +66,13 @@
         })
 
         function requestFocus(){
-            $(window).focus()
-            textbox.requestFocus()
+            setTimeout(function(){
+                try {
+                    $(window).focus()
+                    textbox.requestFocus()
+                } catch (e) {
+                }
+            }, 0)
         }
 
         function addFile(str) {
