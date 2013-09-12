@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.ui.components.inputForms.base
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MInput
 import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.InvalidationListener
+import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
 import javafx.scene.control.TextField
 
@@ -77,5 +78,10 @@ abstract class InputWithErrorBase extends TitledInputBase implements MInput {
             error = true
         }
         return error
+    }
+
+    void setBindProperty(StringProperty value) {
+        text().bindBidirectional(value)
+
     }
 }
