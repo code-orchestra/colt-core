@@ -115,8 +115,9 @@ public class ColtProjectManager {
         File file = new File(project.getPath());
         FileWriter fileWriter;
         try {
+            String projectXml = project.toXmlString();
             fileWriter = new FileWriter(file);
-            fileWriter.write(project.toXmlString());
+            fileWriter.write(projectXml);
             fileWriter.close();
             ChangingMonitor.getInstance().reset();
         } catch (IOException e) {
