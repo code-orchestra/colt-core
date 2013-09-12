@@ -1,6 +1,7 @@
 package codeOrchestra.colt.core.ui.components.popupmenu
 
 import codeOrchestra.util.SystemInfo
+import javafx.application.Platform
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Point2D
@@ -31,9 +32,12 @@ class PopupMenu extends Popup {
             super.show(node, point.x - 17, point.y - menuContent.height - 5)
         } else {
             contextMenu.show(node, Side.TOP, 0, 0)
-            //hac for correct position
-            contextMenu.hide()
-            contextMenu.show(node, Side.TOP, 0, 0)
+            if (contextMenu.height == -1) {
+                Platform.runLater({
+                    contextMenu.hide()
+                    contextMenu.show(node, Side.TOP, 0, 0)
+                })
+            }
         }
     }
 }

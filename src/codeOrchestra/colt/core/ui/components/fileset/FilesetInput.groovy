@@ -8,6 +8,7 @@ import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.SetTimeoutUtil
 import javafx.application.Platform
+import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
 import javafx.concurrent.Worker
 import javafx.event.ActionEvent
@@ -330,5 +331,9 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
     public static String createFilesetString(List<File> files) {
         return files.collect { createPattern(it) }.join(", ")
+    }
+
+    void setBindProperty(StringProperty value) {
+        files().bindBidirectional(value)
     }
 }

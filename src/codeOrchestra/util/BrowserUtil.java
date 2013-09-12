@@ -92,11 +92,16 @@ public class BrowserUtil {
     return pathToUrl(redirect.getAbsolutePath());
   }
 
-  public static ProcessBuilder launchBrowser(String url, String name) {
-    return launchBrowser(url, getDefaultBrowserCommand());
+  public static ProcessBuilder launchBrowser(String url, String name, boolean multiple) {
+    return launchBrowser(url, getDefaultBrowserCommand(multiple));
   }
 
-  public static String escapeUrl(String url) {
+    public static ProcessBuilder launchBrowser(String url, String name) {
+        return launchBrowser(url, name, false);
+    }
+
+
+    public static String escapeUrl(String url) {
     if (SystemInfo.isWindows) {
       return "\"" + url + "\"";
     } else {
@@ -108,17 +113,21 @@ public class BrowserUtil {
 	  return url.replaceAll(" ", "%20");
 	  }
 
-  public static ProcessBuilder launchBrowser(final String url) {
-    return launchBrowser(url, (String) null);
+  public static ProcessBuilder launchBrowser(final String url, boolean multiple) {
+    return launchBrowser(url, (String) null, multiple);
   }
 
-  private static String[] getDefaultBrowserCommand() {
+    public static ProcessBuilder launchBrowser(final String url) {
+        return launchBrowser(url, false);
+    }
+
+  private static String[] getDefaultBrowserCommand(boolean multiple) {
     if (SystemInfo.isWindows9x) {
       return new String[] { "command.com", "/c", "start" };
     } else if (SystemInfo.isWindows) {
       return new String[] { "cmd.exe", "/c", "start" };
     } else if (SystemInfo.isMac) {
-      return new String[] { "open" };
+      return multiple ? new String[] { "open", "-n" } : new String[] { "open" };
     } else if (SystemInfo.isUnix) {
       return new String[] { "mozilla" };
     } else {

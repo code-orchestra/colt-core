@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.ui.components.inputForms.base.TitledInputBase
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MSelectable
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MSimple
 import codeOrchestra.groovyfx.FXBindable
+import javafx.beans.property.BooleanProperty
 import javafx.scene.control.CheckBox
 
 /**
@@ -22,5 +23,9 @@ class CheckBoxInput extends TitledInputBase implements MSelectable, MSimple {
         checkBox.selectedProperty().bindBidirectional(selected())
 
         children.add(checkBox)
+    }
+
+    void setBindProperty(BooleanProperty value) {
+        selected().bindBidirectional(value)
     }
 }

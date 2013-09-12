@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.ui.components.inputForms
 import codeOrchestra.colt.core.ui.components.inputForms.base.TitledInputBase
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MChoiceBox
 import codeOrchestra.groovyfx.FXBindable
+import javafx.beans.property.StringProperty
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
 import javafx.collections.ObservableList as FXObservableList
@@ -37,6 +38,10 @@ class ChoiceBoxInput extends TitledInputBase implements MChoiceBox {
         values.each {
             this.values.add(it)
         }
+    }
+
+    void setBindProperty(StringProperty value) {
+       this.value().bindBidirectional(value)
     }
 
 }
