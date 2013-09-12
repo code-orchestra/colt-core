@@ -32,7 +32,6 @@ class LogWebView extends VBox {
     private LogVisualizer visualizer = new LogVisualizer()
     private JSObject windowObject
 
-
     @Override
     protected void layoutChildren() {
         if (!layoutInited) {

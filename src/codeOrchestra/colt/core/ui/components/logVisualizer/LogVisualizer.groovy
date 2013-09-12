@@ -29,6 +29,8 @@ class LogVisualizer extends VBox {
     private boolean htmlLoaded
     final private List flushList = []
 
+    private JSObject windowObject
+
     @Service LiveCodingManager liveCodingManager
 
     LogVisualizer() {
@@ -45,7 +47,10 @@ class LogVisualizer extends VBox {
             void handle(WebEvent<String> event) {
                 if (event.data == "ready") {
                     htmlLoaded = true;
-                    flush()
+                    windowObject = (JSObject) webView.engine.executeScript("window")
+                    Platform.runLater{
+                        flush()
+                    }
                 } else {
                     println("alert >> " + event.data)
                 }
@@ -69,19 +74,19 @@ class LogVisualizer extends VBox {
     }
 
     public void clearMessages() {
-        getJSTopObject().call("clearMessages")
+        windowObject?.call("clearMessages")
     }
 
     public void start() {
-        getJSTopObject().call("start")
+        windowObject?.call("start")
     }
 
     public void stop() {
-        getJSTopObject().call("stop")
+        windowObject?.call("stop")
     }
 
     public void pause() {
-        getJSTopObject().call("pause")
+        windowObject?.call("pause")
     }
 
     void setLogMessages(OL<LogMessage> logMessages) {
@@ -105,10 +110,6 @@ class LogVisualizer extends VBox {
         } as ListChangeListener)
     }
 
-    private JSObject getJSTopObject() {
-        (JSObject) webView.engine.executeScript("window")
-    }
-
     private void addLogMessages(List<LogMessage> messages) {
         synchronized (flushList) {
             flushList.addAll(messages*.level)
@@ -121,7 +122,7 @@ class LogVisualizer extends VBox {
     private flush() {
         synchronized (flushList) {
             if (htmlLoaded && (flushList.size() > 0)) {
-                getJSTopObject().call("addLogMessages", flushList)
+                windowObject.call("addLogMessages", flushList)
                 flushList.clear()
             }
         }
