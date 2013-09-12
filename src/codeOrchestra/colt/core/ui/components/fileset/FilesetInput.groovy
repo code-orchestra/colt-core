@@ -118,7 +118,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         engine.onAlert = { WebEvent<String> event ->
             String[] tokens = event.data.split(":", 3)
             if (tokens[0] == "command" && tokens.size() > 1) {
-                if (tokens[1] == ("ready")) {
+                if (tokens[1] == "ready") {
                     htmlLoaded = true
                     windowObject = (JSObject) webView.engine.executeScript("window")
                     bridge = new JSBridge(webView.engine) {
