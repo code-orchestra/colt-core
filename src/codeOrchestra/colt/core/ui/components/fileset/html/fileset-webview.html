@@ -66,13 +66,8 @@
         })
 
         function requestFocus(){
-            setTimeout(function(){
-                try {
-                    $(window).focus()
-                    textbox.requestFocus()
-                } catch (e) {
-                }
-            }, 0)
+            $(window).focus()
+            textbox.requestFocus()
         }
 
         function addFile(str) {

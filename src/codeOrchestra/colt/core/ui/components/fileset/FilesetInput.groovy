@@ -1,21 +1,17 @@
 package codeOrchestra.colt.core.ui.components.fileset
 
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
-import codeOrchestra.colt.core.ui.components.inputForms.markers.MInput
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
-import codeOrchestra.util.SetTimeoutUtil
 import javafx.application.Platform
 import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
-import javafx.concurrent.Worker
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.geometry.Side
 import javafx.scene.control.*
-import javafx.scene.input.DragEvent
 import javafx.scene.layout.AnchorPane
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
