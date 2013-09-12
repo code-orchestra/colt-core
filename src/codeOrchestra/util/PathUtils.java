@@ -84,7 +84,7 @@ public class PathUtils {
         String coltBaseDirProp = System.getProperty("colt.base.dir");
 
         if (StringUtils.isEmpty(coltBaseDirProp)) {
-            File file = new File(PathUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath().toString());
+            File file = new File(PathUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath());
             while (!new File(file, "flex_sdk").exists()) {
               file = file.getParentFile();
             }
@@ -94,7 +94,7 @@ public class PathUtils {
                 return applicationBaseDirCached;
             }
 
-            File file = new File(PathUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath().toString());
+            File file = new File(PathUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath());
             while (!file.getName().equals("COLT.app")) {
                 file = file.getParentFile();
             }
