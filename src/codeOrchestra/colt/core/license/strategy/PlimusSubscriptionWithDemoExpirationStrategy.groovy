@@ -50,14 +50,10 @@ class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationStrategy
     }
 
     boolean showSerialNumberDialog() {
-        String[] result = new String[1]
         SerialNumberDialog serialNumberDialog = new SerialNumberDialog(ColtApplication.get().getPrimaryStage());
-        serialNumberDialog.onInput = { SerialNumberEvent t ->
-            result[0] = t.serialNumber
-        } as EventHandler
         serialNumberDialog.showInput()
 
-        return processSerialNumber(result[0])
+        return processSerialNumber(serialNumberDialog.serialNumberValue)
     }
 
     private boolean processSerialNumber(String serialNumber) {
@@ -175,18 +171,14 @@ class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationStrategy
         }
 
         if (!ApplicationUtil.coltStartWasRecentlyRequested()) {
-            Boolean[] result = { false }
-            SerialNumberDialog serialNumberDialog = new SerialNumberDialog(ColtApplication.get().getPrimaryStage());
-            serialNumberDialog.onInput = { SerialNumberEvent t ->
-                if (t.cancelled) {
-                    result[0] = false
-                } else if (processSerialNumber(t.serialNumber)) {
-                    result[0] = true
-                }
-            } as EventHandler
+            SerialNumberDialog serialNumberDialog = new SerialNumberDialog(ColtApplication.get().getPrimaryStage())
             serialNumberDialog.show()
 
-            return result[0];
+            if (StringUtils.isEmpty(serialNumberDialog.serialNumberValue)) {
+                return false
+            }
+
+            return processSerialNumber(serialNumberDialog.serialNumberValue)
         }
 
         return false;

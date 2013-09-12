@@ -21,17 +21,10 @@ class SerialNumberDialog extends DialogWithImage {
     TextField serialNumber
     Image errorImage = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
 
-    EventHandler<SerialNumberEvent> onInput
-    boolean disposed
+    String serialNumberValue
 
     SerialNumberDialog(Window owner) {
         super(owner)
-
-        stage.onCloseRequest = {
-            if (!disposed) {
-                onInput.handle(new SerialNumberEvent())
-            }
-        } as EventHandler
     }
 
     @Override
@@ -56,8 +49,7 @@ class SerialNumberDialog extends DialogWithImage {
         Button demo = new Button(text: "Continue With Demo", prefWidth: 204, focusTraversable: false)
         demo.onAction = {
             hide()
-            onInput.handle(new SerialNumberEvent())
-
+            serialNumberValue = null
         } as EventHandler
         center.children.addAll(purchase, demo)
 
@@ -89,15 +81,14 @@ class SerialNumberDialog extends DialogWithImage {
             if (serialNumber.text.isEmpty()) {
                 error("The serial number entered is empty")
             } else {
+                serialNumberValue = serialNumber.text
                 hide()
-                onInput.handle(new SerialNumberEvent(serialNumber.text))
             }
         } as EventHandler
     }
 
     void hide() {
         stage.hide()
-        disposed = true
     }
 
     void error(String message, String comment = "") {
