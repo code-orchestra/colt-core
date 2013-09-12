@@ -79,6 +79,14 @@ abstract class ApplicationGUI extends BorderPane {
 
     private LiveCodingListener liveCodingListener = new LiveCodingAdapter() {
         @Override
+        void onSessionStart(LiveCodingSession session) {
+            Platform.runLater({
+                actionPlayerPopup.actionPlayer.showAdd(true)
+                actionPlayerPopup.actionPlayer.disable = false
+            })
+        }
+
+        @Override
         void onSessionEnd(LiveCodingSession session) {
             LiveCodingManager liveCodingManager = getLiveCodingManagerNoBullshit()
             if (liveCodingManager.currentConnections.size() == 0) {
