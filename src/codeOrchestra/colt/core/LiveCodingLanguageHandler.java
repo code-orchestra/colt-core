@@ -2,6 +2,7 @@ package codeOrchestra.colt.core;
 
 import codeOrchestra.colt.core.controller.ColtController;
 import codeOrchestra.colt.core.facade.ColtFacade;
+import codeOrchestra.colt.core.gradle.GradleTaskManager;
 import codeOrchestra.colt.core.launch.LiveLauncher;
 import codeOrchestra.colt.core.logging.LoggerService;
 import codeOrchestra.colt.core.model.Project;
@@ -57,6 +58,8 @@ public interface LiveCodingLanguageHandler<P extends Project> {
     SourceFileFactory createSourceFileFactory();
 
     ColtFacade createColtFacade();
+
+    GradleTaskManager<P> createGradleTaskManager();
 
 
 }
