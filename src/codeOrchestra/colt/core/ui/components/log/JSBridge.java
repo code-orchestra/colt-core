@@ -11,16 +11,12 @@ import java.util.HashMap;
  * @author Eugene Potapenko
  */
 public class JSBridge {
-    private WebEngine engine;
-
-    public JSBridge(WebEngine engine) {
-        this.engine = engine;
-        JSObject win = (JSObject) engine.executeScript("window");
+    public JSBridge(JSObject win) {
         win.setMember("app", this);
     }
 
-    public static JSBridge create(WebEngine engine) {
-        return new JSBridge(engine);
+    public static JSBridge create(JSObject win) {
+        return new JSBridge(win);
     }
 
     public void resize(int height){

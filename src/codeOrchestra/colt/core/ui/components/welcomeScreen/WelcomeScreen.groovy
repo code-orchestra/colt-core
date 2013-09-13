@@ -6,6 +6,7 @@ import codeOrchestra.colt.core.RecentProjects
 import codeOrchestra.colt.core.tracker.GAController
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
+import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.concurrent.Worker
 import javafx.event.EventHandler
@@ -26,7 +27,7 @@ class WelcomeScreen extends Pane {
 
     private WebView webView = new WebView(contextMenuEnabled: false, maxWidth: Double.MAX_VALUE, maxHeight: Double.MAX_VALUE)
     private boolean layoutInited;
-    private boolean htmlLoaded;
+    private JSObject windowObject
     private List<File> recentProjects = []
 
     WelcomeScreen() {
@@ -35,10 +36,11 @@ class WelcomeScreen extends Pane {
         WebEngine engine = webView.engine
         engine.getLoadWorker().stateProperty().addListener({ o, oldValue, newState ->
             if (newState == Worker.State.SUCCEEDED) {
-                htmlLoaded = true
-                JSBridge.create(engine)
-                if (layoutInited && htmlLoaded) {
-                    init()
+                windowObject = (JSObject) webView.engine.executeScript("window")
+                if (layoutInited) {
+                    Platform.runLater{
+                        init()
+                    }
                 }
             }
         } as ChangeListener)
@@ -81,7 +83,7 @@ class WelcomeScreen extends Pane {
         super.layoutChildren()
         if (!layoutInited) {
             layoutInited = true
-            if (layoutInited && htmlLoaded) {
+            if (windowObject) {
                 init()
             }
         }
@@ -99,13 +101,9 @@ class WelcomeScreen extends Pane {
         }
     }
 
-    private JSObject getJSTopObject() {
-        (JSObject) webView.engine.executeScript("window")
-    }
-
     private void addRecentProject(File file) {
         recentProjects << file
-        getJSTopObject().call("addRecentProject", file.name[0..-6], recentProjects.size() - 1)
+        windowObject?.call("addRecentProject", file.name[0..-6], recentProjects.size() - 1)
     }
 
     private static void openBrowser(String url) {

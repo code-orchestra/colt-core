@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui.components.log
 
 import codeOrchestra.colt.core.tracker.GAController
 import codeOrchestra.colt.core.ui.components.logVisualizer.LogVisualizer
+import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
@@ -26,7 +27,6 @@ class LogWebView extends VBox {
 
     private WebView webView = new WebView(contextMenuEnabled: false)
     final OL<LogMessage> logMessages = FXCollections.observableArrayList()
-    private boolean htmlLoaded;
     private boolean layoutInited;
     private LogFilter logFilter
     private LogVisualizer visualizer = new LogVisualizer()
@@ -41,7 +41,7 @@ class LogWebView extends VBox {
         super.layoutChildren()
     }
 
-    private void init(){
+    private void init() {
         GAController.instance.registerPage(this, "/log.html", "log")
 
         WebEngine engine = webView.engine
@@ -52,43 +52,39 @@ class LogWebView extends VBox {
         setVgrow(webView, Priority.ALWAYS)
 
         logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
-            if (htmlLoaded) {
-                while (c.next()) {
-                    if (c.wasRemoved()) {
-                        println("clear log")
-                        clear()
-                    } else if (c.wasPermutated()) {
-                        println "permutated"
-                    } else if (c.wasUpdated()) {
-                        println "updated"
-                    } else {
-                        List<LogMessage> newMessages = []
-                        newMessages.addAll(c.getAddedSubList())
-                        addLogMessages(newMessages)
-
-                    }
+            while (c.next()) {
+                if (c.wasRemoved()) {
+                    println("clear log")
+                    clear()
+                } else if (c.wasPermutated()) {
+                    println "permutated"
+                } else if (c.wasUpdated()) {
+                    println "updated"
+                } else {
+                    List<LogMessage> newMessages = []
+                    newMessages.addAll(c.getAddedSubList())
+                    addLogMessages(newMessages)
                 }
             }
         } as ListChangeListener)
 
-        engine.onAlert = new EventHandler<WebEvent<String>>() {
-            @Override
-            void handle(WebEvent<String> event) {
-                String[] tokens = event.data.split(":", 2)
-                if (tokens[0] == "command" && tokens.size() == 2) {
-                    if (tokens[1] == ("ready")) {
-                        htmlLoaded = true
-                        JSBridge.create(engine)
-                        if (layoutInited && htmlLoaded) {
+        engine.onAlert = { WebEvent<String> event ->
+            String[] tokens = event.data.split(":", 2)
+            if (tokens[0] == "command" && tokens.size() == 2) {
+                if (tokens[1] == "ready") {
+                    Platform.runLater {
+                        windowObject = (JSObject) webView.engine.executeScript("window")
+                        println windowObject
+                        JSBridge.create(windowObject)
+                        if (layoutInited) {
                             addLogMessages(logMessages.asList())
                         }
-                        windowObject = (JSObject) webView.engine.executeScript("window")
                     }
-                }else{
-                    println "alert >> " + event.data
                 }
+            } else {
+                println "alert >> " + event.data
             }
-        }
+        } as EventHandler
 
         //        testLog()
 
@@ -117,7 +113,7 @@ class LogWebView extends VBox {
                 updated = true
             }
         }
-        if (updated && htmlLoaded) {
+        if (updated) {
             windowObject?.call("filter")
         }
     }

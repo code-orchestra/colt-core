@@ -26,7 +26,6 @@ class LogVisualizer extends VBox {
 
     private WebView webView = new WebView(contextMenuEnabled: false, prefHeight: 130)
     OL<LogMessage> logMessages
-    private boolean htmlLoaded
     final private List flushList = []
 
     private JSObject windowObject
@@ -46,9 +45,8 @@ class LogVisualizer extends VBox {
             @Override
             void handle(WebEvent<String> event) {
                 if (event.data == "ready") {
-                    htmlLoaded = true;
-                    windowObject = (JSObject) webView.engine.executeScript("window")
-                    Platform.runLater{
+                    Platform.runLater {
+                        windowObject = (JSObject) webView.engine.executeScript("window")
                         flush()
                     }
                 } else {
@@ -106,22 +104,19 @@ class LogVisualizer extends VBox {
                     }
                 }
             }
-
         } as ListChangeListener)
     }
 
     private void addLogMessages(List<LogMessage> messages) {
         synchronized (flushList) {
             flushList.addAll(messages*.level)
-            Platform.runLater {
-                flush()
-            }
+            flush()
         }
     }
 
     private flush() {
         synchronized (flushList) {
-            if (htmlLoaded && (flushList.size() > 0)) {
+            if (windowObject && flushList.size() > 0) {
                 windowObject.call("addLogMessages", flushList)
                 flushList.clear()
             }

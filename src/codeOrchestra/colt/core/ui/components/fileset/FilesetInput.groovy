@@ -115,16 +115,16 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
             String[] tokens = event.data.split(":", 3)
             if (tokens[0] == "command" && tokens.size() > 1) {
                 if (tokens[1] == "ready") {
-                    htmlLoaded = true
-                    windowObject = (JSObject) webView.engine.executeScript("window")
-                    bridge = new JSBridge(webView.engine) {
-                        @Override
-                        void resize(int height) {
-                            webView.prefHeight = height
+                    Platform.runLater {
+                        htmlLoaded = true
+                        windowObject = (JSObject) webView.engine.executeScript("window")
+                        bridge = new JSBridge(windowObject) {
+                            @Override
+                            void resize(int height) {
+                                webView.prefHeight = height
+                            }
                         }
-                    }
-                    if (files) {
-                        Platform.runLater{
+                        if (files) {
                             setFilesetHtmlValue(files)
                         }
                     }
@@ -136,7 +136,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                         fromHtmlUpdate = false
                     }
                 }
-            }else{
+            } else {
                 println "alert >> " + event.data
             }
         } as EventHandler
