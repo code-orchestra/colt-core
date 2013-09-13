@@ -40,7 +40,7 @@ class LogWebView extends VBox {
         }
         super.layoutChildren()
 
-        testLog()
+//        testLog()
     }
 
     private void init() {
@@ -57,12 +57,12 @@ class LogWebView extends VBox {
         logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
             while (c.next()) {
                 if (c.wasRemoved()) {
-                    println("clear log")
+//                    println("clear log")
                     clear()
                 } else if (c.wasPermutated()) {
-                    println "permutated"
+//                    println "permutated"
                 } else if (c.wasUpdated()) {
-                    println "updated"
+//                    println "updated"
                 } else {
                     List<LogMessage> newMessages = []
                     newMessages.addAll(c.getAddedSubList())
@@ -77,7 +77,6 @@ class LogWebView extends VBox {
                 if (tokens[1] == "ready") {
                     Platform.runLater {
                         windowObject = (JSObject) webView.engine.executeScript("window")
-                        println windowObject
                         JSBridge.create(windowObject)
                         if (layoutInited) {
                             addLogMessages(logMessages.asList())
