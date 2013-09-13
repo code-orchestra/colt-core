@@ -11,11 +11,13 @@ import codeOrchestra.util.process.ProcessHandlerBuilder
 class GradleLauncher {
 
     static ProcessHandler launch(String scriptFilename, File baseDir, String task, String... parameters) throws ExecutionException {
-        new ProcessHandlerBuilder()
+        ProcessHandlerBuilder builder = new ProcessHandlerBuilder()
                 .append(PathUtils.getGradleExecutable().getPath())
                 .append("-b " + scriptFilename)
+                .append(parameters)
                 .append(task)
-                .build(baseDir);
+
+        return builder.build(baseDir);
     }
 
 }
