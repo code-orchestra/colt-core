@@ -136,4 +136,16 @@ public class PathUtils {
         throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));
     }
 
+    public static File getGradleExecutable() {
+        String gradleHome = "/Users/eliseyev/Downloads/gradle-1.7"; // TODO: basedir
+
+        if (SystemInfo.isMac) {
+            return new File(gradleHome, "bin/gradle");
+        } else if (SystemInfo.isWindows) {
+            return new File(gradleHome, "bin/gradle.bat");
+        }
+
+        throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));
+    }
+
 }
