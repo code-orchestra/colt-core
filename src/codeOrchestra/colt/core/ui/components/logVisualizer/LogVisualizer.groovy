@@ -57,16 +57,16 @@ class LogVisualizer extends VBox {
 
         liveCodingManager.addListener([
                 onSessionStart: { session ->
-                    ThreadUtils.executeInFXThread({ start() })
+                    Platform.runLater{ start() }
                 },
                 onSessionEnd: { session ->
-                    ThreadUtils.executeInFXThread({ stop() })
+                    Platform.runLater{ stop() }
                 },
                 onSessionPause: {
-                    ThreadUtils.executeInFXThread({ pause() })
+                    Platform.runLater{ pause() }
                 },
                 onSessionResume: {
-                    ThreadUtils.executeInFXThread({ start() })
+                    Platform.runLater{ start() }
                 }
         ] as LiveCodingAdapter)
     }

@@ -97,12 +97,16 @@ class LogWebView extends VBox {
     }
 
     private void addLogMessages(List<LogMessage> messages) {
-        messages*.filter(logFilter ?: LogFilter.ALL)
-        windowObject?.call("addLogMessages", messages)
+        Platform.runLater {
+            messages*.filter(logFilter ?: LogFilter.ALL)
+            windowObject?.call("addLogMessages", messages)
+        }
     }
 
     private void clear() {
-        windowObject?.call("clear")
+        Platform.runLater {
+            windowObject?.call("clear")
+        }
     }
 
     public void filter(LogFilter logFilter) {
@@ -119,7 +123,9 @@ class LogWebView extends VBox {
     }
 
     private void fireApplicationResize() {
-        windowObject?.call("applicationResize")
+        Platform.runLater {
+            windowObject?.call("applicationResize")
+        }
     }
 
     private void testLog() {

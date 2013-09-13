@@ -113,7 +113,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
             if (tokens[0] == "command" && tokens.size() > 1) {
                 if (tokens[1] == "ready") {
                     Platform.runLater {
-                        htmlLoaded = true
                         windowObject = (JSObject) webView.engine.executeScript("window")
                         bridge = new JSBridge(windowObject) {
                             @Override
@@ -141,7 +140,9 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         //binding
 
         filesProperty.addListener({ o, old, String newValue ->
-            if (htmlLoaded && !fromHtmlUpdate) {
+            if (!fromHtmlUpdate) {
+                println "$old -> $newValue"
+
                 String oldValue = getFilesetHtmlValue()
                 if (oldValue != files) {
                     setFilesetHtmlValue(newValue)
@@ -225,11 +226,15 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     }
 
     private void requestFocusInHtml() {
-        windowObject?.call("requestFocus")
+        Platform.runLater{
+            windowObject?.call("requestFocus")
+        }
     }
 
     private void addFile(String el) {
-        windowObject?.call("addFile", el)
+        Platform.runLater{
+            windowObject?.call("addFile", el)
+        }
     }
 
     private void addFile(File file) {
