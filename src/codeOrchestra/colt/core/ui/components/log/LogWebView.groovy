@@ -102,7 +102,7 @@ class LogWebView extends VBox {
     private void addLogMessages(List<LogMessage> messages) {
         Platform.runLater {
             messages*.filter(logFilter ?: LogFilter.ALL)
-            windowObject?.call("addLogMessages", messages)
+            windowObject?.call("addLogMessages", messages.findAll{ it.message =~ /.+/})
         }
     }
 
