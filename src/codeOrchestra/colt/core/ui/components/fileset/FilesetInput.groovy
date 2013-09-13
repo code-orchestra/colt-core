@@ -140,7 +140,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         //binding
 
         filesProperty.addListener({ o, old, String newValue ->
-            println "$old -> $newValue"
             if (!fromHtmlUpdate) {
                 setFilesetHtmlValue(newValue)
             }
