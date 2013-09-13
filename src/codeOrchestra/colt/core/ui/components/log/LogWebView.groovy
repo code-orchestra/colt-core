@@ -47,6 +47,7 @@ class LogWebView extends VBox {
         WebEngine engine = webView.engine
         engine.load(this.class.getResource("html/log-webview.html").toExternalForm())
         visualizer.logMessages = logMessages
+        visualizer.setMinHeight(Double.NEGATIVE_INFINITY)
         children.add(visualizer)
         children.add(webView)
         setVgrow(webView, Priority.ALWAYS)
