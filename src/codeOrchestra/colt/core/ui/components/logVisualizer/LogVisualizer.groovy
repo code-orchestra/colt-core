@@ -24,7 +24,7 @@ import netscape.javascript.JSObject
  */
 class LogVisualizer extends VBox {
 
-    private WebView webView = new WebView(contextMenuEnabled: false, prefHeight: 130)
+    private WebView webView = new WebView(contextMenuEnabled: false, prefHeight: 120)
     OL<LogMessage> logMessages
     final private List flushList = []
 
