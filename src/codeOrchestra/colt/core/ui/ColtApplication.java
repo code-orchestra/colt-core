@@ -33,6 +33,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.scenicview.ScenicView;
 
 import java.io.File;
 
@@ -189,6 +190,8 @@ public class ColtApplication extends Application {
         } else {
             showWelcomeScreen();
         }
+
+//        ScenicView.show(primaryStage.getScene());
     }
 
     public void closeProject() {

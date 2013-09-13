@@ -41,7 +41,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
     private Label label = new Label()
     private WebView webView = new WebView(id: "fileset-webview", layoutY: 24, prefHeight: 28);
-    private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 23, focusTraversable: false, editable: false)
+    private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 23, focusTraversable: false, editable: false, wrapText: true)
     private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 23, prefHeight: 30, prefWidth: 30, text: "Add")
     private JSBridge bridge
     private boolean htmlLoaded
@@ -84,6 +84,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         webView.focusedProperty().addListener({ o, old, f ->
             focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
             focusRectangle.styleClass.add(f ? "fileset-webview-focus" : "fileset-webview")
+            focusRectangle.lookupAll(".scroll-bar")*.visible = false
             if (f) {
                 requestFocusInHtml()
             }
@@ -104,6 +105,10 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                 contextMenu.items.first().onAction.handle(null)
             }
         } as EventHandler
+
+        Platform.runLater{
+            lookupAll(".scroll-bar")*.visible = false
+        }
 
         // web engine
 
