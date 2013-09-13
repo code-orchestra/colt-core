@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core;
 
+import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerLoadingException;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.logging.Logger;
@@ -46,6 +47,7 @@ public class ColtProjectManager {
             public void onProjectLoaded(Project project) {
                 RecentProjects.addRecentProject(project.getPath());
                 ProjectStorageManager.getOrCreateProjectStorageDir();
+                CodeOrchestraResourcesHttpServer.getInstance().addAlias(project.getOutputDir(), "/output");
 
                 getLogger().info("Loaded " + project.getProjectType() + " project " + project.getName() + " on " + DateUtils.getCurrentDate());
             }

@@ -1,6 +1,8 @@
 package codeOrchestra.colt.core.model
 
+import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer
 import codeOrchestra.groovyfx.FXBindable
+import codeOrchestra.util.LocalhostUtil
 import groovy.xml.MarkupBuilder
 
 /**
@@ -40,6 +42,12 @@ abstract class Project {
 
     public File getBaseDir() {
         return new File(path).getParentFile();
+    }
+
+    abstract File getOutputDir()
+
+    String getWebOutputPath() {
+        return "http://" + LocalhostUtil.getLocalhostIp() + ":" + CodeOrchestraResourcesHttpServer.PORT + "/output";
     }
 
 }

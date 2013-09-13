@@ -86,4 +86,11 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
         }
         return error
     }
+
+    boolean validateIsEmpty() {
+        if (validateIsNotEmpty()) {
+            activateValidation()
+        }
+        return error
+    }
 }
