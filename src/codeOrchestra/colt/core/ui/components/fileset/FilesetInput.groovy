@@ -98,7 +98,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
             }
         } as EventHandler
 
-        Platform.runLater{
+        Platform.runLater {
             lookupAll(".scroll-bar")*.visible = false
         }
 
@@ -140,13 +140,9 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         //binding
 
         filesProperty.addListener({ o, old, String newValue ->
+            println "$old -> $newValue"
             if (!fromHtmlUpdate) {
-                println "$old -> $newValue"
-
-                String oldValue = getFilesetHtmlValue()
-                if (oldValue != files) {
-                    setFilesetHtmlValue(newValue)
-                }
+                setFilesetHtmlValue(newValue)
             }
         } as ChangeListener)
     }
@@ -172,14 +168,12 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                             new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
                                 startDirectory = it.parentFile
                                 addFile(it)
-                                files = getFilesetHtmlValue()
                             }
                         } else {
                             def it = new FileChooser(initialDirectory: getBaseDir()).showOpenDialog(scene.window)
                             if (it) {
                                 startDirectory = it.parentFile
                                 addFile(it)
-                                files = getFilesetHtmlValue()
                             }
                         }
                     } as EventHandler<ActionEvent>))
@@ -192,7 +186,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                         if (it) {
                             startDirectory = it?.parentFile
                             addFile(it)
-                            files = getFilesetHtmlValue()
                         }
 
                     } as EventHandler<ActionEvent>))
@@ -204,7 +197,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                         new FileChooser(initialDirectory: getBaseDir()).showOpenMultipleDialog(scene.window).each {
                             startDirectory = it?.parentFile
                             excludeFile(it)
-                            files = getFilesetHtmlValue()
 
                         }
                     } as EventHandler<ActionEvent>))
@@ -217,7 +209,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                         if (it) {
                             startDirectory = it.parentFile
                             excludeFile(it)
-                            files = getFilesetHtmlValue()
                         }
                     } as EventHandler<ActionEvent>))
         }
@@ -225,16 +216,9 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, .9);");
     }
 
-    private void requestFocusInHtml() {
-        Platform.runLater{
-            windowObject?.call("requestFocus")
-        }
-    }
 
     private void addFile(String el) {
-        Platform.runLater{
-            windowObject?.call("addFile", el)
-        }
+        files += ", " + el
     }
 
     private void addFile(File file) {
@@ -245,12 +229,16 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         addFile("-" + createPattern(file))
     }
 
-    String getFilesetHtmlValue() {
-        "" + windowObject?.call("getFiles")
+    private void requestFocusInHtml() {
+        Platform.runLater {
+            windowObject?.call("requestFocus")
+        }
     }
 
     void setFilesetHtmlValue(String str) {
-        windowObject?.call("setFiles", str)
+        Platform.runLater {
+            windowObject?.call("setFiles", str)
+        }
     }
 
     public static List<File> getFilesFromString(String fileset, File baseDir = getBaseDir()) {
