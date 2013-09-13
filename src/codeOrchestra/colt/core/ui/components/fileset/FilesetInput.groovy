@@ -82,17 +82,9 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         focusRectangle.prefHeightProperty().bind(webView.prefHeightProperty().add(2))
 
         webView.focusedProperty().addListener({ o, old, f ->
-            focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
-            focusRectangle.styleClass.add(f ? "fileset-webview-focus" : "fileset-webview")
-            focusRectangle.lookupAll(".scroll-bar")*.visible = false
             if (f) {
                 requestFocusInHtml()
             }
-        } as ChangeListener)
-
-        widthProperty().addListener({ o, old, f ->
-            focusRectangle.styleClass.removeAll("fileset-webview-focus", "fileset-webview")
-            focusRectangle.styleClass.add(focused ? "fileset-webview-focus" : "fileset-webview")
         } as ChangeListener)
 
         addButton.onAction = {
