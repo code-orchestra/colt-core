@@ -9,6 +9,7 @@ import codeOrchestra.colt.core.tasks.TasksManager
 import codeOrchestra.colt.core.ui.components.welcomeScreen.WelcomeScreen
 import codeOrchestra.lcs.license.ColtRunningKey
 import codeOrchestra.util.ApplicationUtil
+import codeOrchestra.util.SystemInfo
 import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.scene.Scene
@@ -25,7 +26,7 @@ class WelcomeScreenStage extends Stage {
     WelcomeScreenStage() {
         root = new WelcomeScreen()
         setTitle("COLT — Code Orchestra Livecoding Tool (1.2)")
-        scene = new Scene(root, 598, 437)
+        scene = SystemInfo.isMac ? new Scene(root, 598, 437) : new Scene(root, 588, 437)
         setResizable(false)
 
         addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, {WindowEvent windowEvent ->
