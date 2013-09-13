@@ -46,8 +46,9 @@ class ProjectDialogs {
         }
     }
 
-    static void openProjectDialog(Scene scene, boolean sameInstance = true) {
+    static void openProjectDialog(Scene scene, boolean sameInstance = true, File initialDirectory = null) {
         FileChooser fileChooser = new FileChooser()
+        fileChooser.initialDirectory = initialDirectory
         fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
         File file = fileChooser.showOpenDialog(scene.window)
         if (file != null) {
@@ -69,13 +70,8 @@ class ProjectDialogs {
         File examplesDir = PathUtils.examplesDir
         if (examplesDir == null || !examplesDir.exists()) {
             ErrorHandler.handle("Can't locate the example projects folder");
-        }
-
-        ProcessBuilder launchBrowser = BrowserUtil.launchBrowser(examplesDir.getPath())
-        try {
-            launchBrowser.start()
-        } catch (IOException e) {
-            ErrorHandler.handle(e, "Error while opening example projects folder")
+        } else {
+            openProjectDialog(scene, true, examplesDir)
         }
     }
 
