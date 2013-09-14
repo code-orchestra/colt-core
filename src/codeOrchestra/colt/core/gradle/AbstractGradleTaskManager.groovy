@@ -8,26 +8,21 @@ import codeOrchestra.util.ProjectHelper
  */
 abstract class AbstractGradleTaskManager<P extends Project> implements GradleTaskManager<P> {
 
-    private List<GradleTask<P>> tasks;
-
-    AbstractGradleTaskManager(List<GradleTask<P>> tasks) {
-        this.tasks = tasks
-    }
-
     @Override
     List<String> appendTasks(StringBuilder script) {
         List<String> tasksApplied = []
+
+        GradleTask<P>[] lastTask = new GradleTask<P>[1]
         tasks.each { task ->
             if (task.isApplicable(ProjectHelper.currentProject as P)) {
-                task.append(script)
-                tasksApplied << task.name
+                task.append(script, lastTask[0])
+                tasksApplied.addAll(task.getTaskNames())
+                lastTask[0] = task
             }
         }
         return tasksApplied
     }
 
-    @Override
-    void dispose() {
-        tasks.clear();
-    }
+    abstract List<GradleTask<P>> getTasks()
+
 }
