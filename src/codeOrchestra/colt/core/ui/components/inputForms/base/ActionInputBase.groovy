@@ -56,7 +56,7 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
     void setShortPathForProject(Project project) {
         textField.textProperty().unbindBidirectional(text())
         text().addListener({ ObservableValue<? extends String> observableValue, String t, String t1 ->
-            println "t1 = $t1"
+            println "model text = $t1"
         } as ChangeListener)
         StringConverter converter = new StringConverter<String>() {
             @Override
@@ -64,7 +64,6 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
                 String path = PathUtils.makeRelative(t, project)
                 if (path?.contains("\${project}")) {
                     path = path.replace("\${project}/", "")
-                    println "path = $path"
                 }
                 return path
             }
