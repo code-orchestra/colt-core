@@ -137,7 +137,10 @@ public class PathUtils {
     }
 
     public static File getGradleExecutable() {
-        String gradleHome = "/Users/eliseyev/Downloads/gradle-1.7"; // TODO: basedir
+        String gradleHome = System.getProperty("gradle.home");
+        if (StringUtils.isEmpty(gradleHome)) {
+            gradleHome = new File(getApplicationBaseDir(), "gradle").getPath();
+        }
 
         if (SystemInfo.isMac) {
             return new File(gradleHome, "bin/gradle");
