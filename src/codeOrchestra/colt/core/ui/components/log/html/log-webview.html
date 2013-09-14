@@ -124,7 +124,9 @@ function isElementInScroll(elem) {
 
 function _isElementInScroll(elem, docViewTop, docViewBottom) {
     if(elem.size() != 1)return false
-    var elemTop = elem.offset()
+    var offset = elem.offset()
+    if(!offset)return false
+    var elemTop = offset.top
     var elemBottom = elemTop + elem.height()
     return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop))
 }
