@@ -103,6 +103,10 @@ public class FileUtils {
     }
 
     public static void copyDir(File what, File to, boolean checkEquals) {
+        copyDir(what, to, checkEquals, null);
+    }
+
+    public static void copyDir(File what, File to, boolean checkEquals, List<String> excludes) {
         assert what.isDirectory();
         if (!to.exists()) {
             to.mkdir();
@@ -122,6 +126,10 @@ public class FileUtils {
 
             if (f.isFile()) {
                 try {
+                    if (excludes != null && excludes.contains(f.getPath())) {
+                        continue;
+                    }
+
                     copyFileChecked(f, to, checkEquals);
                 } catch (IOException e) {
                     e.printStackTrace();
