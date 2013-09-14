@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.ui.components.inputForms
 import codeOrchestra.colt.core.ui.components.inputForms.base.ActionInputBase
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MSelectable
 import codeOrchestra.groovyfx.FXBindable
+import javafx.beans.property.BooleanProperty
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.scene.control.CheckBox
@@ -38,5 +39,9 @@ class CheckBoxActionInput extends ActionInputBase implements MSelectable {
                 error = false
             }
         } as ChangeListener)
+    }
+
+    void setBindSelectedPropery(BooleanProperty value) {
+        selected().bindBidirectional(value)
     }
 }
