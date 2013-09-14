@@ -42,7 +42,7 @@ public class ServiceASTTransformation implements ASTTransformation, Opcodes {
                 return;
             }
             Class service = findService(type);
-            if(service == null)service = type;
+            if (service == null) service = type;
 
             fieldNode.setInitialValueExpression(new MethodCallExpression(
                     new ClassExpression(
@@ -62,13 +62,13 @@ public class ServiceASTTransformation implements ASTTransformation, Opcodes {
             for (Class cl : type.getInterfaces()) {
                 for (Class s : ServiceProvider.KNOWN_SERVICES) {
                     if (s == cl) {
-                        return  s;
+                        return s;
                     }
                 }
             }
 
             type = type.getSuperclass();
         }
-        return  null;
+        return null;
     }
 }
