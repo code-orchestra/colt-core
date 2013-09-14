@@ -243,14 +243,14 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     public static List<File> getFilesFromString(String fileset, File baseDir = getBaseDir()) {
         if (fileset.isEmpty()) return []
         def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
-        result.addAll(getFilesFromFileset(filesets))
+        result.addAll(getFilesFromFileset(filesets, baseDir))
         return result.grep { File f -> !f.directory }
     }
 
     public static List<File> getDirectoriesFromString(String fileset, File baseDir = getBaseDir()) {
         if (fileset.empty) return []
         def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
-        result.addAll(getFilesFromFileset(filesets))
+        result.addAll(getFilesFromFileset(filesets, baseDir))
         return result.grep { File f -> f.directory }
     }
 
