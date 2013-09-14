@@ -113,6 +113,8 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
                     error = !(file.exists() && (SystemInfo.isMac ? file.isDirectory() : file.isFile()))
                     break
             }
+        } else {
+            error = !canBeEmpty
         }
         return error
     }
