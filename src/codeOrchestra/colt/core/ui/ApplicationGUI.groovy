@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui
 
 import codeOrchestra.colt.core.LiveCodingManager
 import codeOrchestra.colt.core.ServiceProvider
+import codeOrchestra.colt.core.annotation.Service
 import codeOrchestra.colt.core.logging.Level
 import codeOrchestra.colt.core.rpc.security.ui.ShortCodeNotification
 import codeOrchestra.colt.core.session.LiveCodingSession
@@ -75,6 +76,8 @@ abstract class ApplicationGUI extends BorderPane {
 
     @FXBindable String applicationState = ""
 
+    private @Service LiveCodingManager liveCodingManager
+
     boolean isFirstTime = true
 
     private LiveCodingListener liveCodingListener = new LiveCodingAdapter() {
@@ -88,7 +91,6 @@ abstract class ApplicationGUI extends BorderPane {
 
         @Override
         void onSessionEnd(LiveCodingSession session) {
-            LiveCodingManager liveCodingManager = getLiveCodingManagerNoBullshit()
             if (liveCodingManager.currentConnections.size() == 0) {
                 Platform.runLater{
                     actionPlayerPopup.actionPlayer.stop.selected = true
@@ -200,7 +202,7 @@ abstract class ApplicationGUI extends BorderPane {
             updateLogFilter()
         } as ChangeListener)
 
-        getLiveCodingManagerNoBullshit().addListener(liveCodingListener)
+        liveCodingManager.addListener(liveCodingListener)
     }
 
     protected bindTitle(StringProperty value) {
@@ -221,6 +223,11 @@ abstract class ApplicationGUI extends BorderPane {
     }
 
     protected void updateLogFilter() {
+        logFilterErrors.text = "Errors" + logFilterPrefix(Level.ERROR)
+        logFilterWarnings.text = "Warnings" + logFilterPrefix(Level.WARN)
+        logFilterInfo.text = "Info" + logFilterPrefix(Level.INFO)
+        logFilterLog.text = "Log" + logFilterPrefix(Level.COMPILATION, Level.LIVE)
+
         if (!logFilterToggleGroup.selectedToggle) {
             logFilterAll.selected = true
             return
@@ -228,10 +235,6 @@ abstract class ApplicationGUI extends BorderPane {
 
         int filterIndex = allFilters.indexOf(logFilterToggleGroup.selectedToggle)
         logView.filter(LogFilter.values()[filterIndex])
-        logFilterErrors.text = "Errors" + logFilterPrefix(Level.ERROR)
-        logFilterWarnings.text = "Warnings" + logFilterPrefix(Level.WARN)
-        logFilterInfo.text = "Info" + logFilterPrefix(Level.INFO)
-        logFilterLog.text = "Log" + logFilterPrefix(Level.COMPILATION, Level.LIVE)
     }
 
     private String logFilterPrefix(Level... levels) {
@@ -242,9 +245,4 @@ abstract class ApplicationGUI extends BorderPane {
     abstract protected void initLog();
 
     abstract protected void initGoogleAnalytics();
-
-    LiveCodingManager getLiveCodingManagerNoBullshit() {
-        return ServiceProvider.get(LiveCodingManager.class)
-    }
-
 }
