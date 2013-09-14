@@ -115,7 +115,12 @@ public class PathUtils {
     }
 
     public static File getExamplesDir() {
-        File examplesDir = new File(getApplicationBaseDir(), "projects");
+        File examplesDir;
+        if (SystemInfo.isMac) {
+            examplesDir = new File(getApplicationBaseDir().getParentFile(), "projects");
+        } else {
+            examplesDir = new File(getApplicationBaseDir(), "projects");
+        }
         if (examplesDir.exists()) {
             return examplesDir;
         }
