@@ -273,10 +273,9 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         [result, filesets]
     }
 
-    private static List<File> getFilesFromFileset(List<String> values) {
+    private static List<File> getFilesFromFileset(List<String> values, File baseDir = getBaseDir()) {
         List<File> result = []
         if (values) {
-            String baseDir = getBaseDir().absolutePath
             AntBuilder ant = new AntBuilder()
 
             def scanner = ant.fileScanner {
