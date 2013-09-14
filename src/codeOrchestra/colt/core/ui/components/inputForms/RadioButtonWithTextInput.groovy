@@ -15,6 +15,10 @@ class RadioButtonWithTextInput extends InputWithErrorBase implements MSelectable
 
     protected final RadioButton radioButton = new RadioButton()
 
+    RadioButton getRadioButton(){
+        return radioButton
+    }
+
     RadioButtonWithTextInput() {
         setLeftAnchor(radioButton, 10)
         setRightAnchor(radioButton, 10)
