@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Colt Log</title>
+    <script>
+        alert("hello")
+        window.onerror = function myErrorFunction(message, url, linenumber) {
+            alert("------------------------------------")
+            alert("js error (message): " + message)
+            alert("js error (url): " + url)
+            alert("js error (line number): " + linenumber)
+            alert("------------------------------------")
+        }
+    </script>
     <link rel="stylesheet" href="log-view.css" type="text/css"/>
     <link rel="stylesheet" href="../../shared/tipsy.css" type="text/css"/>
     <script src="../../shared/jquery.js" type="text/javascript" charset="utf-8"></script>
@@ -17,6 +27,11 @@
 
 <script>
 
+//@code-update
+function live(){
+    console.log("live update");
+}
+
 $(document).ready(function () {
     $('.log').resize(function () {
         if (window.app)app.resize($('body').height())
@@ -26,12 +41,16 @@ $(document).ready(function () {
         updateDotdotdot()
     })
 
+    $(document).keydown(function(){x
+        console.log("hello")
+    })
+
     $(document).keydown(function (e) {
         var up = e.keyCode == 38
         var down = e.keyCode == 40
         if (up || down) {
             var selected = $(".selected")
-            var newSelection;
+            var newSelection
 
             if (selected.length) {
                 if (up) {
@@ -53,14 +72,6 @@ $(document).ready(function () {
             }
         }
     })
-
-    window.onerror = function myErrorFunction(message, url, linenumber) {
-        alert("------------------------------------")
-        alert("js error (message): " + message)
-        alert("js error (url): " + url)
-        alert("js error (line number): " + linenumber)
-        alert("------------------------------------")
-    }
 
     alert("command:ready")
 //    test()

@@ -1,7 +1,6 @@
 package codeOrchestra.colt.core.ui
 
 import codeOrchestra.colt.core.LiveCodingManager
-import codeOrchestra.colt.core.ServiceProvider
 import codeOrchestra.colt.core.annotation.Service
 import codeOrchestra.colt.core.logging.Level
 import codeOrchestra.colt.core.rpc.security.ui.ShortCodeNotification
@@ -19,7 +18,6 @@ import codeOrchestra.colt.core.ui.components.sessionIndicator.SessionIndicatorCo
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import codeOrchestra.groovyfx.FXBindable
 import javafx.application.Platform
-import javafx.beans.InvalidationListener
 import javafx.beans.binding.StringBinding
 import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
@@ -114,7 +112,7 @@ abstract class ApplicationGUI extends BorderPane {
                                         logFilterErrors = new ToggleButton(mnemonicParsing: false, selected: false, text: "Errors", minWidth: NEGATIVE_INFINITY),
                                         logFilterWarnings = new ToggleButton(mnemonicParsing: false, selected: false, text: "Warnings", minWidth: NEGATIVE_INFINITY),
                                         logFilterInfo = new ToggleButton(mnemonicParsing: false, selected: false, text: "Info", minWidth: NEGATIVE_INFINITY),
-                                        logFilterLog = new ToggleButton(mnemonicParsing: false, selected: false, text: "Log", minWidth: NEGATIVE_INFINITY)
+                                        logFilterLog = new ToggleButton(mnemonicParsing: false, selected: false, text: "Live", minWidth: NEGATIVE_INFINITY)
                                 ]),
                                 new AnchorPane(prefWidth: -1.0, newChildren: [
                                         sessionIndicator = new ImageView(fitHeight: 13.0, fitWidth: 13.0, layoutX: 1.0, layoutY: 3.0, pickOnBounds: true, preserveRatio: true),
@@ -138,6 +136,7 @@ abstract class ApplicationGUI extends BorderPane {
         VBox.setVgrow(leftPane, Priority.ALWAYS)
         sidebar.maxWidth = NEGATIVE_INFINITY
         sidebar.styleClass.add("sidebar")
+        logView.toBack()
 
         root.stylesheets.add("/codeOrchestra/colt/core/ui/style/main.css")
 
@@ -186,20 +185,28 @@ abstract class ApplicationGUI extends BorderPane {
         } as ChangeListener)
 
         logView.logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
-            updateLogFilter()
+            updateLogFilterLabels()
         } as ListChangeListener)
 
-        logFilterToggleGroup.selectedToggleProperty().addListener({ o ->
-            updateLogFilter()
-        } as InvalidationListener)
+        logFilterToggleGroup.selectedToggleProperty().addListener({ o, old, newValue ->
+            updateLogFilterLabels()
+            if (!logFilterToggleGroup.selectedToggle) {
+                Platform.runLater{
+                    logFilterAll.selected = true
+                }
+            }else{
+                int filterIndex = allFilters.indexOf(logFilterToggleGroup.selectedToggle)
+                logView.filter(LogFilter.values()[filterIndex])
+            }
+        } as ChangeListener)
 
         root.centerProperty().addListener({ o, old, javafx.scene.Node newValue ->
             allFilters.each { it.visible = root.center == logView }
-            updateLogFilter()
+            updateLogFilterLabels()
         } as ChangeListener)
 
         logFiltersContainer.widthProperty().addListener({ o, old, Number newValue ->
-            updateLogFilter()
+            updateLogFilterLabels()
         } as ChangeListener)
 
         liveCodingManager.addListener(liveCodingListener)
@@ -222,19 +229,11 @@ abstract class ApplicationGUI extends BorderPane {
         actionPlayerPopup = new ActionPlayerPopup()
     }
 
-    protected void updateLogFilter() {
+    protected void updateLogFilterLabels() {
         logFilterErrors.text = "Errors" + logFilterPrefix(Level.ERROR)
         logFilterWarnings.text = "Warnings" + logFilterPrefix(Level.WARN)
         logFilterInfo.text = "Info" + logFilterPrefix(Level.INFO)
-        logFilterLog.text = "Log" + logFilterPrefix(Level.COMPILATION, Level.LIVE)
-
-        if (!logFilterToggleGroup.selectedToggle) {
-            logFilterAll.selected = true
-            return
-        }
-
-        int filterIndex = allFilters.indexOf(logFilterToggleGroup.selectedToggle)
-        logView.filter(LogFilter.values()[filterIndex])
+        logFilterLog.text = "Live" + logFilterPrefix(Level.COMPILATION, Level.LIVE)
     }
 
     private String logFilterPrefix(Level... levels) {

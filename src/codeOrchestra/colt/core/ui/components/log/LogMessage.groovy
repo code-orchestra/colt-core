@@ -29,7 +29,7 @@ class LogMessage {
         boolean visibleState = visible
         switch (filter){
             case LogFilter.ALL:
-                visible = true
+                visible = level != Level.LIVE
                 break
             case LogFilter.ERRORS:
                 visible = level == Level.ERROR
@@ -40,7 +40,7 @@ class LogMessage {
             case LogFilter.INFO:
                 visible = level == Level.INFO
                 break
-            case LogFilter.LOG:
+            case LogFilter.LIVE:
                 visible = level == Level.LIVE || level == Level.COMPILATION
                 break
         }

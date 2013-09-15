@@ -794,7 +794,7 @@
 
 .filters { -fx-spacing: 2px; }
 
-.filters .toggle-button {
+.filters .toggle-button, .filters .toggle-button:hover {
     -fx-background-color: null;
     -fx-background-insets: 0;
     -fx-background-radius: 8px;

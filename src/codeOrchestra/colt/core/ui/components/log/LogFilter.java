@@ -8,5 +8,5 @@ public enum LogFilter {
     ERRORS,
     WARNINGS,
     INFO,
-    LOG
+    LIVE
 }
