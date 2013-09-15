@@ -39,7 +39,8 @@ public final class LoggerMessageEncoder {
     severityMap.put("warn", Level.WARN);
     severityMap.put("debug", Level.INFO);
     severityMap.put("info", Level.INFO);
-    severityMap.put("trace", Level.INFO);
+    severityMap.put("trace", Level.DEBUG);
+    severityMap.put("live", Level.LIVE);
   }
 
   private static Level getLevel(String severity) {

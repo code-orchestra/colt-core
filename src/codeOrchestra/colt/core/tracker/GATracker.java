@@ -1,6 +1,7 @@
 package codeOrchestra.colt.core.tracker;
 
 import codeOrchestra.util.FingerprintUtil;
+import codeOrchestra.util.StringUtils;
 import com.dmurph.tracking.AnalyticsConfigData;
 import com.dmurph.tracking.AnalyticsRequestData;
 import com.dmurph.tracking.JGoogleAnalyticsTracker;
@@ -15,7 +16,7 @@ public class GATracker {
 
     private JGoogleAnalyticsTracker tracker;
 
-    private final String hostName = "code-orchestra.github.io";
+    private final String hostName = "codeorchestra.com";
     private String prevPage = "/";
     private String prevPageTitle = "";
 
@@ -28,8 +29,12 @@ public class GATracker {
         JGoogleAnalyticsTracker.setProxy(System.getenv("http_proxy"));
         int UUID = FingerprintUtil.getNumericFingerPrint();
         VisitorData visitorData = VisitorData.newVisitor(UUID);
-        //TODO: replace with production TrackingCode
-        AnalyticsConfigData config = new AnalyticsConfigData("UA-42969501-5", visitorData);
+        String gaCode = System.getProperty("ga.code");
+        if (StringUtils.isEmpty(gaCode)) {
+            gaCode = "UA-40699654-3";
+        }
+        System.out.println("gaCode = " + gaCode);
+        AnalyticsConfigData config = new AnalyticsConfigData(gaCode, visitorData);
         AWTSystemPopulator.populateConfigData(config);
 
         tracker = new JGoogleAnalyticsTracker(config, JGoogleAnalyticsTracker.GoogleAnalyticsVersion.V_4_7_2);
