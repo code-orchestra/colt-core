@@ -63,7 +63,7 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
             String toString(String t) {
                 String path = PathUtils.makeRelative(t, project)
                 if (path?.contains("\${project}")) {
-                    path = path.replace("\${project}/", "")
+                    path = path.replace("\${project}" + File.separator, "")
                 }
                 return path
             }
@@ -72,7 +72,7 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
             String fromString(String s) {
                 String result = s
 
-                File absolute = new File(PathUtils.makeAbsolute("\${project}/".concat(s)))
+                File absolute = new File(PathUtils.makeAbsolute(("\${project}" + File.separator).concat(s)))
                 if (absolute.exists()) {
                     result = absolute
                 }
