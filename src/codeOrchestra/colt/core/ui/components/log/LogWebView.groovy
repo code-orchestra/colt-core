@@ -44,9 +44,11 @@ class LogWebView extends VBox {
         testLog()
     }
 
-    private void init() {
+    LogWebView() {
         GAController.instance.registerPage(this, "/log.html", "log")
+    }
 
+    private void init() {
         WebEngine engine = webView.engine
         engine.load(this.class.getResource("html/log-webview.html").toExternalForm())
 //        engine.load("file:///Users/eugenepotapenko/.colt/storage/d6ab2ac7/out/log/html/log-webview.html")
