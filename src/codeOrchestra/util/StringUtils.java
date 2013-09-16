@@ -1,5 +1,7 @@
 package codeOrchestra.util;
 
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +10,22 @@ import java.util.UUID;
  * @author Alexander Eliseyev
  */
 public class StringUtils {
+
+  private static String outputEncoding;
+
+  public static String getOutputEncoding() {
+    if (outputEncoding != null) {
+        return outputEncoding;
+    }
+
+    try {
+      outputEncoding = Charset.forName(new OutputStreamWriter(System.out).getEncoding()).toString();
+    } catch (Throwable t) {
+      outputEncoding = "UTF-8";
+    }
+
+    return outputEncoding;
+  }
 
   public static abstract class ILeftCombinator {
     public ILeftCombinator() {
