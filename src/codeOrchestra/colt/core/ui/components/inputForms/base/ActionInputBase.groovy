@@ -55,9 +55,6 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
 
     void setShortPathForProject(Project project) {
         textField.textProperty().unbindBidirectional(text())
-        text().addListener({ ObservableValue<? extends String> observableValue, String t, String t1 ->
-            println "model text = $t1"
-        } as ChangeListener)
         StringConverter converter = new StringConverter<String>() {
             @Override
             String toString(String t) {

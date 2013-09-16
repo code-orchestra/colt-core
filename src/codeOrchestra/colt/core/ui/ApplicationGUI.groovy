@@ -90,7 +90,7 @@ abstract class ApplicationGUI extends BorderPane {
         @Override
         void onSessionEnd(LiveCodingSession session) {
             if (liveCodingManager.currentConnections.size() == 0) {
-                Platform.runLater{
+                Platform.runLater {
                     actionPlayerPopup.actionPlayer.stop.selected = true
                     actionPlayerPopup.actionPlayer.disable = false
                 }
@@ -108,7 +108,7 @@ abstract class ApplicationGUI extends BorderPane {
                 ]),
                 bottom: new HBox(alignment: Pos.CENTER_RIGHT, prefHeight: -1.0, prefWidth: -1.0, spacing: 5.0, newStyleClass: "status-bar",
                         newChildren: [
-                                logFiltersContainer = new HBox(prefHeight:-1.0, prefWidth:-1.0, newStyleClass:"filters", newChildren: [
+                                logFiltersContainer = new HBox(prefHeight: -1.0, prefWidth: -1.0, newStyleClass: "filters", newChildren: [
                                         logFilterAll = new ToggleButton(mnemonicParsing: false, selected: true, text: "All", minWidth: NEGATIVE_INFINITY),
                                         logFilterErrors = new ToggleButton(mnemonicParsing: false, selected: false, text: "Errors", minWidth: NEGATIVE_INFINITY),
                                         logFilterWarnings = new ToggleButton(mnemonicParsing: false, selected: false, text: "Warnings", minWidth: NEGATIVE_INFINITY),
@@ -185,19 +185,19 @@ abstract class ApplicationGUI extends BorderPane {
             applicationState = ["Log", "Production Build", "Project Settings"][index]
         } as ChangeListener)
 
-        logView.logMessages.addListener({ ListChangeListener.Change<? extends LogMessage> c ->
+        logView.logMessages.addListener({ c ->
             updateLogFilterLabels()
         } as ListChangeListener)
 
         logFilterToggleGroup.selectedToggleProperty().addListener({ o, old, newValue ->
-            updateLogFilterLabels()
-            if (!logFilterToggleGroup.selectedToggle) {
-                Platform.runLater{
+            Platform.runLater {
+                updateLogFilterLabels()
+                if (!logFilterToggleGroup.selectedToggle) {
                     logFilterAll.selected = true
+                } else {
+                    int filterIndex = allFilters.indexOf(logFilterToggleGroup.selectedToggle)
+                    logView.filter(LogFilter.values()[filterIndex])
                 }
-            }else{
-                int filterIndex = allFilters.indexOf(logFilterToggleGroup.selectedToggle)
-                logView.filter(LogFilter.values()[filterIndex])
             }
         } as ChangeListener)
 

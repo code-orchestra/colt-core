@@ -33,7 +33,7 @@ public class GATracker {
         if (StringUtils.isEmpty(gaCode)) {
             gaCode = "UA-40699654-3";
         }
-        System.out.println("gaCode = " + gaCode);
+//        System.out.println("gaCode = " + gaCode);
         AnalyticsConfigData config = new AnalyticsConfigData(gaCode, visitorData);
         AWTSystemPopulator.populateConfigData(config);
 
