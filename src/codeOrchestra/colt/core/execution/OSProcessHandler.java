@@ -17,6 +17,7 @@ package codeOrchestra.colt.core.execution;
 
 import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.util.Consumer;
+import codeOrchestra.util.StringUtils;
 import codeOrchestra.util.process.ProcessAdapter;
 
 import java.io.IOException;
@@ -220,9 +221,8 @@ public class OSProcessHandler extends ProcessHandler {
     return myCommandLine;
   }
 
-
   public Charset getCharset() {    
-    return Charset.forName("UTF-8");
+    return Charset.forName(StringUtils.getOutputEncoding());
   }
 
   private abstract static class ReadProcessThread implements Runnable {
