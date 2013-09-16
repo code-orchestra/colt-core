@@ -39,6 +39,7 @@ class ProjectStage extends Stage {
             }
         } as EventHandler)
         setMaxHeight(849)
+        setMinWidth(460)
     }
 
     private void dispose() {
