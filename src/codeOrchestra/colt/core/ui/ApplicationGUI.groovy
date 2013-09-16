@@ -99,6 +99,7 @@ abstract class ApplicationGUI extends BorderPane {
     }
 
     ApplicationGUI() {
+
         VBox sidebar; Pane leftPane
 
         setCenter(root = new BorderPane(
@@ -128,7 +129,7 @@ abstract class ApplicationGUI extends BorderPane {
                 buildButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Build", newStyleClass: "btn-build"),
                 settingsButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Settings", newStyleClass: "btn-settings"),
                 leftPane = new Pane(maxHeight: 1.7976931348623157E308),
-                popupMenuButton = new Button(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, text: "Menu", newStyleClass: "btn-more")
+                popupMenuButton = new Button(focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, text: "Menu", newStyleClass: "btn-more")
 
         ))
 

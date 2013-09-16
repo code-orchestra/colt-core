@@ -13,6 +13,7 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
+import javafx.scene.shape.Rectangle
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
@@ -47,7 +48,8 @@ class LogWebView extends VBox {
         GAController.instance.registerPage(this, "/log.html", "log")
 
         WebEngine engine = webView.engine
-        engine.load(this.class.getResource("html/log-webview.html").toExternalForm())
+//        engine.load(this.class.getResource("html/log-webview.html").toExternalForm())
+        engine.load("file:///Users/eugenepotapenko/.colt/storage/d6ab2ac7/out/log/html/log-webview.html")
         visualizer.logMessages = logMessages
         visualizer.setMinHeight(Double.NEGATIVE_INFINITY)
         children.add(visualizer)

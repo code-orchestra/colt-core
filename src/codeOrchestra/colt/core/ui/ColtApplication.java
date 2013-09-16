@@ -191,7 +191,7 @@ public class ColtApplication extends Application {
             showWelcomeScreen();
         }
 
-//        ScenicView.show(primaryStage.getScene());
+        ScenicView.show(primaryStage.getScene());
     }
 
     public void closeProject() {
