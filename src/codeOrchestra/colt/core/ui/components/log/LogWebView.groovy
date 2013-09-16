@@ -108,7 +108,7 @@ class LogWebView extends VBox {
     }
 
     private void validateLogMessagesSize() {
-        Math.max(0, logMessages.size() - 10).times {
+        Math.max(0, logMessages.size() - 300).times {
             logMessages.remove(0)
         }
     }
