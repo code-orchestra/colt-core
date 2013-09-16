@@ -27,17 +27,22 @@ class PopupMenu extends Popup {
     }
 
     void show(javafx.scene.Node node) {
+        contextMenu.show(node, Side.TOP, 0, 0)
+        if (SystemInfo.isMac) {
+            contextMenu.hide()
+            contextMenu.show(node, Side.TOP, 0, 0)
+        } else {
+            Platform.runLater({
+                contextMenu.hide()
+                contextMenu.show(node, Side.TOP, 0, 0)
+            })
+        }
+        //todo: check with new versions of JavaFX
+        /*
         if (SystemInfo.isMac) {
             Point2D point = node.parent.localToScreen(node.layoutX, node.layoutY)
             super.show(node, point.x - 17, point.y - menuContent.height - 5)
-        } else {
-            contextMenu.show(node, Side.TOP, 0, 0)
-            if (contextMenu.height == -1) {
-                Platform.runLater({
-                    contextMenu.hide()
-                    contextMenu.show(node, Side.TOP, 0, 0)
-                })
-            }
         }
+         */
     }
 }
