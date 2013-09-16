@@ -233,10 +233,165 @@ class ColtMenuBar extends MenuBar {
         if (SystemInfo.isMac) {
             popupMenuItems.addAll(newAs, newJs, save, saveAs)
         } else {
-            //todo: implement
-            popupMenuItems.addAll(menus.collect {
-                return cloneMenu(it)
-            } as Collection<? extends MenuItem>)
+
+            popupMenuItems.addAll(
+                    new Menu(text: "Run", newItems: [
+                            new Menu(text: "Livecoding Session", newItems: [
+                                    new MenuItem(
+                                            text: "Start",
+                                            onAction: { t ->
+                                                coltFacade.runSession()
+                                            } as EventHandler<ActionEvent>
+                                    ),
+                                    new MenuItem(
+                                            text: "Stop",
+                                            onAction: { t ->
+                                                coltFacade.stopSession()
+                                            } as EventHandler<ActionEvent>
+                                    ),
+                                    new SeparatorMenuItem(),
+                                    new MenuItem(
+                                            text: "Pause",
+                                            onAction: { t ->
+                                                coltFacade.pauseSession()
+                                            } as EventHandler<ActionEvent>
+                                    ),
+                                    new MenuItem(
+                                            text: "Resume",
+                                            onAction: { t ->
+                                                coltFacade.resumeSession()
+                                            } as EventHandler<ActionEvent>
+                                    ),
+                                    new SeparatorMenuItem(),
+                                    new MenuItem(
+                                            text: "Restart",
+                                            onAction: { t ->
+                                                coltFacade.restartSession()
+                                            } as EventHandler<ActionEvent>
+                                    )
+                            ]),
+                            new SeparatorMenuItem(),
+                            new MenuItem(
+                                    text: "Open New Connection",
+                                    onAction: { t ->
+                                        coltFacade.openNewConnection()
+                                    } as EventHandler<ActionEvent>
+                            ),
+                            new MenuItem(
+                                    text: "Close All Connections",
+                                    onAction: { t ->
+                                        coltFacade.closeAllConnections()
+                                    } as EventHandler<ActionEvent>
+                            ),
+                            new SeparatorMenuItem(),
+                            new MenuItem(
+                                    text: "Production Build",
+                                    onAction: { t ->
+                                        coltFacade.runProductionBuild()
+                                    } as EventHandler<ActionEvent>
+                            )
+                    ]),
+                    new Menu(text: "Help", newItems: [
+                            new MenuItem(
+                                    text: "Open Demo Projects Directory",
+                                    onAction: { t ->
+                                        ProjectDialogs.openDemoProjectDialog(scene)
+                                    } as EventHandler<ActionEvent>
+                            ),
+                            new MenuItem(
+                                    text: "Open Welcome Screen",
+                                    onAction: { t ->
+                                        ProjectDialogs.openWelcomeScreen(scene)
+                                    } as EventHandler<ActionEvent>
+                            ),
+                            new SeparatorMenuItem(),
+                            new MenuItem(
+                                    text: "Enter Serial Number",
+                                    id: "serial",
+                                    disable: ExpirationHelper.expirationStrategy.trialOnly || !CodeOrchestraLicenseManager.noSerialNumberPresent(),
+                                    onAction: { t ->
+                                        ExpirationHelper.getExpirationStrategy().showSerialNumberDialog()
+                                    } as EventHandler<ActionEvent>
+                            )
+                    ]),
+
+                    new SeparatorMenuItem(),
+                    // root actions
+
+                    new MenuItem(
+                            text: "New Window",
+                            onAction: { t ->
+                                RecentProjects.setMustOpenRecentProject(false)
+                                ApplicationUtil.startAnotherColtInstance()
+                            } as EventHandler<ActionEvent>,
+                            accelerator: new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN)
+                    ),
+                    new Menu(text: "New Project", newItems: [
+                            new MenuItem(
+                                    text: "New AS Project",
+                                    id: "new-as",
+                                    onAction: { t ->
+                                        ProjectDialogs.newAsProjectDialog(scene, false)
+                                    } as EventHandler<ActionEvent>
+                            ),
+                            new MenuItem(
+                                    text: "New JS Project",
+                                    id: "new-js",
+                                    onAction: { t ->
+                                        ProjectDialogs.newJsProjectDialog(scene, false)
+                                    } as EventHandler<ActionEvent>
+                            )
+                    ]),
+                    new SeparatorMenuItem(),
+                    new MenuItem(
+                            text: "Open Project",
+                            onAction: { t ->
+                                ProjectDialogs.openProjectDialog(scene, false)
+                            } as EventHandler<ActionEvent>,
+                            accelerator: new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN)
+                    ),
+                    recentProjectsSubMenu,
+                    new SeparatorMenuItem(),
+                    save = new MenuItem(
+                            text: "Save Project",
+                            id: "save",
+                            onAction: { t ->
+                                ProjectDialogs.saveProjectDialog()
+                            } as EventHandler<ActionEvent>,
+                            accelerator: new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN),
+                            disable: true
+                    ),
+                    new MenuItem(
+                            text: "Save As...",
+                            onAction: { t ->
+                                ProjectDialogs.saveAsProjectDialog(scene)
+                            } as EventHandler<ActionEvent>,
+                            accelerator: new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN),
+                    ),
+                    new MenuItem(
+                            text: "Close Project",
+                            onAction: { t ->
+                                ProjectStage mainStage = ColtApplication.get().mainStage
+                                WindowEvent event = new WindowEvent(mainStage, WindowEvent.WINDOW_CLOSE_REQUEST)
+                                if (mainStage.isShowing()) {
+                                    mainStage.fireEvent(event)
+                                }
+                                if (mainStage.disposed) {
+                                    RecentProjects.mustOpenRecentProject = false
+                                    ApplicationUtil.restartColt()
+                                }
+                            } as EventHandler<ActionEvent>,
+                            accelerator: new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
+                    ),
+                    new SeparatorMenuItem(),
+                    new MenuItem(
+                            text: "Exit",
+                            onAction: { t ->
+                                ApplicationUtil.exitColt()
+                            } as EventHandler<ActionEvent>
+                    )
+
+            )
         }
 
         CodeOrchestraLicenseManager.addListener({
