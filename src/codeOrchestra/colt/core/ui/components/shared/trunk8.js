@@ -237,15 +237,17 @@
         update: function (new_string) {
             return this.each(function () {
                 var $this = $(this);
+                var data = $this.data('trunk8');
+                if(data){
+                    /* Update text. */
+                    if (new_string) {
+                        data.original_text = new_string;
+                    }
 
-                /* Update text. */
-                if (new_string) {
-                    $this.data('trunk8').original_text = new_string;
-                }
-
-                if($this.data('trunk8').original_text != $this.html()){
-                    /* Truncate accordingly. */
-                    truncate.call($this);
+                    if(data.original_text != $this.html()){
+                        /* Truncate accordingly. */
+                        truncate.call($this);
+                    }
                 }
             });
         },

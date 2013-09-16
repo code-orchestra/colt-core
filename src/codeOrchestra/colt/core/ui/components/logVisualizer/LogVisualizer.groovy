@@ -90,11 +90,11 @@ class LogVisualizer extends VBox {
             synchronized (logMessages) {
                 while (c.next()) {
                     if (c.wasRemoved()) {
-                        println("clear log")
+//                        println("clear log")
                     } else if (c.wasPermutated()) {
-                        println "permutated"
+//                        println "permutated"
                     } else if (c.wasUpdated()) {
-                        println "updated"
+//                        println "updated"
                     } else {
                         addLogMessages(c.getAddedSubList().asList())
                     }

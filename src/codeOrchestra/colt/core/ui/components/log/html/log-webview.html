@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Colt Log</title>
     <script>
-        alert("hello")
         window.onerror = function myErrorFunction(message, url, linenumber) {
             alert("------------------------------------")
             alert("js error (message): " + message)
@@ -23,7 +22,7 @@
 </head>
 
 <body>
-<ul class="log"></ul>
+<ul class="log" id="logContainer"></ul>
 
 <script>
 
@@ -70,7 +69,7 @@ $(document).ready(function () {
     })
 
     alert("command:ready")
-//    test()
+    test()
 })
 
 var forUpdateDot = []
@@ -93,7 +92,7 @@ function updateDotdotdot() {
             var docViewBottom = docViewTop + $(window).height()
 
             $.each(forUpdateDot, function () {
-                if (_isElementInScroll(this, docViewTop, docViewBottom)) {
+                if (!this.parent || _isElementInScroll(this, docViewTop, docViewBottom)) {
                     if (!this.hasClass("selected") && this.hasClass("visible")) {
                         needUpdate.push(this)
                     }
@@ -187,8 +186,11 @@ function addLogMessages(messages) {
     }
 }
 
-function addLogMessage(data) {
+function removeFirst() {
+    $(".log li:first-child").remove()
+}
 
+function addLogMessage(data) {
     var messageData = parseLogMessageObject(data)
 
     var isJavaMessage = messageData != data
