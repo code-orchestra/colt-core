@@ -41,13 +41,7 @@ $(document).ready(function () {
         updateDotdotdot()
     })
 
-    $(document).keydown(function(){
-        console.log("hello")
-        alert(123)
-    })
-
     $(document).keydown(function (e) {
-        console.log("key:" + e.keyCode)
         var up = e.keyCode == 38
         var down = e.keyCode == 40
         if (up || down) {
