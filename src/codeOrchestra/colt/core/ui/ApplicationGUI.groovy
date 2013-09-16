@@ -78,11 +78,14 @@ abstract class ApplicationGUI extends BorderPane {
 
     boolean isFirstTime = true
 
+    static public boolean CAN_SHOW_ADD = false
+
     private LiveCodingListener liveCodingListener = new LiveCodingAdapter() {
         @Override
         void onSessionStart(LiveCodingSession session) {
             Platform.runLater({
-                actionPlayerPopup.actionPlayer.showAdd(true)
+                actionPlayerPopup.actionPlayer.play.selected = true
+                actionPlayerPopup.actionPlayer.showAdd(CAN_SHOW_ADD)
                 actionPlayerPopup.actionPlayer.disable = false
             })
         }
@@ -91,6 +94,7 @@ abstract class ApplicationGUI extends BorderPane {
         void onSessionEnd(LiveCodingSession session) {
             if (liveCodingManager.currentConnections.size() == 0) {
                 Platform.runLater {
+                    CAN_SHOW_ADD = false
                     actionPlayerPopup.actionPlayer.stop.selected = true
                     actionPlayerPopup.actionPlayer.disable = false
                 }
