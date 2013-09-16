@@ -41,10 +41,6 @@ $(document).ready(function () {
         updateDotdotdot()
     })
 
-    $(document).keydown(function(){
-        console.log("hello")
-    })
-
     $(document).keydown(function (e) {
         var up = e.keyCode == 38
         var down = e.keyCode == 40
@@ -295,16 +291,20 @@ function updateVisible(element) {
     }
     return updated
 }
+var filterInterval
 function filter() {
-    var updated
-    $(".log li").each(function () {
-        if (updateVisible(this)) {
-            updated = true
+    clearInterval(filterInterval)
+    filterInterval = setInterval(function(){
+        var updated
+        $(".log li").each(function () {
+            if (updateVisible(this)) {
+                updated = true
+            }
+        })
+        if (updated) {
+            $(document).scrollTop(maxScrollTop())
         }
     })
-    if (updated) {
-        $(document).scrollTop(maxScrollTop())
-    }
 }
 
 function maxScrollTop() {
@@ -316,5 +316,5 @@ function isMaxScroll() {
 }
 
 </script>
-</body >
+</body>
 </html>

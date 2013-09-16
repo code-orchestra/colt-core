@@ -123,9 +123,10 @@ B, STRONG {
 }
 
 .log P {
-    word-break: break-all;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
     margin: 0;
-    /*max-height:2.769230769230769em;*/
 }
 
 .log A {
@@ -138,7 +139,7 @@ B, STRONG {
     top: 0.38461538461538464em;
     right: 15px;
     height: 1.3846153846153846em;
-    width: 13ch;
+    width: 21ch;
 }
 
 .log .selected A {
