@@ -23,7 +23,6 @@ class ApplicationUtil {
         if (SystemInfo.isMac) {
             File baseDir = PathUtils.applicationBaseDir
             if (baseDir.path.endsWith(".app")) {
-                Desktop.getDesktop().open(baseDir)
                 Runtime.getRuntime().exec("open -n -a " + baseDir.path)
                 return
             }
