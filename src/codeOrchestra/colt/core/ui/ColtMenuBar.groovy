@@ -235,10 +235,7 @@ class ColtMenuBar extends MenuBar {
         } else {
             //todo: implement
             popupMenuItems.addAll(menus.collect {
-                Menu menu = new Menu()
-                menu.text = it.text
-                menu.items.addAll(it.items)
-                return menu
+                return cloneMenu(it)
             } as Collection<? extends MenuItem>)
         }
 
@@ -251,6 +248,30 @@ class ColtMenuBar extends MenuBar {
         } else {
             setVisible(false)
             setManaged(false)
+        }
+    }
+
+    private static Menu cloneMenu(Menu menu) {
+        Menu result = new Menu()
+        result.text = menu.text
+        result.items.addAll(menu.items.collect {
+            return cloneMenuItem(it)
+        } as Collection<? extends MenuItem>)
+        return result
+    }
+
+    private static MenuItem cloneMenuItem(MenuItem item) {
+        if (item instanceof SeparatorMenuItem) {
+            return new SeparatorMenuItem()
+        } else if(item instanceof Menu) {
+            return cloneMenu(item)
+        } else {
+            MenuItem result = new MenuItem()
+            result.text = item.text
+            result.onAction = item.onAction
+            result.accelerator = item.accelerator
+            result.id = item.id
+            return result
         }
     }
 
