@@ -103,7 +103,8 @@ public class ProcessHandlerBuilder {
     
     if (myCommandLine.size() > 1) {
       for (int i = 1; i < myCommandLine.size(); i++) {
-        myCommandLine.add(myCommandLine.get(i));
+//        myCommandLine.add(myCommandLine.get(i));
+          commandLine.addParameter(myCommandLine.get(i));
       }
     }
     

@@ -319,4 +319,11 @@ public class FileUtils {
         }
     }
 
+    public static String protect(String path) {
+       if (path.contains(" ")) {
+         return "\"" + path + "\"";
+       }
+       return path;
+     }
+
 }
