@@ -149,6 +149,10 @@ public abstract class Logger {
         log(message, DEFAULT_SCOPES, System.currentTimeMillis(), Level.INFO);
     }
 
+    public void live(String message) {
+        log(message, DEFAULT_SCOPES, System.currentTimeMillis(), Level.LIVE);
+    }
+
     public void info(Throwable t) {
         log(t.getMessage(), DEFAULT_SCOPES, System.currentTimeMillis(), Level.INFO);
     }
@@ -173,6 +177,10 @@ public abstract class Logger {
         if (!condition) {
             error(message);
         }
+    }
+
+    public void log(String message, Level level) {
+        log(message, DEFAULT_SCOPES, System.currentTimeMillis(), level, null);
     }
 
     public abstract void log(String message, List<String> scopeIds, long timestamp, Level level, String stackTrace);

@@ -14,8 +14,10 @@ public class StringUtils {
   private static String outputEncoding;
 
   public static String getOutputEncoding() {
+    if (SystemInfo.isWindows) return "cp1251";
+
     if (outputEncoding != null) {
-        return outputEncoding;
+      return outputEncoding;
     }
 
     try {
