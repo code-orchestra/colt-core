@@ -27,7 +27,7 @@ public class GATracker {
 
     private GATracker() {
         JGoogleAnalyticsTracker.setProxy(System.getenv("http_proxy"));
-        int UUID = FingerprintUtil.getNumericFingerPrint();
+        int UUID = Math.abs(FingerprintUtil.getNumericFingerPrint());
         VisitorData visitorData = VisitorData.newVisitor(UUID);
         String gaCode = System.getProperty("ga.code");
         if (StringUtils.isEmpty(gaCode)) {
