@@ -351,7 +351,7 @@ class ColtMenuBar extends MenuBar {
                     ),
                     recentProjectsSubMenu,
                     new SeparatorMenuItem(),
-                    save = new MenuItem(
+                    new MenuItem(
                             text: "Save Project",
                             id: "save",
                             onAction: { t ->
