@@ -44,7 +44,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 23, focusTraversable: false, editable: false, wrapText: true)
     private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 23, prefHeight: 30, prefWidth: 30, text: "Add")
     private JSBridge bridge
-    private boolean htmlLoaded
 
     private File startDirectory = null
 
@@ -116,16 +115,13 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                 if (tokens[1] == "ready") {
                     Platform.runLater {
                         windowObject = (JSObject) webView.engine.executeScript("window")
-                        bridge = new JSBridge(windowObject) {
-                            @Override
-                            void resize(int height) {
-                                Platform.runLater{
-                                    if(webView.prefHeight != height){
-                                        webView.prefHeight = height
-                                    }
+                        bridge = { int height ->
+                            Platform.runLater {
+                                if (webView.prefHeight != height) {
+                                    webView.prefHeight = height
                                 }
                             }
-                        }
+                        } as JSBridge
                         if (files) {
                             setFilesetHtmlValue(files)
                         }
