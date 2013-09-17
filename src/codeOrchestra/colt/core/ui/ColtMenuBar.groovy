@@ -11,7 +11,6 @@ import codeOrchestra.colt.core.license.ExpirationHelper
 import codeOrchestra.colt.core.license.LicenseListener
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
-import codeOrchestra.colt.core.rpc.ColtRemoteService
 import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import codeOrchestra.util.ApplicationUtil

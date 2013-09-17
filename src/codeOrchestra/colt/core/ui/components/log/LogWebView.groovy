@@ -48,8 +48,8 @@ class LogWebView extends VBox {
         GAController.instance.registerPage(this, "/log.html", "log")
 
         WebEngine engine = webView.engine
-        engine.load(this.class.getResource("html/log-webview.html").toExternalForm())
-//        engine.load("file:///Users/eugenepotapenko/.colt/storage/d6ab2ac7/out/log/html/log-webview.html")
+//        engine.load(this.class.getResource("html/log-webview.html").toExternalForm())
+        engine.load("file:///Users/eugenepotapenko/.colt/storage/d6ab2ac7/out/log/html/log-webview.html")
         visualizer.logMessages = logMessages
         visualizer.setMinHeight(Double.NEGATIVE_INFINITY)
         children.add(visualizer)

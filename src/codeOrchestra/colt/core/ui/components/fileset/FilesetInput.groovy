@@ -88,13 +88,15 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         } as ChangeListener)
 
         addButton.onAction = {
-            buildContextMenu()
-            if (contextMenu.items.size() > 1) {
-                if (!contextMenu.isShowing()) {
-                    contextMenu.show(addButton, Side.RIGHT, 0, 0)
+            Platform.runLater{
+                buildContextMenu()
+                if (contextMenu.items.size() > 1) {
+                    if (!contextMenu.isShowing()) {
+                        contextMenu.show(addButton, Side.RIGHT, 0, 0)
+                    }
+                } else {
+                    contextMenu.items.first().onAction.handle(null)
                 }
-            } else {
-                contextMenu.items.first().onAction.handle(null)
             }
         } as EventHandler
 
@@ -117,7 +119,11 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
                         bridge = new JSBridge(windowObject) {
                             @Override
                             void resize(int height) {
-                                webView.prefHeight = height
+                                Platform.runLater{
+                                    if(webView.prefHeight != height){
+                                        webView.prefHeight = height
+                                    }
+                                }
                             }
                         }
                         if (files) {
@@ -303,7 +309,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     private static File getBaseDir() {
         try {
             return ProjectHelper.currentProject?.baseDir
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             return new File("/Users/eugenepotapenko/Documents")
 
         }
