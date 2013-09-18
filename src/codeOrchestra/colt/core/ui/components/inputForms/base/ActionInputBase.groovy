@@ -61,6 +61,8 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
                 String path = PathUtils.makeRelative(t, project)
                 if (path?.contains("\${project}")) {
                     path = path.replace("\${project}" + File.separator, "")
+                } else {
+                    path = t
                 }
                 return path
             }
