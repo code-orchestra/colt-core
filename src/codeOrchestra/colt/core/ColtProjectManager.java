@@ -168,7 +168,6 @@ public class ColtProjectManager {
     }
 
     public synchronized void unload() throws ColtException {
-        // TODO: implement
         fireProjectClosed();
     }
 

@@ -9,11 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Dev-only!
- *
  * @author Alexander Eliseyev
  */
-public class IdeaDevLiveCodingHandlerLoader implements LiveCodingHandlerLoader {
+public class PropertyBasedLiveCodingHandlerLoader implements LiveCodingHandlerLoader {
 
     private Map<String, Class> idToHandler = new HashMap<>();
 

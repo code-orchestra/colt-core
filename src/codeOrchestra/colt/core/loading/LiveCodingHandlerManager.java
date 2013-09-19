@@ -2,7 +2,7 @@ package codeOrchestra.colt.core.loading;
 
 import codeOrchestra.colt.core.LiveCodingLanguageHandler;
 import codeOrchestra.colt.core.ServiceProvider;
-import codeOrchestra.colt.core.loading.impl.IdeaDevLiveCodingHandlerLoader;
+import codeOrchestra.colt.core.loading.impl.PropertyBasedLiveCodingHandlerLoader;
 import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.ui.ColtApplication;
@@ -24,8 +24,7 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
     private LiveCodingHandlerManager() {
     }
 
-    // TODO: change to JarLiveCodingHandlerLoader for production
-    private final LiveCodingHandlerLoader ideaDevLiveCodingHandlerLoader = new IdeaDevLiveCodingHandlerLoader();
+    private final LiveCodingHandlerLoader ideaDevLiveCodingHandlerLoader = new PropertyBasedLiveCodingHandlerLoader();
 
     private LiveCodingLanguageHandler currentHandler;
 
