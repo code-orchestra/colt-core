@@ -13,7 +13,7 @@ class WelcomeScreenTestApp extends Application{
     void start(Stage primaryStage) throws Exception {
         //new groovy.ui.Console().run()
         Parent root = new WelcomeScreen();
-        primaryStage.setTitle("COLT — Code Orchestra Livecoding Tool (1.2)");
+        primaryStage.setTitle("COLT — Code Orchestra Livecoding Tool (1.2.1)");
         Scene scene = new Scene(root, 600, 437)
         primaryStage.setScene(scene);
 //        ScenicView.show(scene);
