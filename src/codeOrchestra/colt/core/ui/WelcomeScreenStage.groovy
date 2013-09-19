@@ -25,7 +25,7 @@ class WelcomeScreenStage extends Stage {
 
     WelcomeScreenStage() {
         root = new WelcomeScreen()
-        setTitle("COLT — Code Orchestra Livecoding Tool (1.2)")
+        setTitle("COLT — Code Orchestra Livecoding Tool (1.2.1)")
         scene = SystemInfo.isMac ? new Scene(root, 598, 437) : new Scene(root, 588, 437)
         setResizable(false)
 
