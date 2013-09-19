@@ -26,7 +26,7 @@ class LogMessage {
     }
 
     public boolean filter(LogFilter filter){
-        boolean visibleState = visible
+        boolean visibleBefore = visible
         switch (filter){
             case LogFilter.ALL:
                 visible = !isLiveLevel()
@@ -44,7 +44,7 @@ class LogMessage {
                 visible = isLiveLevel()
                 break
         }
-        return  visibleState == visible
+        return  visibleBefore != visible
     }
 
     private boolean isLiveLevel() {
