@@ -107,15 +107,7 @@ class ColtMenuBar extends MenuBar {
                         new MenuItem(
                                 text: "Close Project",
                                 onAction: { t ->
-                                    ProjectStage mainStage = ColtApplication.get().mainStage
-                                    WindowEvent event = new WindowEvent(mainStage, WindowEvent.WINDOW_CLOSE_REQUEST)
-                                    if (mainStage.isShowing()) {
-                                        mainStage.fireEvent(event)
-                                    }
-                                    if (mainStage.disposed) {
-                                        RecentProjects.mustOpenRecentProject = false
-                                        ApplicationUtil.restartColt()
-                                    }
+                                    ProjectDialogs.closeProjectDialog()
                                 } as EventHandler<ActionEvent>,
                                 accelerator: new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
                         ),
@@ -370,15 +362,7 @@ class ColtMenuBar extends MenuBar {
                     new MenuItem(
                             text: "Close Project",
                             onAction: { t ->
-                                ProjectStage mainStage = ColtApplication.get().mainStage
-                                WindowEvent event = new WindowEvent(mainStage, WindowEvent.WINDOW_CLOSE_REQUEST)
-                                if (mainStage.isShowing()) {
-                                    mainStage.fireEvent(event)
-                                }
-                                if (mainStage.disposed) {
-                                    RecentProjects.mustOpenRecentProject = false
-                                    ApplicationUtil.restartColt()
-                                }
+                                ProjectDialogs.closeProjectDialog()
                             } as EventHandler<ActionEvent>,
                             accelerator: new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
                     ),

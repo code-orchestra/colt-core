@@ -8,12 +8,14 @@ import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.tasks.ColtTaskWithProgress
 import codeOrchestra.colt.core.tasks.TasksManager
 import codeOrchestra.colt.core.ui.ColtApplication
+import codeOrchestra.colt.core.ui.ProjectStage
 import codeOrchestra.colt.core.ui.components.IProgressIndicator
 import codeOrchestra.util.ApplicationUtil
 import codeOrchestra.util.BrowserUtil
 import codeOrchestra.util.PathUtils
 import javafx.scene.Scene
 import javafx.stage.FileChooser
+import javafx.stage.WindowEvent
 
 /**
  * @author Dima Kruk
@@ -80,8 +82,15 @@ class ProjectDialogs {
     }
 
     static void closeProjectDialog() {
-        ColtApplication.get().showWelcomeScreen()
-        ColtApplication.get().closeProject()
+        ProjectStage mainStage = ColtApplication.get().mainStage
+        WindowEvent event = new WindowEvent(mainStage, WindowEvent.WINDOW_CLOSE_REQUEST)
+        if (mainStage.isShowing()) {
+            mainStage.fireEvent(event)
+        }
+        if (mainStage.disposed) {
+            RecentProjects.mustOpenRecentProject = false
+            ApplicationUtil.restartColt()
+        }
     }
 
     static void saveProjectDialog() {
