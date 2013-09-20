@@ -6,6 +6,7 @@ import codeOrchestra.colt.core.ui.components.inputForms.markers.MSelectable
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MSimple
 import codeOrchestra.groovyfx.FXBindable
 import javafx.scene.control.RadioButton
+import javafx.scene.control.ToggleGroup
 
 /**
  * @author Dima Kruk
@@ -27,5 +28,9 @@ class RadioButtonInput extends TitledInputBase implements MSelectable, MSimple {
 
     RadioButton getRadioButton(){
         return radioButton
+    }
+
+    void setToggleGroup(ToggleGroup value) {
+        radioButton.toggleGroup = value
     }
 }
