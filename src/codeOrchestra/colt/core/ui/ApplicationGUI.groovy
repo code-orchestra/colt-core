@@ -235,13 +235,13 @@ abstract class ApplicationGUI extends BorderPane {
     }
 
     protected void updateLogFilterLabels() {
-        logFilterErrors.text = "Errors" + logFilterPrefix(Level.ERROR)
-        logFilterWarnings.text = "Warnings" + logFilterPrefix(Level.WARN)
-        logFilterInfo.text = "Info" + logFilterPrefix(Level.INFO)
-        logFilterLog.text = "Live" + logFilterPrefix(Level.COMPILATION, Level.LIVE)
+        logFilterErrors.text = "Errors" + logFilterSuffix(Level.ERROR)
+        logFilterWarnings.text = "Warnings" + logFilterSuffix(Level.WARN)
+        logFilterInfo.text = "Info" + logFilterSuffix(Level.INFO)
+        logFilterLog.text = "Live" + logFilterSuffix(Level.COMPILATION, Level.LIVE)
     }
 
-    private String logFilterPrefix(Level... levels) {
+    private String logFilterSuffix(Level... levels) {
         if (logView.logMessages.empty || logFiltersContainer.width < 300) return ""
         " (" + logView.logMessages.grep { LogMessage m -> m.level in levels }.size() + ")"
     }

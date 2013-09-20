@@ -1,0 +1,70 @@
+<xml projectName='log-view' projectType='JS'>
+  <paths>
+    <sources-set>, log/html/log-webview.html</sources-set>
+    <excludes-set>out/**, .git/**, .*/**</excludes-set>
+    <reloads-set>**/*.htm*, **/*.css, **/*.png</reloads-set>
+  </paths>
+  <build>
+    <main-document>${project}/log/html/log-webview.html</main-document>
+    <extract-script>true</extract-script>
+  </build>
+  <live>
+    <settings>
+      <clear-log>false</clear-log>
+      <disconnect>false</disconnect>
+    </settings>
+    <launch>
+      <launcher>CONSOLE</launcher>
+      <browser-path></browser-path>
+      <console-value>/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/bin/java -Dcolt.handlers=AS:codeOrchestra.colt.as.ASLiveCodingLanguageHandler,JS:codeOrchestra.colt.js.JSLiveCodingLanguageHandler -Dcolt.base.dir=/Users/eugenepotapenko/Projects/colt-runner -Dapple.laf.useScreenMenuBar=true -Dcom.apple.mrj.application.apple.menu.about.name=COLT -Dga.code=UA-42969501-5 -Didea.launcher.port=7533 "-Didea.launcher.bin.path=/Applications/IntelliJ IDEA 12.app/bin" -Dfile.encoding=UTF-8 -classpath "/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/lib/ant-javafx.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/lib/dt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/lib/javafx-mx.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/lib/jconsole.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/lib/sa-jdi.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/lib/tools.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/deploy.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/htmlconverter.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/javaws.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/JObjC.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/management-agent.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/plugin.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/ext/cldrdata.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/ext/dnsns.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/ext/jfxrt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/ext/localedata.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/ext/nashorn.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/ext/sunec.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/ext/sunjce_provider.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/ext/sunpkcs11.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/ext/zipfs.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/ant-1.8.4.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/ant-antlr-1.8.4.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/ant-junit-1.8.4.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/ant-launcher-1.8.4.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/antlr-2.7.7.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/asm-4.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/asm-analysis-4.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/asm-commons-4.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/asm-tree-4.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/asm-util-4.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/bsf-2.4.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/commons-cli-1.2.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/commons-logging-1.1.1.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/gpars-1.0.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-ant-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-bsf-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-console-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-docgenerator-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-groovydoc-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-groovysh-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-jmx-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-json-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-jsr223-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-servlet-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-sql-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-swing-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-templates-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-test-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-testng-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/groovy-xml-2.1.5.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/hamcrest-core-1.3.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/ivy-2.2.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/jansi-1.6.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/jcommander-1.27.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/jline-1.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/jsp-api-2.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/jsr166y-1.7.0.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/junit-4.11.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/qdox-1.12.1.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/servlet-api-2.4.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/testng-6.8.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/xmlpull-1.1.3.1.jar:/Users/eugenepotapenko/Documents/groovy-2.1.5/lib/xstream-1.4.2.jar:/Users/eugenepotapenko/Projects/colt-as/out/production/colt-as:/Users/eugenepotapenko/Projects/colt-core/lib/ant.jar:/Users/eugenepotapenko/Projects/colt-core/lib/aquafx-0.1.jar:/Users/eugenepotapenko/Projects/colt-core/lib/httpclient.jar:/Users/eugenepotapenko/Projects/colt-core/lib/ScenicView.jar:/Users/eugenepotapenko/Projects/colt-core/lib/jetty-6.1.26.jar:/Users/eugenepotapenko/Projects/colt-core/lib/appbundler-1.0.jar:/Users/eugenepotapenko/Projects/colt-core/lib/groovyfx-0.3.1.jar:/Users/eugenepotapenko/Projects/colt-core/lib/jsonrpc4j-0.28.jar:/Users/eugenepotapenko/Projects/colt-core/lib/portlet-api-2.0.jar:/Users/eugenepotapenko/Projects/colt-core/lib/servlet-api-2.5.jar:/Users/eugenepotapenko/Projects/colt-core/lib/slf4j-api-1.7.5.jar:/Users/eugenepotapenko/Projects/colt-core/lib/grooscript-0.2.4.jar:/Users/eugenepotapenko/Projects/colt-core/lib/commons-codec-1.3.jar:/Users/eugenepotapenko/Projects/colt-core/lib/groovy-fx-goodies.jar:/Users/eugenepotapenko/Projects/colt-core/lib/jetty-util-6.1.26.jar:/Users/eugenepotapenko/Projects/colt-core/lib/aquafx-0.1-sources.jar:/Users/eugenepotapenko/Projects/colt-core/lib/jackson-core-2.2.0.jar:/Users/eugenepotapenko/Projects/colt-core/lib/slf4j-simple-1.7.5.jar:/Users/eugenepotapenko/Projects/colt-core/lib/log4j-api-2.0-beta8.jar:/Users/eugenepotapenko/Projects/colt-core/lib/log4j-core-2.0-beta8.jar:/Users/eugenepotapenko/Projects/colt-core/lib/jackson-databind-2.2.0.jar:/Users/eugenepotapenko/Projects/colt-core/lib/jgoogleanalyticstracker.jar:/Users/eugenepotapenko/Projects/colt-core/lib/controlsfx-8.0.2-SNAPSHOT.jar:/Users/eugenepotapenko/Projects/colt-core/lib/jackson-annotations-2.2.0.jar:/Users/eugenepotapenko/Projects/colt-as/lib/ant.jar:/Users/eugenepotapenko/Projects/colt-as/lib/colt.swc:/Users/eugenepotapenko/Projects/colt-as/lib/scala-library.jar:/Users/eugenepotapenko/Projects/colt-as/lib/apparat-log-1.0.RC9.jar:/Users/eugenepotapenko/Projects/colt-as/lib/apparat-core-1.0.RC9.jar:/Users/eugenepotapenko/Projects/colt-as/out/production/colt-core:/Users/eugenepotapenko/Projects/colt-as/out/production/groovy-fx-goodies:/Users/eugenepotapenko/Projects/groovy-fx-goodies/lib/groovyfx-0.3.1.jar:/Users/eugenepotapenko/Projects/colt-as/out/production/colt-js:/Users/eugenepotapenko/Projects/colt-js/lib/js.jar:/Users/eugenepotapenko/Projects/colt-js/lib/jetty9.jar:/Users/eugenepotapenko/Projects/colt-js/lib/commons-io-2.4.jar:/Users/eugenepotapenko/Projects/colt-js/lib/servlet-api-3.0.jar:/Applications/IntelliJ IDEA 12.app/lib/idea_rt.jar" com.intellij.rt.execution.application.AppMain codeOrchestra.colt.core.ui.ColtApplication</console-value>
+    </launch>
+    <live>
+      <live-type>all</live-type>
+      <paused>false</paused>
+      <max-loop>10000</max-loop>
+    </live>
+  </live>
+  <production-build>
+    <output-path>${project}/out/production</output-path>
+    <files-paths>**/*.js, -lib/*.js</files-paths>
+    <require-js>
+      <used>false</used>
+      <build-profile></build-profile>
+    </require-js>
+    <combing-files>
+      <used>false</used>
+    </combing-files>
+    <gZip>
+      <used>false</used>
+      <files-paths>*.*</files-paths>
+    </gZip>
+    <jsdoc>
+      <used>false</used>
+      <files-paths>*.js</files-paths>
+      <output-path>${project}/out/production/jsDocs</output-path>
+    </jsdoc>
+    <jshint>
+      <used>false</used>
+      <files-paths>*.js</files-paths>
+    </jshint>
+    <minimizing-scripts>
+      <used>false</used>
+      <warning-level>default</warning-level>
+    </minimizing-scripts>
+    <props2js>
+      <used>false</used>
+      <property-file></property-file>
+      <type-value>js</type-value>
+    </props2js>
+    <s3>
+      <used>false</used>
+      <access-key></access-key>
+      <secret-key></secret-key>
+      <bucket-value></bucket-value>
+      <use-config>false</use-config>
+      <config-file></config-file>
+      <gzip-enabled>false</gzip-enabled>
+      <encryption-enabled>false</encryption-enabled>
+    </s3>
+  </production-build>
+</xml>
