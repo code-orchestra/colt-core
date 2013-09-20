@@ -72,6 +72,7 @@ public class ProcessHandlerBuilder {
       throw new ExecutionException("Working directory " + workingDirectory + " does not exist.");
     }
     ProcessBuilder builder = new ProcessBuilder(myCommandLine);
+    builder.environment().put("PATH", System.getenv("PATH")); // TODO: test
     builder.directory(workingDirectory);
     try {
       Process process = builder.start();
