@@ -3,6 +3,7 @@
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -67,6 +68,54 @@
             <Button focusTraversable="false" layoutY="46" prefHeight="30" prefWidth="67" text="Browse" AnchorPane.rightAnchor="10" />
         </children>
         </AnchorPane>
+
+        <HBox spacing="10">
+            <children>
+                <Label text="Label:">
+                    <HBox.margin>
+                    <Insets top="8" />
+                    </HBox.margin>
+                </Label>
+
+                <ChoiceBox>
+                <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Item 1" />
+                    <String fx:value="Item 2" />
+                    <String fx:value="Item 3" />
+                </FXCollections>
+                </items>
+                </ChoiceBox>
+            </children>
+
+            <padding>
+                <Insets top="20" left="19" />
+            </padding>
+        </HBox>
+
+        <AnchorPane>
+        <children>
+            <Label layoutY="23" text="Main Class:" AnchorPane.leftAnchor="19" AnchorPane.rightAnchor="86" />
+            <TextField layoutY="46" prefHeight="30" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="86" />
+            <Button focusTraversable="false" layoutY="46" prefHeight="30" prefWidth="67" text="Browse" AnchorPane.rightAnchor="10" />
+        </children>
+        </AnchorPane>
+
+<!--         <AnchorPane>
+        <children>
+            <Label layoutY="11" text="Main Class:" AnchorPane.leftAnchor="19" AnchorPane.rightAnchor="86" />
+
+            <ChoiceBox layoutX="80.0" layoutY="4.0">
+            <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Item 1" />
+                <String fx:value="Item 2" />
+                <String fx:value="Item 3" />
+            </FXCollections>
+            </items>
+            </ChoiceBox>
+        </children>
+        </AnchorPane> -->
 
         <AnchorPane styleClass="fieldset-advanced-caption">
         <children>
