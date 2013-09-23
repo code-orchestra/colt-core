@@ -67,7 +67,7 @@ class FormGroup extends VBox {
             } else {
                 initMargins(change.list[change.from - 1] , change.addedSubList[0])
             }
-            Label
+
             if (change.addedSubList.size() > 1) {
                 for (int i = 1; i < change.addedSubList.size(); i++) {
                     initMargins(change.addedSubList[i - 1], change.addedSubList[i])
@@ -118,6 +118,9 @@ class FormGroup extends VBox {
             if (cur instanceof MChoiceBox) {
                 setMargin(cur, new Insets(23 - SPASING, 0, 0, 0))
             }
+        }
+        if (cur instanceof FormGroup) {
+            setMargin(cur, new Insets(-SPASING - 6, 0, 6, 23))
         }
     }
 
