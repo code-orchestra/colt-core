@@ -1,6 +1,7 @@
 package codeOrchestra.colt.core.ui
 
 import codeOrchestra.colt.core.ColtProjectManager
+import codeOrchestra.colt.core.Version
 import codeOrchestra.colt.core.execution.OSProcessHandler
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer
@@ -25,7 +26,7 @@ class WelcomeScreenStage extends Stage {
 
     WelcomeScreenStage() {
         root = new WelcomeScreen()
-        setTitle("COLT — Code Orchestra Livecoding Tool (1.2.1)")
+        setTitle("COLT — Code Orchestra Livecoding Tool (" + Version.VERSION + ")")
         scene = SystemInfo.isMac ? new Scene(root, 598, 437) : new Scene(root, 588, 437)
         setResizable(false)
 

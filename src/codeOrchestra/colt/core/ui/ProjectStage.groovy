@@ -1,6 +1,7 @@
 package codeOrchestra.colt.core.ui
 
 import codeOrchestra.colt.core.ColtProjectManager
+import codeOrchestra.colt.core.Version
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs
 import com.dmurph.tracking.JGoogleAnalyticsTracker
@@ -28,7 +29,7 @@ class ProjectStage extends Stage {
     ProjectStage() {
         root = new VBox()
 
-        setTitle("COLT — Code Orchestra Livecoding Tool (1.2.1)")
+        setTitle("COLT — Code Orchestra Livecoding Tool (" + Version.VERSION + ")")
         scene = new Scene(root, 480, 768)
         addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, {WindowEvent windowEvent ->
             if (ChangingMonitor.getInstance().isChanged()) {
