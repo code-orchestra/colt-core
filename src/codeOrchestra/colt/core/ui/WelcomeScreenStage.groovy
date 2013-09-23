@@ -35,7 +35,6 @@ class WelcomeScreenStage extends Stage {
             dispose()
         }as EventHandler)
         addEventFilter(WindowEvent.WINDOW_SHOWN, {WindowEvent windowEvent ->
-            println "/welcome.html"
             GAController.instance.tracker.trackPageView("/welcome.html", "welcome")
         }as EventHandler)
     }
