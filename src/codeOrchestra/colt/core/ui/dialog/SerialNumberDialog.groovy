@@ -39,7 +39,7 @@ class SerialNumberDialog extends DialogWithImage {
         super.initHeader()
 
         message = "This is a demo version of COLT"
-        comment = String.format("Compilations count would be limited to %d.", DemoHelper.get().getMaxCompilationsCount() - 1)
+        comment = "COLT is in Demo mode. AS compilations count is limited to 10, JS updates to 50"
     }
 
     @Override

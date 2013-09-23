@@ -35,6 +35,8 @@ public interface LiveCodingLanguageHandler<P extends Project> {
 
     void disposeHandler();
 
+    int getDemoModeMaxUpdatesCount();
+
     // Logger
 
     LoggerService getLoggerService();

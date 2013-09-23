@@ -142,7 +142,7 @@ class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationStrategy
         demoMode = true
 
         if (!ApplicationUtil.coltStartWasRecentlyRequested()) {
-            String expireMessage = String.format("COLT is in Demo mode. Compilations count is limited to %d.", DemoHelper.get().getMaxCompilationsCount() - 1);
+            String expireMessage = "COLT is in Demo mode. AS compilations count is limited to 10, JS updates to 50"
             ColtDialogs.showInfo(ColtApplication.get().getPrimaryStage(),
                     "COLT License",
                     expireMessage)
