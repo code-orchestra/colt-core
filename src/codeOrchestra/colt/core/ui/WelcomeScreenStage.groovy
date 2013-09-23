@@ -7,6 +7,7 @@ import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager
 import codeOrchestra.colt.core.tasks.TasksManager
+import codeOrchestra.colt.core.tracker.GAController
 import codeOrchestra.colt.core.ui.components.welcomeScreen.WelcomeScreen
 import codeOrchestra.lcs.license.ColtRunningKey
 import codeOrchestra.util.ApplicationUtil
@@ -32,6 +33,10 @@ class WelcomeScreenStage extends Stage {
 
         addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, {WindowEvent windowEvent ->
             dispose()
+        }as EventHandler)
+        addEventFilter(WindowEvent.WINDOW_SHOWN, {WindowEvent windowEvent ->
+            println "/welcome.html"
+            GAController.instance.tracker.trackPageView("/welcome.html", "welcome")
         }as EventHandler)
     }
 

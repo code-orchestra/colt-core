@@ -31,8 +31,6 @@ class WelcomeScreen extends Pane {
     private List<File> recentProjects = []
 
     WelcomeScreen() {
-        GAController.instance.registerPage(this, "/welcome.html", "welcome")
-
         WebEngine engine = webView.engine
         engine.getLoadWorker().stateProperty().addListener({ o, oldValue, newState ->
             if (newState == Worker.State.SUCCEEDED) {
