@@ -14,7 +14,7 @@ import javafx.collections.ObservableList as FXObservableList
 class ChoiceBoxInput extends TitledInputBase implements MChoiceBox {
 
     protected final Label label = new Label()
-    protected ChoiceBox choiceBox = new ChoiceBox(layoutY: 22.0)
+    protected ChoiceBox choiceBox = new ChoiceBox(layoutY: 22.0, prefHeight: 30)
 
     @FXBindable String value
     @FXBindable FXObservableList<String> values

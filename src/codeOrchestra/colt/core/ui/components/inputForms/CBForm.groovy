@@ -59,6 +59,7 @@ class CBForm extends AnchorPane implements MChoiceBox {
         setLeftAnchor(errorLabel, 125)
         setRightAnchor(errorLabel, 10)
 
+        choiceBox.setPrefSize(80, 30)
         choiceBox.disableProperty().bind(checkBox.selectedProperty())
 
         checkBox.selectedProperty().bindBidirectional(selected())
