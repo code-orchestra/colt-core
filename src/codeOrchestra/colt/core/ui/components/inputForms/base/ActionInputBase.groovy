@@ -4,6 +4,7 @@ import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.PathUtils
+import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.SystemInfo
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -35,7 +36,7 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
             switch (browseType) {
                 case BrowseType.FILE:
                 case BrowseType.APPLICATION:
-                    FileChooser fileChooser = new FileChooser()
+                    FileChooser fileChooser = new FileChooser(initialDirectory: baseDir)
                     fileChooser.extensionFilters.addAll(extensionFilters)
                     File file = fileChooser.showOpenDialog(button.scene.window)
                     if (file) {
@@ -43,7 +44,7 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
                     }
                     break
                 case BrowseType.DIRECTORY:
-                    DirectoryChooser directoryChooser = new DirectoryChooser()
+                    DirectoryChooser directoryChooser = new DirectoryChooser(initialDirectory: baseDir)
                     File file = directoryChooser.showDialog(button.scene.window)
                     if (file) {
                         text = file.path
@@ -51,6 +52,10 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
                     break
             }
         } as EventHandler<ActionEvent>
+    }
+
+    protected static File getBaseDir() {
+        return ProjectHelper.currentProject?.baseDir
     }
 
     void setShortPathForProject(Project project) {
