@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui.components.inputForms.group
 
+import codeOrchestra.colt.core.ui.components.inputForms.base.InputWithErrorBase
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MChoiceBox
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MInput
@@ -151,5 +152,15 @@ class FormGroup extends VBox {
     void setLast(boolean last) {
         this.last = last
         last ? styleClass.add("fieldset-line-bottom") : styleClass.remove("fieldset-line-bottom")
+    }
+
+    boolean validateForm() {
+        boolean result = false
+        children.each {
+            if (it instanceof InputWithErrorBase) {
+                result = it.validateValue() || result
+            }
+        }
+        return !result
     }
 }
