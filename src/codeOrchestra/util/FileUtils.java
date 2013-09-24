@@ -33,6 +33,16 @@ public class FileUtils {
         }
     }
 
+    public static void makeExecutable(String path) {
+        if (!SystemInfo.isWindows) {
+            try {
+                new File(path).setExecutable(true, true);
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }
+
     public static String getFileExtension(File file) {
         if (file.isDirectory()) {
             return null;
