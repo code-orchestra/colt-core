@@ -2,11 +2,11 @@ package codeOrchestra.colt.core.ui.components.inputForms.base
 
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
+import codeOrchestra.colt.core.ui.dialog.ColtDialogs
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.PathUtils
 import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.SystemInfo
-import javafx.beans.InvalidationListener
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.event.ActionEvent
@@ -24,6 +24,7 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
 
     @FXBindable String buttonText = "Browse"
     boolean canBeEmpty
+    boolean directoryCanBeEmpty = true
 
     BrowseType browseType = BrowseType.FILE
     ArrayList<FileChooser.ExtensionFilter> extensionFilters = new ArrayList<>()
@@ -49,6 +50,11 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
                     File file = directoryChooser.showDialog(button.scene.window)
                     if (file) {
                         text = file.path
+                        if (!directoryCanBeEmpty) {
+                            if (file.list().size() > 0) {
+                                ColtDialogs.showWarning(scene.window, "", "Output directory is not empty and its contents will be deleted on session start")
+                            }
+                        }
                     }
                     break
             }
