@@ -77,6 +77,14 @@ public abstract class AbstractLiveCodingManager<P extends Project, S> implements
         }
     }
 
+    protected void fireCodeUpdate() {
+        synchronized (listenerMonitor) {
+            for (LiveCodingListener listener : liveCodingListeners) {
+                listener.onCodeUpdate();
+            }
+        }
+    }
+
     protected void fireSessionStart(LiveCodingSession session) {
         synchronized (listenerMonitor) {
             for (LiveCodingListener listener : liveCodingListeners) {

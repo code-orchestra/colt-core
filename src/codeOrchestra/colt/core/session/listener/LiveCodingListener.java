@@ -17,4 +17,6 @@ public interface LiveCodingListener {
 
     void onAutoPausedSessionResume();
 
+    void onCodeUpdate();
+
 }

@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui.components.inputForms.base
 
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
+import codeOrchestra.colt.core.ui.dialog.ColtDialogs
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.PathUtils
 import codeOrchestra.util.ProjectHelper
@@ -23,6 +24,7 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
 
     @FXBindable String buttonText = "Browse"
     boolean canBeEmpty
+    boolean directoryCanBeEmpty = true
 
     BrowseType browseType = BrowseType.FILE
     ArrayList<FileChooser.ExtensionFilter> extensionFilters = new ArrayList<>()
@@ -48,6 +50,12 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
                     File file = directoryChooser.showDialog(button.scene.window)
                     if (file) {
                         text = file.path
+                        //text can be changed after validation
+                        if (text == file.path && !directoryCanBeEmpty) {
+                            if (file.list().size() > 0) {
+                                ColtDialogs.showWarning(scene.window, "", "Output directory is not empty and its contents will be deleted on session start")
+                            }
+                        }
                     }
                     break
             }
@@ -75,18 +83,28 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
             @Override
             String fromString(String s) {
                 String result = s
-
-                File absolute = new File(PathUtils.makeAbsolute(("\${project}" + File.separator).concat(s)))
-                if (absolute.exists()) {
-                    result = absolute
+                if (!result?.isEmpty()) {
+                    File absolute = new File(PathUtils.makeAbsolute(("\${project}" + File.separator).concat(s)))
+                    if (absolute.exists()) {
+                        result = absolute
+                    }
                 }
 
                 return result
             }
         }
+        text().addListener({ ObservableValue<? extends String> observableValue, String t, String newValue ->
+            if (newValue && newValue == project.baseDir.path) {
+                text = t
+            }
+        } as ChangeListener)
         textField.textProperty().bindBidirectional(text(), converter)
         textField.textProperty().addListener({ ObservableValue<? extends String> observableValue, String t, String newValue ->
-            textField.text = converter.toString(newValue)
+            if (newValue && newValue == project.baseDir.path) {
+                textField.text = t
+            } else {
+                textField.text = converter.toString(newValue)
+            }
         } as ChangeListener)
     }
 

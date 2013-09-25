@@ -7,23 +7,27 @@ import codeOrchestra.colt.core.session.LiveCodingSession;
  */
 public class LiveCodingAdapter implements LiveCodingListener {
 
-  @Override
-  public void onSessionStart(LiveCodingSession session) {
-  }
+    @Override
+    public void onSessionStart(LiveCodingSession session) {
+    }
 
-  @Override
-  public void onSessionEnd(LiveCodingSession session) {
-  }
+    @Override
+    public void onSessionEnd(LiveCodingSession session) {
+    }
 
-  @Override
-  public void onSessionPause() {
-  }
+    @Override
+    public void onSessionPause() {
+    }
 
-  @Override
-  public void onSessionResume() {
-  }
+    @Override
+    public void onSessionResume() {
+    }
 
-  @Override
-  public void onAutoPausedSessionResume() {
-  }
+    @Override
+    public void onAutoPausedSessionResume() {
+    }
+
+    @Override
+    public void onCodeUpdate() {
+    }
 }

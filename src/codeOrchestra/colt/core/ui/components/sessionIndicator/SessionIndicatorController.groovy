@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui.components.sessionIndicator
 
 import codeOrchestra.colt.core.LiveCodingManager
 import codeOrchestra.colt.core.session.LiveCodingSession
+import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
 import codeOrchestra.colt.core.session.listener.LiveCodingListener
 import codeOrchestra.util.ThreadUtils
 import javafx.scene.image.Image
@@ -10,7 +11,7 @@ import javafx.scene.image.ImageView
 /**
  * @author Dima Kruk
  */
-class SessionIndicatorController implements LiveCodingListener{
+class SessionIndicatorController extends LiveCodingAdapter {
 
     private static SessionIndicatorController ourInstance = new SessionIndicatorController()
 
@@ -62,18 +63,4 @@ class SessionIndicatorController implements LiveCodingListener{
         }
     }
 
-    @Override
-    void onSessionPause() {
-        //todo: implement
-    }
-
-    @Override
-    void onSessionResume() {
-        //todo: implement
-    }
-
-    @Override
-    void onAutoPausedSessionResume() {
-        //todo: implement
-    }
 }
