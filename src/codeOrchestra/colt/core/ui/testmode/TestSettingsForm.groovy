@@ -1,12 +1,15 @@
 package codeOrchestra.colt.core.ui.testmode
 
+import codeOrchestra.colt.core.ColtProjectManager
+import codeOrchestra.colt.core.LiveCodingManager
+import codeOrchestra.colt.core.annotation.Service
 import codeOrchestra.colt.core.execution.OSProcessHandler
 import codeOrchestra.colt.core.execution.ProcessHandler
 import codeOrchestra.colt.core.execution.ProcessHandlerWrapper
 import codeOrchestra.colt.core.model.Project
+import codeOrchestra.colt.core.model.listener.ProjectListener
 import codeOrchestra.colt.core.ui.components.scrollpane.SettingsScrollPane
 import codeOrchestra.util.PathUtils
-import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.process.ProcessHandlerBuilder
 import javafx.event.EventHandler
 import javafx.scene.control.Button
@@ -17,21 +20,37 @@ import javafx.scene.control.Button
 abstract class TestSettingsForm extends SettingsScrollPane {
     private Project project
 
+    private @Service LiveCodingManager liveCodingManager
+
     protected ArrayList<ProcessHandlerWrapper> wrappers = new ArrayList<>()
 
     protected int commitCount = 1
+    private Button initButton
 
     TestSettingsForm() {
-        Button initButton = new Button("Init")
+        initButton = new Button("Init")
         initButton.onAction = {
             init()
         } as EventHandler
         mainContainer.children.add(initButton)
+
+        ColtProjectManager.instance.addProjectListener([
+                onProjectLoaded: { Project project ->
+                    initProject(project)
+                },
+                onProjectUnloaded: { Project project ->
+                }
+        ] as ProjectListener)
+    }
+
+    protected void initProject(Project value) {
+        project = value
+        if (new File(project.baseDir, ".git").exists()) {
+            initButton.disable = true
+        }
     }
 
     protected void init() {
-        project = ProjectHelper.currentProject
-
         wrappers.add(new ProcessHandlerWrapper(
                 new ProcessHandlerBuilder()
                         .append("git", "init")
@@ -40,7 +59,6 @@ abstract class TestSettingsForm extends SettingsScrollPane {
     }
 
     protected void addDirectories(List<String> paths) {
-        project = ProjectHelper.currentProject
         ProcessHandlerBuilder builder = new ProcessHandlerBuilder()
         builder.append("git", "add")
         paths.each {
