@@ -8,6 +8,8 @@ import codeOrchestra.colt.core.execution.ProcessHandler
 import codeOrchestra.colt.core.execution.ProcessHandlerWrapper
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
+import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
+import codeOrchestra.colt.core.session.listener.LiveCodingListener
 import codeOrchestra.colt.core.ui.components.scrollpane.SettingsScrollPane
 import codeOrchestra.util.PathUtils
 import codeOrchestra.util.process.ProcessHandlerBuilder
@@ -20,7 +22,7 @@ import javafx.scene.control.Button
 abstract class TestSettingsForm extends SettingsScrollPane {
     private Project project
 
-    private @Service LiveCodingManager liveCodingManager
+    protected @Service LiveCodingManager liveCodingManager
 
     protected ArrayList<ProcessHandlerWrapper> wrappers = new ArrayList<>()
 
@@ -45,9 +47,18 @@ abstract class TestSettingsForm extends SettingsScrollPane {
 
     protected void initProject(Project value) {
         project = value
+
         if (new File(project.baseDir, ".git").exists()) {
             initButton.disable = true
         }
+
+        liveCodingManager.addListener(new LiveCodingAdapter(){
+            @Override
+            void onCodeUpdate() {
+                println "update"
+                //makeCommit()
+            }
+        })
     }
 
     protected void init() {
