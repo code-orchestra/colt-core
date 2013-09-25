@@ -84,9 +84,18 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
                 return result
             }
         }
+        text().addListener({ ObservableValue<? extends String> observableValue, String t, String newValue ->
+            if (newValue && newValue == project.baseDir.path) {
+                text = t
+            }
+        } as ChangeListener)
         textField.textProperty().bindBidirectional(text(), converter)
         textField.textProperty().addListener({ ObservableValue<? extends String> observableValue, String t, String newValue ->
-            textField.text = converter.toString(newValue)
+            if (newValue && newValue == project.baseDir.path) {
+                textField.text = t
+            } else {
+                textField.text = converter.toString(newValue)
+            }
         } as ChangeListener)
     }
 
