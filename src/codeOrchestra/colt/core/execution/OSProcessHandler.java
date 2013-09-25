@@ -20,10 +20,7 @@ import codeOrchestra.util.Consumer;
 import codeOrchestra.util.StringUtils;
 import codeOrchestra.util.process.ProcessAdapter;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.concurrent.*;
 import java.util.concurrent.ExecutionException;
@@ -67,6 +64,9 @@ public class OSProcessHandler extends ProcessHandler {
     myCommandLine = commandLine;
     myWaitFor = new ProcessWaitFor(process);
   }
+    public OSProcessHandler(File worDir, String... command) throws IOException {
+        this(new ProcessBuilder(command).directory(worDir).start(), StringUtils.join(command, " "));
+    }
 
   private class ProcessWaitFor {
     private final Future<?> myWaitForThreadFuture;
