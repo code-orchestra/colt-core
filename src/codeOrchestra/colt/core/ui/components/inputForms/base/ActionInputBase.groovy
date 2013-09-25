@@ -6,6 +6,7 @@ import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.PathUtils
 import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.SystemInfo
+import javafx.beans.InvalidationListener
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.event.ActionEvent
@@ -75,10 +76,11 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
             @Override
             String fromString(String s) {
                 String result = s
-
-                File absolute = new File(PathUtils.makeAbsolute(("\${project}" + File.separator).concat(s)))
-                if (absolute.exists()) {
-                    result = absolute
+                if (!result?.isEmpty()) {
+                    File absolute = new File(PathUtils.makeAbsolute(("\${project}" + File.separator).concat(s)))
+                    if (absolute.exists()) {
+                        result = absolute
+                    }
                 }
 
                 return result
