@@ -50,7 +50,8 @@ abstract class ActionInputBase extends InputWithErrorBase implements MAction {
                     File file = directoryChooser.showDialog(button.scene.window)
                     if (file) {
                         text = file.path
-                        if (!directoryCanBeEmpty) {
+                        //text can be changed after validation
+                        if (text == file.path && !directoryCanBeEmpty) {
                             if (file.list().size() > 0) {
                                 ColtDialogs.showWarning(scene.window, "", "Output directory is not empty and its contents will be deleted on session start")
                             }
