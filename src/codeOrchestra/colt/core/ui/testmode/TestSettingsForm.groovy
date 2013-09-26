@@ -51,6 +51,10 @@ abstract class TestSettingsForm extends SettingsScrollPane {
 
 
     TestSettingsForm() {
+        if (System.getProperty("colt.runType") != "test") {
+            return
+        }
+
         state = TestModeState.NONE
 
         initButton = new Button("Init")

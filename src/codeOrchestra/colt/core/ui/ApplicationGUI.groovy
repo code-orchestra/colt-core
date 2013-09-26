@@ -104,7 +104,6 @@ abstract class ApplicationGUI extends BorderPane {
         }
     }
 
-    protected String runType = ""
     protected TestSettingsForm testSettingsForm
 
     ApplicationGUI() {
@@ -154,8 +153,7 @@ abstract class ApplicationGUI extends BorderPane {
 
 
         //for test mode
-        runType = System.getProperty("colt.runType")
-        if (runType == "test") {
+        if (System.getProperty("colt.runType") == "test") {
             testButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Run", newStyleClass: "btn-run")
             sidebar.children.add(3, testButton)
             navigationToggleGroup.toggles.add(testButton)
