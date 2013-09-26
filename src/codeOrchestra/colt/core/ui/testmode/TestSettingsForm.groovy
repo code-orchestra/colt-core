@@ -13,6 +13,7 @@ import codeOrchestra.colt.core.ui.components.inputForms.group.FormGroup
 import codeOrchestra.colt.core.ui.components.scrollpane.SettingsScrollPane
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.PathUtils
+import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.event.EventHandler
@@ -21,8 +22,6 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.ListView
 import javafx.scene.control.ToggleGroup
 import javafx.util.StringConverter
-import javafx.util.converter.NumberStringConverter
-import org.controlsfx.control.ButtonBar
 
 /**
  * @author Dima Kruk
@@ -133,7 +132,9 @@ abstract class TestSettingsForm extends SettingsScrollPane {
         if (new File(project.baseDir, ".git").exists()) {
             initButton.disable = true
             choiceBox.items.addAll(gitHelper.getBranches())
-            choiceBox.value = choiceBox.items.first()
+            if (choiceBox.items.size() > 0) {
+                choiceBox.value = choiceBox.items.first()
+            }
         }
 
         liveCodingManager.addListener(new LiveCodingAdapter(){
@@ -147,7 +148,9 @@ abstract class TestSettingsForm extends SettingsScrollPane {
             @Override
             void onSessionEnd(LiveCodingSession session) {
                 if (state == TestModeState.RECORD) {
-                    choiceBox.value = choiceBox.items.last()
+                    Platform.runLater({
+                        choiceBox.value = choiceBox.items.last()
+                    } as Runnable)
                 }
                 state = TestModeState.NONE
             }
@@ -196,6 +199,12 @@ abstract class TestSettingsForm extends SettingsScrollPane {
 
     protected void addDirectories(List<String> paths) {
         gitHelper.addDirectories(paths.collect{
+            PathUtils.makeRelative(it, project).replace("\${project}" + File.separator, "")
+        })
+    }
+
+    protected void addFiles(List<String> paths) {
+        gitHelper.addFiles(paths.collect{
             PathUtils.makeRelative(it, project).replace("\${project}" + File.separator, "")
         })
     }

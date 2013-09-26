@@ -53,7 +53,6 @@ class GitHelper {
             if (line.contains("no branch") || line.contains("master")) {
                 continue
             }
-            println "{line.substring(2, line.size())} = ${line.substring(2, line.size())}"
             result.add(line.substring(2, line.size()))
         }
         reader.close()
@@ -65,6 +64,17 @@ class GitHelper {
         builder.append("git", "add")
         paths.each {
             builder = builder.append(it + "/*")
+        }
+        executeProcess(new ProcessHandlerWrapper(
+                builder.build(baseDir),
+                true))
+    }
+
+    public void addFiles(List<String> paths) {
+        ProcessHandlerBuilder builder = new ProcessHandlerBuilder()
+        builder.append("git", "add")
+        paths.each {
+            builder = builder.append(it)
         }
         executeProcess(new ProcessHandlerWrapper(
                 builder.build(baseDir),
