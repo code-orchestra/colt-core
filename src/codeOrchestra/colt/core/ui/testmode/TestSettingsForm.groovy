@@ -7,7 +7,11 @@ import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
 import codeOrchestra.colt.core.session.LiveCodingSession
 import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
+import codeOrchestra.colt.core.ui.components.inputForms.RadioButtonInput
+import codeOrchestra.colt.core.ui.components.inputForms.RadioButtonWithTextInput
+import codeOrchestra.colt.core.ui.components.inputForms.group.FormGroup
 import codeOrchestra.colt.core.ui.components.scrollpane.SettingsScrollPane
+import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.PathUtils
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -15,6 +19,9 @@ import javafx.event.EventHandler
 import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.ListView
+import javafx.scene.control.ToggleGroup
+import javafx.util.StringConverter
+import javafx.util.converter.NumberStringConverter
 import org.controlsfx.control.ButtonBar
 
 /**
@@ -38,7 +45,11 @@ abstract class TestSettingsForm extends SettingsScrollPane {
 
     protected ArrayList<String> commits = new ArrayList<>()
     protected javafx.collections.ObservableList<String> tests
-    private ButtonBar buttonBar
+
+    @FXBindable Integer interval = 1000
+    protected ToggleGroup testToggleGroup
+    protected RadioButtonInput manually
+
 
     TestSettingsForm() {
         state = TestModeState.NONE
@@ -53,16 +64,34 @@ abstract class TestSettingsForm extends SettingsScrollPane {
         recordButton.onAction = {
             startRecord()
         } as EventHandler
+        mainContainer.children.add(recordButton)
+
+        FormGroup startGroup = new FormGroup(title: "Start test")
+        testToggleGroup = new ToggleGroup()
+        RadioButtonWithTextInput byTime
+        startGroup.children.addAll(
+                manually = new RadioButtonInput(title: "manually", toggleGroup: testToggleGroup, selected: true),
+                byTime = new RadioButtonWithTextInput(title: "by time", numeric: true, toggleGroup: testToggleGroup)
+        )
+        byTime.text().bindBidirectional(interval(), new StringConverter<Number>() {
+            @Override
+            String toString(Number t) {
+                return t.toString()
+            }
+
+            @Override
+            Number fromString(String s) {
+                return s as Integer
+            }
+        })
 
         startButton = new Button("Start Test")
         startButton.disable = true
         startButton.onAction = {
             startTest()
         } as EventHandler
-
-        buttonBar = new ButtonBar()
-        buttonBar.buttons.addAll(recordButton, startButton)
-        mainContainer.children.add(buttonBar)
+        startGroup.children.add(startButton)
+        mainContainer.children.add(startGroup)
 
         choiceBox = new ChoiceBox()
         tests = choiceBox.items
@@ -78,6 +107,13 @@ abstract class TestSettingsForm extends SettingsScrollPane {
         mainContainer.children.add(choiceBox)
 
         listView = new ListView<>()
+        listView.selectionModel.selectedItemProperty().addListener({ ObservableValue<? extends String> observableValue, String t, String newValue ->
+            if (newValue) {
+                if(state == TestModeState.TEST) {
+                    gitHelper.checkoutCommit(newValue.split(":").first())
+                }
+            }
+        } as ChangeListener)
         mainContainer.children.add(listView)
 
         ColtProjectManager.instance.addProjectListener([
@@ -98,8 +134,6 @@ abstract class TestSettingsForm extends SettingsScrollPane {
             initButton.disable = true
             choiceBox.items.addAll(gitHelper.getBranches())
             choiceBox.value = choiceBox.items.first()
-        } else {
-            buttonBar.disable = true
         }
 
         liveCodingManager.addListener(new LiveCodingAdapter(){
@@ -130,7 +164,6 @@ abstract class TestSettingsForm extends SettingsScrollPane {
     protected void init() {
         gitHelper.init()
         initButton.disable = true
-        buttonBar.disable = false
     }
 
     protected void startRecord() {
@@ -148,15 +181,17 @@ abstract class TestSettingsForm extends SettingsScrollPane {
     }
 
     protected void runTest() {
-        new Thread() {
-            @Override
-            void run() {
-                commits.each {
-                    gitHelper.checkoutCommit(it.split(":").first())
-                    sleep(2000)
+        if (testToggleGroup.selectedToggle != manually.radioButton) {
+            new Thread() {
+                @Override
+                void run() {
+                    commits.each {
+                        gitHelper.checkoutCommit(it.split(":").first())
+                        sleep(getInterval())
+                    }
                 }
-            }
-        }.start()
+            }.start()
+        }
     }
 
     protected void addDirectories(List<String> paths) {
