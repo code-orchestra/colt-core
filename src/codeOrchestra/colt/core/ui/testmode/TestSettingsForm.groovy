@@ -60,6 +60,7 @@ abstract class TestSettingsForm extends SettingsScrollPane {
         mainContainer.children.add(initButton)
 
         recordButton = new Button("Record")
+        recordButton.disable = true
         recordButton.onAction = {
             startRecord()
         } as EventHandler
@@ -131,6 +132,7 @@ abstract class TestSettingsForm extends SettingsScrollPane {
 
         if (new File(project.baseDir, ".git").exists()) {
             initButton.disable = true
+            recordButton.disable = false
             choiceBox.items.addAll(gitHelper.getBranches())
             if (choiceBox.items.size() > 0) {
                 choiceBox.value = choiceBox.items.first()
@@ -167,6 +169,7 @@ abstract class TestSettingsForm extends SettingsScrollPane {
     protected void init() {
         gitHelper.init()
         initButton.disable = true
+        recordButton.disable = false
     }
 
     protected void startRecord() {
