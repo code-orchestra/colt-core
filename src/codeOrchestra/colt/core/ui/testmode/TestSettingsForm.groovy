@@ -28,17 +28,17 @@ abstract class TestSettingsForm extends SettingsScrollPane {
 
     private Project project
 
+    protected GitHelper gitHelper
+
     protected @Service LiveCodingManager liveCodingManager
 
-    protected ArrayList<ProcessHandlerWrapper> wrappers = new ArrayList<>()
-
-    protected int commitCount = 1
     private Button initButton
     private Button startButton
     private Button recordButton
     private ListView<String> listView
 
     protected ArrayList<String> commits = new ArrayList<>()
+    protected ArrayList<String> tests = new ArrayList<>()
 
     TestSettingsForm() {
         state = TestModeState.NONE
@@ -75,52 +75,14 @@ abstract class TestSettingsForm extends SettingsScrollPane {
         ] as ProjectListener)
     }
 
-    protected void startRecord() {
-        state = TestModeState.RECORD
-    }
-
-    protected void startTest() {
-        state = TestModeState.TEST
-        wrappers.add(new ProcessHandlerWrapper(
-                new ProcessHandlerBuilder()
-                        .append("git", "checkout", commits.first().split(":").first())
-                        .build(project.baseDir),
-                true))
-        executeWrappers()
-    }
-
-    protected void runTest() {
-        new Thread() {
-            @Override
-            void run() {
-                commits.each {
-                    wrappers.add(new ProcessHandlerWrapper(
-                            new ProcessHandlerBuilder()
-                                    .append("git", "checkout", it.split(":").first())
-                                    .build(project.baseDir),
-                            true))
-                    executeWrappers()
-                    sleep(2000)
-                }
-            }
-        }.start()
-    }
-
     protected void initProject(Project value) {
         project = value
 
+        gitHelper = new GitHelper(project.baseDir)
+
         if (new File(project.baseDir, ".git").exists()) {
             initButton.disable = true
-            Process process = new ProcessBuilder().command("git", "log", '--pretty=format:"%h:%s"').directory(project.baseDir).start()
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.inputStream))
-            String line
-            while ((line = reader.readLine()) != null) {
-                commits.add(line)
-            }
-            reader.close()
-            commits = commits.reverse()
-            println "commits = $commits"
+            commits = gitHelper.commints
             listView.items.addAll(commits)
         }
 
@@ -140,65 +102,43 @@ abstract class TestSettingsForm extends SettingsScrollPane {
             @Override
             void onCodeUpdate() {
                 if (state == TestModeState.RECORD) {
-                    makeCommit()
+                    gitHelper.makeCommit()
                 }
             }
         })
     }
 
     protected void init() {
-        wrappers.add(new ProcessHandlerWrapper(
-                new ProcessHandlerBuilder()
-                        .append("git", "init")
-                        .build(project.baseDir),
-                true))
+        gitHelper.init()
+    }
+
+    protected void startRecord() {
+        state = TestModeState.RECORD
+        String testName = "test" + (tests.size() + 1)
+        tests.add(testName)
+        gitHelper.createBranch(testName, "master")
+    }
+
+    protected void startTest() {
+        state = TestModeState.TEST
+        gitHelper.checkoutCommit(commits.first().split(":").first())
+    }
+
+    protected void runTest() {
+        new Thread() {
+            @Override
+            void run() {
+                commits.each {
+                    gitHelper.checkoutCommit(it.split(":").first())
+                    sleep(2000)
+                }
+            }
+        }.start()
     }
 
     protected void addDirectories(List<String> paths) {
-        ProcessHandlerBuilder builder = new ProcessHandlerBuilder()
-        builder.append("git", "add")
-        paths.each {
-            String folder = PathUtils.makeRelative(it, project).replace("\${project}" + File.separator, "")
-            builder = builder.append(folder + "/*")
-        }
-        wrappers.add(new ProcessHandlerWrapper(
-                builder.build(project.baseDir),
-                true))
-
-        wrappers.add(new ProcessHandlerWrapper(
-                new OSProcessHandler(project.baseDir, "git", "commit", "-m", "Initial commit"),
-                true))
-
-        executeWrappers()
-    }
-    //git log --pretty=oneline
-    //git log --pretty=format:"%h:%s"
-
-    protected void executeWrappers() {
-        wrappers.each {
-            ProcessHandler processHandler = it.getProcessHandler()
-            processHandler.addProcessListener(new GitProcessListener())
-            processHandler.startNotify()
-            if (it.mustWaitForExecutionEnd()) {
-                processHandler.waitFor();
-            }
-        }
-        wrappers.clear()
-        println "done"
-    }
-
-    protected void makeCommit() {
-        wrappers.add(new ProcessHandlerWrapper(
-                new ProcessHandlerBuilder()
-                        .append("git", "add", "-u")
-                        .build(project.baseDir),
-                true))
-        wrappers.add(new ProcessHandlerWrapper(
-                new OSProcessHandler(project.baseDir, "git", "commit", "-m", "commit " + commitCount),
-                true))
-
-        executeWrappers()
-
-        commitCount++
+        gitHelper.addDirectories(paths.collect{
+            PathUtils.makeRelative(it, project).replace("\${project}" + File.separator, "")
+        })
     }
 }
