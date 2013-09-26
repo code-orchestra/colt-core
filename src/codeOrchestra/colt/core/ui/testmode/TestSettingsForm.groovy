@@ -3,19 +3,17 @@ package codeOrchestra.colt.core.ui.testmode
 import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.LiveCodingManager
 import codeOrchestra.colt.core.annotation.Service
-import codeOrchestra.colt.core.execution.OSProcessHandler
-import codeOrchestra.colt.core.execution.ProcessHandler
-import codeOrchestra.colt.core.execution.ProcessHandlerWrapper
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
 import codeOrchestra.colt.core.session.LiveCodingSession
 import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
 import codeOrchestra.colt.core.ui.components.scrollpane.SettingsScrollPane
 import codeOrchestra.util.PathUtils
-import codeOrchestra.util.ThreadUtils
-import codeOrchestra.util.process.ProcessHandlerBuilder
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.event.EventHandler
 import javafx.scene.control.Button
+import javafx.scene.control.ChoiceBox
 import javafx.scene.control.ListView
 import org.controlsfx.control.ButtonBar
 
@@ -35,10 +33,12 @@ abstract class TestSettingsForm extends SettingsScrollPane {
     private Button initButton
     private Button startButton
     private Button recordButton
-    private ListView<String> listView
+    protected ChoiceBox<String> choiceBox
+    protected ListView<String> listView
 
     protected ArrayList<String> commits = new ArrayList<>()
-    protected ArrayList<String> tests = new ArrayList<>()
+    protected javafx.collections.ObservableList<String> tests
+    private ButtonBar buttonBar
 
     TestSettingsForm() {
         state = TestModeState.NONE
@@ -59,9 +59,21 @@ abstract class TestSettingsForm extends SettingsScrollPane {
             startTest()
         } as EventHandler
 
-        ButtonBar buttonBar = new ButtonBar()
+        buttonBar = new ButtonBar()
         buttonBar.buttons.addAll(recordButton, startButton)
         mainContainer.children.add(buttonBar)
+
+        choiceBox = new ChoiceBox()
+        tests = choiceBox.items
+        choiceBox.valueProperty().addListener({ ObservableValue observableValue, String t, String newValue ->
+            if (newValue) {
+                gitHelper.checkoutBranch(newValue)
+                commits = gitHelper.commits
+                listView.items.clear()
+                listView.items.addAll(commits)
+            }
+        } as ChangeListener)
+        mainContainer.children.add(choiceBox)
 
         listView = new ListView<>()
         mainContainer.children.add(listView)
@@ -82,8 +94,10 @@ abstract class TestSettingsForm extends SettingsScrollPane {
 
         if (new File(project.baseDir, ".git").exists()) {
             initButton.disable = true
-            commits = gitHelper.commints
-            listView.items.addAll(commits)
+            choiceBox.items.addAll(gitHelper.getBranches())
+            choiceBox.value = choiceBox.items.first()
+        } else {
+            buttonBar.disable = true
         }
 
         liveCodingManager.addListener(new LiveCodingAdapter(){
@@ -96,6 +110,9 @@ abstract class TestSettingsForm extends SettingsScrollPane {
 
             @Override
             void onSessionEnd(LiveCodingSession session) {
+                if (state == TestModeState.RECORD) {
+                    choiceBox.value = choiceBox.items.last()
+                }
                 state = TestModeState.NONE
             }
 
@@ -110,10 +127,14 @@ abstract class TestSettingsForm extends SettingsScrollPane {
 
     protected void init() {
         gitHelper.init()
+        initButton.disable = true
+        buttonBar.disable = false
     }
 
     protected void startRecord() {
         state = TestModeState.RECORD
+        listView.items.clear()
+        gitHelper.resetCommitCount()
         String testName = "test" + (tests.size() + 1)
         tests.add(testName)
         gitHelper.createBranch(testName, "master")

@@ -9,12 +9,16 @@ import codeOrchestra.util.process.ProcessHandlerBuilder
  * @author Dima Kruk
  */
 class GitHelper {
-    File baseDir
+    private File baseDir
 
     protected int commitCount = 1
 
     GitHelper(File baseDir) {
         this.baseDir = baseDir
+    }
+
+    public void resetCommitCount() {
+        commitCount = 1
     }
 
     public void init() {
@@ -25,7 +29,7 @@ class GitHelper {
                 true))
     }
 
-    public ArrayList<String> getCommints() {
+    public ArrayList<String> getCommits() {
         ArrayList<String> result = new ArrayList<>()
         Process process = new ProcessBuilder().command("git", "log", '--pretty=format:"%h:%s"').directory(baseDir).start()
 
@@ -37,6 +41,23 @@ class GitHelper {
         reader.close()
 
         return result.reverse()
+    }
+
+    public ArrayList<String> getBranches() {
+        ArrayList<String> result = new ArrayList<>()
+        Process process = new ProcessBuilder().command("git", "branch").directory(baseDir).start()
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.inputStream))
+        String line
+        while ((line = reader.readLine()) != null) {
+            if (line.contains("no branch") || line.contains("master")) {
+                continue
+            }
+            println "{line.substring(2, line.size())} = ${line.substring(2, line.size())}"
+            result.add(line.substring(2, line.size()))
+        }
+        reader.close()
+        return result
     }
 
     public void addDirectories(List<String> paths) {
