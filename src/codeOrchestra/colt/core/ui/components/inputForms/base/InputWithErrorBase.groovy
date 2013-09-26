@@ -40,11 +40,12 @@ abstract class InputWithErrorBase extends TitledInputBase implements MInput {
     }
 
     void setNumeric(boolean numeric) {
-        textField.textProperty().addListener({ ob, oldValue, String newValue ->
+        text().addListener({ ob, oldValue, String newValue ->
             try {
                 newValue.toInteger()
             } catch (NumberFormatException ignored) {
-                textField.text = oldValue
+                text = oldValue
+                textField.text = text
             }
         } as ChangeListener)
     }
