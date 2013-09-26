@@ -6,6 +6,7 @@ import codeOrchestra.groovyfx.FXBindable
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.scene.control.RadioButton
+import javafx.scene.control.ToggleGroup
 
 /**
  * @author Dima Kruk
@@ -41,5 +42,9 @@ class RadioButtonWithTextInput extends InputWithErrorBase implements MSelectable
                 error = false
             }
         } as ChangeListener)
+    }
+
+    void setToggleGroup(ToggleGroup value) {
+        radioButton.toggleGroup = value
     }
 }

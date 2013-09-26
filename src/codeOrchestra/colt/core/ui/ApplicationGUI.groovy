@@ -16,6 +16,7 @@ import codeOrchestra.colt.core.ui.components.player.ActionPlayerPopup
 import codeOrchestra.colt.core.ui.components.popupmenu.PopupMenu
 import codeOrchestra.colt.core.ui.components.sessionIndicator.SessionIndicatorController
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
+import codeOrchestra.colt.core.ui.testmode.TestSettingsForm
 import codeOrchestra.groovyfx.FXBindable
 import javafx.application.Platform
 import javafx.beans.binding.StringBinding
@@ -53,6 +54,7 @@ abstract class ApplicationGUI extends BorderPane {
     protected ToggleButton runButton
     protected ToggleButton buildButton
     protected ToggleButton settingsButton
+    protected ToggleButton testButton
 
     protected Button popupMenuButton
 
@@ -102,6 +104,8 @@ abstract class ApplicationGUI extends BorderPane {
         }
     }
 
+    protected TestSettingsForm testSettingsForm
+
     ApplicationGUI() {
 
         VBox sidebar; Pane leftPane
@@ -146,6 +150,17 @@ abstract class ApplicationGUI extends BorderPane {
         root.stylesheets.add("/codeOrchestra/colt/core/ui/style/main.css")
 
         initLog(); init()
+
+
+        //for test mode
+        if (System.getProperty("colt.runType") == "test") {
+            testButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Run", newStyleClass: "btn-run")
+            sidebar.children.add(3, testButton)
+            navigationToggleGroup.toggles.add(testButton)
+            testButton.onAction = {
+                root.center = testSettingsForm
+            } as EventHandler
+        }
     }
 
     LiveCodingManager get
@@ -186,7 +201,7 @@ abstract class ApplicationGUI extends BorderPane {
 
         navigationToggleGroup.selectedToggleProperty().addListener({ v, o, newValue ->
             int index = navigationToggleGroup.toggles.indexOf(navigationToggleGroup.selectedToggle)
-            applicationState = ["Log", "Production Build", "Project Settings"][index]
+            applicationState = ["Log", "Production Build", "Project Settings", "Test"][index]
         } as ChangeListener)
 
         logView.logMessages.addListener({ c ->
