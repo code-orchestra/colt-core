@@ -30,9 +30,9 @@ abstract class TestSettingsForm extends SettingsScrollPane {
 
     protected @Service LiveCodingManager liveCodingManager
 
-    private Button initButton
-    private Button startButton
-    private Button recordButton
+    protected Button initButton
+    protected Button startButton
+    protected Button recordButton
     protected ChoiceBox<String> choiceBox
     protected ListView<String> listView
 
@@ -55,6 +55,7 @@ abstract class TestSettingsForm extends SettingsScrollPane {
         } as EventHandler
 
         startButton = new Button("Start Test")
+        startButton.disable = true
         startButton.onAction = {
             startTest()
         } as EventHandler
@@ -67,6 +68,7 @@ abstract class TestSettingsForm extends SettingsScrollPane {
         tests = choiceBox.items
         choiceBox.valueProperty().addListener({ ObservableValue observableValue, String t, String newValue ->
             if (newValue) {
+                startButton.disable = false
                 gitHelper.checkoutBranch(newValue)
                 commits = gitHelper.commits
                 listView.items.clear()
