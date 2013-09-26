@@ -158,7 +158,12 @@ abstract class TestSettingsForm extends SettingsScrollPane {
                         choiceBox.value = choiceBox.items.last()
                     } as Runnable)
                 }
+                if (state == TestModeState.TEST) {
+                    startButton.disable = false
+                }
                 state = TestModeState.NONE
+                recordButton.disable = false
+                choiceBox.disable = false
             }
 
             @Override
@@ -183,11 +188,19 @@ abstract class TestSettingsForm extends SettingsScrollPane {
         String testName = "test" + (tests.size() + 1)
         tests.add(testName)
         gitHelper.createBranch(testName, "master")
+
+        startButton.disable = true
+        recordButton.disable = true
+        choiceBox.disable = true
     }
 
     protected void startTest() {
         state = TestModeState.TEST
         gitHelper.checkoutCommit(commits.first().split(":").first())
+
+        startButton.disable = true
+        recordButton.disable = true
+        choiceBox.disable = true
     }
 
     protected void runTest() {
