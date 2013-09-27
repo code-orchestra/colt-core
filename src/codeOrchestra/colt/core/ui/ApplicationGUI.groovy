@@ -158,9 +158,13 @@ abstract class ApplicationGUI extends BorderPane {
             sidebar.children.add(3, testButton)
             navigationToggleGroup.toggles.add(testButton)
             testButton.onAction = {
-                root.center = testSettingsForm
+                showTestSettingsForm()
             } as EventHandler
         }
+    }
+
+    protected void showTestSettingsForm() {
+        root.center = testSettingsForm
     }
 
     LiveCodingManager get
