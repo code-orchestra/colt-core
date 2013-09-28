@@ -213,6 +213,65 @@ public class FileUtils {
         }
     }
 
+    public static ReadWrapper readAndIgnoreBOM(File file) {
+        try {
+            InputStreamWrapper inputStreamWrapper = checkForUtf8BOMAndDiscardIfAny(new FileInputStream(file));
+            return new ReadWrapper(read(new InputStreamReader(inputStreamWrapper.getInputStream())), inputStreamWrapper.bomWasRemoved());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static InputStreamWrapper checkForUtf8BOMAndDiscardIfAny(InputStream inputStream) throws IOException {
+        PushbackInputStream pushbackInputStream = new PushbackInputStream(new BufferedInputStream(inputStream), 3);
+        byte[] bom = new byte[3];
+        boolean bomWasRemoved = false;
+        if (pushbackInputStream.read(bom) != -1) {
+            if (!(bom[0] == (byte) 0xEF && bom[1] == (byte) 0xBB && bom[2] == (byte) 0xBF)) {
+                pushbackInputStream.unread(bom);
+            } else {
+                bomWasRemoved = true;
+            }
+        }
+        return new InputStreamWrapper(pushbackInputStream, bomWasRemoved);
+    }
+
+    private static class InputStreamWrapper {
+        InputStream inputStream;
+        boolean bomWasRemoved;
+
+        private InputStreamWrapper(InputStream inputStream, boolean bomWasRemoved) {
+            this.inputStream = inputStream;
+            this.bomWasRemoved = bomWasRemoved;
+        }
+
+        private InputStream getInputStream() {
+            return inputStream;
+        }
+
+        private boolean bomWasRemoved() {
+            return bomWasRemoved;
+        }
+    }
+
+    public static class ReadWrapper {
+        private String readResult;
+        private boolean bomWasRemoved;
+
+        public ReadWrapper(String readResult, boolean bomWasRemoved) {
+            this.readResult = readResult;
+            this.bomWasRemoved = bomWasRemoved;
+        }
+
+        public String getReadResult() {
+            return readResult;
+        }
+
+        public boolean bomWasRemoved() {
+            return bomWasRemoved;
+        }
+    }
+
     public static String read(Reader reader) {
         BufferedReader r = null;
         try {
