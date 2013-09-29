@@ -298,6 +298,25 @@ public class FileUtils {
         }
     }
 
+    public static void writeWithBOM(File file, String content) {
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            byte[] bom = new byte[] { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(bom);
+
+            Writer out = new BufferedWriter(new OutputStreamWriter(fileOutputStream, "UTF-8"));
+            out.write(content);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void write(File file, String content) {
         try {
             if (!file.exists()) {
