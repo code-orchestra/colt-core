@@ -37,7 +37,7 @@ public class CodeOrchestraResourcesHttpServer {
     private Object reloadMonitor = new Object();
 
     public void init() {
-        server = new Server(PORT); // TODO: make configurable
+        server = new Server(PORT);
 
         activeHandlers = new HandlerList();
         server.setHandler(activeHandlers);

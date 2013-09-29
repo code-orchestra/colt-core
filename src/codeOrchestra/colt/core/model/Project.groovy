@@ -47,7 +47,7 @@ abstract class Project {
     abstract File getOutputDir()
 
     String getWebOutputPath() {
-        return "http://" + LocalhostUtil.getLocalhostIp() + ":" + CodeOrchestraResourcesHttpServer.PORT + "/output";
+        return "http://" + LocalhostUtil.getLocalhostIp() + ":" + CodeOrchestraResourcesHttpServer.PORT + "/colt";
     }
 
 }
