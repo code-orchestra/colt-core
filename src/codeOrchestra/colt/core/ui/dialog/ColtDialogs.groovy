@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.ui.dialog
 
+import codeOrchestra.util.ThreadUtils
 import javafx.event.Event
 import javafx.scene.image.Image
 import javafx.stage.Window
@@ -8,6 +9,7 @@ import javafx.stage.Window
  * @author Dima Kruk
  */
 class ColtDialogs {
+    static boolean isShowing = false
 
     public static void showCloseProjectDialog(Window owner, Event event) {
         SaveDialog dialog = new SaveDialog(owner)
@@ -29,6 +31,16 @@ class ColtDialogs {
         dialog.comment = comment
 
         dialog.show()
+    }
+
+    static void showDemoModeError(Window owner, String title, String massage, String comment = "") {
+        DialogWithImage dialog = new DialogWithImage(owner)
+        dialog.image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
+        dialog.title = title
+        dialog.message = massage
+        dialog.comment = comment
+
+        showOneDialog(dialog)
     }
 
     static void showWarning(Window owner, String title, String massage) {
@@ -56,5 +68,24 @@ class ColtDialogs {
         dialog.message = massage
 
         dialog.show()
+    }
+
+    static private void showOneDialog(Dialog dialog) {
+        if (isShowing) {
+            return
+        }
+
+        isShowing = true
+        dialog.show({afterShow()})
+    }
+
+    protected static void afterShow() {
+        new Thread() {
+            @Override
+            void run() {
+                ThreadUtils.sleep(100)
+                isShowing = false
+            }
+        }.start()
     }
 }

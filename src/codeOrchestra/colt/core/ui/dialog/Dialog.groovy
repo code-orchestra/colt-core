@@ -122,4 +122,9 @@ class Dialog extends VBox {
         stage.scene = new Scene(this)
         stage.showAndWait()
     }
+
+    void show(Closure afterShow) {
+        show()
+        afterShow()
+    }
 }

@@ -33,6 +33,10 @@ public class ErrorHandler {
         execInFXThreadByTimeout(() -> ColtDialogs.showError(ColtApplication.get().getPrimaryStage(), title, message));
     }
 
+    public static void demoModeHandle(final String message, final String title) {
+        execInFXThreadByTimeout(() -> ColtDialogs.showDemoModeError(ColtApplication.get().getPrimaryStage(), title, message));
+    }
+
     private static void execInFXThreadByTimeout(Runnable runnable) {
         Runnable theRunnable = () -> {
             if (System.currentTimeMillis() - lastTimeDialogWasShown > ERROR_DIALOG_TIMEOUT) {
