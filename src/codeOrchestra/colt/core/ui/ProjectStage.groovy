@@ -46,7 +46,7 @@ class ProjectStage extends Stage {
 
     private void dispose() {
         ColtProjectManager.instance.unload()
-        JGoogleAnalyticsTracker.completeBackgroundTasks(1000);
+        JGoogleAnalyticsTracker.stopBackgroundThread(1000);
         disposed = true
     }
 }
