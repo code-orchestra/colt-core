@@ -4,6 +4,7 @@ import codeOrchestra.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.prefs.BackingStoreException;
@@ -23,7 +24,7 @@ public class RecentProjects {
         List<String> paths = getRecentProjectsPaths();
 
         if (paths.contains(path)) {
-            paths.remove(path);
+            paths.removeAll(Collections.singletonList(path));
         }
 
         paths.add(0, path);
