@@ -13,6 +13,7 @@ import codeOrchestra.colt.core.ui.components.inputForms.group.FormGroup
 import codeOrchestra.colt.core.ui.components.scrollpane.SettingsScrollPane
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.PathUtils
+import codeOrchestra.util.ProjectHelper
 import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -120,13 +121,7 @@ abstract class TestSettingsForm extends SettingsScrollPane {
         } as ChangeListener)
         mainContainer.children.add(listView)
 
-        ColtProjectManager.instance.addProjectListener([
-                onProjectLoaded: { Project project ->
-                    initProject(project)
-                },
-                onProjectUnloaded: { Project project ->
-                }
-        ] as ProjectListener)
+        initProject(ProjectHelper.currentProject)
     }
 
     protected void initProject(Project value) {
