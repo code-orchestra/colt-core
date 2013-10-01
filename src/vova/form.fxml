@@ -156,7 +156,7 @@
                     </children>
                 </HBox>
 
-                <Label text="ActionScript" />
+                <ToggleButton contentDisplay="graphic_only" focusTraversable="false" prefHeight="16" prefWidth="40" styleClass="btn-live" text="Live" />
 
             </children>
         </HBox>

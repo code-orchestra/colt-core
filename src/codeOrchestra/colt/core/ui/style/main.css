@@ -813,6 +813,27 @@
     -fx-text-fill: #83868a;
     -fx-padding: 0; }
 
+/* Live Session Button */
+.btn-live {
+    -fx-background-color: null;
+    -fx-background-image: url('images/btns/live.png');
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 40px, 16px;
+    -fx-border-insets: 0;
+    -fx-border-color: null;
+    -fx-border-radius: 0;
+    -fx-border-width: 1px 0;
+    -fx-effect: null;
+    -fx-padding: 0; }
+
+.btn-live:focused, .btn-live:hover { -fx-background-image: url('images/btns/live-hover.png'); }
+
+.btn-live:pressed, .btn-live:selected { -fx-background-image: url('images/btns/live-down.png'); }
+
+.btn-live-switching { -fx-background-image: url('images/btns/live-switching.png');}
+
 /*
 |-------------------------------------------------------------------------------
 | Scroll Bar
