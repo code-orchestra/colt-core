@@ -154,11 +154,15 @@ abstract class TestSettingsForm extends SettingsScrollPane {
                     } as Runnable)
                 }
                 if (state == TestModeState.TEST) {
-                    startButton.disable = false
+                    Platform.runLater({
+                        startButton.disable = false
+                    })
                 }
                 state = TestModeState.NONE
-                recordButton.disable = false
-                choiceBox.disable = false
+                Platform.runLater({
+                    recordButton.disable = false
+                    choiceBox.disable = false
+                })
             }
 
             @Override
