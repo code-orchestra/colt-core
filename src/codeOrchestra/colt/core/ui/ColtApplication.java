@@ -137,6 +137,7 @@ public class ColtApplication extends Application {
     private void doAfterUIInit() {
         // COLT-287
         System.setProperty("jsse.enableSNIExtension", "false");
+        System.setProperty("file.encoding", "UTF-8");
 
         // Intercept start by license check
         StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
