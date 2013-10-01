@@ -123,7 +123,7 @@ class Dialog extends VBox {
         stage.showAndWait()
     }
 
-    void show(Closure afterShow) {
+    void showWithClosure(Closure afterShow) {
         show()
         afterShow()
     }

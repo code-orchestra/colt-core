@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.ui.dialog
 import codeOrchestra.util.ThreadUtils
 import javafx.event.Event
 import javafx.scene.image.Image
+import javafx.scene.media.AudioClip
 import javafx.stage.Window
 
 /**
@@ -40,6 +41,9 @@ class ColtDialogs {
         dialog.message = massage
         dialog.comment = comment
 
+        AudioClip clip = new AudioClip(Dialog.class.getResource("sounds/cash_register.wav").toString())
+        clip.play()
+
         showOneDialog(dialog)
     }
 
@@ -76,7 +80,7 @@ class ColtDialogs {
         }
 
         isShowing = true
-        dialog.show({afterShow()})
+        dialog.showWithClosure({afterShow()})
     }
 
     protected static void afterShow() {
