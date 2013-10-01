@@ -156,7 +156,7 @@
                     </children>
                 </HBox>
 
-                <ToggleButton contentDisplay="graphic_only" focusTraversable="false" prefHeight="16" prefWidth="40" styleClass="btn-live" text="Live" />
+                <ToggleButton contentDisplay="graphic_only" focusTraversable="false" prefHeight="31" prefWidth="32" styleClass="btn-live" text="Live" />
 
             </children>
         </HBox>
