@@ -795,9 +795,11 @@
 .status-bar {
     -fx-border-width: 1px 0 0 0;
     -fx-border-color: #dde0e4;
-    -fx-padding: 12px 10px 11px 8px; }
+    -fx-padding: 4px 4px 4px 8px; }
 
-.filters { -fx-spacing: 2px; }
+.filters {
+    -fx-spacing: 2px;
+    -fx-padding: 8px 0 7px 0;  }
 
 .filters .toggle-button, .filters .toggle-button:hover {
     -fx-background-color: null;
@@ -820,17 +822,24 @@
     -fx-background-insets: 0;
     -fx-background-radius: 0;
     -fx-background-repeat: no-repeat;
-    -fx-background-size: 40px, 16px;
+    -fx-background-size: 32px, 31px;
     -fx-border-insets: 0;
     -fx-border-color: null;
     -fx-border-radius: 0;
-    -fx-border-width: 1px 0;
+    -fx-border-width: 0;
     -fx-effect: null;
+    -fx-margin: 0;
     -fx-padding: 0; }
 
 .btn-live:focused, .btn-live:hover { -fx-background-image: url('images/btns/live-hover.png'); }
 
-.btn-live:pressed, .btn-live:selected { -fx-background-image: url('images/btns/live-down.png'); }
+.btn-live:pressed { -fx-background-image: url('images/btns/live-down.png'); }
+
+.btn-live:selected { -fx-background-image: url('images/btns/live-selected.png'); }
+
+.btn-live:selected:hover { -fx-background-image: url('images/btns/live-selected-hover.png'); }
+
+.btn-live:pressed:hover { -fx-background-image: url('images/btns/live-selected-down.png'); }
 
 .btn-live-switching { -fx-background-image: url('images/btns/live-switching.png');}
 
