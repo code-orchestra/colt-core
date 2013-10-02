@@ -19,6 +19,8 @@ public interface LiveCodingManager<P extends Project, S> extends ColtService<P> 
 
     void stopSession(LiveCodingSession liveCodingSession);
 
+    void stopAllSession();
+
     Set<String> getCurrentSessionsClientIds();
 
     List<LiveCodingSession<S>> getCurrentConnections();

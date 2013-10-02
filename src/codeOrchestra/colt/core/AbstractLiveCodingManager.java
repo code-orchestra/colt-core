@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.session.LiveCodingSession;
 import codeOrchestra.colt.core.session.listener.LiveCodingListener;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * @author Alexander Eliseyev
@@ -29,6 +30,11 @@ public abstract class AbstractLiveCodingManager<P extends Project, S> implements
             }
         });
         return liveCodingSessions;
+    }
+
+    @Override
+    public void stopAllSession() {
+        getCurrentConnections().forEach(this::stopSession);
     }
 
     @Override
