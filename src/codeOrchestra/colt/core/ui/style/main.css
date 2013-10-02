@@ -839,9 +839,12 @@
 
 .btn-live:selected:hover { -fx-background-image: url('images/btns/live-selected-hover.png'); }
 
-.btn-live:pressed:hover { -fx-background-image: url('images/btns/live-selected-down.png'); }
+.btn-live:pressed:selected { -fx-background-image: url('images/btns/live-selected-down.png'); }
 
-.btn-live-switching { -fx-background-image: url('images/btns/live-switching.png');}
+.btn-live:disabled {
+    -fx-background-image: url('images/btns/live-switching.png');
+    -fx-opacity: 1;
+}
 
 /*
 |-------------------------------------------------------------------------------

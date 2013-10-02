@@ -1,9 +1,8 @@
 package codeOrchestra.colt.core.ui.components.sessionIndicator
 
-import codeOrchestra.colt.core.LiveCodingManager
 import codeOrchestra.colt.core.session.LiveCodingSession
 import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
-import codeOrchestra.colt.core.session.listener.LiveCodingListener
+import codeOrchestra.colt.core.ui.components.StatusButton
 import codeOrchestra.util.ThreadUtils
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
@@ -20,6 +19,7 @@ class SessionIndicatorController extends LiveCodingAdapter {
     }
 
     ImageView indicator
+    StatusButton statusButton
 
     Image on
     Image off
@@ -36,30 +36,31 @@ class SessionIndicatorController extends LiveCodingAdapter {
         indicator.setImage(off)
     }
 
+    void setStatusButton(StatusButton value) {
+        statusButton = value
+    }
+
     @Override
     void onSessionStart(LiveCodingSession session) {
         if(!sessions.contains(session)) {
             sessions.add(session)
         }
 
-        ThreadUtils.executeInFXThread(new Runnable() {
-            @Override
-            void run() {
-                indicator?.setImage(on)
-            }
-        })
+        ThreadUtils.executeInFXThread({
+            indicator?.setImage(on)
+            statusButton?.disable = false
+            statusButton?.selected = true
+        } as Runnable)
     }
 
     @Override
     void onSessionEnd(LiveCodingSession session) {
         sessions.remove(session)
         if (sessions.size() == 0) {
-            ThreadUtils.executeInFXThread(new Runnable() {
-                @Override
-                void run() {
-                    indicator?.setImage(off)
-                }
-            })
+            ThreadUtils.executeInFXThread({
+                indicator?.setImage(off)
+                statusButton?.selected = false
+            } as Runnable)
         }
     }
 
