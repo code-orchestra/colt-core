@@ -13,12 +13,14 @@ import codeOrchestra.colt.core.ui.components.log.Log
 import codeOrchestra.colt.core.ui.components.log.LogFilter
 import codeOrchestra.colt.core.ui.components.log.LogMessage
 import codeOrchestra.colt.core.ui.components.log.LogWebView
+import codeOrchestra.colt.core.ui.components.player.ActionPlayer
 import codeOrchestra.colt.core.ui.components.player.ActionPlayerPopup
 import codeOrchestra.colt.core.ui.components.popupmenu.PopupMenu
 import codeOrchestra.colt.core.ui.components.sessionIndicator.SessionIndicatorController
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import codeOrchestra.colt.core.ui.testmode.TestSettingsForm
 import codeOrchestra.groovyfx.FXBindable
+import codeOrchestra.util.ThreadUtils
 import javafx.application.Platform
 import javafx.beans.binding.StringBinding
 import javafx.beans.property.StringProperty
@@ -77,7 +79,7 @@ abstract class ApplicationGUI extends BorderPane {
 
     @FXBindable String applicationState = ""
 
-    private @Service LiveCodingManager liveCodingManager
+    protected @Service LiveCodingManager liveCodingManager
 
     boolean isFirstTime = true
 
@@ -198,6 +200,16 @@ abstract class ApplicationGUI extends BorderPane {
             popupMenu.isShowing() ? popupMenu.hide() : popupMenu.show(popupMenuButton)
         } as EventHandler
 
+        statusButton.onAction = {
+            if (statusButton.selected) {
+                if (runSession()) {
+                    statusButton.disable = true
+                }
+            } else {
+                liveCodingManager.stopAllSession()
+            }
+        } as EventHandler
+
         // data binding
 
         navigationToggleGroup.selectedToggleProperty().addListener({ v, o, newValue ->
@@ -248,6 +260,51 @@ abstract class ApplicationGUI extends BorderPane {
 
     protected initActionPlayerPopup() {
         actionPlayerPopup = new ActionPlayerPopup()
+        actionPlayerPopup.actionPlayer.play.onAction = {
+            runSession()
+        } as EventHandler
+
+        actionPlayerPopup.actionPlayer.stop.onAction = {
+            liveCodingManager.stopAllSession()
+        } as EventHandler
+    }
+
+    abstract boolean validateSettingsForm()
+
+    boolean runSession() {
+        boolean result = true
+        ActionPlayer playerControls = actionPlayerPopup.actionPlayer
+        if(validateSettingsForm()) {
+            runButton.onAction.handle(null)
+            playerControls.disable = true
+            statusButton.disable = true
+            compile()
+        } else {
+            onRunError()
+            actionPlayerPopup.hide()
+            settingsButton.onAction.handle(null)
+            result = false
+        }
+        return result
+    }
+
+    abstract protected void compile()
+
+    protected void onRunComplete() {
+        ({
+            ThreadUtils.sleep(3000)
+            if (liveCodingManager.currentConnections.isEmpty()) {
+                onRunError()
+            }
+        } as Thread).start()
+    }
+
+    protected void onRunError() {
+        ThreadUtils.executeInFXThread({
+            actionPlayerPopup.actionPlayer.stop.selected = true
+            actionPlayerPopup.actionPlayer.disable = false
+            statusButton.disable = false
+        } as Runnable)
     }
 
     protected void updateLogFilterLabels() {
@@ -262,7 +319,7 @@ abstract class ApplicationGUI extends BorderPane {
         " (" + logView.logMessages.grep { LogMessage m -> m.level in levels }.size() + ")"
     }
 
-    abstract protected void initLog();
+    abstract protected void initLog()
 
-    abstract protected void initGoogleAnalytics();
+    abstract protected void initGoogleAnalytics()
 }

@@ -40,4 +40,8 @@ class SettingsScrollPane extends ScrollPane {
 
         setVvalue(nodeBounds.minY/bounds.height)
     }
+
+    public boolean validateForms() {
+        return true
+    }
 }
