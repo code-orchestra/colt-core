@@ -8,6 +8,7 @@ import codeOrchestra.colt.core.session.LiveCodingSession
 import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
 import codeOrchestra.colt.core.session.listener.LiveCodingListener
 import codeOrchestra.colt.core.ui.components.ProgressIndicatorController
+import codeOrchestra.colt.core.ui.components.StatusButton
 import codeOrchestra.colt.core.ui.components.log.Log
 import codeOrchestra.colt.core.ui.components.log.LogFilter
 import codeOrchestra.colt.core.ui.components.log.LogMessage
@@ -67,8 +68,8 @@ abstract class ApplicationGUI extends BorderPane {
     protected ToggleButton logFilterInfo
     protected ToggleButton logFilterLog
 
-    protected ImageView sessionIndicator
     protected ProgressIndicator progressIndicator
+    protected StatusButton statusButton
 
     @Lazy LogWebView logView = Log.instance.logWebView
 
@@ -123,11 +124,8 @@ abstract class ApplicationGUI extends BorderPane {
                                         logFilterInfo = new ToggleButton(mnemonicParsing: false, selected: false, text: "Info", minWidth: NEGATIVE_INFINITY),
                                         logFilterLog = new ToggleButton(mnemonicParsing: false, selected: false, text: "Live", minWidth: NEGATIVE_INFINITY)
                                 ]),
-                                new AnchorPane(prefWidth: -1.0, newChildren: [
-                                        sessionIndicator = new ImageView(fitHeight: 13.0, fitWidth: 13.0, layoutX: 1.0, layoutY: 3.0, pickOnBounds: true, preserveRatio: true),
-                                        progressIndicator = new ProgressIndicator(layoutX: 0.0, layoutY: 2.0, maxHeight: NEGATIVE_INFINITY, maxWidth: NEGATIVE_INFINITY, prefHeight: 15.0, prefWidth: 15.0, visible: false)
-                                ]),
-                                projectType = new Label()
+                                progressIndicator = new ProgressIndicator(layoutX: 0.0, maxHeight: NEGATIVE_INFINITY, maxWidth: NEGATIVE_INFINITY, prefHeight: 15.0, prefWidth: 15.0, visible: false),
+                                statusButton = new StatusButton(),
                         ]
                 )
         ))
@@ -187,8 +185,7 @@ abstract class ApplicationGUI extends BorderPane {
 
         ProgressIndicatorController.instance.progressIndicator = progressIndicator
 
-        sessionIndicator.visibleProperty().bind(progressIndicator.visibleProperty().not())
-        SessionIndicatorController.instance.indicator = sessionIndicator
+        SessionIndicatorController.instance.statusButton = statusButton
 
         PopupMenu popupMenu = new PopupMenu()
         ArrayList<MenuItem> items = ColtApplication.get().menuBar.popupMenuItems
