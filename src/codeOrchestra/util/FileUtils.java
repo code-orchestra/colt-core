@@ -1,5 +1,7 @@
 package codeOrchestra.util;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,14 @@ public class FileUtils {
             return file.isDirectory();
         }
     };
+
+    public static String getFileDigestMD5(File file) throws IOException {
+        byte[] bytes = new byte[(int) file.length()];
+        FileInputStream is = new FileInputStream(file);
+        ReadUtil.read(bytes, is);
+
+        return DigestUtils.md5Hex(bytes);
+    }
 
     public static String normalize(String path) {
         if (SystemInfo.isWindows) {
