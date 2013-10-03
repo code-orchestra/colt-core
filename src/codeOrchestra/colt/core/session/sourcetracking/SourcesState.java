@@ -60,7 +60,7 @@ public class SourcesState {
 				long oldTimestamp = oldState.state.get(newStatePath);
 				if (newTimestamp != oldTimestamp) {
                     addToChanged(changedFiles, newStatePath);
-                } else if ((System.currentTimeMillis() - newTimestamp) < 1000) {
+                } else if ((System.currentTimeMillis() - newTimestamp) < 1100) {
                     // Check by checksum
                     String oldChecksum = pathToWrapper.get(newStatePath).getChecksum();
                     if (oldChecksum != null) {
