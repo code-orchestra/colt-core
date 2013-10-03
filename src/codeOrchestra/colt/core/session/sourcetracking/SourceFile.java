@@ -9,4 +9,8 @@ public interface SourceFile {
 
     File getFile();
 
+    String getChecksum();
+
+    void updateChecksum();
+
 }

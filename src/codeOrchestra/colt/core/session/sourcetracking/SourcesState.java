@@ -3,8 +3,10 @@ package codeOrchestra.colt.core.session.sourcetracking;
 import codeOrchestra.colt.core.ServiceProvider;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.util.FileUtils;
+import codeOrchestra.util.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,17 +59,38 @@ public class SourcesState {
 			if (oldState.state.containsKey(newStatePath)) {
 				long oldTimestamp = oldState.state.get(newStatePath);
 				if (newTimestamp != oldTimestamp) {
-					changedFiles.add(pathToWrapper.get(newStatePath));
-				}
+                    addToChanged(changedFiles, newStatePath);
+                } else if ((System.currentTimeMillis() - newTimestamp) < 1000) {
+                    // Check by checksum
+                    String oldChecksum = pathToWrapper.get(newStatePath).getChecksum();
+                    if (oldChecksum != null) {
+                        String newChecksum;
+                        try {
+                            newChecksum = FileUtils.getFileDigestMD5(new File(newStatePath));
+                        } catch (IOException e) {
+                            continue;
+                        }
+
+                        if (!oldChecksum.equals(newChecksum)) {
+                            addToChanged(changedFiles, newStatePath);
+                        }
+                    }
+                }
 			} else {
-			  changedFiles.add(pathToWrapper.get(newStatePath));
-			}
+                addToChanged(changedFiles, newStatePath);
+            }
 		}
 		
 		return changedFiles;
 	}
-	
-	@Override
+
+    private void addToChanged(List<SourceFile> changedFiles, String newStatePath) {
+        SourceFile sourceFile = pathToWrapper.get(newStatePath);
+        sourceFile.updateChecksum();
+        changedFiles.add(sourceFile);
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
