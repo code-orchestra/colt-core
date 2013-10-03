@@ -290,6 +290,8 @@ abstract class ApplicationGUI extends BorderPane {
 
     abstract protected void compile()
 
+    abstract void runBuild()
+
     protected void onRunComplete() {
         ({
             ThreadUtils.sleep(3000)
