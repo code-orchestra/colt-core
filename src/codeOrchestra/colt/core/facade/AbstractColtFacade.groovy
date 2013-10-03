@@ -16,4 +16,9 @@ abstract class AbstractColtFacade implements ColtFacade {
     void runSession() {
         applicationGUI.runSession()
     }
+
+    @Override
+    void runProductionBuild() {
+        applicationGUI.runBuild()
+    }
 }
