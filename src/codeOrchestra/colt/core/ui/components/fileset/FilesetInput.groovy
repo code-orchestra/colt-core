@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
+import codeOrchestra.util.StringUtils
 import javafx.application.Platform
 import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
@@ -265,16 +266,18 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         List<String> filesets = []
 
         fileset.split(", ").each {
-            File file = new File(it)
-            if (file.exists() && file.absolute) {
-                result.add(file.absoluteFile)
-            } else {
-                file = new File(baseDir, it)
-                if (file.exists()) {
+            if (StringUtils.isNotEmpty(it)) {
+                File file = new File(it)
+                if (file.exists() && file.absolute) {
                     result.add(file.absoluteFile)
+                } else {
+                    file = new File(baseDir, it)
+                    if (file.exists()) {
+                        result.add(file.absoluteFile)
+                    }
                 }
+                filesets << it
             }
-            filesets << it
         }
         [result, filesets]
     }
@@ -284,16 +287,44 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         if (values) {
             AntBuilder ant = new AntBuilder()
 
+            List<String> absolutePaths = []
+            List<String> relativePaths = []
+
+            values.each {
+                if (it.startsWith("-")) {
+                    relativePaths << it
+                } else {
+                    if (new File(it).isAbsolute()) {
+                        absolutePaths << it
+                    } else {
+                        relativePaths << it
+                    }
+                }
+            }
+
             def scanner = ant.fileScanner {
-                fileset(dir: baseDir) {
-                    values.each { String f ->
-                        if (f) {
-                            if (f.startsWith("-")) {
-                                exclude(name: f[1..-1])
-                            } else {
-                                include(name: f)
-                            }
+                if (!relativePaths.isEmpty()) {
+                    fileset(dir: baseDir) {
+                        relativePaths.each {
+                            String f ->
+                                if (f) {
+                                    if (f.startsWith("-")) {
+                                        exclude(name: f[1..-1])
+                                    } else {
+                                        include(name: f)
+                                    }
+                                }
                         }
+                    }
+                }
+                absolutePaths.each {
+                    File file = new File(it)
+                    if (file.isDirectory()) {
+                        fileset(dir: file) {
+                            include(name: "**/*.*");
+                        }
+                    } else {
+                        fileset(file: file)
                     }
                 }
             }
