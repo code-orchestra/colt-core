@@ -1,6 +1,5 @@
 package codeOrchestra.colt.core.http;
 
-import codeOrchestra.util.PathUtils;
 import codeOrchestra.util.SocketUtil;
 import org.mortbay.jetty.Handler;
 import org.mortbay.jetty.Server;
@@ -41,8 +40,6 @@ public class CodeOrchestraResourcesHttpServer {
 
         activeHandlers = new HandlerList();
         server.setHandler(activeHandlers);
-
-        addAlias(PathUtils.getApplicationBaseDir(), "/");
 
         try {
             server.start();

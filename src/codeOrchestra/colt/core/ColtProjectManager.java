@@ -47,7 +47,6 @@ public class ColtProjectManager {
             public void onProjectLoaded(Project project) {
                 RecentProjects.addRecentProject(project.getPath());
                 ProjectStorageManager.getOrCreateProjectStorageDir();
-                CodeOrchestraResourcesHttpServer.getInstance().addAlias(project.getOutputDir(), "/colt");
 
                 getLogger().info("Loaded " + project.getProjectType() + " project " + project.getName() + " on " + DateUtils.getCurrentDate());
             }
