@@ -27,12 +27,10 @@ public class ColtRemoteServiceServlet extends HttpServlet {
         refreshService();
     }
 
-    private ColtRemoteService coltRemoteService;
     private JsonRpcServer jsonRpcServer;
 
     public void refreshService() {
-        this.coltRemoteService = createColtRemoteService();
-        this.jsonRpcServer = new JsonRpcServer(this.coltRemoteService, ColtRemoteService.class);
+        this.jsonRpcServer = new JsonRpcServer(createColtRemoteService(), ColtRemoteService.class);
     }
 
     private ColtRemoteService createColtRemoteService() {
