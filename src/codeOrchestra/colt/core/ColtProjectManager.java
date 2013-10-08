@@ -1,6 +1,7 @@
 package codeOrchestra.colt.core;
 
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
+import codeOrchestra.colt.core.jmdns.JmDNSFacade;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerLoadingException;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.logging.Logger;
@@ -105,6 +106,8 @@ public class ColtProjectManager {
         // Parse the project
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         currentProject = handler.parseProject(coltProjectHandlerIdParser.getNode(), path);
+
+        JmDNSFacade.getInstance().setProjectName(currentProject.getName());
 
         ChangingMonitor.getInstance().reset();
 

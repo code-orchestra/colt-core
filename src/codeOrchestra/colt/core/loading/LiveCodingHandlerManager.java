@@ -2,18 +2,11 @@ package codeOrchestra.colt.core.loading;
 
 import codeOrchestra.colt.core.LiveCodingLanguageHandler;
 import codeOrchestra.colt.core.ServiceProvider;
-import codeOrchestra.colt.core.errorhandling.ErrorHandler;
-import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
+import codeOrchestra.colt.core.jmdns.JmDNSFacade;
 import codeOrchestra.colt.core.loading.impl.PropertyBasedLiveCodingHandlerLoader;
 import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.ui.ColtApplication;
-import codeOrchestra.colt.core.ui.components.log.JSBridge;
-
-import javax.jmdns.JmDNS;
-import javax.jmdns.ServiceInfo;
-import java.io.IOException;
-import java.net.InetAddress;
 
 /**
  * @author Alexander Eliseyev
@@ -28,17 +21,6 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
         }
         return instance;
     }
-
-    private LiveCodingHandlerManager() {
-        try {
-            jmDNS = JmDNS.create(InetAddress.getLocalHost());
-        } catch (IOException e) {
-            ErrorHandler.handle(e, "Can't register COLT external API service via jmdns");
-        }
-    }
-
-    private JmDNS jmDNS;
-    private ServiceInfo serviceInfo;
 
     private final LiveCodingHandlerLoader ideaDevLiveCodingHandlerLoader = new PropertyBasedLiveCodingHandlerLoader();
 
@@ -67,15 +49,7 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
         // Start the RPC service
         ColtRemoteServiceServlet.getInstance().refreshService();
 
-        // Publish RPC service in jmdns
-        if (jmDNS != null) {
-            serviceInfo = ServiceInfo.create("_http._tcp.local.", "ColtRPC", CodeOrchestraRPCHttpServer.PORT, "ColtRPC " + id);
-            try {
-                jmDNS.registerService(serviceInfo);
-            } catch (IOException e) {
-                ErrorHandler.handle(e, "Can't register COLT external API service via jmdns");
-            }
-        }
+        JmDNSFacade.getInstance().init();
 
         // Init
         currentHandler.initHandler();
@@ -96,10 +70,7 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
             currentHandler = null;
         }
 
-        if (jmDNS != null) {
-            jmDNS.unregisterService(serviceInfo);
-        }
-
+        JmDNSFacade.getInstance().dispose();
         ServiceProvider.dispose();
         Logger.dispose();
     }

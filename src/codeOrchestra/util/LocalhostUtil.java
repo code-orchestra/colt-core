@@ -1,9 +1,6 @@
 package codeOrchestra.util;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.InterfaceAddress;
-import java.net.NetworkInterface;
+import java.net.*;
 import java.util.Enumeration;
 
 /**
@@ -11,28 +8,56 @@ import java.util.Enumeration;
  */
 public class LocalhostUtil {
 
-  public static String getLocalhostIp() {
-    try {
-      for (final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements();) {
-        final NetworkInterface cur = (NetworkInterface) interfaces.nextElement();
-        if (cur.isLoopback()) {
-          continue;
+    public static String getLocalhostIp() {
+        try {
+            for (final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements(); ) {
+                final NetworkInterface cur = interfaces.nextElement();
+                if (cur.isLoopback()) {
+                    continue;
+                }
+
+                for (final InterfaceAddress interfaceAddress : cur.getInterfaceAddresses()) {
+                    final InetAddress inetAddress = interfaceAddress.getAddress();
+                    if (!((inetAddress instanceof Inet4Address))) {
+                        continue;
+                    }
+
+                    return inetAddress.getHostAddress();
+                }
+            }
+
+            return null;
+        } catch (Exception e) {
+            return "localhost";
         }
-
-        for (final InterfaceAddress interfaceAddress : cur.getInterfaceAddresses()) {
-          final InetAddress inetAddress = interfaceAddress.getAddress();
-          if (!((inetAddress instanceof Inet4Address))) {
-            continue;
-          }
-
-          return inetAddress.getHostAddress();
-        }
-      }
-
-      return null;
-    } catch (Exception e) {
-      return "localhost";
     }
-  }
+
+    public static InetAddress getLocalhostAddress() {
+        try {
+            for (final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements(); ) {
+                final NetworkInterface cur = interfaces.nextElement();
+                if (cur.isLoopback()) {
+                    continue;
+                }
+
+                for (final InterfaceAddress interfaceAddress : cur.getInterfaceAddresses()) {
+                    final InetAddress inetAddress = interfaceAddress.getAddress();
+                    if (!((inetAddress instanceof Inet4Address))) {
+                        continue;
+                    }
+
+                    return inetAddress;
+                }
+            }
+
+            return null;
+        } catch (Exception e) {
+            try {
+                return InetAddress.getLocalHost();
+            } catch (UnknownHostException e1) {
+                return null;
+            }
+        }
+    }
 
 }
