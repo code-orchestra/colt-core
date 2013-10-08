@@ -21,6 +21,10 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
     private final Object monitor = new Object();
 
     @Override
+    public void dispose() {
+    }
+
+    @Override
     public ColtState getState() {
         return new ColtState(ColtProjectManager.getInstance().getCurrentProject());
     }

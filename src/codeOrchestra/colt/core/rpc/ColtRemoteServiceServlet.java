@@ -24,14 +24,23 @@ public class ColtRemoteServiceServlet extends HttpServlet {
     private static final Logger LOG = Logger.getLogger(ColtRemoteServiceServlet.class);
 
     private ColtRemoteServiceServlet() {
+        refreshService();
     }
 
     private ColtRemoteService coltRemoteService;
     private JsonRpcServer jsonRpcServer;
 
     public void refreshService() {
-        this.coltRemoteService = ServiceProvider.get(ColtRemoteService.class);
+        this.coltRemoteService = createColtRemoteService();
         this.jsonRpcServer = new JsonRpcServer(this.coltRemoteService, ColtRemoteService.class);
+    }
+
+    private ColtRemoteService createColtRemoteService() {
+        ColtRemoteService service = ServiceProvider.get(ColtRemoteService.class);
+        if (service != null) {
+            return service;
+        }
+        return new DefaultColtRemoteService();
     }
 
     @Override
