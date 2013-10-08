@@ -1,10 +1,12 @@
 package codeOrchestra.colt.core.rpc;
 
+import codeOrchestra.colt.core.ColtProjectManager;
 import codeOrchestra.colt.core.controller.ColtControllerCallbackEx;
 import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.rpc.command.RemoteAsyncCommand;
 import codeOrchestra.colt.core.rpc.command.RemoteCommand;
+import codeOrchestra.colt.core.rpc.model.ColtState;
 import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityManager;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.core.rpc.security.InvalidShortCodeException;
@@ -17,6 +19,11 @@ import javafx.application.Platform;
 public abstract class AbstractColtRemoteService<P extends Project> implements ColtRemoteService<P> {
 
     private final Object monitor = new Object();
+
+    @Override
+    public ColtState getState() {
+        return new ColtState(ColtProjectManager.getInstance().getCurrentProject());
+    }
 
     @Override
     public String obtainAuthToken(String shortCode) throws TooManyFailedCodeTypeAttemptsException, InvalidShortCodeException {
