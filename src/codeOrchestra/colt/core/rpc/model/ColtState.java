@@ -11,12 +11,20 @@ public class ColtState {
     private String projectName;
     private String handlerId;
 
-    public ColtState(Project currentProject) {
+    private ColtConnection[] activeConnections;
+
+    public ColtState() {
+    }
+
+    public ColtState(Project currentProject, ColtConnection[] activeConnections) {
         projectLoaded = currentProject != null;
+
         if (projectLoaded) {
             handlerId = currentProject.getProjectType();
             projectName = currentProject.getName();
         }
+
+        this.activeConnections = activeConnections;
     }
 
     public boolean isProjectLoaded() {
@@ -29,5 +37,9 @@ public class ColtState {
 
     public String getHandlerId() {
         return handlerId;
+    }
+
+    public ColtConnection[] getActiveConnections() {
+        return activeConnections;
     }
 }

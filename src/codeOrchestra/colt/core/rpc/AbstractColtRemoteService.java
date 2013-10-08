@@ -1,17 +1,24 @@
 package codeOrchestra.colt.core.rpc;
 
 import codeOrchestra.colt.core.ColtProjectManager;
+import codeOrchestra.colt.core.LiveCodingManager;
+import codeOrchestra.colt.core.ServiceProvider;
 import codeOrchestra.colt.core.controller.ColtControllerCallbackEx;
 import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.rpc.command.RemoteAsyncCommand;
 import codeOrchestra.colt.core.rpc.command.RemoteCommand;
+import codeOrchestra.colt.core.rpc.model.ColtConnection;
 import codeOrchestra.colt.core.rpc.model.ColtState;
 import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityManager;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.core.rpc.security.InvalidShortCodeException;
 import codeOrchestra.colt.core.rpc.security.TooManyFailedCodeTypeAttemptsException;
+import codeOrchestra.colt.core.session.LiveCodingSession;
 import javafx.application.Platform;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alexander Eliseyev
@@ -26,7 +33,21 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
 
     @Override
     public ColtState getState() {
-        return new ColtState(ColtProjectManager.getInstance().getCurrentProject());
+        Project currentProject = ColtProjectManager.getInstance().getCurrentProject();
+
+        if (currentProject != null) {
+            List<ColtConnection> coltConnections = new ArrayList<>();
+            List<LiveCodingSession> currentConnections = ServiceProvider.get(LiveCodingManager.class).getCurrentConnections();
+            for (LiveCodingSession session : currentConnections) {
+                if (!session.isDisposed()) {
+                    coltConnections.add(new ColtConnection(session));
+                }
+            }
+
+            return new ColtState(currentProject, coltConnections.toArray(new ColtConnection[coltConnections.size()]));
+        }
+
+        return new ColtState();
     }
 
     @Override
