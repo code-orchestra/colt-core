@@ -305,6 +305,7 @@ abstract class ApplicationGUI extends BorderPane {
         ThreadUtils.executeInFXThread({
             actionPlayerPopup.actionPlayer.stop.selected = true
             actionPlayerPopup.actionPlayer.disable = false
+            statusButton.selected = false
             statusButton.disable = false
         } as Runnable)
     }
