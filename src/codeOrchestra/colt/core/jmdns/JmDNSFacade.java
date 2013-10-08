@@ -6,7 +6,6 @@ import codeOrchestra.util.LocalhostUtil;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 import java.io.IOException;
-import java.net.InetAddress;
 
 /**
  * @author Alexander Eliseyev
@@ -25,7 +24,7 @@ public class JmDNSFacade {
     }
 
     private ServiceInfo serviceInfo;
-    private Object jmDNSObject;
+    private JmDNS jmDNSObject;
 
     public JmDNSFacade() {
         updateServiceInfo(NONE_PROJECT_NAME);
@@ -51,10 +50,10 @@ public class JmDNSFacade {
     }
 
     private synchronized void doSetProjectName(String projectName) {
-        ((JmDNS) jmDNSObject).unregisterService(serviceInfo);
+        jmDNSObject.unregisterService(serviceInfo);
         updateServiceInfo(projectName);
         try {
-            ((JmDNS) jmDNSObject).registerService(serviceInfo);
+            jmDNSObject.registerService(serviceInfo);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,7 +65,7 @@ public class JmDNSFacade {
 
     private synchronized void doInit() {
         try {
-            ((JmDNS) jmDNSObject).registerService(serviceInfo);
+            jmDNSObject.registerService(serviceInfo);
         } catch (IOException e) {
             // ignore
             e.printStackTrace();
@@ -79,9 +78,9 @@ public class JmDNSFacade {
 
     private synchronized void doDispose() {
         if (jmDNSObject != null) {
-            ((JmDNS) jmDNSObject).unregisterService(serviceInfo);
+            jmDNSObject.unregisterService(serviceInfo);
             try {
-                ((JmDNS) jmDNSObject).close();
+                jmDNSObject.close();
             } catch (IOException e) {
                 // ignore
             }
