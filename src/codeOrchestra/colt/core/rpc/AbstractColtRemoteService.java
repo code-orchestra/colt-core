@@ -1,14 +1,15 @@
 package codeOrchestra.colt.core.rpc;
 
-import codeOrchestra.colt.core.ColtProjectManager;
-import codeOrchestra.colt.core.LiveCodingManager;
-import codeOrchestra.colt.core.ServiceProvider;
+import codeOrchestra.colt.core.*;
 import codeOrchestra.colt.core.controller.ColtControllerCallbackEx;
 import codeOrchestra.colt.core.errorhandling.ErrorHandler;
+import codeOrchestra.colt.core.loading.LiveCodingHandlerLoadingException;
+import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.rpc.command.RemoteAsyncCommand;
 import codeOrchestra.colt.core.rpc.command.RemoteCommand;
 import codeOrchestra.colt.core.rpc.model.ColtConnection;
+import codeOrchestra.colt.core.rpc.model.ColtRemoteProject;
 import codeOrchestra.colt.core.rpc.model.ColtState;
 import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityManager;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
@@ -17,6 +18,8 @@ import codeOrchestra.colt.core.rpc.security.TooManyFailedCodeTypeAttemptsExcepti
 import codeOrchestra.colt.core.session.LiveCodingSession;
 import javafx.application.Platform;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +31,64 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
     private final Object monitor = new Object();
 
     @Override
-    public void dispose() {
+    public void createProject(String securityToken, final ColtRemoteProject<P> remoteProject)
+            throws ColtRemoteTransferableException {
+        executeSecurilyInUI(securityToken, new RemoteCommand<Void>() {
+            @Override
+            public String getName() {
+                return "Create project under " + remoteProject.getPath();
+            }
+
+            @Override
+            public Void execute() throws ColtRemoteException {
+                LiveCodingLanguageHandler<P> handler;
+                try {
+                    handler = LiveCodingHandlerManager.getInstance().get(remoteProject.getType());
+                } catch (LiveCodingHandlerLoadingException e) {
+                    throw new ColtRemoteException("Can't load the handler for the project type " + remoteProject.getType(), e);
+                }
+
+                File projectFile = new File(remoteProject.getPath());
+                P createdProject = handler.createProject(remoteProject.getName(), projectFile, false);
+                createdProject.setPath(projectFile.getPath());
+
+                remoteProject.copyToProject(createdProject);
+
+                try {
+                    ColtProjectManager.getInstance().save(createdProject);
+                } catch (ColtException e) {
+                    throw new ColtRemoteException(e);
+                }
+
+                try {
+                    ColtProjectManager.getInstance().load(projectFile.getPath());
+                } catch (ColtException e) {
+                    throw new ColtRemoteException(e);
+                }
+
+                return null;
+            }
+        });
+    }
+
+    public void loadProject(String securityToken, final String path) throws ColtRemoteTransferableException {
+        executeSecurilyInUI(securityToken, new RemoteCommand<Void>() {
+            @Override
+            public String getName() {
+                return "Load project " + path;
+            }
+
+            @Override
+            public Void execute() throws ColtRemoteException {
+                try {
+                    ColtProjectManager.getInstance().load(path);
+                } catch (ColtException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+        });
     }
 
     @Override
@@ -72,7 +132,7 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
         return 0;
     }
 
-    protected  <T> T executeInDisplayAsyncAndWait(final RemoteAsyncCommand<T> command)
+    protected <T> T executeInDisplayAsyncAndWait(final RemoteAsyncCommand<T> command)
             throws ColtRemoteTransferableException {
         final Throwable[] exception = new Throwable[1];
         final Object[] result = new Object[1];
@@ -202,6 +262,10 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
         }
 
         return executeInDisplayAsyncAndWait(command);
+    }
+
+    @Override
+    public void dispose() {
     }
 
 }

@@ -118,7 +118,7 @@ public class ColtProjectManager {
         save(currentProject);
     }
 
-    private void save(Project project) throws ColtException {
+    public void save(Project project) throws ColtException {
         File file = new File(project.getPath());
         FileWriter fileWriter;
         try {

@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.rpc;
 
 import codeOrchestra.colt.core.ColtService;
 import codeOrchestra.colt.core.model.Project;
+import codeOrchestra.colt.core.rpc.model.ColtRemoteProject;
 import codeOrchestra.colt.core.rpc.model.ColtState;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.core.rpc.security.InvalidShortCodeException;
@@ -15,6 +16,12 @@ public interface ColtRemoteService<P extends Project> extends ColtService<P> {
     ColtState getState();
 
     int ping();
+
+    // Project create/load methods
+
+    void createProject(String securityToken, ColtRemoteProject<P> project) throws ColtRemoteTransferableException;
+
+    void loadProject(String securityToken, String path) throws ColtRemoteTransferableException;
 
     // Authorization methods
 
