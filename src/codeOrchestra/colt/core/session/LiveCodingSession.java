@@ -1,11 +1,13 @@
 package codeOrchestra.colt.core.session;
 
+import codeOrchestra.colt.core.socket.ClientSocketHandlerAdapter;
+
 import java.util.Map;
 
 /**
  * @author Alexander Eliseyev
  */
-public interface LiveCodingSession<S> {
+public interface LiveCodingSession<S extends ClientSocketHandlerAdapter> {
 
     String getClientId();
 

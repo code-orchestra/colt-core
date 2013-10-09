@@ -3,6 +3,7 @@ package codeOrchestra.colt.core;
 import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.session.LiveCodingSession;
 import codeOrchestra.colt.core.session.listener.LiveCodingListener;
+import codeOrchestra.colt.core.socket.ClientSocketHandlerAdapter;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -10,7 +11,7 @@ import java.util.function.Consumer;
 /**
  * @author Alexander Eliseyev
  */
-public abstract class AbstractLiveCodingManager<P extends Project, S> implements LiveCodingManager<P, S> {
+public abstract class AbstractLiveCodingManager<P extends Project, S extends ClientSocketHandlerAdapter> implements LiveCodingManager<P, S> {
 
     private Object listenerMonitor = new Object();
 

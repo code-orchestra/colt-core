@@ -3,6 +3,7 @@ package codeOrchestra.colt.core;
 import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.session.LiveCodingSession;
 import codeOrchestra.colt.core.session.listener.LiveCodingListener;
+import codeOrchestra.colt.core.socket.ClientSocketHandlerAdapter;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Set;
 /**
  * @author Alexander Eliseyev
  */
-public interface LiveCodingManager<P extends Project, S> extends ColtService<P> {
+public interface LiveCodingManager<P extends Project, S extends ClientSocketHandlerAdapter> extends ColtService<P> {
 
     LiveCodingSession getSession(String clientId);
 
