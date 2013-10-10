@@ -57,7 +57,9 @@ class LogVisualizer extends VBox {
                     Platform.runLater{ start() }
                 },
                 onSessionEnd: { session ->
-                    Platform.runLater{ stop() }
+                    if (liveCodingManager.currentConnections.isEmpty()) {
+                        Platform.runLater{ stop() }
+                    }
                 },
                 onSessionPause: {
                     Platform.runLater{ pause() }
