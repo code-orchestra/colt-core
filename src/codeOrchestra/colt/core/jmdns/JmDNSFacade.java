@@ -1,18 +1,19 @@
 package codeOrchestra.colt.core.jmdns;
 
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
+import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.util.LocalhostUtil;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Alexander Eliseyev
  */
 public class JmDNSFacade {
-
-    public static final String NONE_PROJECT_NAME = "NONE";
 
     private static JmDNSFacade instance;
 
@@ -27,7 +28,6 @@ public class JmDNSFacade {
     private JmDNS jmDNSObject;
 
     public JmDNSFacade() {
-        updateServiceInfo(NONE_PROJECT_NAME);
         try {
             jmDNSObject = JmDNS.create(LocalhostUtil.getLocalhostIp());
         } catch (IOException e) {
@@ -35,39 +35,31 @@ public class JmDNSFacade {
         }
     }
 
-    private void updateServiceInfo(String projectName) {
-        serviceInfo = ServiceInfo.create("_colt._tcp.local.", getServiceName(projectName), CodeOrchestraRPCHttpServer.PORT, "COLT RPC");
+    private void updateServiceInfo(Project project) {
+        final Map<String, String> values = new HashMap<>();
+
+        values.put("name", project.getName());
+        values.put("path", project.getPath());
+        values.put("timestamp", String.valueOf(System.currentTimeMillis()));
+
+        serviceInfo = ServiceInfo.create("_colt._tcp.local.", getServiceName(project), CodeOrchestraRPCHttpServer.PORT, 0, 0, values);
     }
 
-    private String getServiceName(String projectName) {
-        return "colt::" + projectName + "::" + System.currentTimeMillis();
+    private String getServiceName(Project project) {
+        return "colt::" + System.currentTimeMillis() + "::" + project.getName();
     }
 
-    public void setProjectName(final String projectName) {
+    public void init(final Project project) {
         new Thread(() -> {
-            doSetProjectName(projectName);
+            doInit(project);
         }).start();
     }
 
-    private synchronized void doSetProjectName(String projectName) {
-        jmDNSObject.unregisterService(serviceInfo);
-        updateServiceInfo(projectName);
+    private synchronized void doInit(Project project) {
+        updateServiceInfo(project);
         try {
             jmDNSObject.registerService(serviceInfo);
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void init() {
-        new Thread(this::doInit).start();
-    }
-
-    private synchronized void doInit() {
-        try {
-            jmDNSObject.registerService(serviceInfo);
-        } catch (IOException e) {
-            // ignore
             e.printStackTrace();
         }
     }

@@ -107,7 +107,7 @@ public class ColtProjectManager {
         LiveCodingLanguageHandler handler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
         currentProject = handler.parseProject(coltProjectHandlerIdParser.getNode(), path);
 
-        JmDNSFacade.getInstance().setProjectName(currentProject.getName());
+        JmDNSFacade.getInstance().init(currentProject);
 
         ChangingMonitor.getInstance().reset();
 

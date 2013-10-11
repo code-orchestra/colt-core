@@ -49,8 +49,6 @@ public final class LiveCodingHandlerManager implements LiveCodingHandlerLoader {
         // Start the RPC service
         ColtRemoteServiceServlet.getInstance().refreshService();
 
-        JmDNSFacade.getInstance().init();
-
         // Init
         currentHandler.initHandler();
 
