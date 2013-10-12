@@ -1,5 +1,6 @@
 package codeOrchestra.util;
 
+import codeOrchestra.colt.core.LiveCodingLanguageHandler;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.Project;
 
@@ -17,7 +18,11 @@ public final class ProjectHelper {
     }
 
     public static <P extends Project> P getCurrentProject() {
-        return (P) LiveCodingHandlerManager.getInstance().getCurrentHandler().getCurrentProject();
+        LiveCodingLanguageHandler currentHandler = LiveCodingHandlerManager.getInstance().getCurrentHandler();
+        if (currentHandler == null) {
+            return null;
+        }
+        return (P) currentHandler.getCurrentProject();
     }
 
 }
