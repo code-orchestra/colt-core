@@ -9,6 +9,7 @@ import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.model.ProjectHandlerIdParser;
 import codeOrchestra.colt.core.model.listener.ProjectListener;
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor;
+import codeOrchestra.colt.core.rpc.discovery.RPCServicePublisher;
 import codeOrchestra.colt.core.storage.ProjectStorageManager;
 import codeOrchestra.util.DateUtils;
 import codeOrchestra.util.FileUtils;
@@ -42,7 +43,10 @@ public class ColtProjectManager {
 
     private Project currentProject;
 
+    private RPCServicePublisher servicePublisher;
+
     private ColtProjectManager() {
+        servicePublisher = new RPCServicePublisher();
         addProjectListener(new ProjectListener() {
             @Override
             public void onProjectLoaded(Project project) {
@@ -50,10 +54,13 @@ public class ColtProjectManager {
                 ProjectStorageManager.getOrCreateProjectStorageDir();
 
                 getLogger().info("Loaded " + project.getProjectType() + " project " + project.getName() + " on " + DateUtils.getCurrentDate());
+
+                servicePublisher.start();
             }
 
             @Override
             public void onProjectUnloaded(Project project) {
+                servicePublisher.stopRightThere();
             }
         });
     }
