@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui.components.log
 
 import codeOrchestra.colt.core.tracker.GAController
 import codeOrchestra.colt.core.ui.components.logVisualizer.LogVisualizer
+import groovy.json.StringEscapeUtils
 import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue

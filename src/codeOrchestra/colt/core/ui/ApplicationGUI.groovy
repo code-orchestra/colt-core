@@ -29,12 +29,11 @@ import javafx.collections.ListChangeListener
 import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.*
-import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import javafx.scene.text.TextAlignment
 
-import static java.lang.Double.*
-import static javafx.scene.control.ContentDisplay.*
+import static java.lang.Double.NEGATIVE_INFINITY
+import static javafx.scene.control.ContentDisplay.GRAPHIC_ONLY
 
 /**
  * @author Dima Kruk
