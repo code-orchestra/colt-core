@@ -13,7 +13,7 @@ public final class FingerprintUtil {
         StringBuilder resultSB = new StringBuilder();
         try {
             for (final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements(); ) {
-                final NetworkInterface networkInterface = (NetworkInterface) interfaces.nextElement();
+                final NetworkInterface networkInterface = interfaces.nextElement();
                 if (networkInterface.isLoopback()) {
                     continue;
                 }
@@ -50,7 +50,13 @@ public final class FingerprintUtil {
     }
 
     public static int getNumericFingerPrint() {
-        return new BigInteger(getFingerPrint().replace("-", "").replace("|", ""), 36).intValue();
+        int result = 0;
+        try {
+            result = new BigInteger(getFingerPrint().replace("-", "").replace("|", ""), 36).intValue();
+        } catch (Exception e) {
+            // ignore
+        }
+        return result;
     }
 
 }
