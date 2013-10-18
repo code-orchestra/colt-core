@@ -93,6 +93,7 @@ public class CodeOrchestraResourcesHttpServer {
     private static ResourceHandler getResourceHandler(String resourceBase) {
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase(resourceBase);
+        resourceHandler.setCacheControl("max-age=0, no-cache, no-store, must-revalidate");
         return resourceHandler;
     }
 
