@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface GradleTask<P extends Project> {
 
+    String getType();
+
     boolean isApplicable(P project);
 
     List<String> getTaskNames();
