@@ -13,7 +13,7 @@ abstract class AbstractGradleScriptGenerator<P extends Project> {
 
     protected List<String> tasksApplied
 
-    AbstractGradleScriptGenerator(P project) {
+    AbstractGradleScriptGenerator(Project project) {
         this.project = project
     }
 
