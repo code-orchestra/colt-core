@@ -9,6 +9,10 @@ import java.util.List;
  */
 public interface GradleTask<P extends Project> {
 
+    List<String> getImports();
+
+    List<String> getPlugins();
+
     String getType();
 
     boolean isApplicable(P project);

@@ -23,6 +23,11 @@ abstract class AbstractGradleTaskManager<P extends Project> implements GradleTas
         return tasksApplied
     }
 
+    @Override
+    List<GradleTask<P>> getTasks(String type) {
+        getTasks().findAll { it.getType().equals(type) }
+    }
+
     abstract List<GradleTask<P>> getTasks()
 
 }
