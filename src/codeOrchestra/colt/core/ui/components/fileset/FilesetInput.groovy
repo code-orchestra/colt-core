@@ -334,7 +334,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
             }
         }
 
-        return result
+        return result.unique()
     }
 
     private static File getBaseDir() {
