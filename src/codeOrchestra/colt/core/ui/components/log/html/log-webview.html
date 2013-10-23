@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Colt Log</title>
+    <!--<script type='text/javascript'-->
+            <!--src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>-->
+
     <script>
+        var url = "http://10.37.129.2:9091/log/html/log-webview.html";
+        if (location.href != url) {
+            location.href = url
+        }
         window.onerror = function myErrorFunction(message, url, linenumber) {
             alert("------------------------------------")
             alert("js error (message): " + message)
@@ -26,7 +33,7 @@
 
 <script>
 
-//@code-update
+//@code-update(fn:"live")
 function live(){
     console.log("live update");
 }
@@ -67,6 +74,12 @@ $(document).ready(function () {
             }
         }
     })
+
+    $(document).keydown(function (e) {
+        if(e.keyCode == 116 /*F5*/){
+            location.reload();
+        }
+    });
 
     alert("command:ready")
 //    test()

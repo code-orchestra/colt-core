@@ -100,6 +100,8 @@ class LogWebView extends VBox {
             }
         } as EventHandler
 
+
+
         webView.widthProperty().addListener({ v, o, newValue ->
             fireApplicationResize()
         } as ChangeListener)
