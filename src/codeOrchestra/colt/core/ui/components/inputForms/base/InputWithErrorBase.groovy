@@ -17,11 +17,14 @@ abstract class InputWithErrorBase extends TitledInputBase implements MInput {
 
     @FXBindable Boolean error
 
+    @FXBindable Boolean editable = true
+
     InputWithErrorBase() {
         setLeftAnchor(textField, 10)
         setRightAnchor(textField, 86)
 
         textField.textProperty().bindBidirectional(text())
+        textField.editableProperty().bind(editable())
 
         children.add(textField)
 
