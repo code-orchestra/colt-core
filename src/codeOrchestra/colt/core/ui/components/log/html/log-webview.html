@@ -7,10 +7,10 @@
             <!--src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>-->
 
     <script>
-        var url = "http://10.37.129.2:9091/log/html/log-webview.html";
+/*        var url = "http://10.37.129.2:9091/log/html/log-webview.html";
         if (location.href != url) {
             location.href = url
-        }
+        }*/
         window.onerror = function myErrorFunction(message, url, linenumber) {
             alert("------------------------------------")
             alert("js error (message): " + message)
