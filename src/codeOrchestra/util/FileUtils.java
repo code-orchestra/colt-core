@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class FileUtils {
 
     private static final String[] IGNORED_DIRS = new String[]{".svn", ".git", "_svn"};
-    private static final String[] IGNORED_FILES = new String[]{".DS_Store", ".colt"};
+    private static final String[] IGNORED_FILES = new String[]{".DS_Store", ".colt", ".tmp"};
 
     public static final FileFilter FILES_ONLY_FILTER = new FileFilter() {
         public boolean accept(File file) {
@@ -72,8 +72,12 @@ public class FileUtils {
 
     public static boolean isIgnoredFile(File file) {
         String fileName = file.getName();
+        if (fileName == null) {
+            return true;
+        }
+
         for (String ignoredFile : IGNORED_FILES) {
-            if (ignoredFile.equals(fileName)) {
+            if (fileName.toLowerCase().endsWith(ignoredFile.toLowerCase())) {
                 return true;
             }
         }
