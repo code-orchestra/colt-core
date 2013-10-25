@@ -60,4 +60,8 @@ class AdvancedSeparator extends AnchorPane {
             content.styleClass.add("fieldset-advanced")
         }
     }
+
+    void setOnAction(EventHandler action) {
+        saveButton.onAction = action
+    }
 }
