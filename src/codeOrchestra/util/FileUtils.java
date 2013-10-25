@@ -3,6 +3,8 @@ package codeOrchestra.util;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -28,9 +30,16 @@ public class FileUtils {
     };
 
     public static String getFileDigestMD5(File file) throws IOException {
-        byte[] bytes = new byte[(int) file.length()];
-        FileInputStream is = new FileInputStream(file);
-        ReadUtil.read(bytes, is);
+        FileChannel fileChannel = new FileInputStream(file).getChannel();
+        int size = (int) fileChannel.size();
+        byte[] bytes = new byte[size];
+
+        ByteBuffer mappedFile = ByteBuffer.allocate(size);
+        fileChannel.read(mappedFile);
+        fileChannel.close();
+
+        mappedFile.position(0);
+        mappedFile.get(bytes);
 
         return DigestUtils.md5Hex(bytes);
     }
