@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface GradleTask<P extends Project> {
 
+    List<String> getRepositories();
+
     List<String> getClasspathDependencies();
 
     List<String> getImports();
