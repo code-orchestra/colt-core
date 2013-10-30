@@ -9,7 +9,7 @@ import codeOrchestra.util.process.ProcessAdapter;
  */
 public class LoggingProcessListener extends ProcessAdapter {
 
-    private Logger logger;
+    protected Logger logger;
     private Level levelOverride;
 
     public LoggingProcessListener(String loggerName, Level levelOverride) {
