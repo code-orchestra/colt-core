@@ -5,12 +5,9 @@
     <title>Colt Log</title>
     <!--<script type='text/javascript'-->
             <!--src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>-->
+    <!--<script>if(location.href != 'http://172.20.10.7:9092/log/html/log-webview.html'){location.href = 'http://172.20.10.7:9092/log/html/log-webview.html'}</script>-->
 
     <script>
-/*        var url = "http://10.37.129.2:9091/log/html/log-webview.html";
-        if (location.href != url) {
-            location.href = url
-        }*/
         window.onerror = function myErrorFunction(message, url, linenumber) {
             alert("------------------------------------")
             alert("js error (message): " + message)
