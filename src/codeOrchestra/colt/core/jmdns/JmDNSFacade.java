@@ -4,8 +4,7 @@ import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
 import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.util.LocalhostUtil;
 
-import javax.jmdns.JmDNS;
-import javax.jmdns.ServiceInfo;
+import javax.jmdns.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +29,27 @@ public class JmDNSFacade {
     public JmDNSFacade() {
         try {
             jmDNSObject = JmDNS.create(LocalhostUtil.getLocalhostIp());
+            ServiceListener serviceListener = new ServiceListener() {
+
+                @Override
+                public void serviceAdded(ServiceEvent serviceEvent) {
+                    System.out.println("serviceAdded: " + serviceEvent.getName());
+
+                    jmDNSObject.requestServiceInfo(serviceEvent.getType(), serviceEvent.getName(), 1);
+                }
+
+                @Override
+                public void serviceRemoved(ServiceEvent serviceEvent) {
+                    System.out.println("serviceRemoved: " + serviceEvent.getName());
+                }
+
+                @Override
+                public void serviceResolved(ServiceEvent serviceEvent) {
+                    System.out.println("serviceResolved: " + serviceEvent.getName());
+                }
+            };
+            jmDNSObject.addServiceListener("_colt._tcp.local.", serviceListener);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
