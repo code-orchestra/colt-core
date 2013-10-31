@@ -16,6 +16,11 @@ public class LocalhostUtil {
                     continue;
                 }
 
+                if (cur.getName().startsWith("vnic")) {
+                    // skip parallels virtual interfaces
+                    continue;
+                }
+
                 for (final InterfaceAddress interfaceAddress : cur.getInterfaceAddresses()) {
                     final InetAddress inetAddress = interfaceAddress.getAddress();
                     if (!((inetAddress instanceof Inet4Address))) {
