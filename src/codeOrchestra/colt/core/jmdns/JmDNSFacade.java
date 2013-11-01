@@ -6,6 +6,7 @@ import codeOrchestra.util.LocalhostUtil;
 
 import javax.jmdns.*;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class JmDNSFacade {
 
     public JmDNSFacade() {
         try {
-            jmDNSObject = JmDNS.create(LocalhostUtil.getLocalhostIp());
+            jmDNSObject = JmDNS.create(InetAddress.getByName(LocalhostUtil.getLocalhostIp()));
             ServiceListener serviceListener = new ServiceListener() {
 
                 @Override
