@@ -15,6 +15,6 @@ public interface GradleTaskManager<P extends Project> extends ColtService<P> {
     /**
      * @return list of names of tasks applied
      */
-    List<String> appendTasks(StringBuilder script, String type);
+    List<String> appendTasks(StringBuilder script, String type, String target);
 
 }
