@@ -23,7 +23,7 @@ public interface GradleTask<P extends Project> {
 
     List<String> getTaskNames();
 
-    void append(StringBuilder script, GradleTask<P> previousTask);
+    void append(StringBuilder script, GradleTask<P> previousTask, String target);
 
     List<String> getOutputFiles();
 

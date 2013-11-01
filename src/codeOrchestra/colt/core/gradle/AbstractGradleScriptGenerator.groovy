@@ -19,7 +19,7 @@ abstract class AbstractGradleScriptGenerator<P extends Project> {
 
     abstract AbstractGradleTaskManager<P> getTaskManager()
 
-    abstract File generate();
+    abstract File generate(String target);
 
     abstract List<String> getExcludedFiles()
 
