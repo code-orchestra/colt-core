@@ -30,27 +30,6 @@ public class JmDNSFacade {
     public JmDNSFacade() {
         try {
             jmDNSObject = JmDNS.create(InetAddress.getByName(LocalhostUtil.getLocalhostIp()));
-            ServiceListener serviceListener = new ServiceListener() {
-
-                @Override
-                public void serviceAdded(ServiceEvent serviceEvent) {
-                    System.out.println("serviceAdded: " + serviceEvent.getName());
-
-                    jmDNSObject.requestServiceInfo(serviceEvent.getType(), serviceEvent.getName(), 1);
-                }
-
-                @Override
-                public void serviceRemoved(ServiceEvent serviceEvent) {
-                    System.out.println("serviceRemoved: " + serviceEvent.getName());
-                }
-
-                @Override
-                public void serviceResolved(ServiceEvent serviceEvent) {
-                    System.out.println("serviceResolved: " + serviceEvent.getName());
-                }
-            };
-            jmDNSObject.addServiceListener("_colt._tcp.local.", serviceListener);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
