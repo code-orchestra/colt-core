@@ -34,6 +34,8 @@ class LogWebView extends VBox {
     private LogVisualizer visualizer = new LogVisualizer()
     private JSObject windowObject
 
+    private List<LogMessage> newMessages = []
+
     @Override
     protected void layoutChildren() {
         if (!layoutInited) {
@@ -66,7 +68,7 @@ class LogWebView extends VBox {
                         removeFirst();
                     } else {
                         clear()
-//                        println "clear"
+                        println "clear"
                     }
                 } else if (c.wasPermutated()) {
 //                    println "permutated"
@@ -117,9 +119,14 @@ class LogWebView extends VBox {
     }
 
     private void addLogMessages(List<LogMessage> messages) {
-        Platform.runLater {
-            messages*.filter(logFilter ?: LogFilter.ALL)
-            windowObject?.call("addLogMessages", messages.findAll { it.message?.trim() =~ /.+/ })
+        boolean firstFlush = newMessages.empty
+        messages*.filter(logFilter ?: LogFilter.ALL)
+        newMessages.addAll(messages.findAll { it.message?.trim() =~ /.+/ });
+        if (firstFlush) {
+            Platform.runLater {
+                windowObject?.call("addLogMessages", newMessages)
+                newMessages.clear()
+            }
         }
     }
 
