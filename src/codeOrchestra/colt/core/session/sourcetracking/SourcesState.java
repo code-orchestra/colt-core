@@ -62,7 +62,8 @@ public class SourcesState {
                     addToChanged(changedFiles, newStatePath);
                 } else if ((System.currentTimeMillis() - newTimestamp) < 1100) {
                     // Check by checksum
-                    String oldChecksum = pathToWrapper.get(newStatePath).getChecksum();
+                    SourceFile sourceFile = pathToWrapper.get(newStatePath);
+                    String oldChecksum = (sourceFile != null) ? sourceFile.getChecksum() : null;
                     if (oldChecksum != null) {
                         String newChecksum;
                         try {
@@ -86,8 +87,10 @@ public class SourcesState {
 
     private void addToChanged(List<SourceFile> changedFiles, String newStatePath) {
         SourceFile sourceFile = pathToWrapper.get(newStatePath);
-        sourceFile.updateChecksum();
-        changedFiles.add(sourceFile);
+        if (sourceFile != null) {
+            sourceFile.updateChecksum();
+            changedFiles.add(sourceFile);
+        }
     }
 
     @Override
