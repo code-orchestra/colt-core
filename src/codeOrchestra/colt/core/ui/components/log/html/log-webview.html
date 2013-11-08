@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Colt Log</title>
-    <script>if(location.href != 'http://172.20.10.7:9092/log/html/log-webview.html'){location.href = 'http://172.20.10.7:9092/log/html/log-webview.html'}</script>
+    <!--<script>if(location.href != 'http://172.20.10.7:9092/log/html/log-webview.html'){location.href = 'http://172.20.10.7:9092/log/html/log-webview.html'}</script>-->
 
     <script>
         window.onerror = function myErrorFunction(message, url, linenumber) {
@@ -71,12 +71,12 @@ $(document).ready(function () {
 
     $(document).keydown(function (e) {
         if(e.keyCode == 116 /*F5*/){
-            //location.reload();
-            test();
-            test();
-            test();
-            test();
-            test();
+            location.reload();
+//            test();
+//            test();
+//            test();
+//            test();
+//            test();
         }
     });
 
