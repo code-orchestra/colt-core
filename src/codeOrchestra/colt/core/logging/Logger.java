@@ -141,6 +141,10 @@ public abstract class Logger {
         log(message, DEFAULT_SCOPES, System.currentTimeMillis(), Level.ERROR);
     }
 
+    public void syntax(String message) {
+        log(message, DEFAULT_SCOPES, System.currentTimeMillis(), Level.SYNTAX);
+    }
+
     public void error(Throwable t) {
         log(t.getMessage(), DEFAULT_SCOPES, System.currentTimeMillis(), Level.ERROR);
     }
