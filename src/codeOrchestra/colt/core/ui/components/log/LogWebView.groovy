@@ -71,10 +71,11 @@ class LogWebView extends VBox {
                         println "clear"
                     }
                 } else if (c.wasPermutated()) {
-//                    println "permutated"
+                    println "permutated"
                 } else if (c.wasUpdated()) {
-//                    println "updated"
+                   println "updated"
                 } else if(c.wasAdded()){
+//                    println "added: " + c.getAddedSize()
                     List<LogMessage> newMessages = []
                     newMessages.addAll(c.getAddedSubList())
                     addLogMessages(newMessages)
@@ -94,6 +95,18 @@ class LogWebView extends VBox {
                         JSBridge.create(windowObject)
                         if (layoutInited) {
                             addLogMessages(logMessages.asList())
+                        }
+                    }
+                }else if(tokens[1] == "flush"){
+//                    println "flush"
+                    if (!newMessages.empty) {
+                        List<LogMessage> flushed = [] + newMessages
+                        newMessages.clear()
+                        Platform.runLater {
+                            while (flushed.size() > 200){
+                                flushed.remove(0)
+                            }
+                            windowObject?.call("addLogMessages", flushed)
                         }
                     }
                 }
@@ -119,15 +132,8 @@ class LogWebView extends VBox {
     }
 
     private void addLogMessages(List<LogMessage> messages) {
-        boolean firstFlush = newMessages.empty
         messages*.filter(logFilter ?: LogFilter.ALL)
         newMessages.addAll(messages.findAll { it.message?.trim() =~ /.+/ });
-        if (firstFlush) {
-            Platform.runLater {
-                windowObject?.call("addLogMessages", newMessages)
-                newMessages.clear()
-            }
-        }
     }
 
     private void clear() {

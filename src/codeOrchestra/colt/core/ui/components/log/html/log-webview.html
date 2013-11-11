@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Colt Log</title>
-    <!--<script>if(location.href != 'http://172.20.10.7:9092/log/html/log-webview.html'){location.href = 'http://172.20.10.7:9092/log/html/log-webview.html'}</script>-->
+    <!--<script>if(location.href != 'http://10.0.1.6:9091/log/html/log-webview.html'){location.href = 'http://10.0.1.6:9091/log/html/log-webview.html'}</script>-->
 
     <script>
         window.onerror = function myErrorFunction(message, url, linenumber) {
@@ -69,24 +69,24 @@ $(document).ready(function () {
         }
     })
 
+    setInterval(function(){
+        alert("command:flush")
+    }, 200)
+
     $(document).keydown(function (e) {
         if(e.keyCode == 116 /*F5*/){
-            location.reload();
-//            test();
-//            test();
-//            test();
-//            test();
-//            test();
+//            location.reload();
+            test();
+            test();
+            test();
+            test();
+            test();
+            test();
+            test();
         }
     });
 
     alert("command:ready")
-//    test()
-
-//noinspection JSUnresolvedFunction
-//    $('.the:first')
-//            .livecoding
-//            (jQuery(tool))
 
 })
 
@@ -99,12 +99,13 @@ function updateDotdotdot() {
     doLaterInterval = setInterval(function () {
         clearInterval(doLaterInterval)
 
-//        var c  = new Date().getTime()
-//        var size = forUpdateDot.length;
+        var c  = new Date().getTime()
+        var size = forUpdateDot.length;
 
         if (forUpdateDot.length) {
             var needUpdate = []
             var nextUpdate = []
+
 
             var docViewTop = $(window).scrollTop()
             var docViewBottom = docViewTop + $(window).height()
@@ -118,13 +119,20 @@ function updateDotdotdot() {
                     nextUpdate.push(this)
                 }
             })
+
+            var i = 0;
+            while(nextUpdate.length && needUpdate.length < 50){
+                needUpdate.push(nextUpdate.shift())
+            }
+
             forUpdateDot = nextUpdate
+
             $.each(needUpdate, function () {
                 this.children('p').trunk8('update')
             })
+            alert("before/after: " + size + "/" + forUpdateDot.length + "/" + needUpdate.length + "/" + (new Date().getTime() - c))
         }
 
-//        alert("for-update: " + size + "/" + forUpdateDot.length + "/" + needUpdate.length + "/" + (new Date().getTime() - c))
     }, 1)
 }
 
@@ -163,7 +171,8 @@ function test() {
     addLogMessage({message: 'mojito-client: Attached 0 event delegates sequi nisi necessitatibus expedita suscipit eius fugiat recusandae beatae aut.', level: "", source: ""})
     addLogMessage({message: 'mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', level: "", source: ""})
     addLogMessage({message: 'Uncaught ReferenceError: Ajax is not defined [VM] dashboard (56):1 (anonymous function) [VM] dashboard (58):1 jQuery.globalEval (anonymous function) e.extend.each f.fn.extend.domManip<br> f.fn.extend.append<br> MissingE.utilities.ajaxEvents.run<br> MissingE.utilities.ajaxEvents.init<br> (anonymous function)<br> (anonymous function)', level: "error", source: "mySource.js"})
-    addLogMessage({message: 'mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', level: "", source: ""})
+    addLogMessage({message: 'mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', level: "info", source: ""})
+    addLogMessage({message: 'mojito-client: Mojito Client State: active. Velit, veritatis suscipit saepe expedita iusto officiis odit nesciunt esse sapiente.', level: "info", source: ""})
 }
 
 function parseLogMessageObject(messageData) {
@@ -196,8 +205,15 @@ function parseLogMessageObject(messageData) {
 
 function addLogMessages(messages) {
     var maxScrolled = isMaxScroll()
+    var newMessages = []
     for (var i = 0; i < messages.size(); i++) {
-        addLogMessage(messages.get(i))
+        newMessages.push(messages.get(i))
+        if(newMessages.length > maxMessagesCount){
+            newMessages.shift()
+        }
+    }
+    for (var i = 0; i < newMessages.length; i++) {
+        addLogMessage(newMessages[i])
     }
     if (maxScrolled) {
         $(document).scrollTop(maxScrollTop())
@@ -206,7 +222,11 @@ function addLogMessages(messages) {
 
 function removeFirst() {
     $(".log li:first-child").remove()
+    messageCount--
 }
+
+var messageCount = 0
+var maxMessagesCount = 100
 
 function addLogMessage(data) {
     var messageData = parseLogMessageObject(data)
@@ -254,7 +274,17 @@ function addLogMessage(data) {
     })
 
     $(".log").append(logItem)
+
+    if(messageCount++ > maxMessagesCount){
+        removeFirst()
+    }
     dotdotdot(logItem)
+}
+
+//@live-update
+function codeUpdate(){
+    clear()
+
 }
 
 function selectLogElement(el) {
@@ -281,6 +311,7 @@ function dotdotdot(item) {
 
 function clear() {
     $(".log li").remove()
+    messageCount = 0
 }
 
 function openTarget(m) {
