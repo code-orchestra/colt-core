@@ -42,13 +42,15 @@
 
     }
 
-    function currentTime () {
-        return (new Date()).getTime();
+    if (!Date.now) {
+        Date.now = function () {
+            return (new Date()).getTime();
+        };
     }
 
     function addLogMessages (levels) {
         // unless we quantize time, animation will have beats
-        var t = ((currentTime() / msPerColumn) | 0) * msPerColumn;
+        var t = ((Date.now() / msPerColumn) | 0) * msPerColumn;
         var m = { counts: [0, 0, 0, 0], time: t };
         for (var i = 0, n = levels.size(); i < n; i++) {
             switch (levels.get(i).name()) {
@@ -76,7 +78,7 @@
     }
 
     function draw () {
-        var W, H, now = currentTime();
+        var W, H, now = Date.now();
 
         // clear
         context.clearRect(0, 0, W = context.canvas.width, H = context.canvas.height);
