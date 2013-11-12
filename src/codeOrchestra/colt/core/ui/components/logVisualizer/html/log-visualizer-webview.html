@@ -34,10 +34,12 @@
         context = document.getElementById("canvas").getContext("2d");
 
         resizeCanvas();
-
         setInterval(draw, 345);
+        alert("command:ready");
+        setInterval(function(){
+            alert("command:flush")
+        }, 100)
 
-        alert("ready");
     }
 
     function currentTime () {

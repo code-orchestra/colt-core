@@ -41,11 +41,13 @@ class LogVisualizer extends VBox {
         engine.onAlert = new EventHandler<WebEvent<String>>() {
             @Override
             void handle(WebEvent<String> event) {
-                if (event.data == "ready") {
+                if (event.data == "command:ready") {
                     Platform.runLater {
                         windowObject = (JSObject) webView.engine.executeScript("window")
                         flush()
                     }
+                } else if(event.data == "command:flush") {
+                    flush()
                 } else {
                     println("alert >> " + event.data)
                 }
@@ -108,12 +110,14 @@ class LogVisualizer extends VBox {
     private void addLogMessages(List<LogMessage> messages) {
         synchronized (flushList) {
             flushList.addAll(messages*.level)
-            flush()
         }
     }
 
     private flush() {
         synchronized (flushList) {
+            while (flushList.size() > 200){
+                flushList.remove(0)
+            }
             if (windowObject && flushList.size() > 0) {
                 windowObject.call("addLogMessages", flushList)
                 flushList.clear()

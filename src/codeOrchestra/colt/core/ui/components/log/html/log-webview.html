@@ -204,6 +204,7 @@ function parseLogMessageObject(messageData) {
 }
 
 function addLogMessages(messages) {
+    return;
     var maxScrolled = isMaxScroll()
     var newMessages = []
     for (var i = 0; i < messages.size(); i++) {
@@ -212,8 +213,8 @@ function addLogMessages(messages) {
             newMessages.shift()
         }
     }
-    for (var i = 0; i < newMessages.length; i++) {
-        addLogMessage(newMessages[i])
+    for (var k = 0; k < newMessages.length; k++) {
+        addLogMessage(newMessages[k])
     }
     if (maxScrolled) {
         $(document).scrollTop(maxScrollTop())
