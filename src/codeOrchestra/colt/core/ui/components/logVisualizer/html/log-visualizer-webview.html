@@ -42,13 +42,15 @@
 
     }
 
-    function currentTime () {
-        return (new Date()).getTime();
+    if (!Date.now) {
+        Date.now = function () {
+            return (new Date()).getTime();
+        };
     }
 
     function addLogMessages (levels) {
         // unless we quantize time, animation will have beats
-        var t = ((currentTime() / msPerColumn) | 0) * msPerColumn;
+        var t = ((Date.now() / msPerColumn) | 0) * msPerColumn;
         var m = { counts: [0, 0, 0, 0], time: t };
         for (var i = 0, n = levels.size(); i < n; i++) {
             switch (levels.get(i).name()) {
@@ -64,11 +66,19 @@
             }
         }
         messages.unshift(m);
+
+        // CJ-853
+        // мессаги приходят не чаще чем каждые 0.1с
+        // на большом экране может поместиться график на <5 минут
+        // итого, имеем 5 * 60 / 0.1 = 3000 необходимых данных
+        // всё, что больше, не нужно
+        if (messages.length > 5000) messages.pop();
+
 //        alert ("Received " + m.counts[0] + " errors, " + m.counts[1] + " warnings, " + m.counts[2] + " infos");
     }
 
     function draw () {
-        var W, H, now = currentTime();
+        var W, H, now = Date.now();
 
         // clear
         context.clearRect(0, 0, W = context.canvas.width, H = context.canvas.height);
