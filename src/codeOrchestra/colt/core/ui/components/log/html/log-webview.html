@@ -99,8 +99,8 @@ function updateDotdotdot() {
     doLaterInterval = setInterval(function () {
         clearInterval(doLaterInterval)
 
-        var c  = new Date().getTime()
-        var size = forUpdateDot.length;
+//        var c  = new Date().getTime()
+//        var size = forUpdateDot.length;
 
         if (forUpdateDot.length) {
             var needUpdate = []
@@ -130,7 +130,7 @@ function updateDotdotdot() {
             $.each(needUpdate, function () {
                 this.children('p').trunk8('update')
             })
-            alert("before/after: " + size + "/" + forUpdateDot.length + "/" + needUpdate.length + "/" + (new Date().getTime() - c))
+//            alert("before/after: " + size + "/" + forUpdateDot.length + "/" + needUpdate.length + "/" + (new Date().getTime() - c))
         }
 
     }, 1)
@@ -180,10 +180,12 @@ function parseLogMessageObject(messageData) {
     var message = messageData.getMessage()
     var level = messageData.getLevel()
     var source = messageData.getSource()
+    var isSyntaxError = (level.name() == "SYNTAX")
 
     switch (level.name()) {
         case "FATAL":
         case "ERROR":
+        case "SYNTAX":
             level = "error"
             break
         case "WARN":
@@ -199,7 +201,8 @@ function parseLogMessageObject(messageData) {
     return {
         message: message,
         level: level,
-        source: source
+        source: source,
+        syntax: isSyntaxError
     }
 }
 
@@ -227,8 +230,15 @@ function removeFirst() {
 
 var messageCount = 0
 var maxMessagesCount = 100
+var lastMesageSyntaxError;
 
 function addLogMessage(data) {
+
+    if(lastMesageSyntaxError){
+        lastMesageSyntaxError.remove()
+        lastMesageSyntaxError = null
+    }
+
     var messageData = parseLogMessageObject(data)
 
     var isJavaMessage = messageData != data
@@ -245,14 +255,14 @@ function addLogMessage(data) {
     var logItem = $('<li' + style + '><p></p>' +
             '<a href="javascript:openTarget(\'' + source + '\')" title="' + source + '">' + source + '</a></li>')
 
-    $(logItem).data("message", data)
-    $(logItem).children("p").text(message)
+    logItem.data("message", data)
+    logItem.children("p").text(message)
 
     if (isJavaMessage) {
         updateVisible(logItem)
     }
 
-    $(logItem).children('a').each(function () {
+    logItem.children('a').each(function () {
         var str = $(this).text()
         if (str.length > 13) {
             str = str.replace('http://', '')
@@ -262,7 +272,7 @@ function addLogMessage(data) {
         $(this).tipsy({gravity: 'e', delayIn: 120, offset: 12})
     })
 
-    $(logItem).children("p").click(function () {
+    logItem.children("p").click(function () {
         if (window.getSelection().toString().length)return
         selectLogElement($(this).parent("li"));
     }).bind({
@@ -272,6 +282,10 @@ function addLogMessage(data) {
             }
         }
     })
+
+    if(messageData.syntax){
+        lastMesageSyntaxError = logItem;
+    }
 
     $(".log").append(logItem)
 
