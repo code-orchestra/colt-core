@@ -11,4 +11,6 @@ public interface SourceFileFactory<S extends SourceFile> extends ColtService {
 
     S createSourceFile(File file, File baseDir, boolean skipPatternCheck);
 
+    S getCached(File file);
+
 }
