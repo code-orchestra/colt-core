@@ -19,6 +19,8 @@ abstract class InputWithErrorBase extends TitledInputBase implements MInput {
 
     @FXBindable Boolean editable = true
 
+    boolean isValidated = false
+
     InputWithErrorBase() {
         setLeftAnchor(textField, 10)
         setRightAnchor(textField, 86)
@@ -55,12 +57,20 @@ abstract class InputWithErrorBase extends TitledInputBase implements MInput {
 
     protected InvalidationListener validationListener = { javafx.beans.Observable observable ->
         if (!validateValue()) {
-            text().removeListener(validationListener)
+            deactivateValidation()
         }
     } as InvalidationListener
 
     void activateValidation() {
-        text().addListener(validationListener)
+        if (!isValidated) {
+            text().addListener(validationListener)
+        }
+        isValidated = true
+    }
+
+    void deactivateValidation() {
+        text().removeListener(validationListener)
+        isValidated = false
     }
 
     boolean validateValue() {
