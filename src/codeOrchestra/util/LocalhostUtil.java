@@ -31,8 +31,8 @@ public class LocalhostUtil {
                 }
             }
 
-            return null;
-        } catch (Exception e) {
+            return "localhost";
+        } catch (Throwable e) {
             return "localhost";
         }
     }
