@@ -1,8 +1,6 @@
 package codeOrchestra.colt.core.model
 
-import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer
 import codeOrchestra.groovyfx.FXBindable
-import codeOrchestra.util.LocalhostUtil
 import groovy.xml.MarkupBuilder
 
 /**
