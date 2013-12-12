@@ -9,11 +9,13 @@ import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
 import codeOrchestra.colt.core.license.StartupInterceptType;
 import codeOrchestra.colt.core.license.StartupInterceptor;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
+import codeOrchestra.colt.core.model.ProjectHandlerIdParser;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.tasks.TasksManager;
 import codeOrchestra.colt.core.tracker.GAController;
 import codeOrchestra.lcs.license.ColtRunningKey;
 import codeOrchestra.util.ApplicationUtil;
+import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.StringUtils;
 import com.sun.javafx.css.StyleManager;
 import javafx.animation.KeyFrame;
@@ -33,7 +35,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import org.scenicview.ScenicView;
 
 import java.io.File;
 
@@ -46,6 +47,7 @@ public class ColtApplication extends Application {
 
     private static final int SPLASH_WIDTH = 480;
     private static final int SPLASH_HEIGHT = 320;
+    public static boolean IS_PLUGIN_MODE = false;
     private Timeline timeline;
 
     private ColtMenuBar menuBar;
@@ -66,6 +68,8 @@ public class ColtApplication extends Application {
 
     public static long timeStarted;
 
+    public String path;
+
     public ProjectStage getMainStage() {
         return mainStage;
     }
@@ -82,7 +86,18 @@ public class ColtApplication extends Application {
 
         menuBar = new ColtMenuBar();
 
-        if (!startWasRecentlyRequested) {
+        if (RecentProjects.mustOpenRecentProject()) {
+            for (String recentProjectPath : RecentProjects.getRecentProjectsPaths()) {
+                File projectFile = new File(recentProjectPath);
+                if (projectFile.exists()) {
+                    path = projectFile.getPath();
+                    IS_PLUGIN_MODE = new ProjectHandlerIdParser(FileUtils.read(projectFile)).getIsPlugin();
+                    break;
+                }
+            }
+        }
+
+        if (!(startWasRecentlyRequested || IS_PLUGIN_MODE)) {
             initSplash();
             showSplash();
             timeline = new Timeline(new KeyFrame(new Duration(1000), actionEvent -> {
@@ -132,8 +147,6 @@ public class ColtApplication extends Application {
         Platform.exit();
     }
 
-    public String path;
-
     private void doAfterUIInit() {
         // COLT-287
         System.setProperty("jsse.enableSNIExtension", "false");
@@ -158,16 +171,6 @@ public class ColtApplication extends Application {
         }.start();
 
         primaryStage.hide();
-
-        if (RecentProjects.mustOpenRecentProject()) {
-            for (String recentProjectPath : RecentProjects.getRecentProjectsPaths()) {
-                File projectFile = new File(recentProjectPath);
-                if (projectFile.exists()) {
-                    path = projectFile.getPath();
-                    break;
-                }
-            }
-        }
 
         if (path != null) {
             initProjectStage();
@@ -266,6 +269,7 @@ public class ColtApplication extends Application {
                     String path = args[i].split("=")[1];
                     if (path != null) {
                         RecentProjects.addRecentProject(path);
+                        IS_PLUGIN_MODE = true;
                         break;
                     }
                 }

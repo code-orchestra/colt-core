@@ -20,4 +20,8 @@ class ProjectHandlerIdParser {
         return node.@projectType
     }
 
+    Boolean getIsPlugin() {
+        return node.@isPlugin == "true"
+    }
+
 }
