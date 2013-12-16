@@ -131,15 +131,20 @@ public class FileUtils {
         return new File(System.getProperty("java.io.tmpdir"));
     }
 
-    public static void copyDir(File what, File to) {
-        copyDir(what, to, false);
+    public static ArrayList<String> copyDir(File what, File to) {
+        return copyDir(what, to, false);
     }
 
-    public static void copyDir(File what, File to, boolean checkEquals) {
-        copyDir(what, to, checkEquals, null);
+    public static ArrayList<String> copyDir(File what, File to, boolean checkEquals) {
+        return copyDir(what, to, checkEquals, null);
     }
 
-    public static void copyDir(File what, File to, boolean checkEquals, List<String> excludes) {
+    /*
+     * Returns list of file paths skipped due to CJ-925.
+     */
+    public static ArrayList<String> copyDir(File what, File to, boolean checkEquals, List<String> excludes) {
+        ArrayList<String> skippedFiles = new ArrayList<>();
+
         assert what.isDirectory();
         if (!to.exists()) {
             to.mkdir();
@@ -154,12 +159,19 @@ public class FileUtils {
                 if (!fCopy.exists()) {
                     fCopy.mkdir();
                 }
-                copyDir(f, fCopy);
+
+                skippedFiles.addAll(copyDir(f, fCopy, checkEquals, excludes));
             }
 
             if (f.isFile()) {
                 try {
                     if (excludes != null && excludes.contains(f.getPath())) {
+                        continue;
+                    }
+
+                    // CJ-925
+                    if ((f.length() > 52428800) && !f.getName().toLowerCase().endsWith("js")) {
+                        skippedFiles.add(f.getAbsolutePath());
                         continue;
                     }
 
@@ -169,6 +181,8 @@ public class FileUtils {
                 }
             }
         }
+
+        return skippedFiles;
     }
 
     public static boolean isIgnoredDir(String name) {
@@ -216,6 +230,8 @@ public class FileUtils {
             }
         }
 
+        copyFile(f, target);
+/*
         byte[] bytes = new byte[(int) f.length()];
 
         OutputStream os = new FileOutputStream(target);
@@ -226,6 +242,20 @@ public class FileUtils {
 
         is.close();
         os.close();
+*/
+    }
+
+    /**
+     * Faster copying method from http://www.javalobby.org/java/forums/t17036.html
+     */
+    public static void copyFile (File sourceFile, File destFile) throws IOException {
+        if(!destFile.exists()) {
+            destFile.createNewFile();
+        }
+
+        try (FileChannel source = new FileInputStream(sourceFile).getChannel(); FileChannel destination = new FileOutputStream(destFile).getChannel()) {
+            destination.transferFrom(source, 0, source.size());
+        }
     }
 
     public static String read(File file) {
