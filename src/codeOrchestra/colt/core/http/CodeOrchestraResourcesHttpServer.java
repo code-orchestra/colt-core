@@ -55,6 +55,11 @@ public class CodeOrchestraResourcesHttpServer {
         addHandler(handler, alias);
     }
 
+    public void addAlias(ResourceHandler resourceHandler, String alias) {
+        Handler handler = getContextHandler(alias, resourceHandler);
+        addHandler(handler, alias);
+    }
+
     private void addHandler(Handler handler, String alias) {
         Handler existingHandler = handlersMap.get(alias);
         if (existingHandler != null) {
