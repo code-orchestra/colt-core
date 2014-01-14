@@ -373,6 +373,9 @@ public class FileUtils {
     public static void write(File file, String content) {
         try {
             if (!file.exists()) {
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
                 file.createNewFile();
             }
 
