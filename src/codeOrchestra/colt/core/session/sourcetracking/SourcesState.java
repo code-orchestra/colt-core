@@ -44,7 +44,7 @@ public class SourcesState {
             return;
         }
 
-        SourceFile sourceFile = sourceFileFactory.createSourceFile(file, baseDir, false);
+        SourceFile sourceFile = sourceFileFactory.createSourceFile(file, baseDir);
         if (sourceFile != null) {
             pathToWrapper.put(file.getPath(), sourceFile);
         }
