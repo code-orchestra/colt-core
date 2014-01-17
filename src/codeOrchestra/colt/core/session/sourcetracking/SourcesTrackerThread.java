@@ -34,7 +34,7 @@ public class SourcesTrackerThread extends Thread {
 			} catch (InterruptedException e) {
 				// do nothing
 			}
-			
+
 			for (SourceFile changedFile : sourcesTracker.getChangedFiles()) {
                 try {
                     if (changedFile != null) {
