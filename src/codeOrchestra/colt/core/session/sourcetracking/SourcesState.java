@@ -17,14 +17,26 @@ import java.util.Map;
  */
 public class SourcesState {
 
-	public static SourcesState capture(List<File> dirs) {
+    private static Map<File, List<File>> filesMap;
+
+    public static void resetFilesTree() {
+        filesMap = null;
+    }
+
+    public static SourcesState capture(List<File> dirs) {
 		SourcesState sourcesState = new SourcesState();
-		
-		for (File baseDir : dirs) {
-			for (File sourceFile : FileUtils.listFileRecursively(baseDir, FileUtils.FILES_ONLY_FILTER)) {
-				sourcesState.addFile(sourceFile, baseDir);
-			}
-		}
+
+        if (filesMap == null) {
+            filesMap = new HashMap<>();
+            for (File baseDir : dirs) {
+                filesMap.put(baseDir, FileUtils.listFileRecursively(baseDir, FileUtils.FILES_ONLY_FILTER));
+                sourcesState.addFiles(filesMap.get(baseDir), baseDir);
+            }
+        } else {
+            for (File baseDir : filesMap.keySet()) {
+                sourcesState.addFiles(filesMap.get(baseDir), baseDir);
+            }
+        }
 		
 		return sourcesState;
 	}
@@ -34,6 +46,12 @@ public class SourcesState {
 	
 	private SourcesState() {		
 	}
+
+    public void addFiles(List<File> files, File baseDir) {
+        for (File sourceFile : files) {
+            addFile(sourceFile, baseDir);
+        }
+    }
 
 	public void addFile(File file, File baseDir) {
 		state.put(file.getPath(), file.lastModified());
@@ -81,6 +99,10 @@ public class SourcesState {
                 addToChanged(changedFiles, newStatePath);
             }
 		}
+
+        if (changedFiles.size() > 0) {
+            resetFilesTree();
+        }
 		
 		return changedFiles;
 	}

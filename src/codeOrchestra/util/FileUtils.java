@@ -392,11 +392,7 @@ public class FileUtils {
         assert dir.isDirectory();
         List<File> files = new ArrayList<>();
 
-        File[] subdirs = dir.listFiles(new FileFilter() {
-            public boolean accept(File f) {
-                return f.isDirectory() && !(".svn".equals(f.getName()));
-            }
-        });
+        File[] subdirs = dir.listFiles(f -> f.isDirectory() && !f.getName().matches("\\..*"));
 
         if (subdirs != null) {
             for (File subdir : subdirs) {

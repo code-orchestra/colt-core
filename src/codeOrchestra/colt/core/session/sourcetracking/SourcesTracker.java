@@ -7,14 +7,18 @@ import java.util.List;
  * @author Alexander Eliseyev
  */
 public class SourcesTracker {
+    private static final int CAPTURE_COUNTER = 100;
 
     private List<File> sourceDirs;
 
 	private SourcesState state;
+
+    private int counterForCapture = 0;
 	
 	public SourcesTracker(List<File> sourceDirs) {
 		this.sourceDirs = sourceDirs;
-		
+        counterForCapture = 50;
+
 		capture();
 	}
 
@@ -24,8 +28,14 @@ public class SourcesTracker {
 	
 	public List<SourceFile> getChangedFiles() {
 		SourcesState oldState = state;
-		
-		capture();
+
+        if (counterForCapture == 0) {
+            counterForCapture = CAPTURE_COUNTER;
+            SourcesState.resetFilesTree();
+        }
+        counterForCapture--;
+
+        capture();
 		
 		return state.getChangedFiles(oldState);
 	}
