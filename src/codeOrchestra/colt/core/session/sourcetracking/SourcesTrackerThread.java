@@ -34,7 +34,7 @@ public class SourcesTrackerThread extends Thread {
 			} catch (InterruptedException e) {
 				// do nothing
 			}
-            long t = System.currentTimeMillis();
+
 			for (SourceFile changedFile : sourcesTracker.getChangedFiles()) {
                 try {
                     if (changedFile != null) {
@@ -44,7 +44,7 @@ public class SourcesTrackerThread extends Thread {
                     e.printStackTrace();
                 }
             }
-            System.out.println("SourcesTrackerThread run time = " + (System.currentTimeMillis() - t));
+
         }
 	}
 	
