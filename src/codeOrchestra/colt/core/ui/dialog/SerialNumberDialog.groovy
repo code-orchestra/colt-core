@@ -1,6 +1,12 @@
 package codeOrchestra.colt.core.ui.dialog
 
-import codeOrchestra.colt.core.license.DemoHelper
+import codeOrchestra.colt.core.license.CodeOrchestraLicenseManager
+import codeOrchestra.colt.core.ui.components.advancedSeparator.AdvancedSeparator
+import codeOrchestra.colt.core.ui.components.inputForms.LabeledPasswordInput
+import codeOrchestra.colt.core.ui.components.inputForms.LabeledTitledInput
+import codeOrchestra.colt.core.ui.components.inputForms.base.InputWithErrorBase
+import codeOrchestra.colt.core.ui.components.inputForms.group.FormGroup
+import javafx.beans.InvalidationListener
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.control.Button
@@ -9,7 +15,10 @@ import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.VBox
 import javafx.stage.Window
+
+import java.util.prefs.Preferences
 
 /**
  * @author Dima Kruk
@@ -22,6 +31,8 @@ class SerialNumberDialog extends DialogWithImage {
     Image errorImage = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
 
     String serialNumberValue
+
+    AdvancedSeparator separator
 
     SerialNumberDialog(Window owner) {
         super(owner)
@@ -73,7 +84,28 @@ class SerialNumberDialog extends DialogWithImage {
         AnchorPane.setTopAnchor(okButton, 18)
         AnchorPane.setRightAnchor(okButton, 0)
 
-        pane.children.addAll(inputLabel, serialNumber, okButton)
+        VBox vBox = new VBox()
+        AnchorPane.setTopAnchor(vBox, 37)
+        AnchorPane.setRightAnchor(vBox, 0)
+        AnchorPane.setLeftAnchor(vBox, 63)
+        separator = new AdvancedSeparator("Proxy settings", false)
+        FormGroup proxySettings = new FormGroup(first: true)
+
+        InputWithErrorBase host, port, username, password
+        Preferences preferences = Preferences.userNodeForPackage(CodeOrchestraLicenseManager.class)
+        proxySettings.children.addAll(
+                host = new LabeledTitledInput(title: "Host", text: preferences.get("proxy.host", "")),
+                port = new LabeledTitledInput(title: "Port", text: preferences.getInt("proxy.port", 8080), numeric: true),
+                username = new LabeledTitledInput(title: "Username", text: preferences.get("proxy.name", "")),
+                password = new LabeledPasswordInput(title: "Password", text: preferences.get("proxy.pass", ""))
+        )
+        separator.content = proxySettings
+        proxySettings.visibleProperty().addListener({ javafx.beans.Observable observable ->
+            stage.sizeToScene()
+        } as InvalidationListener)
+        vBox.children.addAll(separator, proxySettings)
+
+        pane.children.addAll(inputLabel, serialNumber, okButton, vBox)
 
         children.add(pane)
 
@@ -81,6 +113,12 @@ class SerialNumberDialog extends DialogWithImage {
             if (serialNumber.text.isEmpty()) {
                 error("The serial number entered is empty")
             } else {
+                preferences.put("proxy.host", host.text)
+                preferences.putInt("proxy.port", port.text as int)
+                preferences.put("proxy.name", username.text)
+                preferences.put("proxy.pass", password.text)
+                preferences.sync()
+
                 serialNumberValue = serialNumber.text
                 hide()
             }

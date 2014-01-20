@@ -1,10 +1,12 @@
 package codeOrchestra.colt.core.license.plimus;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
+import codeOrchestra.colt.core.license.CodeOrchestraLicenseManager;
+import org.apache.commons.httpclient.*;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 /**
  * @author Alexander Eliseyev
@@ -16,6 +18,8 @@ public final class PlimusHelper {
 
     private static final String VALIDATION_URL = "https://www.plimus.com/jsp/validateKey.jsp";
     private static final String PRODUCT_ID = "902584";
+
+    private static Preferences preferences = Preferences.userNodeForPackage(CodeOrchestraLicenseManager.class);
 
 //  private static final String VALIDATION_URL = "https://sandbox.plimus.com/jsp/validateKey.jsp"; // sandbox
 //  private static final String PRODUCT_ID = "294006"; // sandbox
@@ -45,6 +49,19 @@ public final class PlimusHelper {
                 new NameValuePair("productId", PRODUCT_ID),
                 new NameValuePair("key", key)
         });
+
+        String host = preferences.get("proxy.host", "");
+        int port = preferences.getInt("proxy.port", 8080);
+        if (!host.isEmpty()) {
+            httpClient.getHostConfiguration().setProxy(host, port);
+
+            Credentials credentials = new UsernamePasswordCredentials(preferences.get("proxy.name", ""), preferences.get("proxy.pass", ""));
+            AuthScope authScope = new AuthScope(host, port);
+
+            httpClient.getState().setProxyCredentials(authScope, credentials);
+        } else if(httpClient.getHostConfiguration().getProxyHost() != null) {
+            httpClient = new HttpClient();
+        }
 
         httpClient.executeMethod(getMethod);
 

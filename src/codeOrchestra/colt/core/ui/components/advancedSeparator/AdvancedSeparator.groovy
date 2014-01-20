@@ -20,13 +20,14 @@ class AdvancedSeparator extends AnchorPane {
 
     FXNode content
 
-    AdvancedSeparator() {
+    AdvancedSeparator(String text = "Advanced", boolean showButton = true) {
         setMaxWidth(640)
-        button = new Button(focusTraversable: false, layoutY: 7, text: "Advanced")
+        button = new Button(focusTraversable: false, layoutY: 7, text: text)
         setLeftAnchor(button, 19)
         saveButton = new Button(focusTraversable: false, layoutY: 7, prefWidth: 97, text: "Save & Run")
         setRightAnchor(saveButton, 10)
         children.addAll(button, saveButton)
+        saveButton.visible = showButton
 
         setPadding(new Insets(0, 0, 3, 0))
         VBox.setMargin(this, new Insets(13, 0, 0, 0))
