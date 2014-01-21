@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui.components.log
 
 import codeOrchestra.colt.core.logging.Level
 import codeOrchestra.colt.core.logging.LoggerService
+import codeOrchestra.colt.core.rpc.AbstractColtRemoteService
 
 /**
  * @author Dima Kruk
@@ -17,6 +18,10 @@ class Log implements LoggerService {
     @Override
     synchronized void log(String source, String message, List<String> scopeIds, long timestamp, Level level, String stackTrace) {
         logWebView.logMessages.add(new LogMessage(source, level, message, timestamp, stackTrace))
+
+        if (level != Level.LIVE) {
+            AbstractColtRemoteService.addLogMessage(new LogMessage(source, level, message, timestamp, stackTrace))
+        }
     }
 
     @Override
