@@ -78,7 +78,9 @@ public class JmDNSFacade {
 
     private synchronized void doDispose() {
         if (jmDNSObject != null) {
-            jmDNSObject.unregisterService(serviceInfo);
+            if(serviceInfo != null) {
+                jmDNSObject.unregisterService(serviceInfo);
+            }
             try {
                 jmDNSObject.close();
             } catch (IOException e) {
