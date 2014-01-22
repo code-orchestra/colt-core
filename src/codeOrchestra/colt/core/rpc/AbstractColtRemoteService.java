@@ -16,6 +16,7 @@ import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.core.rpc.security.InvalidShortCodeException;
 import codeOrchestra.colt.core.rpc.security.TooManyFailedCodeTypeAttemptsException;
 import codeOrchestra.colt.core.session.LiveCodingSession;
+import codeOrchestra.colt.core.ui.components.log.LogMessage;
 import javafx.application.Platform;
 
 import java.io.File;
@@ -27,6 +28,14 @@ import java.util.List;
  * @author Alexander Eliseyev
  */
 public abstract class AbstractColtRemoteService<P extends Project> implements ColtRemoteService<P> {
+
+    static protected ArrayList<LogMessage> logMessages = new ArrayList<>();
+    static public void addLogMessage (LogMessage message) {
+        logMessages.add(message);
+        if (logMessages.size() > 5) {
+            logMessages.remove(0);
+        }
+    }
 
     private final Object monitor = new Object();
 
