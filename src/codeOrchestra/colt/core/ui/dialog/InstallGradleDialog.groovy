@@ -24,6 +24,13 @@ class InstallGradleDialog extends UpdateDialog{
     }
 
     @Override
+    protected void initHeader() {
+        super.initHeader()
+        message = 'Please install or specify path to Gradle before using "Production build" or "Precompile"'
+        comment = ""
+    }
+
+    @Override
     protected void initCenter() {
         super.initCenter()
 
