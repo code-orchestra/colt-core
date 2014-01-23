@@ -1,12 +1,11 @@
 package codeOrchestra.util;
 
-import codeOrchestra.colt.core.LiveCodingManager;
 import codeOrchestra.colt.core.model.Project;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 /**
  * @author Alexander Eliseyev
@@ -141,8 +140,16 @@ public class PathUtils {
         throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));
     }
 
+    public static boolean checkGradle() {
+        String gradleHome = Preferences.userNodeForPackage(PathUtils.class).get("gradle.home" , "");
+        if (StringUtils.isEmpty(gradleHome)) {
+            gradleHome = new File(getApplicationBaseDir(), "gradle").getPath();
+        }
+        return new File(gradleHome).exists();
+    }
+
     public static File getGradleExecutable() {
-        String gradleHome = System.getProperty("gradle.home");
+        String gradleHome = Preferences.userNodeForPackage(PathUtils.class).get("gradle.home", "");
         if (StringUtils.isEmpty(gradleHome)) {
             gradleHome = new File(getApplicationBaseDir(), "gradle").getPath();
         }

@@ -6,16 +6,18 @@ import codeOrchestra.colt.core.ui.components.inputForms.LabeledTitledInput
 import codeOrchestra.colt.core.ui.components.inputForms.base.BrowseType
 import codeOrchestra.colt.core.ui.components.inputForms.group.FormGroup
 import codeOrchestra.colt.core.ui.components.scrollpane.SettingsScrollPane
+import codeOrchestra.colt.core.ui.dialog.InstallGradleDialog
+import codeOrchestra.colt.core.ui.dialog.UpdateDialog
 import codeOrchestra.colt.core.update.tasks.UpdateTask
 import codeOrchestra.util.PathUtils
 import javafx.event.EventHandler
 import javafx.scene.control.Button
+import javafx.stage.Window
 
 /**
  * @author Dima Kruk
  */
 class UpdateView extends SettingsScrollPane {
-    private static final int BUFFER_SIZE = 4096;
 
     LabeledTitledInput url
     LabeledActionInput to
@@ -32,7 +34,8 @@ class UpdateView extends SettingsScrollPane {
         formGroup.children.add(action)
 
         action.onAction = {
-            TasksManager.getInstance().scheduleBackgroundTask(new UpdateTask("http://codeorchestra.s3.amazonaws.com/flex_sdk.zip", to.text))
+            new InstallGradleDialog(parent as Window).show()
+//            TasksManager.getInstance().scheduleBackgroundTask(new UpdateTask("http://codeorchestra.s3.amazonaws.com/flex_sdk.zip", to.text))
         } as EventHandler
     }
 }
