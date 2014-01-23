@@ -64,6 +64,7 @@ class InstallGradleDialog extends UpdateDialog{
             children.remove(pathCenter)
             super.startUpdate()
         } else {
+            isSuccess = true
             stage.hide()
         }
     }

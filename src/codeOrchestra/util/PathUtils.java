@@ -141,7 +141,7 @@ public class PathUtils {
     }
 
     public static boolean checkGradle() {
-        String gradleHome = Preferences.userNodeForPackage(PathUtils.class).get("gradle.home" , "");
+        String gradleHome = Preferences.userNodeForPackage(PathUtils.class).get("gradle.home2" , "");
         if (StringUtils.isEmpty(gradleHome)) {
             gradleHome = new File(getApplicationBaseDir(), "gradle").getPath();
         }

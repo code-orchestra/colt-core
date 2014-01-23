@@ -15,6 +15,8 @@ import org.controlsfx.control.ButtonBar
 class UpdateDialog extends DialogWithImage {
     private HBox progressCenter
 
+    boolean isSuccess = false
+
     UpdateDialog(Window owner) {
         super(owner)
     }
