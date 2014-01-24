@@ -11,6 +11,8 @@ import javafx.stage.Window
  */
 class InstallFlexSDKDialog extends UpdateDialog {
 
+    boolean inited = false
+
     InstallFlexSDKDialog(Window owner) {
         super(owner)
 
@@ -41,10 +43,21 @@ class InstallFlexSDKDialog extends UpdateDialog {
     @Override
     protected void updateComplete() {
         if (SystemInfo.isWindows) {
-            File file = new File(PathUtils.getApplicationBaseDir().path + File.separator + "bin" + File.separator + "placement.txt")
-            FileUtils.write(file, 'Root="' + PathUtils.getApplicationBaseDir().path + File.separator + "bin" + '"')
-
+            File file = new File(PathUtils.getApplicationBaseDir().path + File.separator + "flex_sdk" + File.separator + "bin" + File.separator + "placement.txt")
+            String str = 'Root="' + PathUtils.getApplicationBaseDir().path + File.separator + "bin" + '"'
+            FileUtils.write(file, str)
         }
+        inited = true
         super.updateComplete()
+    }
+
+    @Override
+    protected void startUpdate() {
+        if (!inited) {
+            super.startUpdate()
+        } else {
+            isSuccess = true
+            stage.hide()
+        }
     }
 }
