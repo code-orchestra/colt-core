@@ -1,16 +1,16 @@
 package codeOrchestra.colt.core.update.tasks
 
-import codeOrchestra.colt.core.tasks.ColtTask
-import codeOrchestra.colt.core.ui.components.IProgressIndicator
 import codeOrchestra.util.FileUtils
 import codeOrchestra.util.PathUtils
+import codeOrchestra.util.ThreadUtils
+import javafx.concurrent.Task
 import net.lingala.zip4j.core.ZipFile
 
 
 /**
  * @author Dima Kruk
  */
-class UpdateTask extends ColtTask<Void>{
+class UpdateTask extends Task<Void> {
 
     String url
     String copyTo
@@ -23,9 +23,8 @@ class UpdateTask extends ColtTask<Void>{
 
     @Override
     protected Void call() throws Exception {
-        println "UpdateTask call"
         String tmpFilePath = downloadFile(url, PathUtils.applicationBaseDir.path + File.separator + "updates")
-        if (tmpFilePath != null) {
+        if (tmpFilePath != null && !cancelled) {
             String ext = tmpFilePath.split("\\.").last()
             if (ext == "zip") {
                 ZipFile zipFile = new ZipFile(tmpFilePath)
@@ -37,22 +36,7 @@ class UpdateTask extends ColtTask<Void>{
         return null
     }
 
-    @Override
-    protected String getName() {
-        return "Update"
-    }
-
-    @Override
-    protected void onOK(Void result) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected void onFail() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    protected static String downloadFile(String fileURL, String saveDir) throws IOException {
+    protected String downloadFile(String fileURL, String saveDir) throws IOException {
         println "downloadFile"
         File sDir = new File(saveDir)
         if (!sDir.exists()) {
@@ -93,15 +77,17 @@ class UpdateTask extends ColtTask<Void>{
             FileOutputStream outputStream = new FileOutputStream(saveFilePath);
 
             long totalBytesRead = 0;
-            int percentCompleted = 0;
             int bytesRead
             byte[] buffer = new byte[inputStream.available()];
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer)
                 buffer = new byte[inputStream.available()]
                 totalBytesRead += bytesRead;
-                percentCompleted = (int) (totalBytesRead * 100 / contentLength);
-                println "percentCompleted = $percentCompleted"
+                updateProgress(totalBytesRead, contentLength)
+                ThreadUtils.sleep(100)
+                if (cancelled) {
+                    break
+                }
             }
 
             outputStream.close();

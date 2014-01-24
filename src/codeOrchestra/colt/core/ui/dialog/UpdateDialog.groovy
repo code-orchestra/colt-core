@@ -1,5 +1,9 @@
 package codeOrchestra.colt.core.ui.dialog
 
+import codeOrchestra.colt.core.update.tasks.UpdateTask
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
+import javafx.concurrent.Worker
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.control.Button
@@ -14,8 +18,13 @@ import org.controlsfx.control.ButtonBar
  */
 class UpdateDialog extends DialogWithImage {
     private HBox progressCenter
+    ProgressBar progressBar
 
-    boolean isSuccess = false
+    public boolean isSuccess = false
+
+    UpdateTask task
+
+    Button cancelButton
 
     UpdateDialog(Window owner) {
         super(owner)
@@ -40,7 +49,7 @@ class UpdateDialog extends DialogWithImage {
     protected void initCenter() {
         progressCenter = new HBox(spacing: 8, padding: new Insets(2, 0, 4, 68))
 
-        ProgressBar progressBar = new ProgressBar()
+        progressBar = new ProgressBar()
         progressBar.prefWidth = 416
 
         progressCenter.children.add(progressBar)
@@ -56,15 +65,15 @@ class UpdateDialog extends DialogWithImage {
             startUpdate()
         } as EventHandler
 
-        Button cancel = new Button("Cancel")
-        cancel.prefWidth = 67
-        ButtonBar.setType(cancel, ButtonBar.ButtonType.CANCEL_CLOSE)
-        cancel.onAction = {
+        cancelButton = new Button("Cancel")
+        cancelButton.prefWidth = 67
+        ButtonBar.setType(cancelButton, ButtonBar.ButtonType.CANCEL_CLOSE)
+        cancelButton.onAction = {
             cancelUpdate()
             stage.hide()
         } as EventHandler
 
-        buttonBar.buttons.add(cancel)
+        buttonBar.buttons.add(cancelButton)
 
         stage.onCloseRequest = {
             cancelUpdate()
@@ -74,9 +83,34 @@ class UpdateDialog extends DialogWithImage {
     protected void startUpdate() {
         children.add(1, progressCenter)
         stage.sizeToScene()
+
+        task.stateProperty().addListener({ ObservableValue<? extends Worker.State> observableValue, Worker.State t, Worker.State t1 ->
+            switch (t1){
+                case Worker.State.SUCCEEDED:
+                    updateComplete()
+                    break
+                case Worker.State.CANCELLED:
+                    break
+                case Worker.State.FAILED:
+                    break
+            }
+        } as ChangeListener)
+
+        progressBar.progress = 0
+        progressBar.progressProperty().unbind()
+        progressBar.progressProperty().bind(task.progressProperty())
+        new Thread(task).start()
     }
 
     protected void cancelUpdate() {
+        if (task != null && task.running) {
+            task.cancel()
+        }
+    }
 
+    protected void updateComplete() {
+        cancelButton.visible = false
+        okButton.disable = false
+        okButton.text = "Done"
     }
 }

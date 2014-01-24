@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.ui.dialog
 
 import codeOrchestra.colt.core.ui.components.inputForms.LabeledActionInput
 import codeOrchestra.colt.core.ui.components.inputForms.base.BrowseType
+import codeOrchestra.colt.core.update.tasks.UpdateTask
 import codeOrchestra.util.PathUtils
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -14,13 +15,15 @@ import java.util.prefs.Preferences
 /**
  * @author Dima Kruk
  */
-class InstallGradleDialog extends UpdateDialog{
+class InstallGradleDialog extends UpdateDialog {
     VBox pathCenter
 
     boolean inited = false
 
     InstallGradleDialog(Window owner) {
         super(owner)
+        task = new UpdateTask("http://codeorchestra.s3.amazonaws.com/colt_packages/gradle.zip",
+                new File(PathUtils.getApplicationBaseDir(), "gradle").getPath())
     }
 
     @Override
@@ -61,7 +64,6 @@ class InstallGradleDialog extends UpdateDialog{
     @Override
     protected void initButtons() {
         super.initButtons()
-
         okButton.text = "Install"
     }
 
@@ -74,5 +76,11 @@ class InstallGradleDialog extends UpdateDialog{
             isSuccess = true
             stage.hide()
         }
+    }
+
+    @Override
+    protected void updateComplete() {
+        inited = true
+        super.updateComplete()
     }
 }
