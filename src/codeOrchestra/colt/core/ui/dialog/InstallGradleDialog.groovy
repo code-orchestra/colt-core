@@ -18,8 +18,6 @@ import java.util.prefs.Preferences
 class InstallGradleDialog extends UpdateDialog {
     VBox pathCenter
 
-    boolean inited = false
-
     InstallGradleDialog(Window owner) {
         super(owner)
         task = new UpdateTask("http://codeorchestra.s3.amazonaws.com/colt_packages/gradle.zip",
@@ -69,18 +67,12 @@ class InstallGradleDialog extends UpdateDialog {
 
     @Override
     protected void startUpdate() {
-        if (!inited) {
-            children.remove(pathCenter)
-            super.startUpdate()
-        } else {
-            isSuccess = true
-            stage.hide()
-        }
+        children.remove(pathCenter)
+        super.startUpdate()
     }
 
     @Override
     protected void updateComplete() {
-        inited = true
         super.updateComplete()
         okButton.text = "Done"
     }

@@ -69,8 +69,7 @@ class UpdateDialog extends DialogWithImage {
                 okButton.disable = true
                 startUpdate()
             } else {
-                isSuccess = true
-                stage.hide()
+                hide()
             }
         } as EventHandler
 
@@ -140,9 +139,15 @@ class UpdateDialog extends DialogWithImage {
             stage.title = "COLT Update " + (updates - listOfTasks.size()) + "/" + updates
         } else {
             inited = true
+            buttonBar.buttons.remove(cancelButton)
             cancelButton.visible = false
             okButton.disable = false
             okButton.text = "Restart"
         }
+    }
+
+    protected void hide() {
+        isSuccess = true
+        stage.hide()
     }
 }
