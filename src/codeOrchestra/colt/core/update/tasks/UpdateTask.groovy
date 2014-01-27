@@ -27,6 +27,8 @@ class UpdateTask extends Task<Void> {
         if (tmpFilePath != null && !cancelled) {
             String ext = tmpFilePath.split("\\.").last()
             if (ext == "zip") {
+                updateTitle("Extracting...")
+                updateMessage("")
                 ZipFile zipFile = new ZipFile(tmpFilePath)
                 zipFile.extractAll(copyTo)
             } else {
@@ -76,14 +78,20 @@ class UpdateTask extends Task<Void> {
             // opens an output stream to save into file
             FileOutputStream outputStream = new FileOutputStream(saveFilePath);
 
+            updateTitle("Downloading...")
+
             long totalBytesRead = 0;
             int bytesRead
-            byte[] buffer = new byte[inputStream.available()];
+            byte[] buffer = new byte[inputStream.available()]
+            long cur = 0
+            long of = contentLength/104857.6
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer)
                 buffer = new byte[inputStream.available()]
                 totalBytesRead += bytesRead;
                 updateProgress(totalBytesRead, contentLength)
+                cur = totalBytesRead/10485.76
+                updateMessage(cur * 0.01 + "MB of " + of * 0.1 + "MB")
                 ThreadUtils.sleep(100)
                 if (cancelled) {
                     break

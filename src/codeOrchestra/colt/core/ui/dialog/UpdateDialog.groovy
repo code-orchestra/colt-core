@@ -99,6 +99,13 @@ class UpdateDialog extends DialogWithImage {
         progressBar.progress = 0
         progressBar.progressProperty().unbind()
         progressBar.progressProperty().bind(task.progressProperty())
+        task.titleProperty().addListener({ ObservableValue<? extends String> observableValue, String t, String t1 ->
+            message = t1
+        } as ChangeListener)
+        task.messageProperty().addListener({ ObservableValue<? extends String> observableValue, String t, String t1 ->
+            comment = t1
+        } as ChangeListener)
+
         new Thread(task).start()
     }
 
