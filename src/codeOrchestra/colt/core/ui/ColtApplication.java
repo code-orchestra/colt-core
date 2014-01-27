@@ -13,6 +13,9 @@ import codeOrchestra.colt.core.model.ProjectHandlerIdParser;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.tasks.TasksManager;
 import codeOrchestra.colt.core.tracker.GAController;
+import codeOrchestra.colt.core.ui.dialog.UpdateDialog;
+import codeOrchestra.colt.core.update.tasks.UpdateManager;
+import codeOrchestra.colt.core.update.tasks.UpdateTask;
 import codeOrchestra.lcs.license.ColtRunningKey;
 import codeOrchestra.util.ApplicationUtil;
 import codeOrchestra.util.FileUtils;
@@ -37,6 +40,8 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * @author Alexander Eliseyev
@@ -156,6 +161,28 @@ public class ColtApplication extends Application {
         StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
         if (startupInterceptType != StartupInterceptType.START) {
             System.exit(1);
+        }
+
+        //check for update
+        ArrayList<UpdateTask> updateTasks = UpdateManager.checkForUpdate();
+        if (updateTasks != null) {
+            if (updateTasks.size() > 0) {
+                UpdateDialog dialog = new UpdateDialog(primaryStage);
+                dialog.setListOfTasks(updateTasks);
+                dialog.setMessage("New update is available");
+                dialog.show();
+                if (dialog.isSuccess) {
+                    try {
+                        ApplicationUtil.restartColt();
+                        return;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            //can't connect
+            //todo: show message
         }
 
         ColtRunningKey.setRunning(true);

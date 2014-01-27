@@ -82,5 +82,6 @@ class InstallGradleDialog extends UpdateDialog {
     protected void updateComplete() {
         inited = true
         super.updateComplete()
+        okButton.text = "Done"
     }
 }

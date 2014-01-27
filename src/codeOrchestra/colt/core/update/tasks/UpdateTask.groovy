@@ -16,7 +16,6 @@ class UpdateTask extends Task<Void> {
     String copyTo
 
     UpdateTask(String url, String target) {
-        println "UpdateTask"
         this.url = url
         copyTo = target
     }
@@ -32,7 +31,8 @@ class UpdateTask extends Task<Void> {
                 ZipFile zipFile = new ZipFile(tmpFilePath)
                 zipFile.extractAll(copyTo)
             } else {
-                FileUtils.copyFile(new File(tmpFilePath), new File(copyTo))
+                File tmpFile = new File(tmpFilePath)
+                FileUtils.copyFile(tmpFile, new File(copyTo + File.separator + tmpFile.name))
             }
         }
         return null

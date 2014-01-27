@@ -22,9 +22,13 @@ class UpdateDialog extends DialogWithImage {
 
     public boolean isSuccess = false
 
+    List<UpdateTask> listOfTasks
+    int updates = 0
     UpdateTask task
 
     Button cancelButton
+
+    boolean inited = false
 
     UpdateDialog(Window owner) {
         super(owner)
@@ -42,7 +46,7 @@ class UpdateDialog extends DialogWithImage {
         super.initHeader()
 
         message = "You need update"
-        comment = "comment"
+        comment = ""
     }
 
     @Override
@@ -61,8 +65,13 @@ class UpdateDialog extends DialogWithImage {
 
         okButton.text = "Update"
         okButton.onAction = {
-            okButton.disable = true
-            startUpdate()
+            if (!inited) {
+                okButton.disable = true
+                startUpdate()
+            } else {
+                isSuccess = true
+                stage.hide()
+            }
         } as EventHandler
 
         cancelButton = new Button("Cancel")
@@ -84,7 +93,17 @@ class UpdateDialog extends DialogWithImage {
         children.add(1, progressCenter)
         stage.sizeToScene()
 
-        task.stateProperty().addListener({ ObservableValue<? extends Worker.State> observableValue, Worker.State t, Worker.State t1 ->
+        if (listOfTasks != null) {
+            updates = listOfTasks.size()
+            stage.title = "COLT Update 1/" + updates
+            startTask(listOfTasks.remove(0))
+        } else {
+            startTask(task)
+        }
+    }
+
+    protected void startTask(UpdateTask newTask) {
+        newTask.stateProperty().addListener({ ObservableValue<? extends Worker.State> observableValue, Worker.State t, Worker.State t1 ->
             switch (t1){
                 case Worker.State.SUCCEEDED:
                     updateComplete()
@@ -96,17 +115,17 @@ class UpdateDialog extends DialogWithImage {
             }
         } as ChangeListener)
 
-        progressBar.progress = 0
         progressBar.progressProperty().unbind()
-        progressBar.progressProperty().bind(task.progressProperty())
-        task.titleProperty().addListener({ ObservableValue<? extends String> observableValue, String t, String t1 ->
+        progressBar.progress = 0
+        progressBar.progressProperty().bind(newTask.progressProperty())
+        newTask.titleProperty().addListener({ ObservableValue<? extends String> observableValue, String t, String t1 ->
             message = t1
         } as ChangeListener)
-        task.messageProperty().addListener({ ObservableValue<? extends String> observableValue, String t, String t1 ->
+        newTask.messageProperty().addListener({ ObservableValue<? extends String> observableValue, String t, String t1 ->
             comment = t1
         } as ChangeListener)
 
-        new Thread(task).start()
+        new Thread(newTask).start()
     }
 
     protected void cancelUpdate() {
@@ -116,8 +135,14 @@ class UpdateDialog extends DialogWithImage {
     }
 
     protected void updateComplete() {
-        cancelButton.visible = false
-        okButton.disable = false
-        okButton.text = "Done"
+        if (listOfTasks != null && listOfTasks.size() > 0) {
+            startTask(listOfTasks.remove(0))
+            stage.title = "COLT Update " + (updates - listOfTasks.size()) + "/" + updates
+        } else {
+            inited = true
+            cancelButton.visible = false
+            okButton.disable = false
+            okButton.text = "Restart"
+        }
     }
 }

@@ -255,6 +255,8 @@ public class FileUtils {
 
         try (FileChannel source = new FileInputStream(sourceFile).getChannel(); FileChannel destination = new FileOutputStream(destFile).getChannel()) {
             destination.transferFrom(source, 0, source.size());
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
