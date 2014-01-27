@@ -17,7 +17,7 @@ public class SourcesTracker {
 	
 	public SourcesTracker(List<File> sourceDirs) {
 		this.sourceDirs = sourceDirs;
-        counterForCapture = 50;
+        counterForCapture = CAPTURE_COUNTER;
 
 		capture();
 	}
