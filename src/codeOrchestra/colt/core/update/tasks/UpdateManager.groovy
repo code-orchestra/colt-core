@@ -44,6 +44,9 @@ class UpdateManager {
 
     private static boolean checkJar(String fileName, File baseDir) {
         File curJar = new File(baseDir, fileName)
+        if (!curJar.exists()) {
+            return false
+        }
 
         URL url = new URL(UPDATE_URL + fileName)
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection()
