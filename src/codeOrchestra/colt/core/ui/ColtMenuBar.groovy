@@ -191,7 +191,7 @@ class ColtMenuBar extends MenuBar {
                         new MenuItem(
                                 text: "Check for updates",
                                 onAction: {
-                                   ColtApplication.get().checkForUpdate()
+                                   ColtApplication.get().checkForUpdate(true)
                                 } as EventHandler
                         ),
                         new SeparatorMenuItem(),
@@ -304,7 +304,7 @@ class ColtMenuBar extends MenuBar {
                             new MenuItem(
                                     text: "Check for updates",
                                     onAction: {
-                                        ColtApplication.get().checkForUpdate()
+                                        ColtApplication.get().checkForUpdate(true)
                                     } as EventHandler
                             ),
                             new SeparatorMenuItem(),

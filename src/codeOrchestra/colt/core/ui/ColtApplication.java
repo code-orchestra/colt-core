@@ -21,6 +21,7 @@ import codeOrchestra.lcs.license.ColtRunningKey;
 import codeOrchestra.util.ApplicationUtil;
 import codeOrchestra.util.FileUtils;
 import codeOrchestra.util.StringUtils;
+import codeOrchestra.util.ThreadUtils;
 import com.sun.javafx.css.StyleManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -153,7 +154,7 @@ public class ColtApplication extends Application {
         Platform.exit();
     }
 
-    public boolean checkForUpdate() {
+    public boolean checkForUpdate(boolean showMessage) {
         ArrayList<UpdateTask> updateTasks = UpdateManager.checkForUpdate();
         if (updateTasks != null) {
             if (updateTasks.size() > 0) {
@@ -171,12 +172,15 @@ public class ColtApplication extends Application {
                 }
             }
         } else {
-            ColtDialogs.showError(primaryStage, "COLT update", "Can't reach the update server.",
-                    "Make sure your internet connection is active.");
+            if (showMessage) {
+                ColtDialogs.showError(primaryStage, "COLT update", "Can't reach the update server.",
+                        "Make sure your internet connection is active.");
+            }
             return false;
         }
-
-        ColtDialogs.showInfo(primaryStage, "COLT update", "You have the latest version of COLT.");
+        if (showMessage) {
+            ColtDialogs.showInfo(primaryStage, "COLT update", "You have the latest version of COLT.");
+        }
         return false;
     }
 
@@ -227,6 +231,11 @@ public class ColtApplication extends Application {
         } else {
             showWelcomeScreen();
         }
+
+        new Thread(() -> {
+            ThreadUtils.sleep(10000);
+            checkForUpdate(false);
+        }).start();
 
 //        ScenicView.show(primaryStage.getScene());
     }
