@@ -234,7 +234,9 @@ public class ColtApplication extends Application {
 
         new Thread(() -> {
             ThreadUtils.sleep(10000);
-            checkForUpdate(false);
+            Platform.runLater(() -> {
+               checkForUpdate(false);
+            });
         }).start();
 
 //        ScenicView.show(primaryStage.getScene());
