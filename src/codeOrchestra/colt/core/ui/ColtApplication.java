@@ -13,6 +13,7 @@ import codeOrchestra.colt.core.model.ProjectHandlerIdParser;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.tasks.TasksManager;
 import codeOrchestra.colt.core.tracker.GAController;
+import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 import codeOrchestra.colt.core.ui.dialog.UpdateDialog;
 import codeOrchestra.colt.core.update.tasks.UpdateManager;
 import codeOrchestra.colt.core.update.tasks.UpdateTask;
@@ -152,18 +153,7 @@ public class ColtApplication extends Application {
         Platform.exit();
     }
 
-    private void doAfterUIInit() {
-        // COLT-287
-        System.setProperty("jsse.enableSNIExtension", "false");
-        System.setProperty("file.encoding", "UTF-8");
-
-        // Intercept start by license check
-        StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
-        if (startupInterceptType != StartupInterceptType.START) {
-            System.exit(1);
-        }
-
-        //check for update
+    public boolean checkForUpdate() {
         ArrayList<UpdateTask> updateTasks = UpdateManager.checkForUpdate();
         if (updateTasks != null) {
             if (updateTasks.size() > 0) {
@@ -174,15 +164,31 @@ public class ColtApplication extends Application {
                 if (dialog.isSuccess) {
                     try {
                         ApplicationUtil.restartColt();
-                        return;
+                        return true;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
         } else {
-            //can't connect
-            //todo: show message
+            ColtDialogs.showError(primaryStage, "COLT update", "Can't reach the update server.",
+                    "Make sure your internet connection is active.");
+            return false;
+        }
+
+        ColtDialogs.showInfo(primaryStage, "COLT update", "You have the latest version of COLT.");
+        return false;
+    }
+
+    private void doAfterUIInit() {
+        // COLT-287
+        System.setProperty("jsse.enableSNIExtension", "false");
+        System.setProperty("file.encoding", "UTF-8");
+
+        // Intercept start by license check
+        StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
+        if (startupInterceptType != StartupInterceptType.START) {
+            System.exit(1);
         }
 
         ColtRunningKey.setRunning(true);

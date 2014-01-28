@@ -188,6 +188,12 @@ class ColtMenuBar extends MenuBar {
                                     ProjectDialogs.openWelcomeScreen(scene)
                                 } as EventHandler<ActionEvent>
                         ),
+                        new MenuItem(
+                                text: "Check for updates",
+                                onAction: {
+                                   ColtApplication.get().checkForUpdate()
+                                } as EventHandler
+                        ),
                         new SeparatorMenuItem(),
                         serial = new MenuItem(
                                 text: "Enter Serial Number",
@@ -294,6 +300,12 @@ class ColtMenuBar extends MenuBar {
                                     onAction: { t ->
                                         ProjectDialogs.openWelcomeScreen(scene)
                                     } as EventHandler<ActionEvent>
+                            ),
+                            new MenuItem(
+                                    text: "Check for updates",
+                                    onAction: {
+                                        ColtApplication.get().checkForUpdate()
+                                    } as EventHandler
                             ),
                             new SeparatorMenuItem(),
                             new MenuItem(

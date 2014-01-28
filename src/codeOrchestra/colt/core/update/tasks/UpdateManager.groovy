@@ -25,7 +25,6 @@ class UpdateManager {
         try {
             if (checkJar("colt-core.jar", jarDir)) {
                 result.add(new UpdateTask(UPDATE_URL + "colt-core.jar", jarDir.path))
-                result.add(new UpdateTask(UPDATE_URL + "lib.zip", baseDir.path + File.separator + "lib"))
             }
             if (checkJar("colt-js.jar", jarDir)) {
                 result.add(new UpdateTask(UPDATE_URL + "colt-js.jar", jarDir.path))
@@ -33,11 +32,12 @@ class UpdateManager {
             if (checkJar("colt-as.jar", jarDir)) {
                 result.add(new UpdateTask(UPDATE_URL + "colt-as.jar", jarDir.path))
             }
+            if (result.size() > 0) {
+                result.add(new UpdateTask(UPDATE_URL + "lib.zip", baseDir.path + File.separator + "lib"))
+            }
         } catch (Exception ignored) {
             return null
         }
-
-        println "result = $result"
 
         return result
     }
