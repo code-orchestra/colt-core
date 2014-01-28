@@ -1,6 +1,8 @@
 package codeOrchestra.colt.core.ui.dialog
 
+import codeOrchestra.colt.core.ui.ColtApplication
 import codeOrchestra.colt.core.update.tasks.UpdateTask
+import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
@@ -110,6 +112,9 @@ class UpdateDialog extends DialogWithImage {
                 case Worker.State.CANCELLED:
                     break
                 case Worker.State.FAILED:
+                    Platform.runLater({
+                        ColtDialogs.showException(ColtApplication.get().primaryStage, newTask.exception)
+                    } as Runnable)
                     break
             }
         } as ChangeListener)
