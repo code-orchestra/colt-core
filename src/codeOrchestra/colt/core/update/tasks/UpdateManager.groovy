@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.update.tasks
 
+import codeOrchestra.colt.core.net.ProxyModel
 import codeOrchestra.util.PathUtils
 import codeOrchestra.util.SystemInfo
 
@@ -49,7 +50,14 @@ class UpdateManager {
         }
 
         URL url = new URL(UPDATE_URL + fileName)
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection()
+        ProxyModel proxyModel = ProxyModel.instance
+        HttpURLConnection httpConn
+        if (proxyModel.usingProxy()) {
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyModel.host, proxyModel.port as int))
+            httpConn = (HttpURLConnection) url.openConnection(proxy)
+        } else {
+            httpConn = (HttpURLConnection) url.openConnection()
+        }
         int responseCode = httpConn.getResponseCode()
 
         if (responseCode == HttpURLConnection.HTTP_OK) {

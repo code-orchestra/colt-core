@@ -1,12 +1,11 @@
 package codeOrchestra.colt.core.license.plimus;
 
-import codeOrchestra.colt.core.license.CodeOrchestraLicenseManager;
+import codeOrchestra.colt.core.net.ProxyModel;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 
 import java.io.IOException;
-import java.util.prefs.Preferences;
 
 /**
  * @author Alexander Eliseyev
@@ -18,8 +17,6 @@ public final class PlimusHelper {
 
     private static final String VALIDATION_URL = "https://www.plimus.com/jsp/validateKey.jsp";
     private static final String PRODUCT_ID = "902584";
-
-    private static Preferences preferences = Preferences.userNodeForPackage(CodeOrchestraLicenseManager.class);
 
 //  private static final String VALIDATION_URL = "https://sandbox.plimus.com/jsp/validateKey.jsp"; // sandbox
 //  private static final String PRODUCT_ID = "294006"; // sandbox
@@ -50,12 +47,13 @@ public final class PlimusHelper {
                 new NameValuePair("key", key)
         });
 
-        String host = preferences.get("proxy.host", "");
-        int port = preferences.getInt("proxy.port", 8080);
-        if (!host.isEmpty()) {
+        ProxyModel proxyModel = ProxyModel.getInstance();
+        if (proxyModel.getUseProxy()) {
+            String host = proxyModel.getHost();
+            int port = Integer.parseInt(proxyModel.getPort());
             httpClient.getHostConfiguration().setProxy(host, port);
 
-            Credentials credentials = new UsernamePasswordCredentials(preferences.get("proxy.name", ""), preferences.get("proxy.pass", ""));
+            Credentials credentials = new UsernamePasswordCredentials(proxyModel.getUsername(), proxyModel.getPassword());
             AuthScope authScope = new AuthScope(host, port);
 
             httpClient.getState().setProxyCredentials(authScope, credentials);

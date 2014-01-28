@@ -11,6 +11,7 @@ import codeOrchestra.colt.core.license.ExpirationHelper
 import codeOrchestra.colt.core.license.LicenseListener
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
+import codeOrchestra.colt.core.net.ProxyDialog
 import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import codeOrchestra.util.ApplicationUtil
@@ -24,6 +25,7 @@ import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
+import javafx.stage.Window
 import javafx.stage.WindowEvent
 
 import static codeOrchestra.colt.core.RecentProjects.getRecentProjectsPaths
@@ -194,6 +196,12 @@ class ColtMenuBar extends MenuBar {
                                    ColtApplication.get().checkForUpdate(true)
                                 } as EventHandler
                         ),
+                        new MenuItem(
+                                text: "Proxy settings",
+                                onAction: {
+                                    new ProxyDialog(ColtApplication.get().primaryStage).show()
+                                } as EventHandler
+                        ),
                         new SeparatorMenuItem(),
                         serial = new MenuItem(
                                 text: "Enter Serial Number",
@@ -305,6 +313,12 @@ class ColtMenuBar extends MenuBar {
                                     text: "Check for updates",
                                     onAction: {
                                         ColtApplication.get().checkForUpdate(true)
+                                    } as EventHandler
+                            ),
+                            new MenuItem(
+                                    text: "Proxy settings",
+                                    onAction: {
+                                        new ProxyDialog(ColtApplication.get().primaryStage).show()
                                     } as EventHandler
                             ),
                             new SeparatorMenuItem(),

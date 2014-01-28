@@ -1,14 +1,11 @@
 package codeOrchestra.colt.core.update.ui
 
-import codeOrchestra.colt.core.tasks.TasksManager
+import codeOrchestra.colt.core.net.ProxyDialog
 import codeOrchestra.colt.core.ui.components.inputForms.LabeledActionInput
 import codeOrchestra.colt.core.ui.components.inputForms.LabeledTitledInput
 import codeOrchestra.colt.core.ui.components.inputForms.base.BrowseType
 import codeOrchestra.colt.core.ui.components.inputForms.group.FormGroup
 import codeOrchestra.colt.core.ui.components.scrollpane.SettingsScrollPane
-import codeOrchestra.colt.core.ui.dialog.InstallGradleDialog
-import codeOrchestra.colt.core.ui.dialog.UpdateDialog
-import codeOrchestra.colt.core.update.tasks.UpdateTask
 import codeOrchestra.util.PathUtils
 import javafx.event.EventHandler
 import javafx.scene.control.Button
@@ -34,7 +31,8 @@ class UpdateView extends SettingsScrollPane {
         formGroup.children.add(action)
 
         action.onAction = {
-            new InstallGradleDialog(parent as Window).show()
+            new ProxyDialog(parent as Window).show()
+//            new InstallGradleDialog(parent as Window).show()
 //            TasksManager.getInstance().scheduleBackgroundTask(new UpdateTask("http://codeorchestra.s3.amazonaws.com/flex_sdk.zip", to.text))
         } as EventHandler
     }

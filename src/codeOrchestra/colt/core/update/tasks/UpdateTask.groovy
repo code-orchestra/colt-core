@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core.update.tasks
 
+import codeOrchestra.colt.core.net.ProxyModel
 import codeOrchestra.util.FileUtils
 import codeOrchestra.util.PathUtils
 import codeOrchestra.util.ThreadUtils
@@ -46,7 +47,14 @@ class UpdateTask extends Task<Void> {
         }
 
         URL url = new URL(fileURL);
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        ProxyModel proxyModel = ProxyModel.instance
+        HttpURLConnection httpConn
+        if (proxyModel.usingProxy()) {
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyModel.host, proxyModel.port as int))
+            httpConn = (HttpURLConnection) url.openConnection(proxy)
+        } else {
+            httpConn = (HttpURLConnection) url.openConnection()
+        }
         int responseCode = httpConn.getResponseCode();
 
         // always check HTTP response code first
