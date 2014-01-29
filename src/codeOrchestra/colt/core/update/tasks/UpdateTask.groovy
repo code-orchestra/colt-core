@@ -2,6 +2,7 @@ package codeOrchestra.colt.core.update.tasks
 
 import codeOrchestra.colt.core.net.ProxyModel
 import codeOrchestra.util.FileUtils
+import codeOrchestra.util.PathUtils
 import codeOrchestra.util.ThreadUtils
 import javafx.concurrent.Task
 import net.lingala.zip4j.core.ZipFile
