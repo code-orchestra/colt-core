@@ -23,7 +23,7 @@ class UpdateTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        String tmpFilePath = "/Users/dimakruk/IdeaProjects/colt/updates/flex_sdk_mac.zip"// downloadFile(url, PathUtils.applicationBaseDir.path + File.separator + "updates")
+        String tmpFilePath = downloadFile(url, PathUtils.applicationBaseDir.path + File.separator + "updates")
         if (tmpFilePath != null && !cancelled) {
             String ext = tmpFilePath.split("\\.").last()
             if (ext == "zip") {
