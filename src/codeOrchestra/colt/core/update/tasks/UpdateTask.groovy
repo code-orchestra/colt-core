@@ -2,10 +2,10 @@ package codeOrchestra.colt.core.update.tasks
 
 import codeOrchestra.colt.core.net.ProxyModel
 import codeOrchestra.util.FileUtils
-import codeOrchestra.util.PathUtils
 import codeOrchestra.util.ThreadUtils
 import javafx.concurrent.Task
 import net.lingala.zip4j.core.ZipFile
+import net.lingala.zip4j.progress.ProgressMonitor
 
 
 /**
@@ -23,14 +23,31 @@ class UpdateTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        String tmpFilePath = downloadFile(url, PathUtils.applicationBaseDir.path + File.separator + "updates")
+        String tmpFilePath = "/Users/dimakruk/IdeaProjects/colt/updates/flex_sdk_mac.zip"// downloadFile(url, PathUtils.applicationBaseDir.path + File.separator + "updates")
         if (tmpFilePath != null && !cancelled) {
             String ext = tmpFilePath.split("\\.").last()
             if (ext == "zip") {
                 updateTitle("Extracting...")
                 updateMessage("")
                 ZipFile zipFile = new ZipFile(tmpFilePath)
+                zipFile.runInThread = true
                 zipFile.extractAll(copyTo)
+                ProgressMonitor progressMonitor = zipFile.progressMonitor
+
+                while (progressMonitor.state == ProgressMonitor.STATE_BUSY) {
+                    updateProgress(progressMonitor.percentDone, 100)
+                    updateMessage(progressMonitor.fileName)
+                }
+
+                if (progressMonitor.getResult() == ProgressMonitor.RESULT_ERROR) {
+                    // Any exception can be retrieved as below:
+                    if (progressMonitor.getException() != null) {
+                        progressMonitor.getException().printStackTrace()
+                        throw progressMonitor.getException()
+                    } else {
+                        updateMessage("An error occurred without any exception")
+                    }
+                }
             } else {
                 File tmpFile = new File(tmpFilePath)
                 FileUtils.copyFile(tmpFile, new File(copyTo + File.separator + tmpFile.name))

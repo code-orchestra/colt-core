@@ -114,6 +114,8 @@ class UpdateDialog extends DialogWithImage {
                 case Worker.State.FAILED:
                     Platform.runLater({
                         ColtDialogs.showException(ColtApplication.get().primaryStage, newTask.exception)
+                        cancelUpdate()
+                        stage.hide()
                     } as Runnable)
                     break
             }
