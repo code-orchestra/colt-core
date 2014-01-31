@@ -24,6 +24,18 @@ class UpdateManager {
         ArrayList<UpdateTask> result = new ArrayList<>()
 
         try {
+            //for old version
+            if (!new File(jarDir, "colt-updater.jar").exists()) {
+                result.add(new UpdateTask(UPDATE_URL + "colt-updater.jar", jarDir.path))
+                if (SystemInfo.isMac) {
+                    result.add(new UpdateTask(UPDATE_URL + "Info.plist", baseDir.path + File.separator + "Contents"))
+                }
+                if (SystemInfo.isWindows) {
+                    result.add(new UpdateTask(UPDATE_URL + "colt.properties", baseDir.path))
+                }
+            }
+            //end for old version
+
             if (checkJar("colt-core.jar", jarDir)) {
                 result.add(new UpdateTask(UPDATE_URL + "colt-core.jar", jarDir.path, false, true))
             }
