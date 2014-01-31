@@ -25,16 +25,16 @@ class UpdateManager {
 
         try {
             if (checkJar("colt-core.jar", jarDir)) {
-                result.add(new UpdateTask(UPDATE_URL + "colt-core.jar", jarDir.path))
+                result.add(new UpdateTask(UPDATE_URL + "colt-core.jar", jarDir.path, false, true))
             }
             if (checkJar("colt-js.jar", jarDir)) {
-                result.add(new UpdateTask(UPDATE_URL + "colt-js.jar", jarDir.path))
+                result.add(new UpdateTask(UPDATE_URL + "colt-js.jar", jarDir.path, false, true))
             }
             if (checkJar("colt-as.jar", jarDir)) {
-                result.add(new UpdateTask(UPDATE_URL + "colt-as.jar", jarDir.path))
+                result.add(new UpdateTask(UPDATE_URL + "colt-as.jar", jarDir.path, false, true))
             }
             if (result.size() > 0) {
-                result.add(new UpdateTask(UPDATE_URL + "lib.zip", baseDir.path + File.separator + "lib"))
+                result.add(0, new UpdateTask(UPDATE_URL + "lib.zip", baseDir.path + File.separator + "lib"))
             }
         } catch (Exception ignored) {
             return null

@@ -15,16 +15,24 @@ import net.lingala.zip4j.progress.ProgressMonitor
 class UpdateTask extends Task<Void> {
 
     String url
+    boolean with_md5
     String copyTo
+    boolean needCopy
 
-    UpdateTask(String url, String target) {
+    UpdateTask(String url, String target, boolean needCopy = true, boolean withMD5 = false) {
         this.url = url
+        with_md5 = withMD5
         copyTo = target
+        this.needCopy = needCopy
     }
 
     @Override
     protected Void call() throws Exception {
-        String tmpFilePath = downloadFile(url, PathUtils.applicationBaseDir.path + File.separator + "updates")
+        String updatesPath = PathUtils.applicationBaseDir.path + File.separator + "updates"
+        String tmpFilePath = downloadFile(url, updatesPath)
+        if (with_md5) {
+            downloadFile(url + ".MD5", updatesPath)
+        }
         if (tmpFilePath != null && !cancelled) {
             String ext = tmpFilePath.split("\\.").last()
             if (ext == "zip") {
@@ -49,7 +57,7 @@ class UpdateTask extends Task<Void> {
                         updateMessage("An error occurred without any exception")
                     }
                 }
-            } else {
+            } else if (needCopy) {
                 File tmpFile = new File(tmpFilePath)
                 FileUtils.copyFile(tmpFile, new File(copyTo + File.separator + tmpFile.name))
             }
@@ -58,7 +66,6 @@ class UpdateTask extends Task<Void> {
     }
 
     protected String downloadFile(String fileURL, String saveDir) throws IOException {
-        println "downloadFile"
         File sDir = new File(saveDir)
         if (!sDir.exists()) {
             sDir.mkdirs()
