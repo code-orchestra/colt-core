@@ -154,7 +154,7 @@ public class PathUtils {
             gradleHome = new File(getApplicationBaseDir(), "gradle").getPath();
         }
 
-        if (SystemInfo.isMac) {
+        if (SystemInfo.isMac || SystemInfo.isLinux) {
             return new File(gradleHome, "bin/gradle");
         } else if (SystemInfo.isWindows) {
             return new File(gradleHome, "bin/gradle.bat");

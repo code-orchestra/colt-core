@@ -32,6 +32,10 @@ class ApplicationUtil {
                 startExecutable(executable.path)
                 return
             }
+        } else if (SystemInfo.isLinux) {
+            File baseDir = PathUtils.applicationBaseDir
+            Runtime.getRuntime().exec(baseDir.path+"/colt.sh")
+            return
         } else {
             throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"))
         }

@@ -129,22 +129,10 @@ public class BrowserUtil {
     } else if (SystemInfo.isMac) {
       return multiple ? new String[] { "open", "-n" } : new String[] { "open" };
     } else if (SystemInfo.isUnix) {
-      return new String[] { "mozilla" };
+      return new String[] { "xdg-open" };
     } else {
       return null;
     }
-  }
-
-  public static boolean canStartDefaultBrowser() {
-    if (SystemInfo.isMac) {
-      return true;
-    }
-
-    if (SystemInfo.isWindows) {
-      return true;
-    }
-
-    return false;
   }
 
   /**
