@@ -347,6 +347,7 @@ class ColtMenuBar extends MenuBar {
                             new MenuItem(
                                     text: "New AS Project",
                                     id: "new-as",
+                                    disable : SystemInfo.isLinux,
                                     onAction: { t ->
                                         ProjectDialogs.newAsProjectDialog(scene, false)
                                     } as EventHandler<ActionEvent>

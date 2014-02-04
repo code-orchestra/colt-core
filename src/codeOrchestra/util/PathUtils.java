@@ -135,6 +135,9 @@ public class PathUtils {
         } else if (SystemInfo.isWindows) {
             File executable = new File(getApplicationBaseDir(), "colt.exe");
             return executable.exists() ? executable : null;
+        } else if (SystemInfo.isLinux) {
+            File executable = new File(getApplicationBaseDir(), "colt");
+            return executable.exists() ? executable : null;
         }
 
         throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));

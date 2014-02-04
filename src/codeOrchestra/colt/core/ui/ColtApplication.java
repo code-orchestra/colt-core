@@ -18,10 +18,7 @@ import codeOrchestra.colt.core.ui.dialog.UpdateDialog;
 import codeOrchestra.colt.core.update.tasks.UpdateManager;
 import codeOrchestra.colt.core.update.tasks.UpdateTask;
 import codeOrchestra.lcs.license.ColtRunningKey;
-import codeOrchestra.util.ApplicationUtil;
-import codeOrchestra.util.FileUtils;
-import codeOrchestra.util.StringUtils;
-import codeOrchestra.util.ThreadUtils;
+import codeOrchestra.util.*;
 import com.sun.javafx.css.StyleManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -86,6 +83,12 @@ public class ColtApplication extends Application {
         instance = this;
 
         this.primaryStage = primaryStage;
+        if (SystemInfo.isLinux) {
+            this.primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("colt_128.png")));
+            this.primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("colt_256.png")));
+            this.primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("colt_512.png")));
+            //this.primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("style/images/ico-colt.png")));
+        }
 
         StyleManager.getInstance().addUserAgentStylesheet("/codeOrchestra/colt/core/ui/style/main.css");
 
@@ -211,6 +214,9 @@ public class ColtApplication extends Application {
 
         if (path != null) {
             initProjectStage();
+            if (SystemInfo.isLinux) {
+                mainStage.getIcons().addAll(primaryStage.getIcons());
+            }
             primaryStage = mainStage;
             primaryStage.show();
             new Thread(){
@@ -223,6 +229,8 @@ public class ColtApplication extends Application {
                                 ColtProjectManager.getInstance().load(path);
                             } catch (ColtException e) {
                                 e.printStackTrace();
+                                primaryStage.hide();
+                                showWelcomeScreen();
                             }
                         });
                     }

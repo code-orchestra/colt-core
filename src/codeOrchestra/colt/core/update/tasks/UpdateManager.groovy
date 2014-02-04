@@ -17,8 +17,10 @@ class UpdateManager {
 
         if (SystemInfo.isMac) {
             jarDir = new File(baseDir, "Contents/Java")
-        } else if(SystemInfo.isWindows) {
+        } else if (SystemInfo.isWindows){
             jarDir = new File(baseDir, "lib")
+        } else {
+            jarDir = new File(baseDir, "app")
         }
 
         ArrayList<UpdateTask> result = new ArrayList<>()

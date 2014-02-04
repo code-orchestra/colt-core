@@ -26,16 +26,12 @@ class ApplicationUtil {
                 Runtime.getRuntime().exec("open -n -a " + baseDir.path)
                 return
             }
-        } else if (SystemInfo.isWindows) {
+        } else if (SystemInfo.isWindows || SystemInfo.isLinux) {
             File executable = PathUtils.applicationExecutable
             if (executable != null && executable.exists()) {
                 startExecutable(executable.path)
                 return
             }
-        } else if (SystemInfo.isLinux) {
-            File baseDir = PathUtils.applicationBaseDir
-            Runtime.getRuntime().exec(baseDir.path+"/colt.sh")
-            return
         } else {
             throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"))
         }
