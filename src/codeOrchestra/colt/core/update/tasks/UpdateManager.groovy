@@ -27,7 +27,7 @@ class UpdateManager {
 
         try {
             //for old version
-            if (!new File(jarDir, "colt-updater.jar").exists()) {
+            if (!new File(jarDir, "colt-updater.jar").exists() && jarDir.exists()) {
                 result.add(new UpdateTask(UPDATE_URL + "colt-updater.jar", jarDir.path))
                 if (SystemInfo.isMac) {
                     result.add(new UpdateTask(UPDATE_URL + "Info.plist", baseDir.path + File.separator + "Contents"))
