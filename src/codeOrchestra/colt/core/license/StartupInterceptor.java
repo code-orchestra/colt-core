@@ -32,8 +32,6 @@ public class StartupInterceptor {
                     return StartupInterceptType.EXIT_UNKNOWN;
                 }
 
-                expirationStrategy.showLicenseExpirationInProgressDialog();
-
                 return StartupInterceptType.START;
             }
         }
@@ -61,7 +59,6 @@ public class StartupInterceptor {
             if (ExpirationHelper.getExpirationStrategy().hasExpired()) {
                 expired = !expirationStrategy.showLicenseExpiredDialog();
             } else {
-                expirationStrategy.showLicenseExpirationInProgressDialog();
                 expired = false;
             }
 
@@ -89,7 +86,6 @@ public class StartupInterceptor {
             if (ExpirationHelper.getExpirationStrategy().hasExpired()) {
                 expired = !expirationStrategy.showLicenseExpiredDialog();
             } else {
-                expirationStrategy.showLicenseExpirationInProgressDialog();
                 expired = false;
             }
 
