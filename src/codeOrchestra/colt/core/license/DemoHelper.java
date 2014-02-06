@@ -33,6 +33,10 @@ public final class DemoHelper {
         return compilationsCount >= getMaxCompilationsCount();
     }
 
+    public void reset() {
+        compilationsCount = 1;
+    }
+
     public boolean isInDemoMode() {
         return ExpirationHelper.getExpirationStrategy().allowsDemo() && ExpirationHelper.getExpirationStrategy().isInDemoMode();
     }

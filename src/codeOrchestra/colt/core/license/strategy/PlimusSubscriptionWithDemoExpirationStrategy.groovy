@@ -2,7 +2,6 @@ package codeOrchestra.colt.core.license.strategy
 
 import codeOrchestra.colt.core.errorhandling.ErrorHandler
 import codeOrchestra.colt.core.license.CodeOrchestraLicenseManager
-import codeOrchestra.colt.core.license.DemoHelper
 import codeOrchestra.colt.core.license.ExpirationStrategy
 import codeOrchestra.colt.core.license.plimus.PlimusHelper
 import codeOrchestra.colt.core.license.plimus.PlimusResponse
@@ -11,11 +10,9 @@ import codeOrchestra.colt.core.logging.Logger
 import codeOrchestra.colt.core.ui.ColtApplication
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs
 import codeOrchestra.colt.core.ui.dialog.SerialNumberDialog
-import codeOrchestra.colt.core.ui.dialog.SerialNumberEvent
 import codeOrchestra.util.ApplicationUtil
 import codeOrchestra.util.DateUtils
 import codeOrchestra.util.StringUtils
-import javafx.event.EventHandler
 
 import java.util.prefs.BackingStoreException
 import java.util.prefs.Preferences
@@ -184,8 +181,21 @@ class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationStrategy
         return false;
     }
 
+    private boolean  isOpen = false;
+
     @Override
     void showLicenseExpirationInProgressDialog() {
+        if (isOpen) {
+            return
+        }
+        isOpen = true
+        SerialNumberDialog serialNumberDialog = new SerialNumberDialog(ColtApplication.get().getPrimaryStage())
+        serialNumberDialog.showRepeat()
+
+        if (!StringUtils.isEmpty(serialNumberDialog.serialNumberValue)) {
+            processSerialNumber(serialNumberDialog.serialNumberValue)
+        }
+        isOpen = false
     }
 
     @Override

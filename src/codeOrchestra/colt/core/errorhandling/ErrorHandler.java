@@ -1,5 +1,7 @@
 package codeOrchestra.colt.core.errorhandling;
 
+import codeOrchestra.colt.core.license.ExpirationHelper;
+import codeOrchestra.colt.core.license.ExpirationStrategy;
 import codeOrchestra.colt.core.logging.Logger;
 import codeOrchestra.colt.core.ui.ColtApplication;
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
@@ -35,6 +37,13 @@ public class ErrorHandler {
 
     public static void demoModeHandle(final String message, final String title) {
         execInFXThreadByTimeout(() -> ColtDialogs.showDemoModeError(ColtApplication.get().getPrimaryStage(), title, message));
+    }
+
+    public static void newDemoModeHandler() {
+        execInFXThreadByTimeout(() -> {
+            ExpirationStrategy strategy = ExpirationHelper.getExpirationStrategy();
+            strategy.showLicenseExpirationInProgressDialog();
+        });
     }
 
     private static void execInFXThreadByTimeout(Runnable runnable) {

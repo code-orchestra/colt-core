@@ -1,5 +1,8 @@
 package codeOrchestra.colt.core.ui.dialog
 
+import codeOrchestra.colt.core.LiveCodingManager
+import codeOrchestra.colt.core.annotation.Service
+import codeOrchestra.colt.core.license.DemoHelper
 import codeOrchestra.colt.core.net.ProxyModel
 import codeOrchestra.colt.core.net.ProxySettingsView
 import codeOrchestra.colt.core.ui.components.advancedSeparator.AdvancedSeparator
@@ -16,6 +19,8 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Window
 
+import java.awt.Desktop
+
 /**
  * @author Dima Kruk
  */
@@ -29,6 +34,9 @@ class SerialNumberDialog extends DialogWithImage {
     String serialNumberValue
 
     AdvancedSeparator separator
+    private Button demo
+
+    protected @Service LiveCodingManager liveCodingManager
 
     SerialNumberDialog(Window owner) {
         super(owner)
@@ -53,7 +61,10 @@ class SerialNumberDialog extends DialogWithImage {
     protected void initCenter() {
         center = new HBox(spacing: 8, padding: new Insets(22, 0, 24, 68))
         Button purchase = new Button(text: "Purchase", prefWidth: 204, focusTraversable: false)
-        Button demo = new Button(text: "Continue With Demo", prefWidth: 204, focusTraversable: false)
+        purchase.onAction = {
+            Desktop.getDesktop().browse(new URI("https://www.plimus.com/jsp/buynow.jsp?contractId=3190926"));
+        } as EventHandler
+        demo = new Button(text: "Continue With Demo", prefWidth: 204, focusTraversable: false)
         demo.onAction = {
             hide()
             serialNumberValue = null
@@ -123,6 +134,15 @@ class SerialNumberDialog extends DialogWithImage {
         inputLabel.text = "Enter a serial number:"
         image = errorImage
         stage.sizeToScene()
+    }
+
+    void showRepeat() {
+        demo.onAction = {
+            stage.hide()
+            liveCodingManager.flush()
+            DemoHelper.get().reset()
+        } as EventHandler
+        show()
     }
 
     void showInput() {
