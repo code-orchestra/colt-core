@@ -37,6 +37,7 @@ class SerialNumberDialog extends DialogWithImage {
     private Button demo
 
     protected @Service LiveCodingManager liveCodingManager
+    private Button purchase
 
     SerialNumberDialog(Window owner) {
         super(owner)
@@ -60,7 +61,7 @@ class SerialNumberDialog extends DialogWithImage {
     @Override
     protected void initCenter() {
         center = new HBox(spacing: 8, padding: new Insets(22, 0, 24, 68))
-        Button purchase = new Button(text: "Purchase", prefWidth: 204, focusTraversable: false)
+        purchase = new Button(text: "Purchase", prefWidth: 204, focusTraversable: false)
         purchase.onAction = {
             Desktop.getDesktop().browse(new URI("https://www.plimus.com/jsp/buynow.jsp?contractId=3190926"));
         } as EventHandler
@@ -137,6 +138,12 @@ class SerialNumberDialog extends DialogWithImage {
     }
 
     void showRepeat() {
+        purchase.defaultButton = true
+        okButton.defaultButton = false
+        message = "Hello! Thanks for trying out COLT!"
+        comment = "This is an unregistered demo version, and although the demo is untimed, a license must be purchased for continued use. \n" +
+                "\n" +
+                "Would you like to purchase a license now?"
         demo.onAction = {
             stage.hide()
             liveCodingManager.flush()
