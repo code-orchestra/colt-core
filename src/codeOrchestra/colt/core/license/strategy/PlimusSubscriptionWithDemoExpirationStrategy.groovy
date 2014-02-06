@@ -188,6 +188,7 @@ class PlimusSubscriptionWithDemoExpirationStrategy implements ExpirationStrategy
         if (isOpen) {
             return
         }
+        Logger.getLogger("License").warning("Maximum updates count allowed in Demo mode is exceeded")
         isOpen = true
         SerialNumberDialog serialNumberDialog = new SerialNumberDialog(ColtApplication.get().getPrimaryStage())
         serialNumberDialog.showRepeat()
