@@ -29,12 +29,6 @@ class UpdateManager {
             //for old version
             if (!new File(jarDir, "colt-updater.jar").exists() && jarDir.exists()) {
                 result.add(new UpdateTask(UPDATE_URL + "colt-updater.jar", jarDir.path))
-                if (SystemInfo.isMac) {
-                    result.add(new UpdateTask(UPDATE_URL + "Info.plist", baseDir.path + File.separator + "Contents"))
-                }
-                if (SystemInfo.isWindows) {
-                    result.add(new UpdateTask(UPDATE_URL + "colt.properties", baseDir.path))
-                }
             }
             //end for old version
 
@@ -47,7 +41,20 @@ class UpdateManager {
             if (checkJar("colt-as.jar", jarDir)) {
                 result.add(new UpdateTask(UPDATE_URL + "colt-as.jar", jarDir.path, false, true))
             }
+            if (checkJar("colt-updater.jar", jarDir)) {
+                result.add(new UpdateTask(UPDATE_URL + "colt-updater.jar", jarDir.path, false, true))
+            }
+
             if (result.size() > 0) {
+                if (SystemInfo.isMac) {
+                    result.add(new UpdateTask(UPDATE_URL + "Info.plist", baseDir.path + File.separator + "Contents"))
+                }
+                if (SystemInfo.isWindows) {
+                    result.add(new UpdateTask(UPDATE_URL + "colt.properties", baseDir.path))
+                }
+                if (SystemInfo.isLinux) {
+                    result.add(new UpdateTask(UPDATE_URL + "package.cfg", baseDir.path + File.separator + "app"))
+                }
                 result.add(0, new UpdateTask(UPDATE_URL + "lib.zip", baseDir.path + File.separator + "lib"))
             }
         } catch (Exception ignored) {
