@@ -132,7 +132,7 @@ class LogWebView extends VBox {
 
     private void addLogMessages(List<LogMessage> messages) {
         messages*.filter(logFilter ?: LogFilter.ALL)
-        newMessages.addAll(messages.findAll { it.message?.trim() =~ /.+/ });
+        newMessages.addAll(messages.findAll { it.message?.trim() =~ /.+/ })
     }
 
     private void clear() {

@@ -19,7 +19,7 @@ class Log implements LoggerService {
     synchronized void log(String source, String message, List<String> scopeIds, long timestamp, Level level, String stackTrace) {
         logWebView.logMessages.add(new LogMessage(source, level, message, timestamp, stackTrace))
 
-        if ((level != Level.LIVE) != source.equals("LiveCodingManager")) {
+        if ((level != Level.LIVE) != "LiveCodingManager".equals(source)) {
             AbstractColtRemoteService.addLogMessage(new LogMessage(source, level, message, timestamp, stackTrace))
         }
     }
