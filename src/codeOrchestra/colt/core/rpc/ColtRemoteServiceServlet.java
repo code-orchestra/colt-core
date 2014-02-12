@@ -55,6 +55,9 @@ public class ColtRemoteServiceServlet extends HttpServlet {
             }
         } catch (IOException e) {
             LOG.error(e);
+        } catch (Exception e) {
+            LOG.error(e);
+            e.printStackTrace();
         }
     }
 
