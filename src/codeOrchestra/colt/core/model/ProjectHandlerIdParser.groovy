@@ -24,4 +24,8 @@ class ProjectHandlerIdParser {
         return node.@isPlugin == "true"
     }
 
+    int getProjectPort() {
+        return node.@projectPort != "" ? "" + node.@projectPort as Integer : 9091
+    }
+
 }

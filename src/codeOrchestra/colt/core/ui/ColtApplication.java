@@ -202,8 +202,6 @@ public class ColtApplication extends Application {
         new Thread(){
             @Override
             public void run() {
-                CodeOrchestraResourcesHttpServer.getInstance().init();
-
                 CodeOrchestraRPCHttpServer.getInstance().init();
                 CodeOrchestraRPCHttpServer.getInstance().addServlet(ColtRemoteServiceServlet.getInstance(), "/coltService");
 

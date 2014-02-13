@@ -90,11 +90,19 @@ public class ColtProjectManager {
     }
 
     public synchronized void load(String path) throws ColtException {
+        File projectFile = new File(path);
         if (currentProject != null) {
             unload();
+        } else {
+            ProjectHandlerIdParser projectHandlerIdParser = new ProjectHandlerIdParser(FileUtils.read(projectFile));
+            new Thread(){
+                @Override
+                public void run() {
+                    CodeOrchestraResourcesHttpServer.getInstance().initWithPort(projectHandlerIdParser.getProjectPort());
+                }
+            }.start();
         }
 
-        File projectFile = new File(path);
         String projectFileContents = FileUtils.read(projectFile);
 
         if (ProjectHelper.isLegacyProject(projectFileContents)) {

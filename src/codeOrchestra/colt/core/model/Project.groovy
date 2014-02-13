@@ -10,6 +10,7 @@ abstract class Project {
 
     @FXBindable String name = ""
     String path
+    int port
 
     boolean disposed
 
@@ -26,11 +27,14 @@ abstract class Project {
 
     void buildModel(Object node) {
         name = node.@projectName
+        if (node.@projectPort != "") {
+            port = "" + node.@projectPort as Integer
+        }
     }
 
     String toXmlString() {
         StringWriter writer = new StringWriter()
-        new MarkupBuilder(writer).xml(projectName:name, projectType:getProjectType(), buildXml())
+        new MarkupBuilder(writer).xml(projectName:name, projectType:getProjectType(), projectPort:port, buildXml())
         writer.toString()
     }
 

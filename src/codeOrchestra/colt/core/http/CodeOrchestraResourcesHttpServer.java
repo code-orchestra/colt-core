@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class CodeOrchestraResourcesHttpServer {
 
-    public static final int PORT = SocketUtil.findAvailablePortStartingFrom(9091);
+    public static int PORT;
 
     private static CodeOrchestraResourcesHttpServer instance = new CodeOrchestraResourcesHttpServer();
 
@@ -36,6 +36,12 @@ public class CodeOrchestraResourcesHttpServer {
     private Object reloadMonitor = new Object();
 
     public void init() {
+        initWithPort(9091);
+    }
+
+    public void initWithPort(int port) {
+        PORT = SocketUtil.findAvailablePortStartingFrom(port);
+
         server = new Server(PORT);
 
         activeHandlers = new HandlerList();
