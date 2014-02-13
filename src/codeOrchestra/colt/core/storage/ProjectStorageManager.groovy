@@ -3,7 +3,6 @@ package codeOrchestra.colt.core.storage
 import codeOrchestra.util.FileUtils
 import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.StringUtils
-import groovy.util.slurpersupport.GPathResult
 import groovy.xml.MarkupBuilder
 
 /**
@@ -25,15 +24,22 @@ class ProjectStorageManager {
         new File(getOrCreateColtDir(), "storage.xml")
     }
 
+    private static List<ProjectStorageDescriptor> _storageDescriptors;
+
     static List<ProjectStorageDescriptor> getStorageDescriptors() {
+        if(_storageDescriptors)return _storageDescriptors;
+
         File descriptorsFile = getStorageDescriptorsFile()
         if (!descriptorsFile.exists()) {
             return new ArrayList<>()
         }
 
         List<ProjectStorageDescriptor> result = new ArrayList<>()
-        GPathResult gPathResult = new XmlSlurper().parseText(FileUtils.read(descriptorsFile))
-        gPathResult.'storage'.each { result << new ProjectStorageDescriptor((String) it.@path, (String) it.@subDir) }
+        new XmlSlurper().parseText(descriptorsFile.text).'storage'.each {
+            result << new ProjectStorageDescriptor("" + it.@path, "" + it.@subDir)
+        }
+
+        _storageDescriptors = result;
 
         return result
     }
