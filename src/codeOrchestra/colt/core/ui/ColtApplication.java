@@ -83,12 +83,6 @@ public class ColtApplication extends Application {
         instance = this;
 
         this.primaryStage = primaryStage;
-        if (SystemInfo.isLinux) {
-            this.primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("colt_128.png")));
-            this.primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("colt_256.png")));
-            this.primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("colt_512.png")));
-            //this.primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("style/images/ico-colt.png")));
-        }
 
         StyleManager.getInstance().addUserAgentStylesheet("/codeOrchestra/colt/core/ui/style/main.css");
 
@@ -273,19 +267,6 @@ public class ColtApplication extends Application {
         mainStage.setOnCloseRequest(windowEvent -> {
             dispose();
         });
-//        currentPluginNode = new ApplicationGUI() {
-//            @Override
-//            protected void initLog() {
-//                //To change body of implemented methods use File | Settings | File Templates.
-//            }
-//
-//            @Override
-//            protected void initGoogleAnalytics() {
-//                //To change body of implemented methods use File | Settings | File Templates.
-//            }
-//
-//        };
-//        mainStage.getRoot().getChildren().add(currentPluginNode);
     }
 
     public void setPluginPane(Node node) {
@@ -327,7 +308,7 @@ public class ColtApplication extends Application {
         }
 
         if (StringUtils.isEmpty(System.getProperty("colt.handlers"))) {
-            System.setProperty("colt.handlers", "AS:codeOrchestra.colt.as.ASLiveCodingLanguageHandler,JS:codeOrchestra.colt.js.JSLiveCodingLanguageHandler");
+            System.setProperty("colt.handlers", "AS:codeOrchestra.colt.as.ASLiveCodingLanguageHandler");
         }
 
         launch(args);
