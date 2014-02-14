@@ -10,7 +10,7 @@ import groovy.xml.MarkupBuilder
  */
 class ProjectStorageManager {
 
-    public static final String COLT_DIR_NAME = ".colt"
+    public static final String COLT_DIR_NAME = ".colt_as"
 
     static File getOrCreateColtDir() {
         File coltDir = new File(System.getProperty("user.home"), COLT_DIR_NAME)
