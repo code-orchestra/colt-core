@@ -5,6 +5,7 @@ import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.RecentProjects
 import codeOrchestra.colt.core.errorhandling.ErrorHandler
 import codeOrchestra.colt.core.model.Project
+import codeOrchestra.colt.core.model.ProjectHandlerIdParser
 import codeOrchestra.colt.core.tasks.ColtTaskWithProgress
 import codeOrchestra.colt.core.tasks.TasksManager
 import codeOrchestra.colt.core.ui.ColtApplication
@@ -12,6 +13,7 @@ import codeOrchestra.colt.core.ui.ProjectStage
 import codeOrchestra.colt.core.ui.components.IProgressIndicator
 import codeOrchestra.util.ApplicationUtil
 import codeOrchestra.util.BrowserUtil
+import codeOrchestra.util.FileUtils
 import codeOrchestra.util.PathUtils
 import javafx.scene.Scene
 import javafx.stage.FileChooser
@@ -54,6 +56,10 @@ class ProjectDialogs {
         fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))
         File file = fileChooser.showOpenDialog(scene.window)
         if (file != null) {
+            if(new ProjectHandlerIdParser(FileUtils.read(file)).getHandlerId() != "AS") {
+                ErrorHandler.handle("Can't load the project")
+                return
+            }
             try {
                 if (sameInstance) {
                     ColtProjectManager.instance.load(file.getPath())

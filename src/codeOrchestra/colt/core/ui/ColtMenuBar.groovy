@@ -40,7 +40,6 @@ class ColtMenuBar extends MenuBar {
     ColtMenuBar() {
         GroovyDynamicMethods.init()
 
-        MenuItem newJs
         MenuItem newAs
         MenuItem save
         MenuItem saveAs
@@ -56,22 +55,12 @@ class ColtMenuBar extends MenuBar {
                                 } as EventHandler<ActionEvent>,
                                 accelerator: new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN)
                         ),
-                        new Menu(text: "New Project", newItems: [
-                                newAs = new MenuItem(
-                                        text: "New AS Project",
-                                        id: "new-as",
-                                        onAction: { t ->
-                                            ProjectDialogs.newAsProjectDialog(scene, false)
-                                        } as EventHandler<ActionEvent>
-                                ),
-                                newJs = new MenuItem(
-                                        text: "New JS Project",
-                                        id: "new-js",
-                                        onAction: { t ->
-                                            ProjectDialogs.newJsProjectDialog(scene, false)
-                                        } as EventHandler<ActionEvent>
-                                )
-                        ]),
+                        newAs = new MenuItem(
+                                text: "New Project",
+                                id: "new-as",
+                                onAction: { t ->
+                                    ProjectDialogs.newAsProjectDialog(scene, false)
+                                } as EventHandler<ActionEvent>),
                         new SeparatorMenuItem(),
                         new MenuItem(
                                 text: "Open Project",
@@ -236,7 +225,7 @@ class ColtMenuBar extends MenuBar {
         ] as ProjectListener)
 
         if (SystemInfo.isMac) {
-            popupMenuItems.addAll(newAs, newJs, save, saveAs)
+            popupMenuItems.addAll(newAs, save, saveAs)
         } else {
 
             popupMenuItems.addAll(
@@ -343,23 +332,13 @@ class ColtMenuBar extends MenuBar {
                             } as EventHandler<ActionEvent>,
                             accelerator: new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN)
                     ),
-                    new Menu(text: "New Project", newItems: [
-                            new MenuItem(
-                                    text: "New AS Project",
-                                    id: "new-as",
-                                    disable : SystemInfo.isLinux,
-                                    onAction: { t ->
-                                        ProjectDialogs.newAsProjectDialog(scene, false)
-                                    } as EventHandler<ActionEvent>
-                            ),
-                            new MenuItem(
-                                    text: "New JS Project",
-                                    id: "new-js",
-                                    onAction: { t ->
-                                        ProjectDialogs.newJsProjectDialog(scene, false)
-                                    } as EventHandler<ActionEvent>
-                            )
-                    ]),
+                    new MenuItem(
+                            text: "New Project",
+                            id: "new-as",
+                            onAction: { t ->
+                               ProjectDialogs.newAsProjectDialog(scene, false)
+                            } as EventHandler<ActionEvent>
+                    ),
                     new SeparatorMenuItem(),
                     new MenuItem(
                             text: "Open Project",

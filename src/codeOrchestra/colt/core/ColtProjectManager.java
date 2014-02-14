@@ -1,5 +1,6 @@
 package codeOrchestra.colt.core;
 
+import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
 import codeOrchestra.colt.core.jmdns.JmDNSFacade;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerLoadingException;
@@ -91,6 +92,10 @@ public class ColtProjectManager {
 
     public synchronized void load(String path) throws ColtException {
         File projectFile = new File(path);
+        if(!"AS".equals(new ProjectHandlerIdParser(FileUtils.read(projectFile)).getHandlerId())) {
+            ErrorHandler.handle("Can't load the project");
+            throw new ColtException("Can't load the project path " + path);
+        }
         if (currentProject != null) {
             unload();
         } else {
