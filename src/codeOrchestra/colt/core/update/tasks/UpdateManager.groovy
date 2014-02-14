@@ -9,11 +9,11 @@ import codeOrchestra.util.SystemInfo
  */
 class UpdateManager {
 
-    private static String UPDATE_URL = "http://codeorchestra.s3.amazonaws.com/colt_updates/"
+    private static String UPDATE_URL = "http://codeorchestra.s3.amazonaws.com/colt_as_updates/"
 
     public static ArrayList<UpdateTask> checkForUpdate() {
         File baseDir = PathUtils.applicationBaseDir
-        File jarDir = baseDir
+        File jarDir
 
         if (SystemInfo.isMac) {
             jarDir = new File(baseDir, "Contents/Java")
@@ -26,17 +26,8 @@ class UpdateManager {
         ArrayList<UpdateTask> result = new ArrayList<>()
 
         try {
-            //for old version
-            if (!new File(jarDir, "colt-updater.jar").exists() && jarDir.exists()) {
-                result.add(new UpdateTask(UPDATE_URL + "colt-updater.jar", jarDir.path))
-            }
-            //end for old version
-
             if (checkJar("colt-core.jar", jarDir)) {
                 result.add(new UpdateTask(UPDATE_URL + "colt-core.jar", jarDir.path, false, true))
-            }
-            if (checkJar("colt-js.jar", jarDir)) {
-                result.add(new UpdateTask(UPDATE_URL + "colt-js.jar", jarDir.path, false, true))
             }
             if (checkJar("colt-as.jar", jarDir)) {
                 result.add(new UpdateTask(UPDATE_URL + "colt-as.jar", jarDir.path, false, true))
