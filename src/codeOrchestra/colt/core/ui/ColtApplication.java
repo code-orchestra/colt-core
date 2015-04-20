@@ -6,8 +6,6 @@ import codeOrchestra.colt.core.RecentProjects;
 import codeOrchestra.colt.core.execution.OSProcessHandler;
 import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer;
 import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer;
-import codeOrchestra.colt.core.license.StartupInterceptType;
-import codeOrchestra.colt.core.license.StartupInterceptor;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.ProjectHandlerIdParser;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
@@ -185,12 +183,6 @@ public class ColtApplication extends Application {
         // COLT-287
         System.setProperty("jsse.enableSNIExtension", "false");
         System.setProperty("file.encoding", "UTF-8");
-
-        // Intercept start by license check
-        StartupInterceptType startupInterceptType = StartupInterceptor.getInstance().interceptStart();
-        if (startupInterceptType != StartupInterceptType.START) {
-            System.exit(1);
-        }
 
         ColtRunningKey.setRunning(true);
         new Thread(){
