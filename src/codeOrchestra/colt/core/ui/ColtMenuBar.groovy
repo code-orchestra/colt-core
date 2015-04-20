@@ -1,14 +1,10 @@
 package codeOrchestra.colt.core.ui
-
 import codeOrchestra.colt.core.ColtException
 import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.RecentProjects
 import codeOrchestra.colt.core.ServiceProvider
 import codeOrchestra.colt.core.errorhandling.ErrorHandler
 import codeOrchestra.colt.core.facade.ColtFacade
-import codeOrchestra.colt.core.license.CodeOrchestraLicenseManager
-import codeOrchestra.colt.core.license.ExpirationHelper
-import codeOrchestra.colt.core.license.LicenseListener
 import codeOrchestra.colt.core.model.Project
 import codeOrchestra.colt.core.model.listener.ProjectListener
 import codeOrchestra.colt.core.net.ProxyDialog
@@ -25,8 +21,6 @@ import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
-import javafx.stage.Window
-import javafx.stage.WindowEvent
 
 import static codeOrchestra.colt.core.RecentProjects.getRecentProjectsPaths
 
@@ -43,7 +37,6 @@ class ColtMenuBar extends MenuBar {
         MenuItem newAs
         MenuItem save
         MenuItem saveAs
-        MenuItem serial
 
         menus.addAll(
                 new Menu(text: "File", newItems: [
@@ -190,15 +183,6 @@ class ColtMenuBar extends MenuBar {
                                 onAction: {
                                     new ProxyDialog(ColtApplication.get().primaryStage).show()
                                 } as EventHandler
-                        ),
-                        new SeparatorMenuItem(),
-                        serial = new MenuItem(
-                                text: "Enter Serial Number",
-                                id: "serial",
-                                disable: ExpirationHelper.expirationStrategy.trialOnly || !CodeOrchestraLicenseManager.noSerialNumberPresent(),
-                                onAction: { t ->
-                                    ExpirationHelper.getExpirationStrategy().showSerialNumberDialog()
-                                } as EventHandler<ActionEvent>
                         )
                 ])
         )
@@ -309,15 +293,6 @@ class ColtMenuBar extends MenuBar {
                                     onAction: {
                                         new ProxyDialog(ColtApplication.get().primaryStage).show()
                                     } as EventHandler
-                            ),
-                            new SeparatorMenuItem(),
-                            new MenuItem(
-                                    text: "Enter Serial Number",
-                                    id: "serial",
-                                    disable: ExpirationHelper.expirationStrategy.trialOnly || !CodeOrchestraLicenseManager.noSerialNumberPresent(),
-                                    onAction: { t ->
-                                        ExpirationHelper.getExpirationStrategy().showSerialNumberDialog()
-                                    } as EventHandler<ActionEvent>
                             )
                     ]),
 
@@ -382,10 +357,6 @@ class ColtMenuBar extends MenuBar {
 
             )
         }
-
-        CodeOrchestraLicenseManager.addListener({
-            serial.disable = false
-        } as LicenseListener)
 
         if (SystemInfo.isMac) {
             setUseSystemMenuBar(true)
