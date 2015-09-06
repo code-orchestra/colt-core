@@ -1,5 +1,4 @@
 package codeOrchestra.colt.core.ui.dialog
-
 import codeOrchestra.colt.core.ColtException
 import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.RecentProjects
@@ -12,7 +11,6 @@ import codeOrchestra.colt.core.ui.ColtApplication
 import codeOrchestra.colt.core.ui.ProjectStage
 import codeOrchestra.colt.core.ui.components.IProgressIndicator
 import codeOrchestra.util.ApplicationUtil
-import codeOrchestra.util.BrowserUtil
 import codeOrchestra.util.FileUtils
 import codeOrchestra.util.PathUtils
 import javafx.scene.Scene

@@ -1,15 +1,8 @@
 package codeOrchestra.colt.core.ui.components.popupmenu
-
 import com.sun.javafx.scene.control.skin.KeystrokeUtils
-import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Orientation
-import javafx.scene.control.Button
-import javafx.scene.control.ContentDisplay
-import javafx.scene.control.Label
-import javafx.scene.control.MenuItem
-import javafx.scene.control.Separator
-import javafx.scene.control.SeparatorMenuItem
+import javafx.scene.control.*
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region

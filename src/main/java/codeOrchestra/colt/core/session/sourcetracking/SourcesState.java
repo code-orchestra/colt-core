@@ -1,9 +1,7 @@
 package codeOrchestra.colt.core.session.sourcetracking;
 
 import codeOrchestra.colt.core.ServiceProvider;
-import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.util.FileUtils;
-import codeOrchestra.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;

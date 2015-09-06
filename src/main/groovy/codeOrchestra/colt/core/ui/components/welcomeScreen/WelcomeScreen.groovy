@@ -1,10 +1,7 @@
 package codeOrchestra.colt.core.ui.components.welcomeScreen
 
-import codeOrchestra.colt.core.ColtException
 import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.RecentProjects
-import codeOrchestra.colt.core.tracker.GAController
-import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
 import javafx.application.Platform
 import javafx.beans.value.ChangeListener
@@ -18,7 +15,8 @@ import javafx.scene.web.WebView
 import javafx.util.Callback
 import netscape.javascript.JSObject
 
-import java.awt.Desktop
+import java.awt.*
+import java.util.List
 
 /**
  * @author Eugene Potapenko

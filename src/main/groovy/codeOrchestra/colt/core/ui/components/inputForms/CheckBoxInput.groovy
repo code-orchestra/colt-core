@@ -1,6 +1,5 @@
 package codeOrchestra.colt.core.ui.components.inputForms
 
-
 import codeOrchestra.colt.core.ui.components.inputForms.base.TitledInputBase
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MSelectable
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MSimple

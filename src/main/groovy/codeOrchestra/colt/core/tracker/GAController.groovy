@@ -1,16 +1,10 @@
 package codeOrchestra.colt.core.tracker
-
 import javafx.beans.property.ObjectProperty
 import javafx.beans.value.ChangeListener
-import javafx.event.ActionEvent
-import javafx.event.Event
-import javafx.event.EventHandler
-import javafx.event.EventTarget
-import javafx.event.EventType
-import javafx.scene.Parent
+import javafx.event.*
+import javafx.scene.Node as FXNode
 import javafx.scene.input.InputMethodEvent
 import javafx.stage.Stage
-import javafx.scene.Node as FXNode
 
 /**
  * @author Dima Kruk

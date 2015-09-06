@@ -1,10 +1,8 @@
 package codeOrchestra.colt.core.ui.components.popupmenu
-
 import codeOrchestra.util.SystemInfo
 import javafx.application.Platform
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
-import javafx.geometry.Point2D
 import javafx.geometry.Side
 import javafx.scene.control.ContextMenu
 import javafx.stage.Popup

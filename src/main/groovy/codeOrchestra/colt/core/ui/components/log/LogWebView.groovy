@@ -1,11 +1,8 @@
 package codeOrchestra.colt.core.ui.components.log
-
 import codeOrchestra.colt.core.tracker.GAController
 import codeOrchestra.colt.core.ui.components.logVisualizer.LogVisualizer
-import groovy.json.StringEscapeUtils
 import javafx.application.Platform
 import javafx.beans.value.ChangeListener
-import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList as OL
@@ -14,13 +11,13 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import javafx.scene.shape.Rectangle
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebEvent
 import javafx.scene.web.WebView
 import netscape.javascript.JSObject
 
-import static codeOrchestra.colt.core.logging.Level.*
+import static codeOrchestra.colt.core.logging.Level.COMPILATION
+import static codeOrchestra.colt.core.logging.Level.LIVE
 
 /**
  * @author Eugene Potapenko

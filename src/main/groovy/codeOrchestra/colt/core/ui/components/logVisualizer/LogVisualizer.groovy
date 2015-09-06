@@ -1,11 +1,9 @@
 package codeOrchestra.colt.core.ui.components.logVisualizer
-
 import codeOrchestra.colt.core.LiveCodingManager
 import codeOrchestra.colt.core.annotation.Service
 import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
 import codeOrchestra.colt.core.ui.components.log.LogMessage
 import javafx.application.Platform
-import javafx.beans.binding.When
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList as OL
 import javafx.event.EventHandler

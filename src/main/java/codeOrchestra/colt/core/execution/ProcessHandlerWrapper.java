@@ -1,7 +1,5 @@
 package codeOrchestra.colt.core.execution;
 
-import codeOrchestra.colt.core.execution.ProcessHandler;
-
 /**
  * @author Alexander Eliseyev
  */

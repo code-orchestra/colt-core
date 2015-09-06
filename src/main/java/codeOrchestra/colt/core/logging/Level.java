@@ -4,7 +4,6 @@ package codeOrchestra.colt.core.logging;
  * @author Alexander Eliseyev
  */
 public enum Level {
-  
   FATAL,
   ERROR,
   WARN,

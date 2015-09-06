@@ -5,7 +5,6 @@ import javafx.animation.Timeline
 import javafx.event.EventHandler
 import javafx.util.Duration
 
-
 /**
  * @author Eugene Potapenko
  */

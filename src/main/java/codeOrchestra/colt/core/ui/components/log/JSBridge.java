@@ -3,7 +3,6 @@ package codeOrchestra.colt.core.ui.components.log;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.DataFormat;
 import netscape.javascript.JSObject;
-import javafx.scene.web.WebEngine;
 
 import java.util.HashMap;
 
