@@ -141,7 +141,7 @@
 </VBox>
 
     <stylesheets>
-        <URL value="@../codeOrchestra/colt/core/ui/style/main.css" />
+        <URL value="@codeOrchestra/colt/core/ui/style/main.css" />
     </stylesheets>
 
 </ScrollPane>
