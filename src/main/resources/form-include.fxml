@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox id="" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<VBox id="" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
     <AnchorPane>
         <Label layoutY="27" text="Output file name:" AnchorPane.leftAnchor="19" AnchorPane.rightAnchor="48"/>
         <TextField fx:id="fileNameTF" layoutY="46" prefHeight="30" AnchorPane.leftAnchor="10"
