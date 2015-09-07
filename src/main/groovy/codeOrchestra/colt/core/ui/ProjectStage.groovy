@@ -20,7 +20,6 @@ class ProjectStage extends Stage {
 
     boolean disposed
 
-
     ProjectStage() {
         root = new VBox()
 

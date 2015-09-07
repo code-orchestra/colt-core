@@ -25,7 +25,8 @@ public class PathUtils {
     private static String getReplacement(String token) {
         if (PROJECT_TOKEN.equals(token)) {
             return ProjectHelper.getCurrentProject().getBaseDir().getPath();
-        } else if (COLT_HOME_TOKEN.equals(token)) {
+        }
+        if (COLT_HOME_TOKEN.equals(token)) {
             return getApplicationBaseDir().getPath();
         }
         return null;
@@ -132,14 +133,15 @@ public class PathUtils {
         if (SystemInfo.isMac) {
             File executable = new File(getApplicationBaseDir(), "Contents/MacOs/JavaAppLauncher");
             return executable.exists() ? executable : null;
-        } else if (SystemInfo.isWindows) {
+        }
+        if (SystemInfo.isWindows) {
             File executable = new File(getApplicationBaseDir(), "coltAS.exe");
             return executable.exists() ? executable : null;
-        } else if (SystemInfo.isLinux) {
+        }
+        if (SystemInfo.isLinux) {
             File executable = new File(getApplicationBaseDir(), "colt");
             return executable.exists() ? executable : null;
         }
-
         throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));
     }
 
@@ -156,13 +158,12 @@ public class PathUtils {
         if (StringUtils.isEmpty(gradleHome)) {
             gradleHome = new File(getApplicationBaseDir(), "gradle").getPath();
         }
-
         if (SystemInfo.isMac || SystemInfo.isLinux) {
             return new File(gradleHome, "bin/gradle");
-        } else if (SystemInfo.isWindows) {
+        }
+        if (SystemInfo.isWindows) {
             return new File(gradleHome, "bin/gradle.bat");
         }
-
         throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));
     }
 

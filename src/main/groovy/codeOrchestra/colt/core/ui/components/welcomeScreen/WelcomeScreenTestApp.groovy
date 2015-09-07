@@ -10,12 +10,10 @@ import javafx.stage.Stage
  */
 class WelcomeScreenTestApp extends Application{
     void start(Stage primaryStage) throws Exception {
-        //new groovy.ui.Console().run()
         Parent root = new WelcomeScreen();
         primaryStage.setTitle("COLT — Code Orchestra Livecoding Tool (" + Version.VERSION + ")");
         Scene scene = new Scene(root, 600, 437)
         primaryStage.setScene(scene);
-//        ScenicView.show(scene);
         primaryStage.show();
     }
 
@@ -23,5 +21,3 @@ class WelcomeScreenTestApp extends Application{
         launch(WelcomeScreenTestApp, args);
     }
 }
-
-

@@ -1,5 +1,4 @@
 package codeOrchestra.colt.core.ui.components.fileset
-
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.log.JSBridge
@@ -7,7 +6,6 @@ import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.StringUtils
 import javafx.application.Platform
-import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -20,7 +18,6 @@ import javafx.scene.web.WebView
 import javafx.stage.DirectoryChooser
 import javafx.stage.FileChooser
 import netscape.javascript.JSObject
-
 /*
 
 <AnchorPane maxWidth="640" GridPane.columnIndex="0" GridPane.rowIndex="1">
@@ -45,7 +42,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 23, focusTraversable: false, editable: false, wrapText: true)
     private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 23, prefHeight: 30, prefWidth: 30, text: "Add")
     private JSBridge bridge
-    private boolean htmlLoaded
 
     private File startDirectory = null
 
@@ -249,14 +245,14 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
     public static List<File> getFilesFromString(String fileset, File baseDir = getBaseDir()) {
         if (fileset.isEmpty()) return []
-        def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
+        def (result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
         result.addAll(getFilesFromFileset(filesets, baseDir))
         return result.grep { File f -> !f.directory }.unique()
     }
 
     public static List<File> getDirectoriesFromString(String fileset, File baseDir = getBaseDir()) {
         if (fileset.empty) return []
-        def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
+        def (result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
         result.addAll(getFilesFromFileset(filesets, baseDir))
         return result.grep { File f -> f.directory }
     }
@@ -354,7 +350,4 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         return files.collect { createPattern(it) }.join(", ")
     }
 
-    void setBindProperty(StringProperty value) {
-        files().bindBidirectional(value)
-    }
 }

@@ -93,7 +93,7 @@ class LogWebView extends VBox {
                             addLogMessages(logMessages.asList())
                         }
                     }
-                }else if(tokens[1] == "flush"){
+                } else if(tokens[1] == "flush"){
 //                    println "flush"
                     if (!newMessages.empty) {
                         List<LogMessage> flushed = [] + newMessages
