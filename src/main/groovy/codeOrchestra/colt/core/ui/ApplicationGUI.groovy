@@ -137,7 +137,6 @@ abstract class ApplicationGUI extends BorderPane {
                 settingsButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Settings", newStyleClass: "btn-settings"),
                 leftPane = new Pane(maxHeight: 1.7976931348623157E308),
                 popupMenuButton = new Button(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, text: "Menu", newStyleClass: "btn-more")
-
         ))
 
         HBox.setHgrow(logFiltersContainer, Priority.ALWAYS)

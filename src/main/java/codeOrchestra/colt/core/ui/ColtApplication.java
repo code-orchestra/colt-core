@@ -256,9 +256,7 @@ public class ColtApplication extends Application {
     private void initProjectStage() {
         mainStage = new ProjectStage();
         mainStage.getRoot().getChildren().add(menuBar);
-        mainStage.setOnCloseRequest(windowEvent -> {
-            dispose();
-        });
+        mainStage.setOnCloseRequest(windowEvent -> dispose());
     }
 
     public void setPluginPane(Node node) {
@@ -287,9 +285,9 @@ public class ColtApplication extends Application {
 
         // Handle file argument
         if (args != null ) {
-            for (int i = 0; i < args.length; i++) {
-                if (args[i].startsWith("--launcher.openFile")) {
-                    String path = args[i].split("=")[1];
+            for (String arg : args) {
+                if (arg.startsWith("--launcher.openFile")) {
+                    String path = arg.split("=")[1];
                     if (path != null) {
                         RecentProjects.addRecentProject(path);
                         IS_PLUGIN_MODE = true;

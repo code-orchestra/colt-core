@@ -6,7 +6,6 @@ import codeOrchestra.colt.core.session.listener.LiveCodingListener;
 import codeOrchestra.colt.core.socket.ClientSocketHandlerAdapter;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * @author Alexander Eliseyev

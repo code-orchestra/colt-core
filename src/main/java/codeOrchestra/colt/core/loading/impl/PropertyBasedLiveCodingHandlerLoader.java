@@ -21,7 +21,7 @@ public class PropertyBasedLiveCodingHandlerLoader implements LiveCodingHandlerLo
         String handlersProperty = System.getProperty("colt.handlers");
         if (StringUtils.isNotEmpty(handlersProperty)) {
             String[] handlersSplit = handlersProperty.split("\\,");
-            if (handlersSplit != null && handlersSplit.length > 0) {
+            if (handlersSplit.length > 0) {
                 for (String handlerPart : handlersSplit) {
                     String[] handlerPartSplit = handlerPart.split("\\:");
 

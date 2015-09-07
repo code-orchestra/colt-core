@@ -10,7 +10,6 @@ import javafx.scene.image.Image
 import javafx.stage.Window
 import org.controlsfx.control.ButtonBar
 
-
 /**
  * @author Dima Kruk
  */

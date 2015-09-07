@@ -20,7 +20,6 @@ import codeOrchestra.colt.core.ui.components.log.LogMessage;
 import javafx.application.Platform;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

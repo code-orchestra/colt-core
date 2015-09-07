@@ -1,10 +1,8 @@
 package codeOrchestra.colt.core.ui.testmode
 
-import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.LiveCodingManager
 import codeOrchestra.colt.core.annotation.Service
 import codeOrchestra.colt.core.model.Project
-import codeOrchestra.colt.core.model.listener.ProjectListener
 import codeOrchestra.colt.core.session.LiveCodingSession
 import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
 import codeOrchestra.colt.core.ui.components.inputForms.RadioButtonInput

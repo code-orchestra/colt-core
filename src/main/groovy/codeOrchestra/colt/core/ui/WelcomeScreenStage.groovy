@@ -1,18 +1,10 @@
 package codeOrchestra.colt.core.ui
 
-import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.Version
-import codeOrchestra.colt.core.execution.OSProcessHandler
-import codeOrchestra.colt.core.http.CodeOrchestraRPCHttpServer
-import codeOrchestra.colt.core.http.CodeOrchestraResourcesHttpServer
-import codeOrchestra.colt.core.loading.LiveCodingHandlerManager
-import codeOrchestra.colt.core.tasks.TasksManager
 import codeOrchestra.colt.core.tracker.GAController
 import codeOrchestra.colt.core.ui.components.welcomeScreen.WelcomeScreen
-import codeOrchestra.lcs.license.ColtRunningKey
 import codeOrchestra.util.ApplicationUtil
 import codeOrchestra.util.SystemInfo
-import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.scene.Scene
 import javafx.stage.Stage

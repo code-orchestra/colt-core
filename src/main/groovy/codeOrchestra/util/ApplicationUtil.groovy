@@ -1,9 +1,7 @@
 package codeOrchestra.util
-
 import codeOrchestra.colt.core.ui.ColtApplication
 import javafx.application.Platform
 
-import java.awt.*
 import java.util.prefs.BackingStoreException
 import java.util.prefs.Preferences
 
