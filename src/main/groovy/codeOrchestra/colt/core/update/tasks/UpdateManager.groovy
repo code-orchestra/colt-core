@@ -9,7 +9,8 @@ import codeOrchestra.util.SystemInfo
  */
 class UpdateManager {
 
-    private static String UPDATE_URL = "http://codeorchestra.s3.amazonaws.com/colt_as_updates/"
+//    private static String UPDATE_URL = "http://codeorchestra.s3.amazonaws.com/colt_as_updates/"
+    private static String UPDATE_URL = ""
 
     public static ArrayList<UpdateTask> checkForUpdate() {
         File baseDir = PathUtils.applicationBaseDir

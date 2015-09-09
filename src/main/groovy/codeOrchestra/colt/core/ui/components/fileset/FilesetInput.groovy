@@ -59,9 +59,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     private JSObject windowObject
 
     FilesetInput() {
-
-//        styleClass.add("fileset-input")
-
         setRightAnchor(addButton, 10)
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
@@ -103,8 +100,8 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
         // web engine
 
-        String htmlPage = this.class.getResource("html/fileset-webview.html").toExternalForm()
         WebEngine engine = webView.engine
+        String htmlPage = this.class.getResource("html/fileset-webview.html").toExternalForm()
         engine.load(htmlPage)
 
         engine.onAlert = { WebEvent<String> event ->
@@ -112,7 +109,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
             if (tokens[0] == "command" && tokens.size() > 1) {
                 if (tokens[1] == "ready") {
                     Platform.runLater {
-                        windowObject = (JSObject) webView.engine.executeScript("window")
+                        windowObject = (JSObject) engine.executeScript("window")
                         bridge = new JSBridge(windowObject) {
                             @Override
                             void resize(int height) {
@@ -337,8 +334,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         try {
             return ProjectHelper.currentProject?.baseDir
         } catch (Exception ignored) {
-            return new File("/Users/eugenepotapenko/Documents")
-
+            return new File("${System.getProperty('user.home')}/Documents")
         }
     }
 

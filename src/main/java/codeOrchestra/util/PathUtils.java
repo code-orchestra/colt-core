@@ -84,12 +84,20 @@ public class PathUtils {
         String coltBaseDirProp = System.getProperty("colt.base.dir");
 
         if (StringUtils.isEmpty(coltBaseDirProp)) {
-            File file = new File(PathUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+            String currentDir = System.getProperty("user.dir");
+            File file = new File(currentDir);
             while (!new File(file, "flex_sdk").exists()) {
-              file = file.getParentFile();
+                if(StringUtils.isNotEmpty(file.getParent())) {
+                    file = file.getParentFile();
+                } else {
+                    new File(currentDir, "flex_sdk").mkdir();
+                    file = new File(currentDir);
+                    break;
+                }
             }
             return file;
-        } else if (SystemInfo.isMac && "$APP_PACKAGE".equals(coltBaseDirProp)) {
+        }
+        if (SystemInfo.isMac && "$APP_PACKAGE".equals(coltBaseDirProp)) {
             if (applicationBaseDirCached != null) {
                 return applicationBaseDirCached;
             }
@@ -102,7 +110,6 @@ public class PathUtils {
             applicationBaseDirCached = file;
             return file;
         }
-
         return new File(coltBaseDirProp);
     }
 
@@ -135,7 +142,7 @@ public class PathUtils {
             return executable.exists() ? executable : null;
         }
         if (SystemInfo.isWindows) {
-            File executable = new File(getApplicationBaseDir(), "coltAS.exe");
+            File executable = new File(getApplicationBaseDir(), "colt.exe");
             return executable.exists() ? executable : null;
         }
         if (SystemInfo.isLinux) {
@@ -146,6 +153,7 @@ public class PathUtils {
     }
 
     public static boolean checkGradle() {
+        //TODO slavara: chech ".home1"
         String gradleHome = Preferences.userNodeForPackage(PathUtils.class).get("gradle.home1" , "");
         if (StringUtils.isEmpty(gradleHome)) {
             gradleHome = new File(getApplicationBaseDir(), "gradle").getPath();
