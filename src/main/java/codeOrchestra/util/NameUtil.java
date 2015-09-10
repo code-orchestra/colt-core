@@ -12,7 +12,7 @@ public final class NameUtil {
   }
   
   public static String shortNameFromLongName(String fqName) {
-    if (fqName == null) return fqName;
+    if (fqName == null) return null;
     int offset = fqName.lastIndexOf('.');
     if (offset < 0) return fqName;
 

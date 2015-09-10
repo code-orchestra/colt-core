@@ -23,7 +23,7 @@ class UpdateView extends SettingsScrollPane {
         FormGroup formGroup = new FormGroup(first: true)
         mainContainer.children.add(formGroup)
         formGroup.children.addAll(
-                url = new LabeledTitledInput(title: "Url", text: "http://codeorchestra.s3.amazonaws.com/flex_sdk.zip"),
+                url = new LabeledTitledInput(title: "Url", text: "https://github.com/code-orchestra/flex-sdk-livecoding/releases/download/4.14.1/flex_sdk_win.zip"),
                 to = new LabeledActionInput(title: "To folder", text: PathUtils.applicationBaseDir.path + File.separator + "tmp", browseType: BrowseType.DIRECTORY)
         )
 
@@ -33,7 +33,7 @@ class UpdateView extends SettingsScrollPane {
         action.onAction = {
             new ProxyDialog(parent as Window).show()
 //            new InstallGradleDialog(parent as Window).show()
-//            TasksManager.getInstance().scheduleBackgroundTask(new UpdateTask("http://codeorchestra.s3.amazonaws.com/flex_sdk.zip", to.text))
+//            TasksManager.getInstance().scheduleBackgroundTask(new UpdateTask("https://github.com/code-orchestra/flex-sdk-livecoding/releases/download/4.14.1/flex_sdk_win.zip", to.text))
         } as EventHandler
     }
 }

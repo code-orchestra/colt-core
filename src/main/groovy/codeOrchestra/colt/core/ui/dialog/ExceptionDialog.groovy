@@ -26,7 +26,6 @@ class ExceptionDialog extends DialogWithImage {
         super(owner)
     }
 
-
     @Override
     protected void initView() {
         super.initView()

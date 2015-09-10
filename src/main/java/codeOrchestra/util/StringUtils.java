@@ -2,7 +2,6 @@ package codeOrchestra.util;
 
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -101,8 +100,8 @@ public class StringUtils {
 
   public static String foldLeft(Iterable<String> seq, String seed, ILeftCombinator combinator) {
     String s = seed;
-    for (Iterator<String> it = seq.iterator(); it.hasNext();) {
-      s = combinator.invoke(s, it.next());
+    for (String aSeq : seq) {
+      s = combinator.invoke(s, aSeq);
     }
     return s;
   }

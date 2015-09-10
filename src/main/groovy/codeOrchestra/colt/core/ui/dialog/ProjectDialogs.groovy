@@ -26,10 +26,6 @@ class ProjectDialogs {
         newProjectDialog(scene, "AS", load)
     }
 
-    static void newJsProjectDialog(Scene scene, boolean load) {
-        newProjectDialog(scene, "JS", load)
-    }
-
     private static void newProjectDialog(Scene scene, String handlerId, boolean load) {
         FileChooser fileChooser = new FileChooser()
         fileChooser.extensionFilters.add(new FileChooser.ExtensionFilter("COLT", "*.colt"))

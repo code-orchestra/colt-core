@@ -1,5 +1,4 @@
 package codeOrchestra.colt.core.ui.components.fileset
-
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.log.JSBridge
@@ -7,7 +6,6 @@ import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.StringUtils
 import javafx.application.Platform
-import javafx.beans.property.StringProperty
 import javafx.beans.value.ChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -20,7 +18,6 @@ import javafx.scene.web.WebView
 import javafx.stage.DirectoryChooser
 import javafx.stage.FileChooser
 import netscape.javascript.JSObject
-
 /*
 
 <AnchorPane maxWidth="640" GridPane.columnIndex="0" GridPane.rowIndex="1">
@@ -45,7 +42,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     private TextArea focusRectangle = new TextArea(id: "fileset-webview-focus", layoutY: 23, focusTraversable: false, editable: false, wrapText: true)
     private Button addButton = new Button(contentDisplay: ContentDisplay.GRAPHIC_ONLY, focusTraversable: false, layoutY: 23, prefHeight: 30, prefWidth: 30, text: "Add")
     private JSBridge bridge
-    private boolean htmlLoaded
 
     private File startDirectory = null
 
@@ -63,9 +59,6 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
     private JSObject windowObject
 
     FilesetInput() {
-
-//        styleClass.add("fileset-input")
-
         setRightAnchor(addButton, 10)
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
@@ -107,8 +100,8 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
         // web engine
 
-        String htmlPage = this.class.getResource("html/fileset-webview.html").toExternalForm()
         WebEngine engine = webView.engine
+        String htmlPage = this.class.getResource("html/fileset-webview.html").toExternalForm()
         engine.load(htmlPage)
 
         engine.onAlert = { WebEvent<String> event ->
@@ -116,7 +109,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
             if (tokens[0] == "command" && tokens.size() > 1) {
                 if (tokens[1] == "ready") {
                     Platform.runLater {
-                        windowObject = (JSObject) webView.engine.executeScript("window")
+                        windowObject = (JSObject) engine.executeScript("window")
                         bridge = new JSBridge(windowObject) {
                             @Override
                             void resize(int height) {
@@ -249,14 +242,14 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
     public static List<File> getFilesFromString(String fileset, File baseDir = getBaseDir()) {
         if (fileset.isEmpty()) return []
-        def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
+        def (result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
         result.addAll(getFilesFromFileset(filesets, baseDir))
         return result.grep { File f -> !f.directory }.unique()
     }
 
     public static List<File> getDirectoriesFromString(String fileset, File baseDir = getBaseDir()) {
         if (fileset.empty) return []
-        def (ArrayList<File> result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
+        def (result, ArrayList<String> filesets) = collectFiles(fileset, baseDir)
         result.addAll(getFilesFromFileset(filesets, baseDir))
         return result.grep { File f -> f.directory }
     }
@@ -341,8 +334,7 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         try {
             return ProjectHelper.currentProject?.baseDir
         } catch (Exception ignored) {
-            return new File("/Users/eugenepotapenko/Documents")
-
+            return new File("${System.getProperty('user.home')}/Documents")
         }
     }
 
@@ -354,7 +346,4 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
         return files.collect { createPattern(it) }.join(", ")
     }
 
-    void setBindProperty(StringProperty value) {
-        files().bindBidirectional(value)
-    }
 }

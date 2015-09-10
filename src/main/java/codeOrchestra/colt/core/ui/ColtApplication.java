@@ -112,22 +112,22 @@ public class ColtApplication extends Application {
         }
     }
 
-    private void showSplash() {
-        Scene splashScene = new Scene(splashLayout);
-        primaryStage.initStyle(StageStyle.UNDECORATED);
-        final Rectangle2D bounds = Screen.getPrimary().getBounds();
-        primaryStage.setScene(splashScene);
-        primaryStage.setX(bounds.getMinX() + bounds.getWidth() / 2 - SPLASH_WIDTH / 2);
-        primaryStage.setY(bounds.getMinY() + bounds.getHeight() / 2 - SPLASH_HEIGHT / 2);
-        primaryStage.show();
-    }
-
     private void initSplash() {
         splashLayout = new StackPane();
         String imagePath = getClass().getResource("splash.png").toString();
         Image image = new Image(imagePath);
         splashLayout.getChildren().add(new ImageView(image));
         splashLayout.setEffect(new DropShadow());
+    }
+
+    private void showSplash() {
+        Scene splashScene = new Scene(splashLayout);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        final Rectangle2D bounds = Screen.getPrimary().getBounds();
+        primaryStage.setScene(splashScene);
+        primaryStage.setX(bounds.getMinX() + (bounds.getWidth() - SPLASH_WIDTH) / 2);
+        primaryStage.setY(bounds.getMinY() + (bounds.getHeight() - SPLASH_HEIGHT) / 2);
+        primaryStage.show();
     }
 
     public synchronized void dispose() {
@@ -226,12 +226,8 @@ public class ColtApplication extends Application {
 
         new Thread(() -> {
             ThreadUtils.sleep(10000);
-            Platform.runLater(() -> {
-               checkForUpdate(false);
-            });
+            Platform.runLater(() -> checkForUpdate(false));
         }).start();
-
-//        ScenicView.show(primaryStage.getScene());
     }
 
     public void closeProject() {

@@ -30,8 +30,4 @@ class Log implements LoggerService {
         logWebView.logMessages.clear()
         logWebView.logMessages.addAll(newMessages)
     }
-
-    synchronized void clearAll() {
-        logWebView.logMessages.clear()
-    }
 }

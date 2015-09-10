@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
-<BorderPane prefHeight="760" prefWidth="500" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<BorderPane prefHeight="760" prefWidth="500" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
 
     <left>
         <VBox maxWidth="-Infinity" styleClass="sidebar">

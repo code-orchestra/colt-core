@@ -22,7 +22,7 @@ public final class XMLUtils {
 
     public static String documentToString(Document document) {
         TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = null;
+        Transformer transformer;
         try {
             transformer = tf.newTransformer();
         } catch (TransformerConfigurationException e) {
@@ -35,8 +35,7 @@ public final class XMLUtils {
         } catch (TransformerException e) {
             throw new RuntimeException(e);
         }
-        String output = writer.getBuffer().toString().replaceAll("\n|\r", "");
-        return output;
+        return writer.getBuffer().toString().replaceAll("\n|\r", "");
     }
 
     public static File saveToFile(String filename, Document document) throws TransformerException {
@@ -59,9 +58,8 @@ public final class XMLUtils {
     public static Document createDocument() {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.newDocument();
-            return doc;
-        } catch (ParserConfigurationException e) {
+            return builder.newDocument();
+        } catch (ParserConfigurationException ignored) {
         }
         return null;
     }
@@ -86,7 +84,7 @@ public final class XMLUtils {
     public static Document streamToDocument(InputStream is) throws IOException {
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
-        String inline = "";
+        String inline;
         while ((inline = inputReader.readLine()) != null) {
             sb.append(inline);
         }

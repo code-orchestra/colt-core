@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<AnchorPane prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/8">
 
     <stylesheets>
         <URL value="@codeOrchestra/colt/core/ui/style/main.css"/>

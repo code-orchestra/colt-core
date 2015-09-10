@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Alexander Eliseyev
@@ -29,12 +31,8 @@ public class ApplicationRestarter {
 
         // VM arguments
         List<String> vmArguments = fixInputParameters(ManagementFactory.getRuntimeMXBean().getInputArguments());
-        for (String arg : vmArguments) {
-            // if it's the agent argument : we ignore it otherwise the address of the old application and the new one will be in conflict
-            if (!arg.contains("-agentlib")) {
-                cmd.add(arg);
-            }
-        }
+        // if it's the agent argument : we ignore it otherwise the address of the old application and the new one will be in conflict
+        cmd.addAll(vmArguments.stream().filter(arg -> !arg.contains("-agentlib")).collect(Collectors.toList()));
 
         // Main class/jar
         String[] mainCommand = System.getProperty(SUN_JAVA_COMMAND).split(" ");
@@ -51,9 +49,7 @@ public class ApplicationRestarter {
         }
 
         // Program args
-        for (int i = 1; i < mainCommand.length; i++) {
-            cmd.add(mainCommand[i]);
-        }
+        cmd.addAll(Arrays.asList(mainCommand).subList(1, mainCommand.length));
 
         String[] commandArray = new String[cmd.size()];
         int i = 0;

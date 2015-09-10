@@ -59,16 +59,14 @@ public class BrowserUtil {
       if (curl != null) {
         final String urlString = curl.toString();
         String[] commandLine;
-        if (SystemInfo.isWindows) {      
-        	commandLine = new String[] { String.format("cmd /C \"start %1s\"", escapeUrl_(urlString)) };        	
+        if (SystemInfo.isWindows) {
+        	commandLine = new String[] { String.format("cmd /C \"start %1s\"", escapeUrl_(urlString)) };
         } else {
           commandLine = new String[command.length + 1];
           System.arraycopy(command, 0, commandLine, 0, command.length);
           commandLine[commandLine.length - 1] = escapeUrl(urlString);
         }
         return new ProcessBuilder(commandLine);
-      } else {
-//        showErrorMessage("The URL specified is invalid: " + url, "Error");
       }
     } catch (final IOException e) {
 //      showErrorMessage("Can't start a browser", "Error");
@@ -81,7 +79,7 @@ public class BrowserUtil {
    * anchors from the url for local urls.
    */
   private static String redirectUrl(String url, String urlString) throws IOException {
-    if (url.indexOf('&') == -1 && (!urlString.startsWith("file:") || urlString.indexOf("#") == -1))
+    if (url.indexOf('&') == -1 && (!urlString.startsWith("file:") || !urlString.contains("#")))
       return urlString;
 
     File redirect = File.createTempFile("redirect", ".html");
@@ -114,7 +112,7 @@ public class BrowserUtil {
 	  }
 
   public static ProcessBuilder launchBrowser(final String url, boolean multiple) {
-    return launchBrowser(url, (String) null, multiple);
+    return launchBrowser(url, null, multiple);
   }
 
     public static ProcessBuilder launchBrowser(final String url) {
@@ -124,15 +122,17 @@ public class BrowserUtil {
   private static String[] getDefaultBrowserCommand(boolean multiple) {
     if (SystemInfo.isWindows9x) {
       return new String[] { "command.com", "/c", "start" };
-    } else if (SystemInfo.isWindows) {
-      return new String[] { "cmd.exe", "/c", "start" };
-    } else if (SystemInfo.isMac) {
-      return multiple ? new String[] { "open", "-n" } : new String[] { "open" };
-    } else if (SystemInfo.isUnix) {
-      return new String[] { "xdg-open" };
-    } else {
-      return null;
     }
+    if (SystemInfo.isWindows) {
+      return new String[] { "cmd.exe", "/c", "start" };
+    }
+    if (SystemInfo.isMac) {
+      return multiple ? new String[] { "open", "-n" } : new String[] { "open" };
+    }
+    if (SystemInfo.isUnix) {
+      return new String[] { "xdg-open" };
+    }
+    return null;
   }
 
   /**
@@ -171,9 +171,8 @@ public class BrowserUtil {
     try {
       if (protocol.equals(FILE)) {
         return new URL(protocol, "", path);
-      } else {
-        return new URL(vfsUrl);
       }
+      return new URL(vfsUrl);
     } catch (MalformedURLException e) {
       LOG.debug("MalformedURLException occured:" + e.getMessage());
       return null;

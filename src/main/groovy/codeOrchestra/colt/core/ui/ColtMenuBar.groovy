@@ -211,7 +211,6 @@ class ColtMenuBar extends MenuBar {
         if (SystemInfo.isMac) {
             popupMenuItems.addAll(newAs, save, saveAs)
         } else {
-
             popupMenuItems.addAll(
                     new Menu(text: "Run", newItems: [
                             new Menu(text: "Livecoding Session", newItems: [
@@ -378,16 +377,16 @@ class ColtMenuBar extends MenuBar {
     private static MenuItem cloneMenuItem(MenuItem item) {
         if (item instanceof SeparatorMenuItem) {
             return new SeparatorMenuItem()
-        } else if(item instanceof Menu) {
-            return cloneMenu(item)
-        } else {
-            MenuItem result = new MenuItem()
-            result.text = item.text
-            result.onAction = item.onAction
-            result.accelerator = item.accelerator
-            result.id = item.id
-            return result
         }
+        if(item instanceof Menu) {
+            return cloneMenu(item)
+        }
+        MenuItem result = new MenuItem()
+        result.text = item.text
+        result.onAction = item.onAction
+        result.accelerator = item.accelerator
+        result.id = item.id
+        return result
     }
 
     private static ColtFacade getColtFacade() {

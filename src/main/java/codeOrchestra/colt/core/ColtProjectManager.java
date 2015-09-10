@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class ColtProjectManager {
 
-    public static final Logger getLogger() {
+    public static Logger getLogger() {
         return Logger.getLogger(ColtProjectManager.class);
     }
 
