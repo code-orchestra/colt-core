@@ -80,9 +80,7 @@ public class PathUtils {
         if (StringUtils.isNotEmpty(System.getProperty("application.home"))) {
             return new File(System.getProperty("application.home"));
         }
-
         String coltBaseDirProp = System.getProperty("colt.base.dir");
-
         if (StringUtils.isEmpty(coltBaseDirProp)) {
             String currentDir = System.getProperty("user.dir");
             File file = new File(currentDir);
