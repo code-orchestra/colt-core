@@ -3,6 +3,7 @@ package codeOrchestra.colt.core.ui.components.welcomeScreen
 import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.RecentProjects
 import codeOrchestra.colt.core.ui.dialog.ProjectDialogs
+import codeOrchestra.util.FileUtils
 import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.concurrent.Worker
@@ -41,7 +42,19 @@ class WelcomeScreen extends Pane {
             }
         } as ChangeListener)
 
-        engine.load(this.class.getResource("html/welcome-screen.html").toExternalForm())
+        // {
+        // XXX: It's tempting to use load(location.toExternalForm())
+        // directly, but it would load a jar: URL when the application
+        // is run from a package. As a result, the WebView would
+        // prevent us from loading file:// URLs.
+        final URL location = getClass().getResource("html/welcome-screen.html")
+        String content = FileUtils.getResourceContent(location)
+        content = content.replace("\"localresource:../../", "\"${location.toExternalForm().replace("welcomeScreen/html/welcome-screen.html", "")}");
+        content = content.replace("\"localresource:./", "\"${location.toExternalForm().replace("welcome-screen.html", "")}");
+
+        engine.loadContent(content)
+        // }
+
         children.add(webView)
 
         engine.onAlert = { WebEvent<String> event ->

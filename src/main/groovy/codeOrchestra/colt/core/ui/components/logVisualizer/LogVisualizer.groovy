@@ -3,6 +3,7 @@ import codeOrchestra.colt.core.LiveCodingManager
 import codeOrchestra.colt.core.annotation.Service
 import codeOrchestra.colt.core.session.listener.LiveCodingAdapter
 import codeOrchestra.colt.core.ui.components.log.LogMessage
+import codeOrchestra.util.FileUtils
 import javafx.application.Platform
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList as OL
@@ -29,10 +30,20 @@ class LogVisualizer extends VBox {
 
     LogVisualizer() {
 
-        String htmlPage = this.class.getResource("html/log-visualizer-webview.html").toExternalForm()
-        WebEngine engine = webView.engine
+        // {
+        // XXX: It's tempting to use load(location.toExternalForm())
+        // directly, but it would load a jar: URL when the application
+        // is run from a package. As a result, the WebView would
+        // prevent us from loading file:// URLs.
+        final URL location = getClass().getResource("html/log-visualizer-webview.html")
+        String content = FileUtils.getResourceContent(location)
+        content = content.replace("\"localresource:../../", "\"${location.toExternalForm().replace("Visualizer/html/log-visualizer-webview.html", "")}");
+        content = content.replace("\"localresource:./", "\"${location.toExternalForm().replace("log-visualizer-webview.html", "")}");
 
-        engine.load(htmlPage)
+        WebEngine engine = webView.engine
+        engine.loadContent(content)
+        // }
+
         children.add(webView)
         setVgrow(webView, Priority.ALWAYS)
 

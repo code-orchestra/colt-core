@@ -3,6 +3,7 @@ import codeOrchestra.colt.core.ui.components.inputForms.markers.MAction
 import codeOrchestra.colt.core.ui.components.inputForms.markers.MLabeled
 import codeOrchestra.colt.core.ui.components.log.JSBridge
 import codeOrchestra.groovyfx.FXBindable
+import codeOrchestra.util.FileUtils
 import codeOrchestra.util.ProjectHelper
 import codeOrchestra.util.StringUtils
 import javafx.application.Platform
@@ -35,7 +36,8 @@ import netscape.javascript.JSObject
  */
 class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
-    @FXBindable String title = "Library Paths:"
+    @FXBindable
+    String title = "Library Paths:"
 
     private Label label = new Label()
     private WebView webView = new WebView(id: "fileset-webview", layoutY: 24, prefHeight: 28);
@@ -45,12 +47,17 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
 
     private File startDirectory = null
 
-    @FXBindable boolean useMultiply = true
-    @FXBindable boolean useFiles = true
-    @FXBindable boolean useDirectory = true
-    @FXBindable boolean useExcludes = true
+    @FXBindable
+    boolean useMultiply = true
+    @FXBindable
+    boolean useFiles = true
+    @FXBindable
+    boolean useDirectory = true
+    @FXBindable
+    boolean useExcludes = true
 
-    @FXBindable String files = ""
+    @FXBindable
+    String files = ""
 
     private ContextMenu contextMenu
 
@@ -98,11 +105,19 @@ class FilesetInput extends AnchorPane implements MAction, MLabeled {
             lookupAll(".scroll-bar")*.visible = false
         }
 
-        // web engine
+        // {
+        // XXX: It's tempting to use load(location.toExternalForm())
+        // directly, but it would load a jar: URL when the application
+        // is run from a package. As a result, the WebView would
+        // prevent us from loading file:// URLs.
+        final URL location = getClass().getResource("html/fileset-webview.html")
+        String content = FileUtils.getResourceContent(location)
+        content = content.replace("\"localresource:../../", "\"${location.toExternalForm().replace("fileset/html/fileset-webview.html", "")}");
+        content = content.replace("\"localresource:./", "\"${location.toExternalForm().replace("fileset-webview.html", "")}");
 
         WebEngine engine = webView.engine
-        String htmlPage = this.class.getResource("html/fileset-webview.html").toExternalForm()
-        engine.load(htmlPage)
+        engine.loadContent(content);
+        // }
 
         engine.onAlert = { WebEvent<String> event ->
             String[] tokens = event.data.split(":", 3)

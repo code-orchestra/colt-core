@@ -81,9 +81,7 @@ public class ColtApplication extends Application {
         instance = this;
 
         this.primaryStage = primaryStage;
-
         StyleManager.getInstance().addUserAgentStylesheet("/codeOrchestra/colt/core/ui/style/main.css");
-
         GAController.getInstance().start(primaryStage);
 
         menuBar = new ColtMenuBar();
@@ -92,7 +90,7 @@ public class ColtApplication extends Application {
             for (String recentProjectPath : RecentProjects.getRecentProjectsPaths()) {
                 File projectFile = new File(recentProjectPath);
                 if (projectFile.exists()) {
-                    path = projectFile.getPath();
+                    this.path = projectFile.getPath();
                     IS_PLUGIN_MODE = new ProjectHandlerIdParser(FileUtils.read(projectFile)).getIsPlugin();
                     break;
                 }
@@ -185,7 +183,7 @@ public class ColtApplication extends Application {
         System.setProperty("file.encoding", "UTF-8");
 
         ColtRunningKey.setRunning(true);
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 CodeOrchestraRPCHttpServer.getInstance().init();
@@ -203,7 +201,7 @@ public class ColtApplication extends Application {
             }
             primaryStage = mainStage;
             primaryStage.show();
-            new Thread(){
+            new Thread() {
                 @Override
                 public void run() {
                     // Open most recent project
@@ -280,7 +278,7 @@ public class ColtApplication extends Application {
         timeStarted = System.currentTimeMillis();
 
         // Handle file argument
-        if (args != null ) {
+        if (args != null) {
             for (String arg : args) {
                 if (arg.startsWith("--launcher.openFile")) {
                     String path = arg.split("=")[1];
