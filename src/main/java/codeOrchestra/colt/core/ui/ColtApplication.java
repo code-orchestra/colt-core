@@ -10,7 +10,6 @@ import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.ProjectHandlerIdParser;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.tasks.TasksManager;
-import codeOrchestra.colt.core.tracker.GAController;
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 import codeOrchestra.colt.core.ui.dialog.UpdateDialog;
 import codeOrchestra.colt.core.update.tasks.UpdateManager;
@@ -81,7 +80,6 @@ public class ColtApplication extends Application {
 
         this.primaryStage = primaryStage;
         Application.setUserAgentStylesheet("/codeOrchestra/colt/core/ui/style/main.css");
-        GAController.getInstance().start(primaryStage);
 
         menuBar = new ColtMenuBar();
 
@@ -260,7 +258,6 @@ public class ColtApplication extends Application {
         }
         if (primaryStage != mainStage) {
             primaryStage = mainStage;
-            GAController.getInstance().start(primaryStage);
             primaryStage.show();
         }
         if (currentPluginNode != null) {

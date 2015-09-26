@@ -20,7 +20,6 @@ import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
 import codeOrchestra.colt.core.ui.testmode.TestSettingsForm
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ThreadUtils
-import javafx.application.Application
 import javafx.application.Platform
 import javafx.beans.binding.StringBinding
 import javafx.beans.property.StringProperty
@@ -167,10 +166,6 @@ abstract class ApplicationGUI extends BorderPane {
     LiveCodingManager get
 
     private void init() {
-        initGoogleAnalytics()
-
-        // build ui
-
         root.top = ShortCodeNotification.initNotification(root.top)
 
         initActionPlayerPopup()
@@ -325,5 +320,4 @@ abstract class ApplicationGUI extends BorderPane {
 
     abstract protected void initLog()
 
-    abstract protected void initGoogleAnalytics()
 }

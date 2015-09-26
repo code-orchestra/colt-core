@@ -3,7 +3,6 @@ import codeOrchestra.colt.core.ColtProjectManager
 import codeOrchestra.colt.core.Version
 import codeOrchestra.colt.core.model.monitor.ChangingMonitor
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs
-import com.dmurph.tracking.JGoogleAnalyticsTracker
 import javafx.event.EventHandler
 import javafx.scene.Scene
 import javafx.scene.layout.Pane
@@ -39,7 +38,6 @@ class ProjectStage extends Stage {
 
     private void dispose() {
         ColtProjectManager.instance.unload()
-        JGoogleAnalyticsTracker.stopBackgroundThread(1000);
         disposed = true
     }
 }

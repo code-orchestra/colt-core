@@ -1,5 +1,4 @@
 package codeOrchestra.colt.core.ui.components.log
-import codeOrchestra.colt.core.tracker.GAController
 import codeOrchestra.colt.core.ui.components.logVisualizer.LogVisualizer
 import codeOrchestra.util.FileUtils
 import javafx.application.Platform
@@ -46,8 +45,6 @@ class LogWebView extends VBox {
     }
 
     private void init() {
-        GAController.instance.registerPage(this, "/log.html", "log")
-
         // {
         // XXX: It's tempting to use load(location.toExternalForm())
         // directly, but it would load a jar: URL when the application
