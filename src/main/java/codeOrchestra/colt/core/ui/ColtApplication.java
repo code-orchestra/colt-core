@@ -188,7 +188,6 @@ public class ColtApplication extends Application {
             public void run() {
                 CodeOrchestraRPCHttpServer.getInstance().init();
                 CodeOrchestraRPCHttpServer.getInstance().addServlet(ColtRemoteServiceServlet.getInstance(), "/coltService");
-
             }
         }.start();
 

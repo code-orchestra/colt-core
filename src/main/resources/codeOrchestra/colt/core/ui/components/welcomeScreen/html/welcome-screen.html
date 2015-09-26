@@ -118,7 +118,7 @@
         }
 
         UL:before {
-            background-image: url('icons.png');
+            background-image: url('localresource:./icons.png');
             background-repeat: no-repeat;
             content: '';
             display: block;
@@ -162,13 +162,13 @@
         (-webkit-min-device-pixel-ratio: 1.25),
         (min-resolution: 120dpi) {
             UL:before {
-                background-image: url(icons-x2.png);
+                background-image: url(localresource:./icons-x2.png);
                 -webkit-background-size: 48px 48px;
                 background-size: 48px 48px;
             }
 
             [role="banner"] {
-                background: transparent url(banner-x2.png) no-repeat;
+                background: transparent url(localresource:./banner-x2.png) no-repeat;
                 -webkit-background-size: 100% 100%;
                 background-size: 100% 100%;
             }

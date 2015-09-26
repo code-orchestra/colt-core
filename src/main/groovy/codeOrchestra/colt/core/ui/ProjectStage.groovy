@@ -23,13 +23,12 @@ class ProjectStage extends Stage {
     ProjectStage() {
         root = new VBox()
 
-        setTitle("COLT — Code Orchestra Livecoding Tool (" + Version.VERSION + ")")
+        setTitle("COLT — Code Orchestra Livecoding Tool (${Version.VERSION})")
         scene = new Scene(root, 480, 768)
         addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, {WindowEvent windowEvent ->
             if (ChangingMonitor.getInstance().isChanged()) {
                 ColtDialogs.showCloseProjectDialog(this, windowEvent)
             }
-
             if (!windowEvent.isConsumed()) {
                 dispose()
             }

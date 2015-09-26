@@ -147,7 +147,8 @@ abstract class ApplicationGUI extends BorderPane {
 
         root.stylesheets.add("/codeOrchestra/colt/core/ui/style/main.css")
 
-        initLog(); init()
+        initLog();
+        init()
 
 
         //for test mode
