@@ -7,6 +7,7 @@ import javafx.event.EventHandler
 import javafx.scene.Scene
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
+import javafx.stage.Screen
 import javafx.stage.Stage
 import javafx.stage.WindowEvent
 
@@ -32,7 +33,7 @@ class ProjectStage extends Stage {
                 dispose()
             }
         } as EventHandler)
-        setMaxHeight(849)
+        setMaxHeight(Math.min(849, Screen.getPrimary().getVisualBounds().height))
         setMinWidth(460)
     }
 
