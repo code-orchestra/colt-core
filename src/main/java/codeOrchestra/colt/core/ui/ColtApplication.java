@@ -17,7 +17,6 @@ import codeOrchestra.colt.core.update.tasks.UpdateManager;
 import codeOrchestra.colt.core.update.tasks.UpdateTask;
 import codeOrchestra.lcs.license.ColtRunningKey;
 import codeOrchestra.util.*;
-import com.sun.javafx.css.StyleManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -81,7 +80,7 @@ public class ColtApplication extends Application {
         instance = this;
 
         this.primaryStage = primaryStage;
-        StyleManager.getInstance().addUserAgentStylesheet("/codeOrchestra/colt/core/ui/style/main.css");
+        Application.setUserAgentStylesheet("/codeOrchestra/colt/core/ui/style/main.css");
         GAController.getInstance().start(primaryStage);
 
         menuBar = new ColtMenuBar();
