@@ -10,14 +10,12 @@ import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.ProjectHandlerIdParser;
 import codeOrchestra.colt.core.rpc.ColtRemoteServiceServlet;
 import codeOrchestra.colt.core.tasks.TasksManager;
-import codeOrchestra.colt.core.tracker.GAController;
 import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 import codeOrchestra.colt.core.ui.dialog.UpdateDialog;
 import codeOrchestra.colt.core.update.tasks.UpdateManager;
 import codeOrchestra.colt.core.update.tasks.UpdateTask;
 import codeOrchestra.lcs.license.ColtRunningKey;
 import codeOrchestra.util.*;
-import com.sun.javafx.css.StyleManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -81,10 +79,7 @@ public class ColtApplication extends Application {
         instance = this;
 
         this.primaryStage = primaryStage;
-
-        StyleManager.getInstance().addUserAgentStylesheet("/codeOrchestra/colt/core/ui/style/main.css");
-
-        GAController.getInstance().start(primaryStage);
+        Application.setUserAgentStylesheet("/codeOrchestra/colt/core/ui/style/main.css");
 
         menuBar = new ColtMenuBar();
 
@@ -92,7 +87,7 @@ public class ColtApplication extends Application {
             for (String recentProjectPath : RecentProjects.getRecentProjectsPaths()) {
                 File projectFile = new File(recentProjectPath);
                 if (projectFile.exists()) {
-                    path = projectFile.getPath();
+                    this.path = projectFile.getPath();
                     IS_PLUGIN_MODE = new ProjectHandlerIdParser(FileUtils.read(projectFile)).getIsPlugin();
                     break;
                 }
@@ -185,12 +180,11 @@ public class ColtApplication extends Application {
         System.setProperty("file.encoding", "UTF-8");
 
         ColtRunningKey.setRunning(true);
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 CodeOrchestraRPCHttpServer.getInstance().init();
                 CodeOrchestraRPCHttpServer.getInstance().addServlet(ColtRemoteServiceServlet.getInstance(), "/coltService");
-
             }
         }.start();
 
@@ -203,7 +197,7 @@ public class ColtApplication extends Application {
             }
             primaryStage = mainStage;
             primaryStage.show();
-            new Thread(){
+            new Thread() {
                 @Override
                 public void run() {
                     // Open most recent project
@@ -264,7 +258,6 @@ public class ColtApplication extends Application {
         }
         if (primaryStage != mainStage) {
             primaryStage = mainStage;
-            GAController.getInstance().start(primaryStage);
             primaryStage.show();
         }
         if (currentPluginNode != null) {
@@ -280,7 +273,7 @@ public class ColtApplication extends Application {
         timeStarted = System.currentTimeMillis();
 
         // Handle file argument
-        if (args != null ) {
+        if (args != null) {
             for (String arg : args) {
                 if (arg.startsWith("--launcher.openFile")) {
                     String path = arg.split("=")[1];

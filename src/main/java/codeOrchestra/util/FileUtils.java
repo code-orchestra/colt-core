@@ -3,6 +3,7 @@ package codeOrchestra.util;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
@@ -17,17 +18,9 @@ public class FileUtils {
     private static final String[] IGNORED_DIRS = new String[]{".svn", ".git", "_svn"};
     private static final String[] IGNORED_FILES = new String[]{".DS_Store", ".colt", ".tmp"};
 
-    public static final FileFilter FILES_ONLY_FILTER = new FileFilter() {
-        public boolean accept(File file) {
-            return file.isFile();
-        }
-    };
+    public static final FileFilter FILES_ONLY_FILTER = File::isFile;
 
-    public static final FileFilter DIRECTORY_FILTER = new FileFilter() {
-        public boolean accept(File file) {
-            return file.isDirectory();
-        }
-    };
+    public static final FileFilter DIRECTORY_FILTER = File::isDirectory;
 
     public static String getFileDigestMD5(File file) throws IOException {
         FileChannel fileChannel = new FileInputStream(file).getChannel();
@@ -47,9 +40,8 @@ public class FileUtils {
     public static String normalize(String path) {
         if (SystemInfo.isWindows) {
             return path.replace("/", "\\");
-        } else {
-            return path.replace("\\", "/");
         }
+        return path.replace("\\", "/");
     }
 
     public static void makeExecutable(String path) {
@@ -70,9 +62,8 @@ public class FileUtils {
         String fileName = file.getName();
         if (fileName.lastIndexOf('.') > 0) {
             return fileName.substring(fileName.lastIndexOf('.') +1);
-        } else {
-            return null;
         }
+        return null;
     }
 
     public static String unixify(String path) {
@@ -466,6 +457,24 @@ public class FileUtils {
          return "\"" + path + "\"";
        }
        return path;
-     }
+    }
 
+     public static String getResourceContent(URL location) {
+        String content = null;
+        try {
+            InputStream input = location.openStream();
+            InputStreamReader is = new InputStreamReader(input);
+            StringBuilder sb = new StringBuilder();
+            BufferedReader br = new BufferedReader(is);
+            String read = br.readLine();
+            while (read != null) {
+                sb.append(read).append("\n");
+                read = br.readLine();
+            }
+            content = sb.toString();
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+        return content;
+    }
 }

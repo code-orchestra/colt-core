@@ -24,10 +24,10 @@ class UpdateTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        String updatesPath = PathUtils.applicationBaseDir.path + File.separator + "updates"
+        String updatesPath = "${PathUtils.applicationBaseDir.path}${File.separator}updates"
         String tmpFilePath = downloadFile(url, updatesPath)
         if (with_md5) {
-            downloadFile(url + ".MD5", updatesPath)
+            downloadFile("${url}.MD5", updatesPath)
         }
         if (tmpFilePath != null && !cancelled) {
             String ext = tmpFilePath.split("\\.").last()

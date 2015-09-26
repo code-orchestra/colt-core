@@ -5,11 +5,10 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>Fileset</title>
 
-    <link rel="stylesheet" href="fileset.css" type="text/css" media="screen" charset="utf-8"/>
-    <script src="../../shared/jquery.js" type="text/javascript" charset="utf-8"></script>
-    <script src="jquery-textboxlist.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../shared/jquery-resize.js" type="text/javascript" charset="utf-8"></script>
-
+    <link rel="stylesheet" href="localresource:./fileset.css" type="text/css" media="screen" charset="utf-8"/>
+    <script src="localresource:../../shared/jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="localresource:./jquery-textboxlist.js" type="text/javascript" charset="utf-8"></script>
+    <script src="localresource:../../shared/jquery-resize.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
 
         window.onerror = function myErrorFunction(message, url, linenumber) {
@@ -84,7 +83,6 @@
             return  newValues
         }
 
-
         function getFiles() {
             return textbox.getText()
         }
@@ -92,16 +90,13 @@
         function fileNotExists(file) {
             // todo: mark file as
         }
-
-
-
     </script>
 </head>
-
 <body>
 <form accept-charset="utf-8">
     <div class="form_tags">
-        <input type="text" name="test2" value="" id="form_tags_input"/></div>
+        <input type="text" name="test2" value="" id="form_tags_input"/>
+    </div>
 </form>
 </body>
 </html>

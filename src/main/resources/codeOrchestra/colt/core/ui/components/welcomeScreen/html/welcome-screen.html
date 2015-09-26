@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title></title>
-
     <style type="text/css">
         HTML {
             font-size: 100%;
@@ -119,7 +118,7 @@
         }
 
         UL:before {
-            background-image: url('icons.png');
+            background-image: url('localresource:./icons.png');
             background-repeat: no-repeat;
             content: '';
             display: block;
@@ -163,13 +162,13 @@
         (-webkit-min-device-pixel-ratio: 1.25),
         (min-resolution: 120dpi) {
             UL:before {
-                background-image: url(icons-x2.png);
+                background-image: url(localresource:./icons-x2.png);
                 -webkit-background-size: 48px 48px;
                 background-size: 48px 48px;
             }
 
             [role="banner"] {
-                background: transparent url(banner-x2.png) no-repeat;
+                background: transparent url(localresource:./banner-x2.png) no-repeat;
                 -webkit-background-size: 100% 100%;
                 background-size: 100% 100%;
             }
@@ -180,7 +179,7 @@
         }
     </style>
 
-    <script src="../../shared/jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="localresource:../../shared/jquery.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
         $(function () {
             alert("loaded")
@@ -202,7 +201,7 @@
 <body>
 
 <header role="banner">
-    <img src="banner.png" alt="COLT: Code Orchestra Livecoding Tool" width="598" height="97">
+    <img src="localresource:./banner.png" alt="COLT: Code Orchestra Livecoding Tool" width="598" height="97">
 </header>
 
 <div role="main">

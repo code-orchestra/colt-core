@@ -17,20 +17,6 @@ class CBForm extends AnchorPane implements MChoiceBox {
     protected ChoiceBox choiceBox = new ChoiceBox(layoutY: 22.0)
     protected Label errorLabel = new Label(layoutY:30.0, text:"Incorrect Flex SDK path specified" )
 
-    /*
-    <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
-      <HBox id="HBox" alignment="CENTER_LEFT" layoutY="-1.0" spacing="0.0" AnchorPane.leftAnchor="19.0">
-        <children>
-          <Label fx:id="label" text="Target player version (" />
-          <CheckBox fx:id="checkBox" prefWidth="-1.0" text="use the latest version" />
-          <Label text="):" />
-        </children>
-      </HBox>
-      <ChoiceBox fx:id="choiceBox" layoutY="22.0" AnchorPane.leftAnchor="10.0" />
-      <Label fx:id="errorLabel" layoutY="30.0" styleClass="error-label" text="Incorrect Flex SDK path specified" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="10.0" />
-    </fx:root>
-     */
-
     @FXBindable boolean selected
     @FXBindable String value
     @FXBindable List<String> values

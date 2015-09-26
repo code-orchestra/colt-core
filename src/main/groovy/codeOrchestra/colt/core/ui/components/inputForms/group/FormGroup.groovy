@@ -28,15 +28,6 @@ class FormGroup extends VBox {
 
     boolean first
     boolean last
-/*
-    <fx:root type="javafx.scene.layout.VBox" styleClass="fieldset" maxWidth="640.0" xmlns:fx="http://javafx.com/fxml">
-      <Label fx:id="label" styleClass="legend">
-        <VBox.margin>
-          <Insets bottom="-2" left="19" />
-        </VBox.margin>
-      </Label>
-    </fx:root>
-     */
 
     FormGroup() {
         label = new Label()

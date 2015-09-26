@@ -1,5 +1,4 @@
 package codeOrchestra.colt.core.ui
-
 import codeOrchestra.colt.core.LiveCodingManager
 import codeOrchestra.colt.core.annotation.Service
 import codeOrchestra.colt.core.logging.Level
@@ -34,7 +33,6 @@ import javafx.scene.text.TextAlignment
 
 import static java.lang.Double.NEGATIVE_INFINITY
 import static javafx.scene.control.ContentDisplay.GRAPHIC_ONLY
-
 /**
  * @author Dima Kruk
  */
@@ -72,13 +70,16 @@ abstract class ApplicationGUI extends BorderPane {
     protected ProgressIndicator progressIndicator
     protected StatusButton statusButton
 
-    @Lazy LogWebView logView = Log.instance.logWebView
+    @Lazy
+    LogWebView logView = Log.instance.logWebView
 
     List<ToggleButton> allFilters
 
-    @FXBindable String applicationState = ""
+    @FXBindable
+    String applicationState = ""
 
-    protected @Service LiveCodingManager liveCodingManager
+    protected @Service
+    LiveCodingManager liveCodingManager
 
     boolean isFirstTime = true
 
@@ -109,7 +110,6 @@ abstract class ApplicationGUI extends BorderPane {
     protected TestSettingsForm testSettingsForm
 
     ApplicationGUI() {
-
         VBox sidebar; Pane leftPane
 
         setCenter(root = new BorderPane(
@@ -145,10 +145,8 @@ abstract class ApplicationGUI extends BorderPane {
         sidebar.styleClass.add("sidebar")
         logView.toBack()
 
-        root.stylesheets.add("/codeOrchestra/colt/core/ui/style/main.css")
-
-        initLog(); init()
-
+        initLog();
+        init()
 
         //for test mode
         if (System.getProperty("colt.runType") == "test") {
@@ -168,10 +166,6 @@ abstract class ApplicationGUI extends BorderPane {
     LiveCodingManager get
 
     private void init() {
-        initGoogleAnalytics()
-
-        // build ui
-
         root.top = ShortCodeNotification.initNotification(root.top)
 
         initActionPlayerPopup()
@@ -276,7 +270,7 @@ abstract class ApplicationGUI extends BorderPane {
     boolean runSession() {
         boolean result = true
         ActionPlayer playerControls = actionPlayerPopup.actionPlayer
-        if(validateSettingsForm()) {
+        if (validateSettingsForm()) {
             runButton.onAction.handle(null)
             playerControls.disable = true
             statusButton.disable = true
@@ -326,5 +320,4 @@ abstract class ApplicationGUI extends BorderPane {
 
     abstract protected void initLog()
 
-    abstract protected void initGoogleAnalytics()
 }

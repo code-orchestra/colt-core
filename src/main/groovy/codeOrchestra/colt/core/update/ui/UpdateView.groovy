@@ -24,7 +24,7 @@ class UpdateView extends SettingsScrollPane {
         mainContainer.children.add(formGroup)
         formGroup.children.addAll(
                 url = new LabeledTitledInput(title: "Url", text: "https://github.com/code-orchestra/flex-sdk-livecoding/releases/download/4.14.1/flex_sdk_win.zip"),
-                to = new LabeledActionInput(title: "To folder", text: PathUtils.applicationBaseDir.path + File.separator + "tmp", browseType: BrowseType.DIRECTORY)
+                to = new LabeledActionInput(title: "To folder", text: "${PathUtils.applicationBaseDir.path}${File.separator}tmp", browseType: BrowseType.DIRECTORY)
         )
 
         Button action = new Button("Action")
