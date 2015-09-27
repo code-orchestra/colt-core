@@ -96,7 +96,7 @@ class UpdateDialog extends DialogWithImage {
 
         if (listOfTasks != null) {
             updates = listOfTasks.size()
-            stage.title = "COLT Update 1/" + updates
+            stage.title = "COLT Update 1/$updates"
             startTask(listOfTasks.remove(0))
         } else {
             startTask(task)
@@ -143,7 +143,7 @@ class UpdateDialog extends DialogWithImage {
     protected void updateComplete() {
         if (listOfTasks != null && listOfTasks.size() > 0) {
             startTask(listOfTasks.remove(0))
-            stage.title = "COLT Update " + (updates - listOfTasks.size()) + "/" + updates
+            stage.title = "COLT Update ${updates - listOfTasks.size()}/$updates"
         } else {
             inited = true
             buttonBar.buttons.remove(cancelButton)
