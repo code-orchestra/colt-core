@@ -5,9 +5,6 @@ package codeOrchestra.colt.core.build;
  */
 public class BuildException extends Exception {
 
-    public BuildException() {
-    }
-
     public BuildException(String message) {
         super(message);
     }
@@ -20,7 +17,4 @@ public class BuildException extends Exception {
         super(cause);
     }
 
-    public BuildException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

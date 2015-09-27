@@ -17,7 +17,6 @@ import codeOrchestra.colt.core.ui.components.player.ActionPlayerPopup
 import codeOrchestra.colt.core.ui.components.popupmenu.PopupMenu
 import codeOrchestra.colt.core.ui.components.sessionIndicator.SessionIndicatorController
 import codeOrchestra.colt.core.ui.groovy.GroovyDynamicMethods
-import codeOrchestra.colt.core.ui.testmode.TestSettingsForm
 import codeOrchestra.groovyfx.FXBindable
 import codeOrchestra.util.ThreadUtils
 import javafx.application.Platform
@@ -106,8 +105,6 @@ abstract class ApplicationGUI extends BorderPane {
             }
         }
     }
-
-    protected TestSettingsForm testSettingsForm
 
     ApplicationGUI() {
         VBox sidebar; Pane leftPane

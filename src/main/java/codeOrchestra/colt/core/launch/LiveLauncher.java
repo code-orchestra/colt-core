@@ -8,7 +8,7 @@ import codeOrchestra.colt.core.model.Project;
 /**
  * @author Alexander Eliseyev
  */
-public interface LiveLauncher<P extends Project> extends ColtService<P> {
+public interface LiveLauncher<P extends Project> extends ColtService {
 
     ProcessHandlerWrapper launch(P project, boolean multiple, boolean production) throws ExecutionException;
 

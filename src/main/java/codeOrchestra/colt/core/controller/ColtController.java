@@ -6,5 +6,5 @@ import codeOrchestra.colt.core.model.Project;
 /**
  * @author Alexander Eliseyev
  */
-public interface ColtController<P extends Project> extends ColtService<P> {
+public interface ColtController<P extends Project> extends ColtService {
 }

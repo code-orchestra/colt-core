@@ -5,9 +5,6 @@ package codeOrchestra.colt.core.loading;
  */
 public class LiveCodingHandlerLoadingException extends Exception {
 
-    public LiveCodingHandlerLoadingException() {
-    }
-
     public LiveCodingHandlerLoadingException(String message) {
         super(message);
     }
@@ -20,7 +17,4 @@ public class LiveCodingHandlerLoadingException extends Exception {
         super(cause);
     }
 
-    public LiveCodingHandlerLoadingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

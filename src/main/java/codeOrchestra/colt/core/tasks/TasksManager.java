@@ -11,8 +11,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class TasksManager {
 
-    private static final int MAX_EXECUTION_TIME = 100;
-
     private Logger LOG = Logger.getLogger(TasksManager.class);
 
     private static TasksManager instance;
@@ -26,9 +24,10 @@ public class TasksManager {
 
     private final Executor executorThread;
 
-    /*  Notified when:
-     *    tasksQueue queue becomes non-empty
-     *    workerStarted becomes false
+    /**
+     *  Notified when:
+     *  tasksQueue queue becomes non-empty
+     *  workerStarted becomes false
      */
     private final Object myLock = new Object();
 
