@@ -135,7 +135,7 @@ public class PathUtils {
             return executable.exists() ? executable : null;
         }
         if (SystemInfo.isWindows) {
-            File executable = new File(getApplicationBaseDir(), "colt.exe");
+            File executable = new File(getApplicationBaseDir().getParent(), "colt.exe");
             return executable.exists() ? executable : null;
         }
         if (SystemInfo.isLinux) {

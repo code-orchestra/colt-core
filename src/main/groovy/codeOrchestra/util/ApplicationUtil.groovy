@@ -1,10 +1,10 @@
 package codeOrchestra.util
+
 import codeOrchestra.colt.core.ui.ColtApplication
 import javafx.application.Platform
 
 import java.util.prefs.BackingStoreException
 import java.util.prefs.Preferences
-
 /**
  * @author Alexander Eliseyev
  */
@@ -17,7 +17,6 @@ class ApplicationUtil {
 
     static void startAnotherColtInstance() throws IOException {
         resetLastStartRequestDate()
-
         if (SystemInfo.isMac) {
             File baseDir = PathUtils.applicationBaseDir
             if (baseDir.path.endsWith(".app")) {
@@ -33,7 +32,6 @@ class ApplicationUtil {
         } else {
             throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"))
         }
-
         ApplicationRestarter.start()
     }
 

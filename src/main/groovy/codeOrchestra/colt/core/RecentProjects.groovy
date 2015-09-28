@@ -12,11 +12,9 @@ class RecentProjects {
 
     static void addRecentProject(String path) {
         List<String> paths = getRecentProjectsPaths()
-
         if (paths.contains(path)) {
             paths.removeAll(Collections.singletonList(path))
         }
-
         paths.add(0, path)
         save(paths, true)
     }
