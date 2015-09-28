@@ -5,7 +5,6 @@ import codeOrchestra.colt.core.model.Project;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.prefs.Preferences;
 
 /**
  * @author Alexander Eliseyev
@@ -115,10 +114,6 @@ public class PathUtils {
         return new File(getApplicationBaseDir(), "templates");
     }
 
-    public static File getLibrariesDir() {
-        return new File(getApplicationBaseDir(), "lib");
-    }
-
     public static File getExamplesDir() {
         File examplesDir;
         if (SystemInfo.isMac) {
@@ -140,35 +135,12 @@ public class PathUtils {
             return executable.exists() ? executable : null;
         }
         if (SystemInfo.isWindows) {
-            File executable = new File(getApplicationBaseDir(), "colt.exe");
+            File executable = new File(getApplicationBaseDir().getParent(), "colt.exe");
             return executable.exists() ? executable : null;
         }
         if (SystemInfo.isLinux) {
             File executable = new File(getApplicationBaseDir(), "colt");
             return executable.exists() ? executable : null;
-        }
-        throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));
-    }
-
-    public static boolean checkGradle() {
-        //TODO slavara: chech ".home1"
-        String gradleHome = Preferences.userNodeForPackage(PathUtils.class).get("gradle.home1" , "");
-        if (StringUtils.isEmpty(gradleHome)) {
-            gradleHome = new File(getApplicationBaseDir(), "gradle").getPath();
-        }
-        return new File(gradleHome).exists();
-    }
-
-    public static File getGradleExecutable() {
-        String gradleHome = Preferences.userNodeForPackage(PathUtils.class).get("gradle.home", "");
-        if (StringUtils.isEmpty(gradleHome)) {
-            gradleHome = new File(getApplicationBaseDir(), "gradle").getPath();
-        }
-        if (SystemInfo.isMac || SystemInfo.isLinux) {
-            return new File(gradleHome, "bin/gradle");
-        }
-        if (SystemInfo.isWindows) {
-            return new File(gradleHome, "bin/gradle.bat");
         }
         throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));
     }

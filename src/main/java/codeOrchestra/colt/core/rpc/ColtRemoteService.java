@@ -11,7 +11,7 @@ import codeOrchestra.colt.core.rpc.security.TooManyFailedCodeTypeAttemptsExcepti
 /**
  * @author Alexander Eliseyev
  */
-public interface ColtRemoteService<P extends Project> extends ColtService<P> {
+public interface ColtRemoteService<P extends Project> extends ColtService {
 
     ColtState getState();
 

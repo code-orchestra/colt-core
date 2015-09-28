@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * @author Alexander Eliseyev
  */
-public interface LiveCodingManager<P extends Project, S extends ClientSocketHandlerAdapter> extends ColtService<P> {
+public interface LiveCodingManager<P extends Project, S extends ClientSocketHandlerAdapter> extends ColtService {
 
     LiveCodingSession getSession(String clientId);
 
