@@ -658,10 +658,126 @@
     -fx-text-fill: #c00;
     -fx-padding: 1px 0 1px 24px; }
 
-/* Checkboxes and Radio Buttons */
-.check-box .box, .radio-button .radio {
-    -fx-background-color: #cbcfd3, #f0f0f0, #fff;
-    -fx-background-insets: 0, 1px, 2px 1px 1px 1px; }
+/*******************************************************************************
+ *                                                                             *
+ * RadioButton                                                                 *
+ *                                                                             *
+ ******************************************************************************/
+
+.radio-button {
+    -fx-skin: "com.sun.javafx.scene.control.skin.RadioButtonSkin";
+    -fx-label-padding: 0.0em 0.0em 0.0em 0.416667em; /* 0 0 0 5 */
+    -fx-text-fill: -fx-text-background-color;
+}
+
+.radio-button:focused {
+    -fx-color: -fx-focused-base;
+}
+
+.radio-button .radio  {
+   -fx-background-color: #c9ccd0, #f0f0f0, #fff;
+   -fx-background-insets: 0 0 -1 0,  0,  1,  2;
+   -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
+   -fx-padding: 0.333333em; /* 4 -- padding from outside edge to the inner black dot */
+}
+
+.radio-button:focused .radio {
+    -fx-background-color: #0099ff, #008cf2, #f0f0f0, #fff;
+    -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+
+.radio-button:hover .radio {
+    -fx-color: -fx-hover-base;
+}
+.radio-button:armed .radio {
+    -fx-color: -fx-pressed-base;
+}
+
+.radio-button .dot {
+   -fx-background-color: transparent;
+   -fx-background-insets: 0;
+   -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
+   -fx-padding: 0.25em; /* 3 -- radius of the inner black dot when selected */
+}
+
+.radio-button:selected .dot {
+   -fx-background-color: #37393b;
+   -fx-background-insets: 0 0 0 0, 0;
+}
+
+.radio-button:disabled {
+    -fx-opacity: -fx-disabled-opacity;
+}
+
+.radio-button:show-mnemonics .mnemonic-underline {
+    -fx-stroke: -fx-text-fill;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * CheckBox                                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.check-box {
+    -fx-skin: "com.sun.javafx.scene.control.skin.CheckBoxSkin";
+    -fx-label-padding: 0.0em 0.0em 0.0em 0.416667em; /* 0 0 0 5 */
+    -fx-text-fill: -fx-text-background-color;
+}
+
+.check-box:focused {
+    -fx-color: -fx-focused-base;
+}
+
+.check-box .box {
+    -fx-background-color: #c9ccd0, #f0f0f0, #fff;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 2, 2, 1, 1;
+    -fx-padding: 0.25em; /* 3 -- padding from the outside edge to the mark */
+}
+
+.check-box:focused .box {
+    -fx-background-color: #0099ff, #008cf2, #f0f0f0, #fff;
+    -fx-background-insets: -1.4, 0, 1, 2;
+    -fx-background-radius: 3.4, 2, 1, 1;
+}
+
+.check-box:hover .box {
+    -fx-color: -fx-hover-base;
+}
+
+.check-box:armed .box {
+    -fx-color: -fx-pressed-base;
+}
+
+.check-box .mark {
+    -fx-background-color: transparent;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.333333em; /* 4 -- this is half the size of the mark */
+    -fx-shape: "M0,4H2L3,6L6,0H8L4,8H2Z";
+}
+
+/* TODO: scale the shape - the problem is that it is not within a square
+ * boundary.
+ */
+.check-box:indeterminate .mark {
+    -fx-background-color: -fx-mark-highlight-color, -fx-mark-color;
+    -fx-shape: "M0,0H8V2H0Z";
+    -fx-scale-shape: false;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #37393b;
+}
+
+.check-box:disabled {
+    -fx-opacity: -fx-disabled-opacity;
+}
+
+.check-box:show-mnemonics .mnemonic-underline {
+    -fx-stroke: -fx-text-fill;
+}
 
 /* Buttons andd choice-box */
 .button, .choice-box {
