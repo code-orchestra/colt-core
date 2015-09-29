@@ -25,7 +25,8 @@ class UpdateTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        String updatesPath = "${PathUtils.applicationBaseDir.path}${File.separator}updates"
+        String updatesPath = PathUtils.applicationBaseDir.path
+        if (needCopy) updatesPath += "${File.separator}updates"
         String tmpFilePath = downloadFile(url, updatesPath)
         if (with_md5) {
             downloadFile("${url}.MD5", updatesPath)
@@ -39,7 +40,6 @@ class UpdateTask extends Task<Void> {
                 zipFile.runInThread = true
                 zipFile.extractAll(copyTo)
                 ProgressMonitor progressMonitor = zipFile.progressMonitor
-
                 while (progressMonitor.state == ProgressMonitor.STATE_BUSY) {
                     updateProgress(progressMonitor.percentDone, 100)
                     updateMessage(progressMonitor.fileName)
@@ -56,7 +56,7 @@ class UpdateTask extends Task<Void> {
                 }
             } else if (needCopy) {
                 File tmpFile = new File(tmpFilePath)
-                FileUtils.copyFile(tmpFile, new File(copyTo + File.separator + tmpFile.name))
+                FileUtils.copyFile(tmpFile, new File("${copyTo}${File.separator}${tmpFile.name}"))
             }
         }
         return null
@@ -84,7 +84,6 @@ class UpdateTask extends Task<Void> {
             String fileName = "";
             String disposition = httpConn.getHeaderField("Content-Disposition");
             int contentLength = httpConn.getContentLength();
-
             if (disposition != null) {
                 // extracts file name from header field
                 int index = disposition.indexOf("filename=");
