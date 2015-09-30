@@ -667,7 +667,6 @@
 .radio-button {
     -fx-skin: "com.sun.javafx.scene.control.skin.RadioButtonSkin";
     -fx-label-padding: 0.0em 0.0em 0.0em 0.416667em; /* 0 0 0 5 */
-    -fx-text-fill: -fx-text-background-color;
 }
 
 .radio-button:focused {
@@ -706,10 +705,6 @@
    -fx-background-insets: 0 0 0 0, 0;
 }
 
-.radio-button:disabled {
-    -fx-opacity: -fx-disabled-opacity;
-}
-
 .radio-button:show-mnemonics .mnemonic-underline {
     -fx-stroke: -fx-text-fill;
 }
@@ -723,7 +718,6 @@
 .check-box {
     -fx-skin: "com.sun.javafx.scene.control.skin.CheckBoxSkin";
     -fx-label-padding: 0.0em 0.0em 0.0em 0.416667em; /* 0 0 0 5 */
-    -fx-text-fill: -fx-text-background-color;
 }
 
 .check-box:focused {
@@ -769,10 +763,6 @@
 
 .check-box:selected .mark {
     -fx-background-color: #37393b;
-}
-
-.check-box:disabled {
-    -fx-opacity: -fx-disabled-opacity;
 }
 
 .check-box:show-mnemonics .mnemonic-underline {
