@@ -192,9 +192,6 @@ public class ColtApplication extends Application {
 
         if (path != null) {
             initProjectStage();
-            if (SystemInfo.isLinux) {
-                mainStage.getIcons().addAll(primaryStage.getIcons());
-            }
             primaryStage = mainStage;
             primaryStage.show();
             new Thread() {

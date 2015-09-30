@@ -23,7 +23,7 @@ class ApplicationUtil {
                 Runtime.getRuntime().exec("open -n -a " + baseDir.path)
                 return
             }
-        } else if (SystemInfo.isWindows || SystemInfo.isLinux) {
+        } else if (SystemInfo.isWindows) {
             File executable = PathUtils.applicationExecutable
             if (executable != null && executable.exists()) {
                 startExecutable(executable.path)
