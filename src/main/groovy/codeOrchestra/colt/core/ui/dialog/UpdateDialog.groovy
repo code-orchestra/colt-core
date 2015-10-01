@@ -11,6 +11,7 @@ import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.ProgressBar
 import javafx.scene.image.Image
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.HBox
 import javafx.stage.Window
 import org.controlsfx.control.ButtonBar
@@ -105,7 +106,7 @@ class UpdateDialog extends DialogWithImage {
 
     protected void startTask(UpdateTask newTask) {
         newTask.stateProperty().addListener({ ObservableValue<? extends Worker.State> observableValue, Worker.State t, Worker.State t1 ->
-            switch (t1){
+            switch (t1) {
                 case Worker.State.SUCCEEDED:
                     updateComplete()
                     break
@@ -151,6 +152,12 @@ class UpdateDialog extends DialogWithImage {
             okButton.disable = false
             okButton.text = "Restart"
         }
+    }
+
+    @Override
+    protected void closeEscape(KeyEvent event) {
+        cancelUpdate()
+        hide()
     }
 
     protected void hide() {

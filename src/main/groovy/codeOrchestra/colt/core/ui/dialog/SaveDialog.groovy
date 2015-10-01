@@ -7,6 +7,7 @@ import javafx.event.Event
 import javafx.event.EventHandler
 import javafx.scene.control.Button
 import javafx.scene.image.Image
+import javafx.scene.input.KeyEvent
 import javafx.stage.Window
 import org.controlsfx.control.ButtonBar
 
@@ -56,11 +57,17 @@ class SaveDialog extends DialogWithImage {
         buttonBar.buttons.addAll(cancel, dontSave)
 
         stage.onCloseRequest = {
-            if(!action){
+            if (!action) {
                 flowEvent?.consume()
             }
         } as EventHandler
 
+    }
+
+    @Override
+    protected void closeEscape(KeyEvent event) {
+        flowEvent?.consume()
+        hide()
     }
 
     void show(Event event) {

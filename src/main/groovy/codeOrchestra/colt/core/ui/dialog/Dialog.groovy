@@ -5,6 +5,8 @@ import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.text.TextAlignment
@@ -30,12 +32,13 @@ class Dialog extends VBox {
     Dialog(Window owner) {
         VBox root = this
         stage = new Stage() {
-            @Override public void showAndWait() {
+            @Override
+            public void showAndWait() {
                 Window stageOwner = getOwner();
                 if (stageOwner != null) {
                     // because Stage does not seem to centre itself over its owner, we
                     // do it here.
-                    final double x = stageOwner.getX() + (stageOwner.getWidth() / 2.0) - (540/ 2.0);
+                    final double x = stageOwner.getX() + (stageOwner.getWidth() / 2.0) - (540 / 2.0);
                     final double y = stageOwner.getY() + (stageOwner.getHeight() / 2.0) - (root.prefHeight(-1)) / 2.0 - 50;
                     setX(x);
                     setY(y);
@@ -47,6 +50,15 @@ class Dialog extends VBox {
         stage.initOwner(owner)
         stage.resizable = false
         stage.title = "COLT"
+
+        addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            void handle(KeyEvent event) {
+                if (event.code == KeyCode.ESCAPE) {
+                    closeEscape(event)
+                }
+            }
+        })
 
         initView()
     }
@@ -61,7 +73,7 @@ class Dialog extends VBox {
         initButtons()
     }
 
-    protected void initHeader () {
+    protected void initHeader() {
         header = new HBox()
         header.minHeight = Double.NEGATIVE_INFINITY
         label = new Label(maxWidth: 540, wrapText: true, textAlignment: TextAlignment.LEFT)
@@ -81,7 +93,7 @@ class Dialog extends VBox {
 
     }
 
-    protected void initButtons () {
+    protected void initButtons() {
         buttonBar = new ButtonBar()
         buttonBar.buttonUniformSize = false
         okButton = new Button("OK")
@@ -95,6 +107,10 @@ class Dialog extends VBox {
         setMargin(buttonBar, new Insets(10, 0, 0, 0))
 
         children.add(buttonBar)
+    }
+
+    protected void closeEscape(KeyEvent event) {
+
     }
 
     void setMessage(String message) {

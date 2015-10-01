@@ -5,6 +5,7 @@ import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.TextArea
 import javafx.scene.image.Image
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.Priority
 import javafx.stage.Window
 import org.controlsfx.control.ButtonBar
@@ -57,6 +58,11 @@ class ExceptionDialog extends DialogWithImage {
         details_btn.onAction = {
             showDetails = !showDetails
         } as EventHandler
+    }
+
+    @Override
+    protected void closeEscape(KeyEvent event) {
+        stage.hide()
     }
 
     void initException(Throwable exception, String massage = null) {
