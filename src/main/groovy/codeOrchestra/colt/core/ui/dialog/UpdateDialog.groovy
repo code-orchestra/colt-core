@@ -154,7 +154,7 @@ class UpdateDialog extends DialogWithImage {
     }
 
     @Override
-    protected void onEscape() {
+    protected void onCancel() {
         cancelUpdate()
         hide()
     }

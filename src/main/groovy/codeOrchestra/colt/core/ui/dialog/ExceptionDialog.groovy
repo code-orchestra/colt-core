@@ -60,7 +60,7 @@ class ExceptionDialog extends DialogWithImage {
     }
 
     @Override
-    protected void onEscape() {
+    protected void onCancel() {
         stage.hide()
     }
 

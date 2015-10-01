@@ -64,7 +64,7 @@ class SaveDialog extends DialogWithImage {
     }
 
     @Override
-    protected void onEscape() {
+    protected void onCancel() {
         flowEvent?.consume()
         hide()
     }
