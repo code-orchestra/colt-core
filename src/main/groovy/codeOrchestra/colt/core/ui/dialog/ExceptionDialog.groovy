@@ -59,6 +59,11 @@ class ExceptionDialog extends DialogWithImage {
         } as EventHandler
     }
 
+    @Override
+    protected void onCancel() {
+        stage.hide()
+    }
+
     void initException(Throwable exception, String massage = null) {
         if (massage) {
             this.message = massage

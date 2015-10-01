@@ -105,7 +105,7 @@ class UpdateDialog extends DialogWithImage {
 
     protected void startTask(UpdateTask newTask) {
         newTask.stateProperty().addListener({ ObservableValue<? extends Worker.State> observableValue, Worker.State t, Worker.State t1 ->
-            switch (t1){
+            switch (t1) {
                 case Worker.State.SUCCEEDED:
                     updateComplete()
                     break
@@ -151,6 +151,12 @@ class UpdateDialog extends DialogWithImage {
             okButton.disable = false
             okButton.text = "Restart"
         }
+    }
+
+    @Override
+    protected void onCancel() {
+        cancelUpdate()
+        hide()
     }
 
     protected void hide() {

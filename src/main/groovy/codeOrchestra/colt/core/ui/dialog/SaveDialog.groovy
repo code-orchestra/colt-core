@@ -56,11 +56,17 @@ class SaveDialog extends DialogWithImage {
         buttonBar.buttons.addAll(cancel, dontSave)
 
         stage.onCloseRequest = {
-            if(!action){
+            if (!action) {
                 flowEvent?.consume()
             }
         } as EventHandler
 
+    }
+
+    @Override
+    protected void onCancel() {
+        flowEvent?.consume()
+        hide()
     }
 
     void show(Event event) {
