@@ -55,7 +55,7 @@ class Dialog extends VBox {
             @Override
             void handle(KeyEvent event) {
                 if (event.code == KeyCode.ESCAPE) {
-                    closeEscape(event)
+                    onEscape()
                 }
             }
         })
@@ -109,7 +109,7 @@ class Dialog extends VBox {
         children.add(buttonBar)
     }
 
-    protected void closeEscape(KeyEvent event) {
+    protected void onEscape() {
 
     }
 

@@ -11,7 +11,6 @@ import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.ProgressBar
 import javafx.scene.image.Image
-import javafx.scene.input.KeyEvent
 import javafx.scene.layout.HBox
 import javafx.stage.Window
 import org.controlsfx.control.ButtonBar
@@ -155,7 +154,7 @@ class UpdateDialog extends DialogWithImage {
     }
 
     @Override
-    protected void closeEscape(KeyEvent event) {
+    protected void onEscape() {
         cancelUpdate()
         hide()
     }
