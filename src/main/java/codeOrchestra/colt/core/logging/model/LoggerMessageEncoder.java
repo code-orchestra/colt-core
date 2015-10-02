@@ -133,7 +133,7 @@ public final class LoggerMessageEncoder {
     }
 
     Level severityLevel = getLevel(command);
-    Long timestamp = null;
+    Long timestamp;
     try {
       timestamp = Long.valueOf(timestsampStr);
     } catch (Throwable t) {

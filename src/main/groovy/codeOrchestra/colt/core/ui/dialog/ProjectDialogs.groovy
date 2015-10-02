@@ -77,7 +77,7 @@ class ProjectDialogs {
         }
     }
 
-    static void openWelcomeScreen(Scene scene) {
+    static void openWelcomeScreen() {
         closeProjectDialog()//todo: или оставить текущий проект?
     }
 

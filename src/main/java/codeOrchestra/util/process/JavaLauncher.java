@@ -38,10 +38,6 @@ public class JavaLauncher {
         myProgramParameter = programParameter;
     }
 
-    public String getCommandString() {
-        return StringUtils.join(getCommand(), " ");
-    }
-
     public ProcessBuilder createProcessBuilder() {
         List<String> commandLine = getCommand();
 
@@ -52,7 +48,7 @@ public class JavaLauncher {
     }
 
     private List<String> getCommand() {
-        String java = null;
+        String java;
         try {
             java = JavaLauncher.getJavaCommand(myJrePath);
         } catch (ExecutionException e) {

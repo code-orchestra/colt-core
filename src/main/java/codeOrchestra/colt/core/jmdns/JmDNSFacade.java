@@ -45,14 +45,6 @@ public class JmDNSFacade {
         serviceInfo = ServiceInfo.create("_colt._tcp.local.", getServiceName(project), CodeOrchestraRPCHttpServer.PORT, 0, 0, values);
     }
 
-    public void updateCurrentServiceInfo(Project project, Map<String, String> values) {
-        values.put("name", project.getName());
-        values.put("path", project.getPath());
-        values.put("timestamp", String.valueOf(System.currentTimeMillis()));
-
-        serviceInfo.setText(values);
-    }
-
     private String getServiceName(Project project) {
         return "colt::" + System.currentTimeMillis() + "::" + project.getName();
     }

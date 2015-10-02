@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 public class FileUtils {
 
     private static final String[] IGNORED_DIRS = new String[]{".svn", ".git", "_svn"};
-    private static final String[] IGNORED_FILES = new String[]{".DS_Store", ".colt", ".tmp"};
 
     public static final FileFilter FILES_ONLY_FILTER = File::isFile;
 
@@ -66,32 +65,6 @@ public class FileUtils {
         return null;
     }
 
-    public static String unixify(String path) {
-        return path.replace("\\", "/");
-    }
-
-    public static boolean isIgnoredFile(File file) {
-        String fileName = file.getName();
-        if (fileName == null) {
-            return true;
-        }
-
-        for (String ignoredFile : IGNORED_FILES) {
-            if (fileName.toLowerCase().endsWith(ignoredFile.toLowerCase())) {
-                return true;
-            }
-        }
-
-        String filePath = FileUtils.unixify(file.getPath());
-        for (String ignoredDir : IGNORED_DIRS) {
-            if (filePath.contains("/" + ignoredDir + "/")) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static boolean clear(File dir) {
         File[] files = dir.listFiles();
         if (files == null) return true;
@@ -120,10 +93,6 @@ public class FileUtils {
 
     public static File getTempDir() {
         return new File(System.getProperty("java.io.tmpdir"));
-    }
-
-    public static ArrayList<String> copyDir(File what, File to) {
-        return copyDir(what, to, false);
     }
 
     public static ArrayList<String> copyDir(File what, File to, boolean checkEquals) {
@@ -247,65 +216,6 @@ public class FileUtils {
         }
     }
 
-    public static ReadWrapper readAndIgnoreBOM(File file) {
-        try {
-            InputStreamWrapper inputStreamWrapper = checkForUtf8BOMAndDiscardIfAny(new FileInputStream(file));
-            return new ReadWrapper(read(new InputStreamReader(inputStreamWrapper.getInputStream())), inputStreamWrapper.bomWasRemoved());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static InputStreamWrapper checkForUtf8BOMAndDiscardIfAny(InputStream inputStream) throws IOException {
-        PushbackInputStream pushbackInputStream = new PushbackInputStream(new BufferedInputStream(inputStream), 3);
-        byte[] bom = new byte[3];
-        boolean bomWasRemoved = false;
-        if (pushbackInputStream.read(bom) != -1) {
-            if (!(bom[0] == (byte) 0xEF && bom[1] == (byte) 0xBB && bom[2] == (byte) 0xBF)) {
-                pushbackInputStream.unread(bom);
-            } else {
-                bomWasRemoved = true;
-            }
-        }
-        return new InputStreamWrapper(pushbackInputStream, bomWasRemoved);
-    }
-
-    private static class InputStreamWrapper {
-        InputStream inputStream;
-        boolean bomWasRemoved;
-
-        private InputStreamWrapper(InputStream inputStream, boolean bomWasRemoved) {
-            this.inputStream = inputStream;
-            this.bomWasRemoved = bomWasRemoved;
-        }
-
-        private InputStream getInputStream() {
-            return inputStream;
-        }
-
-        private boolean bomWasRemoved() {
-            return bomWasRemoved;
-        }
-    }
-
-    public static class ReadWrapper {
-        private String readResult;
-        private boolean bomWasRemoved;
-
-        public ReadWrapper(String readResult, boolean bomWasRemoved) {
-            this.readResult = readResult;
-            this.bomWasRemoved = bomWasRemoved;
-        }
-
-        public String getReadResult() {
-            return readResult;
-        }
-
-        public boolean bomWasRemoved() {
-            return bomWasRemoved;
-        }
-    }
-
     public static String read(Reader reader) {
         BufferedReader r = null;
         try {
@@ -313,7 +223,7 @@ public class FileUtils {
 
             StringBuilder result = new StringBuilder();
 
-            String line = null;
+            String line;
             while ((line = r.readLine()) != null) {
                 result.append(line).append("\n");
             }
@@ -329,25 +239,6 @@ public class FileUtils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public static void writeWithBOM(File file, String content) {
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            byte[] bom = new byte[] { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            fileOutputStream.write(bom);
-
-            Writer out = new BufferedWriter(new OutputStreamWriter(fileOutputStream, "UTF-8"));
-            out.write(content);
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 

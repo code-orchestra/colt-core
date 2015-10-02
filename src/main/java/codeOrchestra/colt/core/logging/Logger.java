@@ -99,12 +99,7 @@ public abstract class Logger {
             if (loggerService == null) {
                 HEADLESS_LOGGER.log(message, scopeIds, timestamp, level);
             } else {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        loggerService.log(source, message, scopeIds, timestamp, level, stackTrace);
-                    }
-                });
+                Platform.runLater(() -> loggerService.log(source, message, scopeIds, timestamp, level, stackTrace));
             }
         }
     }

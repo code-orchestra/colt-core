@@ -10,15 +10,7 @@ public final class NameUtil {
   public static String namespaceFromPath(String path) {
     return path.replace('/', '.').replace(File.separatorChar, '.');
   }
-  
-  public static String shortNameFromLongName(String fqName) {
-    if (fqName == null) return null;
-    int offset = fqName.lastIndexOf('.');
-    if (offset < 0) return fqName;
 
-    return fqName.substring(offset + 1);
-  }
-  
   public static String longNameFromNamespaceAndShortName(String namespace, String name) {
     if (StringUtils.isEmpty(namespace)) {
       return name;

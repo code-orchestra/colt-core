@@ -112,7 +112,7 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
                 }
             }
 
-            return new ColtState(currentProject, coltConnections.toArray(new ColtConnection[coltConnections.size()]));
+            return new ColtState();
         }
 
         return new ColtState();
@@ -145,31 +145,26 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
         final Throwable[] exception = new Throwable[1];
         final Object[] result = new Object[1];
 
-        Platform.runLater(new Runnable() {
+        Platform.runLater(() -> command.execute(new ColtControllerCallbackEx<T>() {
             @Override
-            public void run() {
-                command.execute(new ColtControllerCallbackEx<T>() {
-                    @Override
-                    public void onComplete(T successResult) {
-                        result[0] = successResult;
+            public void onComplete(T successResult) {
+                result[0] = successResult;
 
-                        synchronized (monitor) {
-                            monitor.notify();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable t, T errorResult) {
-                        exception[0] = t;
-                        result[0] = errorResult;
-
-                        synchronized (monitor) {
-                            monitor.notify();
-                        }
-                    }
-                });
+                synchronized (monitor) {
+                    monitor.notify();
+                }
             }
-        });
+
+            @Override
+            public void onError(Throwable t, T errorResult) {
+                exception[0] = t;
+                result[0] = errorResult;
+
+                synchronized (monitor) {
+                    monitor.notify();
+                }
+            }
+        }));
 
         synchronized (monitor) {
             try {
@@ -197,17 +192,14 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
         final Throwable[] exception = new Throwable[1];
         final Object[] result = new Object[1];
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    result[0] = command.execute();
-                } catch (Throwable t) {
-                    exception[0] = t;
-                } finally {
-                    synchronized (monitor) {
-                        monitor.notify();
-                    }
+        Platform.runLater(() -> {
+            try {
+                result[0] = command.execute();
+            } catch (Throwable t) {
+                exception[0] = t;
+            } finally {
+                synchronized (monitor) {
+                    monitor.notify();
                 }
             }
         });
@@ -232,26 +224,6 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
         }
 
         return (T) result[0];
-    }
-
-    protected <T> T executeSecurily(String securityToken, final RemoteCommand<T> command)
-            throws ColtRemoteTransferableException {
-        if (!ColtRemoteSecurityManager.getInstance().isValidToken(securityToken)) {
-            throw new InvalidAuthTokenException();
-        }
-
-        try {
-            return command.execute();
-        } catch (ColtRemoteException e) {
-            e.printStackTrace();
-
-            if (e instanceof ColtRemoteTransferableException) {
-                throw (ColtRemoteTransferableException) e;
-            }
-
-            ErrorHandler.handle(e, "Error while handling remote command: " + command.getName());
-            throw new ColtUnhandledException(e);
-        }
     }
 
     protected <T> T executeSecurilyInUI(String securityToken, final RemoteCommand<T> command)

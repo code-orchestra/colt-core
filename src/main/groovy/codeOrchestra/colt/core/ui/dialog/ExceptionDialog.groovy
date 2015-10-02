@@ -30,7 +30,7 @@ class ExceptionDialog extends DialogWithImage {
     protected void initView() {
         super.initView()
 
-        title = "Error"
+        Dialog.setTitle = "Error"
         image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
 
         setShowDetails(false)

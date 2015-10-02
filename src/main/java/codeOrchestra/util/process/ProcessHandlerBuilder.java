@@ -28,37 +28,9 @@ public class ProcessHandlerBuilder {
     return this;
   }
 
-  public ProcessHandlerBuilder append(String... command) {
-    for (String commandPart : command) {
-      append(commandPart);
-    }
-    return this;
-  }
-
-  public ProcessHandlerBuilder append(List<String> command) {
-    for (String commandPart : command) {
-      append(commandPart);
-    }
-    return this;
-  }
-
   public ProcessHandlerBuilder appendKey(String key, String parameter) {
     if (StringUtils.isNotEmpty(key) && StringUtils.isNotEmpty(parameter)) {
       return append("-" + key).append(parameter);
-    }
-    return this;
-  }
-
-  public ProcessHandlerBuilder appendKey(String key, String... parameter) {
-    if (StringUtils.isNotEmpty(key) && parameter.length > 0) {
-      return append("-" + key).append(parameter);
-    }
-    return this;
-  }
-
-  public ProcessHandlerBuilder appendKey(String key, List<String> parameters) {
-    if (StringUtils.isNotEmpty(key) && !parameters.isEmpty()) {
-      return append("-" + key).append(parameters);
     }
     return this;
   }
@@ -76,7 +48,7 @@ public class ProcessHandlerBuilder {
     builder.directory(workingDirectory);
     try {
       Process process = builder.start();
-      DefaultProcessHandler processHandler = new DefaultProcessHandler(process, StringUtils.foldLeft(myCommandLine, "", new StringUtils.ILeftCombinator() {
+      return new DefaultProcessHandler(process, StringUtils.foldLeft(myCommandLine, "", new StringUtils.ILeftCombinator() {
         public String combine(String s, String it) {
           return (StringUtils.isEmpty(s) ?
             it :
@@ -84,13 +56,12 @@ public class ProcessHandlerBuilder {
           );
         }
       }));
-      return processHandler;
     } catch (IOException e) {
-      throw new ProcessNotCreatedException("Start process failed", e, getCommandLine(workingDirectory.getAbsolutePath()));
+      throw new ProcessNotCreatedException("Start process failed", e);
     } catch (NullPointerException e) {
-      throw new ProcessNotCreatedException("Start process failed: one of the command line arguments is null", e, getCommandLine(workingDirectory.getAbsolutePath()));
+      throw new ProcessNotCreatedException("Start process failed: one of the command line arguments is null", e);
     } catch (Throwable t) {
-      throw new ProcessNotCreatedException("Start process failed", t, getCommandLine(workingDirectory.getAbsolutePath()));
+      throw new ProcessNotCreatedException("Start process failed", t);
     }
   }
 

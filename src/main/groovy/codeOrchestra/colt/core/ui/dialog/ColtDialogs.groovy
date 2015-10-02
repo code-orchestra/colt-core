@@ -28,7 +28,7 @@ class ColtDialogs {
     static void showError(Window owner, String title, String message, String comment) {
         DialogWithImage dialog = new DialogWithImage(owner)
         dialog.image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/error-48x48.png")
-        dialog.title = title
+        Dialog.setTitle = title
         dialog.message = message
         dialog.comment = comment
         dialog.show()
@@ -37,7 +37,7 @@ class ColtDialogs {
     static void showWarning(Window owner, String title, String message) {
         DialogWithImage dialog = new DialogWithImage(owner)
         dialog.image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/warning-48x48.png")
-        dialog.title = title
+        Dialog.setTitle = title
         dialog.message = message
         dialog.show()
     }
@@ -45,7 +45,7 @@ class ColtDialogs {
     static void showInfo(Window owner, String title, String message) {
         DialogWithImage dialog = new DialogWithImage(owner)
         dialog.image = new Image("/codeOrchestra/colt/core/ui/style/images/messages/info-48x48.png")
-        dialog.title = title
+        Dialog.setTitle = title
         dialog.message = message
         dialog.show()
     }

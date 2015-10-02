@@ -2,12 +2,9 @@ package codeOrchestra.util;
 
 import codeOrchestra.colt.core.logging.Logger;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BrowserUtil {
@@ -25,23 +22,12 @@ public class BrowserUtil {
   // local paths like "C:/temp/index.html" whould be erroneously interpreted as
   // external URLs.)
   private static final Pattern ourExternalPrefix = Pattern.compile("^[\\w\\+\\.\\-]{2,}:");
-  private static final Pattern ourAnchorsuffix = Pattern.compile("#(.*)$");
 
   private BrowserUtil() {
   }
 
   public static boolean isAbsoluteURL(String url) {
     return ourExternalPrefix.matcher(url.toLowerCase()).find();
-  }
-
-  public static String getDocURL(String url) {
-    Matcher anchorMatcher = ourAnchorsuffix.matcher(url);
-
-    if (anchorMatcher.find()) {
-      return anchorMatcher.reset().replaceAll("");
-    }
-
-    return url;
   }
 
   public static URL getURL(String url) throws java.net.MalformedURLException {
@@ -73,51 +59,22 @@ public class BrowserUtil {
     }
     return null;
   }
-  
-  /**
-   * This method works around Windows 'start' command behaivor of dropping
-   * anchors from the url for local urls.
-   */
-  private static String redirectUrl(String url, String urlString) throws IOException {
-    if (url.indexOf('&') == -1 && (!urlString.startsWith("file:") || !urlString.contains("#")))
-      return urlString;
 
-    File redirect = File.createTempFile("redirect", ".html");
-    redirect.deleteOnExit();
-    FileWriter writer = new FileWriter(redirect);
-    writer.write("<html><head></head><body><script type=\"text/javascript\">window.location=\"" + url + "\";</script></body></html>");
-    writer.close();
-    return pathToUrl(redirect.getAbsolutePath());
-  }
-
-  public static ProcessBuilder launchBrowser(String url, String name, boolean multiple) {
+  public static ProcessBuilder launchBrowser(final String url, boolean multiple) {
     return launchBrowser(url, getDefaultBrowserCommand(multiple));
   }
 
-    public static ProcessBuilder launchBrowser(String url, String name) {
-        return launchBrowser(url, name, false);
-    }
-
-
-    public static String escapeUrl(String url) {
+  public static String escapeUrl(String url) {
     if (SystemInfo.isWindows) {
       return "\"" + url + "\"";
     } else {
       return url.replaceAll(" ", "%20");
     }
   }
-  
+
   public static String escapeUrl_(String url) {
 	  return url.replaceAll(" ", "%20");
-	  }
-
-  public static ProcessBuilder launchBrowser(final String url, boolean multiple) {
-    return launchBrowser(url, null, multiple);
   }
-
-    public static ProcessBuilder launchBrowser(final String url) {
-        return launchBrowser(url, false);
-    }
 
   private static String[] getDefaultBrowserCommand(boolean multiple) {
     if (SystemInfo.isWindows9x) {
@@ -142,7 +99,6 @@ public class BrowserUtil {
    *          VFS url (as constructed by VfsFile.getUrl())
    * @return converted URL or null if error has occured
    */
-
   public static URL convertToURL(String vfsUrl) {
     if (vfsUrl.startsWith(JAR)) {
       LOG.error("jar: protocol not supported.");
@@ -177,14 +133,6 @@ public class BrowserUtil {
       LOG.debug("MalformedURLException occured:" + e.getMessage());
       return null;
     }
-  }
-
-  public static String pathToUrl(String path) {
-    return constructUrl("file", path);
-  }
-
-  public static String constructUrl(String protocol, String path) {
-    return protocol + "://" + path;
   }
 
 }

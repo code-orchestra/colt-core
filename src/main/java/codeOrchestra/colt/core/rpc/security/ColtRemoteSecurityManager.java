@@ -38,10 +38,6 @@ public class ColtRemoteSecurityManager {
     listeners.add(listener);
   }
 
-  public void removeListener(ColtRemoteSecurityListener listener) {
-    listeners.remove(listener);
-  }
-
   private void fireRequestEvent(String shortCode, String requestor) {
     for (ColtRemoteSecurityListener listener : listeners) {
       listener.onNewRequest(requestor, shortCode);

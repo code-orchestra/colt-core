@@ -260,10 +260,6 @@ abstract class ApplicationGUI extends BorderPane {
 
     abstract boolean validateSettingsForm()
 
-    public void activateLog() {
-        runButton.onAction.handle(null)
-    }
-
     boolean runSession() {
         boolean result = true
         ActionPlayer playerControls = actionPlayerPopup.actionPlayer

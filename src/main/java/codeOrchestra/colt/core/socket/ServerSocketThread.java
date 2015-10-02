@@ -21,8 +21,6 @@ public abstract class ServerSocketThread extends Thread {
 
     private List<ClientSocketHandler> clientSocketHandlers = new ArrayList<>();
 
-    private Throwable socketInitException;
-
     public ServerSocketThread(int port, ClientSocketHandlerFactory handlerFactory) {
         assert handlerFactory != null;
         this.handlerFactory = handlerFactory;
@@ -38,7 +36,7 @@ public abstract class ServerSocketThread extends Thread {
 
             while (!serverSocket.isClosed()) {
                 // Wait to accept a new connection
-                Socket clientSocket = null;
+                Socket clientSocket;
                 try {
                     clientSocket = serverSocket.accept();
                 } catch (SocketException e) {
@@ -66,12 +64,7 @@ public abstract class ServerSocketThread extends Thread {
                 new Thread(lastHandler).start();
             }
         } catch (IOException e) {
-            setSocketInitException(e);
         }
-    }
-
-    public synchronized boolean isSocketOpen() {
-        return socketOpen;
     }
 
     protected abstract boolean allowMultipleConnections();
@@ -104,13 +97,4 @@ public abstract class ServerSocketThread extends Thread {
         }
         clientSocketHandlers.clear();
     }
-
-    public Throwable getSocketInitException() {
-        return socketInitException;
-    }
-
-    private void setSocketInitException(Throwable socketInitException) {
-        this.socketInitException = socketInitException;
-    }
-
 }

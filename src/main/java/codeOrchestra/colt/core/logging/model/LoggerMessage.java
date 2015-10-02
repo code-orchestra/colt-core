@@ -1,7 +1,6 @@
 package codeOrchestra.colt.core.logging.model;
 
 import codeOrchestra.colt.core.logging.Level;
-import codeOrchestra.util.NameUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +28,6 @@ public class LoggerMessage {
     this.stackTrace = builder.stackTrace;
   }
 
-  public boolean hasStackTrace() {
-    return stackTrace != null;
-  }
-
   public String getStackTrace() {
     return stackTrace;
   }
@@ -47,13 +42,6 @@ public class LoggerMessage {
 
   public String getRootFQName() {
     return rootFQName;
-  }
-
-    public String getRootSimpleName() {
-    if (rootFQName != null) {
-      return NameUtil.shortNameFromLongName(rootFQName);
-    }
-    return "";
   }
 
   public String getMessage() {

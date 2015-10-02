@@ -44,17 +44,6 @@ abstract class InputWithErrorBase extends TitledInputBase implements MInput {
         return getRightAnchor(textField)
     }
 
-    void setNumeric(boolean numeric) {
-        text().addListener({ ob, oldValue, String newValue ->
-            try {
-                newValue.toInteger()
-            } catch (NumberFormatException ignored) {
-                text = oldValue
-                textField.text = text
-            }
-        } as ChangeListener)
-    }
-
     protected InvalidationListener validationListener = { javafx.beans.Observable observable ->
         if (!validateValue()) {
             deactivateValidation()
