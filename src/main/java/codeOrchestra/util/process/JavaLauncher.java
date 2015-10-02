@@ -5,7 +5,6 @@ import codeOrchestra.util.StringUtils;
 import codeOrchestra.util.SystemInfo;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,26 +36,6 @@ public class JavaLauncher {
 
     public void setProgramParameter(String programParameter) {
         myProgramParameter = programParameter;
-    }
-
-    public JavaLauncher(String programParameter, String virtualMachineParameter, List<String> classPath) {
-        if (programParameter == null) {
-            myProgramParameter = "";
-        } else {
-            myProgramParameter = programParameter;
-        }
-
-        if (virtualMachineParameter == null) {
-            myVirtualMachineParameter = "";
-        } else {
-            myVirtualMachineParameter = virtualMachineParameter;
-        }
-
-        if (classPath == null) {
-            myClassPath = new ArrayList<>();
-        } else {
-            myClassPath = classPath;
-        }
     }
 
     public String getCommandString() {

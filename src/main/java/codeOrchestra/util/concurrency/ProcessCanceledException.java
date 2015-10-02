@@ -16,10 +16,6 @@
 package codeOrchestra.util.concurrency;
 
 public class ProcessCanceledException extends RuntimeException {
-  public ProcessCanceledException() {
-    int i = 0;
-  }
-
   public ProcessCanceledException(Throwable cause) {
     super(cause);
   }

@@ -18,9 +18,6 @@ public class ColtConnection {
 
     private int connectionNumber;
 
-    public ColtConnection() {
-    }
-
     public ColtConnection(LiveCodingSession session) {
         this.startTimestamp = session.getStartTimestamp();
         this.broadcastId = session.getBroadcastId();

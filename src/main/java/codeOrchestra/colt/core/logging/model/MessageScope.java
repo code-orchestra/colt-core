@@ -13,10 +13,6 @@ public class MessageScope {
     this.name = name;
   }
 
-  public MessageScope(String scopeId) {
-    this.scopeId = scopeId;
-  }
-
   public void setName(String name) {
     this.name = name;
   }

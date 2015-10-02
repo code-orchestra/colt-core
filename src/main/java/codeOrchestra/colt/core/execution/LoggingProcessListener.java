@@ -17,10 +17,6 @@ public class LoggingProcessListener extends ProcessAdapter {
         this.levelOverride = levelOverride;
     }
 
-    public LoggingProcessListener(String loggerName) {
-        this(loggerName, null);
-    }
-
     @Override
     public void onTextAvailable(ProcessEvent event, String outputType) {
         String text = event.getText().trim();
