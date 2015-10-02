@@ -11,10 +11,7 @@ public final class ProjectHelper {
 
     public static boolean isLegacyProject(String projectFileContent) {
         String trimmedContent = projectFileContent.trim();
-        if (trimmedContent.startsWith("<?xml") || trimmedContent.startsWith("<coltProject") || trimmedContent.startsWith("<xml")) {
-            return false;
-        }
-        return true;
+        return !(trimmedContent.startsWith("<?xml") || trimmedContent.startsWith("<coltProject") || trimmedContent.startsWith("<xml"));
     }
 
     public static <P extends Project> P getCurrentProject() {

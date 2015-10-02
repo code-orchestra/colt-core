@@ -57,7 +57,7 @@ public class JavaLauncher {
 
         try {
             new File(java).setExecutable(true, true);
-        } catch (Throwable t) {
+        } catch (Throwable ignored) {
         }
 
         String classPathString = protect(StringUtils.join(myClassPath, File.pathSeparator));

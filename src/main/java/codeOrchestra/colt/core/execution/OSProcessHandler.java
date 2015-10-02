@@ -70,7 +70,6 @@ public class OSProcessHandler extends ProcessHandler {
       myWaitForThreadFuture.cancel(true);
     }
 
-
     public ProcessWaitFor(final Process process) {
       myWaitForThreadFuture = executeOnPooledThread(new Runnable() {
         public void run() {
@@ -195,10 +194,6 @@ public class OSProcessHandler extends ProcessHandler {
     catch (IOException e) {
       LOG.error(e);
     }
-  }
-
-  public boolean detachIsDefault() {
-    return false;
   }
 
   public OutputStream getProcessInput() {

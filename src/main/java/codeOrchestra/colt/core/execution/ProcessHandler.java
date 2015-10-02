@@ -65,8 +65,6 @@ public abstract class ProcessHandler extends UserDataHolderBase {
 
   protected abstract void detachProcessImpl();
 
-  public abstract boolean detachIsDefault();
-
   public void waitFor() {
     try {
       myWaitSemaphore.waitFor();

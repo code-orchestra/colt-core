@@ -48,10 +48,6 @@ public class ParamsGroup implements Cloneable{
     return myGroupParams.getList();
   }
 
-  public ParametersList getParametersList() {
-    return myGroupParams;
-  }
-
   public ParamsGroup clone() {
      try {
        final ParamsGroup clone = (ParamsGroup)super.clone();

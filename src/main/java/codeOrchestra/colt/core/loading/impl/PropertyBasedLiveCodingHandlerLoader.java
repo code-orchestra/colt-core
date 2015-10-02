@@ -54,9 +54,7 @@ public class PropertyBasedLiveCodingHandlerLoader implements LiveCodingHandlerLo
 
         try {
             return (LiveCodingLanguageHandler) handlerClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new LiveCodingHandlerLoadingException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new LiveCodingHandlerLoadingException(e);
         }
     }

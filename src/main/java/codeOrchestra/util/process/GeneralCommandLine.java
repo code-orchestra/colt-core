@@ -62,27 +62,6 @@ public class GeneralCommandLine {
     return myCharset;
   }
 
-  public static String quote(final String parameter) {
-    if (parameter == null || !hasWhitespace(parameter)) {
-      return parameter; // no need to quote
-    }
-    if (parameter.length() >= 2 && parameter.startsWith("\"") && parameter.endsWith("\"")) {
-      return parameter; // already quoted
-    }
-    // need to escape trailing slash if any, otherwise it will escape the ending quote
-    return "\"" + parameter + (parameter.endsWith("\\")? "\\\"" : "\"");
-  }
-
-  private static boolean hasWhitespace(final String string) {
-    final int length = string.length();
-    for (int i = 0; i < length; i++) {
-      if (Character.isWhitespace(string.charAt(i))) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   public GeneralCommandLine clone() {
     final GeneralCommandLine clone = new GeneralCommandLine();
     clone.myCharset = myCharset;

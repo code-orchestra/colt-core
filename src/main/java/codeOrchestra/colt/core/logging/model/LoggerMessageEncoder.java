@@ -140,7 +140,7 @@ public final class LoggerMessageEncoder {
       throw new RuntimeException("Can't parse timestamp " + timestsampStr);
     }
 
-    LoggerMessage message = new LoggerMessage.Builder()
+    return new LoggerMessage.Builder()
       .command(command)
       .message(content)
       .rootFQName(rootFQName)
@@ -149,8 +149,5 @@ public final class LoggerMessageEncoder {
       .timestamp(timestamp)
       .stackTrace(stackTrace)
       .build();
-
-    return message;
   }
-
 }

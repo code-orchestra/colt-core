@@ -19,10 +19,7 @@ public class ServiceProvider {
     private static Map<String, ColtService> cache = new HashMap<>();
 
     public static synchronized void dispose() {
-        for (ColtService coltService : cache.values()) {
-            coltService.dispose();
-        }
-
+        cache.values().forEach(ColtService::dispose);
         cache.clear();
     }
 
@@ -65,15 +62,11 @@ public class ServiceProvider {
                     }
 
                     return service;
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InvocationTargetException e) {
+                } catch (IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
         return null;
     }
-
-
 }

@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -284,7 +285,7 @@ public class FileUtils {
         String[] base = basePath.split(Pattern.quote(pathSeparator));
         String[] target = targetPath.split(Pattern.quote(pathSeparator));
 
-        StringBuffer common = new StringBuffer();
+        StringBuilder common = new StringBuilder();
 
         int commonIndex = 0;
         while (commonIndex < target.length && commonIndex < base.length
@@ -312,7 +313,7 @@ public class FileUtils {
             baseIsFile = false;
         }
 
-        StringBuffer relative = new StringBuffer();
+        StringBuilder relative = new StringBuilder();
 
         if (base.length != commonIndex) {
             int numDirsUp = baseIsFile ? base.length - commonIndex - 1 : base.length - commonIndex;
@@ -326,9 +327,7 @@ public class FileUtils {
     }
 
     private static void addArrayToList(List<File> list, File[] array) {
-        for (File file : array) {
-            list.add(file);
-        }
+        Collections.addAll(list, array);
     }
 
     public static String protect(String path) {

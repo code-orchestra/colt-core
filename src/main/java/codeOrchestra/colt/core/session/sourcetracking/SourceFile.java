@@ -6,11 +6,7 @@ import java.io.File;
  * @author Alexander Eliseyev
  */
 public interface SourceFile {
-
     File getFile();
-
     String getChecksum();
-
     void updateChecksum();
-
 }

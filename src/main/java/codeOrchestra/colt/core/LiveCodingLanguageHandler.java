@@ -19,42 +19,26 @@ import java.io.File;
 public interface LiveCodingLanguageHandler<P extends Project> {
 
     String getId();
-
     String getName();
-
     P parseProject(GPathResult gPathResult, String projectPath);
-
     P createProject(String pName, File pFile, boolean load);
-
     P importProject(File file);
-
     P getCurrentProject();
-
     void initHandler();
-
     void disposeHandler();
 
     // Logger
-
     LoggerService getLoggerService();
 
     // UI
-
     Node getPane() throws Exception;
-
     IProgressIndicator getProgressIndicator();
 
     // Services
-
-    ColtController<P> createColtController();
-
+    ColtController createColtController();
     ColtRemoteService<P> createRPCService();
-
     LiveLauncher<P> createLauncher();
-
-    LiveCodingManager<P, ?> createLiveCodingManager();
-
+    LiveCodingManager<?> createLiveCodingManager();
     SourceFileFactory createSourceFileFactory();
-
     ColtFacade createColtFacade();
 }

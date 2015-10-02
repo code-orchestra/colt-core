@@ -21,11 +21,12 @@ import codeOrchestra.util.metadata.ParamsGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class ParametersList implements Cloneable{
-  
+public class ParametersList implements Cloneable {
+
   private static final Logger LOG = Logger.getLogger("#com.intellij.execution.configurations.ParametersList");
-  
+
   private List<String> myParameters = new ArrayList<>();
   private List<ParamsGroup> myGroups = new ArrayList<>();
 
@@ -73,9 +74,7 @@ public class ParametersList implements Cloneable{
   }
 
   public void addAll(final String[] parameters) {
-    for (String parameter : parameters) {
-      myParameters.add(parameter);
-    }
+    Collections.addAll(myParameters, parameters);
   }
 
   public void addAll(final List<String> parameters) {
@@ -84,18 +83,14 @@ public class ParametersList implements Cloneable{
 
   public ParametersList clone() {
     try {
-      final ParametersList clone = (ParametersList)super.clone();
+      final ParametersList clone = (ParametersList) super.clone();
       clone.myParameters = new ArrayList<>(myParameters);
       clone.myGroups = new ArrayList<>(myGroups.size() + 1);
-      for (ParamsGroup group : myGroups) {
-        clone.myGroups.add(group.clone());
-      }
+      clone.myGroups.addAll(myGroups.stream().map(ParamsGroup::clone).collect(Collectors.toList()));
       return clone;
-    }
-    catch (CloneNotSupportedException e) {
+    } catch (CloneNotSupportedException e) {
       LOG.error(e);
       return null;
     }
   }
-
 }
