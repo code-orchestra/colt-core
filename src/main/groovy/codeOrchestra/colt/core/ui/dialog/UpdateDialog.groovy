@@ -79,8 +79,7 @@ class UpdateDialog extends DialogWithImage {
         cancelButton.prefWidth = 67
         ButtonBar.setType(cancelButton, ButtonBar.ButtonType.CANCEL_CLOSE)
         cancelButton.onAction = {
-            cancelUpdate()
-            stage.hide()
+            onCancel()
         } as EventHandler
 
         buttonBar.buttons.add(cancelButton)
@@ -156,7 +155,7 @@ class UpdateDialog extends DialogWithImage {
     @Override
     protected void onCancel() {
         cancelUpdate()
-        hide()
+        stage.hide()
     }
 
     protected void hide() {
