@@ -169,7 +169,7 @@ class ColtMenuBar extends MenuBar {
                         new MenuItem(
                                 text: "Open Welcome Screen",
                                 onAction: { t ->
-                                    ProjectDialogs.openWelcomeScreen(scene)
+                                    ProjectDialogs.openWelcomeScreen()
                                 } as EventHandler<ActionEvent>
                         ),
                         new MenuItem(
@@ -278,7 +278,7 @@ class ColtMenuBar extends MenuBar {
                             new MenuItem(
                                     text: "Open Welcome Screen",
                                     onAction: { t ->
-                                        ProjectDialogs.openWelcomeScreen(scene)
+                                        ProjectDialogs.openWelcomeScreen()
                                     } as EventHandler<ActionEvent>
                             ),
                             new MenuItem(

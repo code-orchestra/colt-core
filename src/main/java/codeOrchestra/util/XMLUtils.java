@@ -81,15 +81,4 @@ public final class XMLUtils {
 
     }
 
-    public static Document streamToDocument(InputStream is) throws IOException {
-        BufferedReader inputReader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-        String inline;
-        while ((inline = inputReader.readLine()) != null) {
-            sb.append(inline);
-        }
-
-        return stringToDOM(sb.toString());
-    }
-
 }

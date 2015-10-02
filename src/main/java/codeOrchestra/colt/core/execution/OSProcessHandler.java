@@ -37,11 +37,8 @@ public class OSProcessHandler extends ProcessHandler {
     private static final ExecutorService ourThreadExecutorsService = createServiceImpl();
 
     private static ThreadPoolExecutor createServiceImpl() {
-      return new ThreadPoolExecutor(10, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<>(), new ThreadFactory() {
-        @SuppressWarnings({"HardCodedStringLiteral"})
-        public Thread newThread(Runnable r) {
-          return new Thread(r, "OSProcessHandler pooled thread");
-        }
+      return new ThreadPoolExecutor(10, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<>(), r -> {
+        return new Thread(r, "OSProcessHandler pooled thread");
       });
     }
   }
@@ -64,9 +61,6 @@ public class OSProcessHandler extends ProcessHandler {
     myCommandLine = commandLine;
     myWaitFor = new ProcessWaitFor(process);
   }
-    public OSProcessHandler(File worDir, String... command) throws IOException {
-        this(new ProcessBuilder(command).directory(worDir).start(), StringUtils.join(command, " "));
-    }
 
   private class ProcessWaitFor {
     private final Future<?> myWaitForThreadFuture;
@@ -134,25 +128,22 @@ public class OSProcessHandler extends ProcessHandler {
           final Future<?> stdOutReadingFuture = executeOnPooledThread(stdoutThread);
           final Future<?> stdErrReadingFuture = executeOnPooledThread(stderrThread);
 
-          myWaitFor.setTerminationCallback(new Consumer<Integer>() {
-            @Override
-            public void consume(Integer exitCode) {
-              try {
-                // tell threads that no more attempts to read process' output should be made
-                stderrThread.setProcessTerminated(true);
-                stdoutThread.setProcessTerminated(true);
+          myWaitFor.setTerminationCallback(exitCode -> {
+            try {
+              // tell threads that no more attempts to read process' output should be made
+              stderrThread.setProcessTerminated(true);
+              stdoutThread.setProcessTerminated(true);
 
-                stdErrReadingFuture.get();
-                stdOutReadingFuture.get();
-              }
-              catch (InterruptedException ignored) {
-              }
-              catch (ExecutionException e) {
-                LOG.error(e);
-              }
-              finally {
-                onOSProcessTerminated(exitCode);
-              }
+              stdErrReadingFuture.get();
+              stdOutReadingFuture.get();
+            }
+            catch (InterruptedException ignored) {
+            }
+            catch (ExecutionException e) {
+              LOG.error(e);
+            }
+            finally {
+              onOSProcessTerminated(exitCode);
             }
           });
         }
@@ -187,13 +178,11 @@ public class OSProcessHandler extends ProcessHandler {
   }
 
   protected void detachProcessImpl() {
-    final Runnable runnable = new Runnable() {
-      public void run() {
-        closeStreams();
+    final Runnable runnable = () -> {
+      closeStreams();
 
-        myWaitFor.detach();
-        notifyProcessDetached();
-      }
+      myWaitFor.detach();
+      notifyProcessDetached();
     };
 
     executeOnPooledThread(runnable);
@@ -216,12 +205,7 @@ public class OSProcessHandler extends ProcessHandler {
     return myProcess.getOutputStream();
   }
 
-  // todo: to remove
-  public String getCommandLine() {
-    return myCommandLine;
-  }
-
-  public Charset getCharset() {    
+  public Charset getCharset() {
     return Charset.forName(StringUtils.getOutputEncoding());
   }
 

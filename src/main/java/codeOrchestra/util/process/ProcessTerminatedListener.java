@@ -26,7 +26,6 @@ public class ProcessTerminatedListener extends ProcessAdapter {
   private static final String KEY = "processTerminatedListener";
   
   private final String myProcessFinishedMessage;
-  protected static final String EXIT_CODE_ENTRY = "$EXIT_CODE$";  
   protected static final String EXIT_CODE_REGEX = "\\$EXIT_CODE\\$";
 
   private ProcessTerminatedListener(final String processFinishedMessage) {

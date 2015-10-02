@@ -36,9 +36,7 @@ public class FxThreadProgressIndicatorWrapper implements IProgressIndicator {
         if (Platform.isFxApplicationThread()) {
             progressIndicator.setProgress(percents);
         } else {
-            Platform.runLater(() -> {
-                progressIndicator.setProgress(percents);
-            });
+            Platform.runLater(() -> progressIndicator.setProgress(percents));
         }
     }
 
@@ -47,9 +45,7 @@ public class FxThreadProgressIndicatorWrapper implements IProgressIndicator {
         if (Platform.isFxApplicationThread()) {
             progressIndicator.setText(text);
         } else {
-            Platform.runLater(() -> {
-                progressIndicator.setText(text);
-            });
+            Platform.runLater(() -> progressIndicator.setText(text));
         }
     }
 }

@@ -37,32 +37,4 @@ public class LocalhostUtil {
         }
     }
 
-    public static InetAddress getLocalhostAddress() {
-        try {
-            for (final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements(); ) {
-                final NetworkInterface cur = interfaces.nextElement();
-                if (cur.isLoopback()) {
-                    continue;
-                }
-
-                for (final InterfaceAddress interfaceAddress : cur.getInterfaceAddresses()) {
-                    final InetAddress inetAddress = interfaceAddress.getAddress();
-                    if (!((inetAddress instanceof Inet4Address))) {
-                        continue;
-                    }
-
-                    return inetAddress;
-                }
-            }
-
-            return null;
-        } catch (Exception e) {
-            try {
-                return InetAddress.getLocalHost();
-            } catch (UnknownHostException e1) {
-                return null;
-            }
-        }
-    }
-
 }

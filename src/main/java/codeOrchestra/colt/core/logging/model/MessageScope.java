@@ -5,11 +5,9 @@ package codeOrchestra.colt.core.logging.model;
  */
 public class MessageScope {
 
-  private String scopeId;
   private String name;
 
-  public MessageScope(String scopeId, String name) {
-    this.scopeId = scopeId;
+  public MessageScope(String name) {
     this.name = name;
   }
 
@@ -19,10 +17,6 @@ public class MessageScope {
 
   public String getName() {
     return name;
-  }
-
-  public String getScopeId() {
-    return scopeId;
   }
 
 }

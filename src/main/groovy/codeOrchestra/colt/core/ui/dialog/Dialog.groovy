@@ -130,8 +130,7 @@ class Dialog extends VBox {
         }
     }
 
-    void setTitle(String title) {
-//        stage.title = title
+    void setTitle() {
     }
 
     void show() {
@@ -139,8 +138,4 @@ class Dialog extends VBox {
         stage.showAndWait()
     }
 
-    void showWithClosure(Closure afterShow) {
-        show()
-        afterShow()
-    }
 }

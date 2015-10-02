@@ -19,7 +19,6 @@ public class JSBridge {
     }
 
     public void resize(int height){
-//        System.out.println("resize: " + height);
     }
 
     public void setClipboard(String str){

@@ -15,7 +15,6 @@
  */
 package codeOrchestra.util.concurrency;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
 public class Semaphore {
@@ -68,20 +67,6 @@ public class Semaphore {
 
   public void waitForUnsafe() throws InterruptedException {
     sync.acquireSharedInterruptibly(1);
-  }
-
-  public boolean waitFor(final long timeout)  {
-    try {
-      return waitForUnsafe(timeout);
-    }
-    catch (InterruptedException e) {
-      throw new ProcessCanceledException(e);
-    }
-  }
-
-  public boolean waitForUnsafe(long timeout) throws InterruptedException {
-    if (sync.tryAcquireShared(1) >= 0) return true;
-    return sync.tryAcquireSharedNanos(1, TimeUnit.MILLISECONDS.toNanos(timeout));
   }
 
 }

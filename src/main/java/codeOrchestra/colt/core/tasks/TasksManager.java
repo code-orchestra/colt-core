@@ -95,7 +95,7 @@ public class TasksManager {
 
                 }
             }
-        };
+        }
 
         public void run() {
             try {
@@ -142,13 +142,6 @@ public class TasksManager {
             }
             tasksQueue.offer(task);
         }
-    }
-
-    public void scheduleModalTask(ColtTask task) {
-        if (task instanceof ColtTaskWithProgress) {
-            throw new IllegalArgumentException("Can't start a modal task that is progress bar aware");
-        }
-        schedule(task);
     }
 
     public void scheduleBackgroundTask(ColtTask task) {

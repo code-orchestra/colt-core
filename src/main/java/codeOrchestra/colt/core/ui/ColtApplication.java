@@ -221,13 +221,6 @@ public class ColtApplication extends Application {
         }).start();
     }
 
-    public void closeProject() {
-        if (mainStage.isShowing()) {
-            mainStage.hide();
-            RecentProjects.setMustOpenRecentProject(false);
-        }
-    }
-
     public void showWelcomeScreen() {
         if (welcomeScreenStage == null) {
             welcomeScreenStage = new WelcomeScreenStage();

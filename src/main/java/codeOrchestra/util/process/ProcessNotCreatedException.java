@@ -19,14 +19,7 @@ import codeOrchestra.colt.core.execution.ExecutionException;
 
 public class ProcessNotCreatedException extends ExecutionException {
 
-  private final GeneralCommandLine myCommandLine;
-
-  public ProcessNotCreatedException(final String s, final Throwable cause, final GeneralCommandLine commandLine) {
+  public ProcessNotCreatedException(final String s, final Throwable cause) {
     super(s, cause);
-    myCommandLine = commandLine;
-  }
-
-  public GeneralCommandLine getCommandLine() {
-    return myCommandLine;
   }
 }

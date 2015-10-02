@@ -16,14 +16,12 @@
 package codeOrchestra.colt.core.execution;
 
 import codeOrchestra.colt.core.logging.Logger;
-import codeOrchestra.util.metadata.UserDataHolderBase;
 import codeOrchestra.util.concurrency.ProcessCanceledException;
 import codeOrchestra.util.concurrency.Semaphore;
+import codeOrchestra.util.metadata.UserDataHolderBase;
 import codeOrchestra.util.process.ProcessAdapter;
 
 import java.io.OutputStream;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,43 +76,26 @@ public abstract class ProcessHandler extends UserDataHolderBase {
     }
   }
 
-  public boolean waitFor(long timeoutInMilliseconds) {
-    try {
-      return myWaitSemaphore.waitFor(timeoutInMilliseconds);
-    }
-    catch (ProcessCanceledException e) {
-      return false;
-    }
-  }
-
   public void destroyProcess() {
-    myAfterStartNotifiedRunner.execute(new Runnable() {
-      public void run() {
-        if (myState.compareAndSet(STATE_RUNNING, STATE_TERMINATING)) {
-          fireProcessWillTerminate(true);
-          destroyProcessImpl();
-        }
+    myAfterStartNotifiedRunner.execute(() -> {
+      if (myState.compareAndSet(STATE_RUNNING, STATE_TERMINATING)) {
+        fireProcessWillTerminate(true);
+        destroyProcessImpl();
       }
     });
   }
 
   public void detachProcess() {
-    myAfterStartNotifiedRunner.execute(new Runnable() {
-      public void run() {
-        if (myState.compareAndSet(STATE_RUNNING, STATE_TERMINATING)) {
-          fireProcessWillTerminate(false);
-          detachProcessImpl();
-        }
+    myAfterStartNotifiedRunner.execute(() -> {
+      if (myState.compareAndSet(STATE_RUNNING, STATE_TERMINATING)) {
+        fireProcessWillTerminate(false);
+        detachProcessImpl();
       }
     });
   }
 
   public boolean isProcessTerminated() {
     return myState.get() == STATE_TERMINATED;
-  }
-
-  public boolean isProcessTerminating() {
-    return myState.get() == STATE_TERMINATING;
   }
 
   public void addProcessListener(final ProcessListener listener) {
@@ -134,29 +115,27 @@ public abstract class ProcessHandler extends UserDataHolderBase {
   }
 
   private void notifyTerminated(final int exitCode, final boolean willBeDestroyed) {
-    myAfterStartNotifiedRunner.execute(new Runnable() {
-      public void run() {
-        LOG.assertTrue(isStartNotified(), "Start notify is not called");
+    myAfterStartNotifiedRunner.execute(() -> {
+      LOG.assertTrue(isStartNotified(), "Start notify is not called");
 
-        if (myState.compareAndSet(STATE_RUNNING, STATE_TERMINATING)) {
-          try {
-            fireProcessWillTerminate(willBeDestroyed);
-          }
-          catch (Throwable e) {
-            LOG.error(e);
-          }
+      if (myState.compareAndSet(STATE_RUNNING, STATE_TERMINATING)) {
+        try {
+          fireProcessWillTerminate(willBeDestroyed);
         }
+        catch (Throwable e) {
+          LOG.error(e);
+        }
+      }
 
-        if (myState.compareAndSet(STATE_TERMINATING, STATE_TERMINATED)) {
-          try {
-            myEventMulticaster.processTerminated(new ProcessEvent(ProcessHandler.this, exitCode));
-          }
-          catch (Throwable e) {
-            LOG.error(e);
-          }
-          finally {
-            myWaitSemaphore.up();
-          }
+      if (myState.compareAndSet(STATE_TERMINATING, STATE_TERMINATED)) {
+        try {
+          myEventMulticaster.processTerminated(new ProcessEvent(ProcessHandler.this, exitCode));
+        }
+        catch (Throwable e) {
+          LOG.error(e);
+        }
+        finally {
+          myWaitSemaphore.up();
         }
       }
     });
@@ -180,18 +159,16 @@ public abstract class ProcessHandler extends UserDataHolderBase {
 
   private ProcessListener createEventMulticaster() {
     final Class<ProcessListener> listenerClass = ProcessListener.class;
-    return (ProcessListener)Proxy.newProxyInstance(listenerClass.getClassLoader(), new Class[] {listenerClass}, new InvocationHandler() {
-      public Object invoke(Object object, Method method, Object[] params) throws Throwable {
-        for (ProcessListener listener : myListeners) {
-          try {
-            method.invoke(listener, params);
-          }
-          catch (Throwable e) {
-            LOG.error(e);
-          }
+    return (ProcessListener)Proxy.newProxyInstance(listenerClass.getClassLoader(), new Class[] {listenerClass}, (object, method, params) -> {
+      for (ProcessListener listener : myListeners) {
+        try {
+          method.invoke(listener, params);
         }
-        return null;
+        catch (Throwable e) {
+          LOG.error(e);
+        }
       }
+      return null;
     });
   }
   

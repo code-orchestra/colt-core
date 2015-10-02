@@ -44,26 +44,6 @@ public class ParamsGroup implements Cloneable{
     return myGroupId;
   }
 
-  public void addParameter(final String parameter) {
-    myGroupParams.add(parameter);
-  }
-
-  public void addParameters(final String... parameters) {
-    for (String parameter : parameters) {
-      addParameter(parameter);
-    }
-  }
-
-  public void addParameters(final List<String> parameters) {
-    for (final String parameter : parameters) {
-      addParameter(parameter);
-    }
-  }
-
-  public void addParametersString(final String parametersString) {
-    addParameters(ParametersList.parse(parametersString));
-  }
-
   public List<String> getParameters() {
     return myGroupParams.getList();
   }
