@@ -65,24 +65,6 @@ public class ProcessHandlerBuilder {
     }
   }
 
-  private GeneralCommandLine getCommandLine(String workingDirectory) {
-    GeneralCommandLine commandLine = new GeneralCommandLine();
-
-    if (myCommandLine.size() > 0) {
-      commandLine.setExePath(myCommandLine.get(0));
-    }
-    commandLine.setWorkDirectory(workingDirectory);
-    
-    if (myCommandLine.size() > 1) {
-      for (int i = 1; i < myCommandLine.size(); i++) {
-//        myCommandLine.add(myCommandLine.get(i));
-          commandLine.addParameter(myCommandLine.get(i));
-      }
-    }
-    
-    return commandLine;
-  }
-
   public static Iterable<String> splitCommandInParts(String command) {
     List<String> result = new ArrayList<>();
     boolean insideQuotes = false;
@@ -99,10 +81,8 @@ public class ProcessHandlerBuilder {
           result.add(sb.toString());
           sb = new StringBuilder();
         }
-      } else if (currentChar == '\\' && (i < command.length() - 1 && command.charAt(i + 1) == '"')) {
-        continue;
-      } else {
-        // inside word 
+      } else if (currentChar != '\\' || (i >= command.length() - 1 || command.charAt(i + 1) != '"')) {
+        // inside word
         sb.append(currentChar);
       }
     }

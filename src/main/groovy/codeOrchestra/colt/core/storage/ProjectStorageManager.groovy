@@ -36,7 +36,7 @@ class ProjectStorageManager {
 
         List<ProjectStorageDescriptor> result = new ArrayList<>()
         new XmlSlurper().parseText(descriptorsFile.text).'storage'.each {
-            result << new ProjectStorageDescriptor("" + it.@path, "" + it.@subDir)
+            result << new ProjectStorageDescriptor("$it.@path", "$it.@subDir")
         }
 
         _storageDescriptors = result;

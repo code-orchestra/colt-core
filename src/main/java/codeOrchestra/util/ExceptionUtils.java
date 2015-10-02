@@ -19,10 +19,7 @@ public final class ExceptionUtils {
   
   public static boolean isBrokenPipe(IOException exception) {
     String message = exception.getMessage();
-    if (message == null) {
-      return false;
-    }
-    return message.contains("Broken pipe") || message.contains("Bad file descriptor");
+    return message != null && (message.contains("Broken pipe") || message.contains("Bad file descriptor"));
   }
 
   public static boolean isSocketClosed(SocketException e) {

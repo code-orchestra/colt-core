@@ -10,9 +10,9 @@ import java.util.*;
 /**
  * @author Alexander Eliseyev
  */
-public abstract class AbstractLiveCodingManager<P extends Project, S extends ClientSocketHandlerAdapter> implements LiveCodingManager<P, S> {
+public abstract class AbstractLiveCodingManager<P extends Project, S extends ClientSocketHandlerAdapter> implements LiveCodingManager<S> {
 
-    private Object listenerMonitor = new Object();
+    private final Object listenerMonitor = new Object();
 
     protected Map<String, LiveCodingSession<S>> currentSessions = new HashMap<>();
 
@@ -85,9 +85,7 @@ public abstract class AbstractLiveCodingManager<P extends Project, S extends Cli
 
     protected void fireCodeUpdate() {
         synchronized (listenerMonitor) {
-            for (LiveCodingListener listener : liveCodingListeners) {
-                listener.onCodeUpdate();
-            }
+            liveCodingListeners.forEach(LiveCodingListener::onCodeUpdate);
         }
     }
 
@@ -101,17 +99,13 @@ public abstract class AbstractLiveCodingManager<P extends Project, S extends Cli
 
     private void fireSessionsPaused() {
         synchronized (listenerMonitor) {
-            for (LiveCodingListener listener : liveCodingListeners) {
-                listener.onSessionPause();
-            }
+            liveCodingListeners.forEach(LiveCodingListener::onSessionPause);
         }
     }
 
     private void fireSessionsResumed() {
         synchronized (listenerMonitor) {
-            for (LiveCodingListener listener : liveCodingListeners) {
-                listener.onSessionResume();
-            }
+            liveCodingListeners.forEach(LiveCodingListener::onSessionResume);
         }
     }
 

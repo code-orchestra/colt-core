@@ -109,8 +109,8 @@ public class ColtRemoteSecurityManager {
 
   public void addAuthToken(String token) {
     List<String> authTokens = new ArrayList<>(getAuthTokens());
-    if (!authTokens.contains(authTokens)) {
-      authTokens.add(token);      
+    if (!authTokens.contains(token)) {
+      authTokens.add(token);
     }
     if (authTokens.size() > MAX_TOKENS_COUNT) {
       authTokens.remove(0);
@@ -154,14 +154,11 @@ public class ColtRemoteSecurityManager {
     
     String tokensString = preferences.get(TOKENS_KEY, "");
     String[] tokensSplit = tokensString.split("\\|");
-    if (tokensSplit != null) {
-      for (String token : tokensSplit) {
-        if (StringUtils.isNotEmpty(token)) {
-          result.add(token);
-        }
+    for (String token : tokensSplit) {
+      if (StringUtils.isNotEmpty(token)) {
+        result.add(token);
       }
     }
-    
     return result;
   }
 

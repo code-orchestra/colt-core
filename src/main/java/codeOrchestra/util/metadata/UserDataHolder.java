@@ -17,6 +17,5 @@ package codeOrchestra.util.metadata;
 
 public interface UserDataHolder {
   <T> T getUserData(String key);
-
   <T> void putUserData(String key, T value);
 }

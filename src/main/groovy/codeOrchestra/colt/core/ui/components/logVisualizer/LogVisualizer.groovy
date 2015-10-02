@@ -81,10 +81,6 @@ class LogVisualizer extends VBox {
         ] as LiveCodingAdapter)
     }
 
-    public void clearMessages() {
-        windowObject?.call("clearMessages")
-    }
-
     public void start() {
         windowObject?.call("start")
     }

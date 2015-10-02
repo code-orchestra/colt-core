@@ -19,10 +19,7 @@ import java.util.EventListener;
 
 public interface ProcessListener extends EventListener {
   void startNotified(ProcessEvent event);
-
   void processTerminated(ProcessEvent event);
-
   void processWillTerminate(ProcessEvent event, boolean willBeDestroyed);
-
   void onTextAvailable(ProcessEvent event, String outputType);
 }

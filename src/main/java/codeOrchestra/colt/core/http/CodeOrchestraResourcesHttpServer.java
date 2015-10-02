@@ -33,7 +33,7 @@ public class CodeOrchestraResourcesHttpServer {
 
     private boolean mustReload;
     private long lastReloadRequest;
-    private Object reloadMonitor = new Object();
+    private final Object reloadMonitor = new Object();
 
     public void init() {
         initWithPort(9091);

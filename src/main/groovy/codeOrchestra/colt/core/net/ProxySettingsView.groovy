@@ -25,7 +25,7 @@ class ProxySettingsView extends VBox {
         proxySettings.children.addAll(
                 checkBoxInput = new CheckBoxInput(title: "Use Proxy", bindProperty: model.useProxy()),
                 new LabeledTitledInput(title: "Host", bindProperty: model.host()),
-                new LabeledTitledInput(title: "Port", bindProperty: model.port(), numeric: true),
+                new LabeledTitledInput(title: "Port", bindProperty: model.port()),
                 new LabeledTitledInput(title: "Username", bindProperty: model.username()),
                 new LabeledPasswordInput(title: "Password", bindProperty: model.password())
         )

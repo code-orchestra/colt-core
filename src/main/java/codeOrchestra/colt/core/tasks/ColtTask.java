@@ -6,11 +6,7 @@ import javafx.concurrent.Task;
  * @author Alexander Eliseyev
  */
 public abstract class ColtTask<R> extends Task<R> {
-
     protected abstract String getName();
-
     protected abstract void onOK(R result);
-
     protected abstract void onFail();
-
 }

@@ -18,7 +18,6 @@ package codeOrchestra.util.process;
 import codeOrchestra.colt.core.execution.ExecutionException;
 
 public class ProcessNotCreatedException extends ExecutionException {
-
   public ProcessNotCreatedException(final String s, final Throwable cause) {
     super(s, cause);
   }

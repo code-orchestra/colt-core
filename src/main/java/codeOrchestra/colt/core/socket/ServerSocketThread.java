@@ -63,7 +63,7 @@ public abstract class ServerSocketThread extends Thread {
                 clientSocketHandlers.add(lastHandler);
                 new Thread(lastHandler).start();
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 
@@ -92,9 +92,7 @@ public abstract class ServerSocketThread extends Thread {
             }
         }
 
-        for (ClientSocketHandler clientSocketHandler : clientSocketHandlers) {
-            clientSocketHandler.stopRightThere();
-        }
+        clientSocketHandlers.forEach(ClientSocketHandler::stopRightThere);
         clientSocketHandlers.clear();
     }
 }

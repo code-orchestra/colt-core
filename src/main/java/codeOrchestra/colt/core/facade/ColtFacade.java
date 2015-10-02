@@ -8,25 +8,16 @@ import codeOrchestra.colt.core.ColtService;
 public interface ColtFacade extends ColtService {
 
     // Session
-
     void runSession();
-
     void stopSession();
-
     void pauseSession();
-
     void resumeSession();
-
     void restartSession();
 
     // Connections
-
     void openNewConnection();
-
     void closeAllConnections();
 
     // Production
-
     void runProductionBuild();
-
 }

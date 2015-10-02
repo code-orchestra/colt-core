@@ -1,6 +1,8 @@
 package codeOrchestra.colt.core.rpc;
 
-import codeOrchestra.colt.core.*;
+import codeOrchestra.colt.core.ColtException;
+import codeOrchestra.colt.core.ColtProjectManager;
+import codeOrchestra.colt.core.LiveCodingLanguageHandler;
 import codeOrchestra.colt.core.controller.ColtControllerCallbackEx;
 import codeOrchestra.colt.core.errorhandling.ErrorHandler;
 import codeOrchestra.colt.core.loading.LiveCodingHandlerLoadingException;
@@ -8,20 +10,16 @@ import codeOrchestra.colt.core.loading.LiveCodingHandlerManager;
 import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.rpc.command.RemoteAsyncCommand;
 import codeOrchestra.colt.core.rpc.command.RemoteCommand;
-import codeOrchestra.colt.core.rpc.model.ColtConnection;
 import codeOrchestra.colt.core.rpc.model.ColtRemoteProject;
-import codeOrchestra.colt.core.rpc.model.ColtState;
 import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityManager;
 import codeOrchestra.colt.core.rpc.security.InvalidAuthTokenException;
 import codeOrchestra.colt.core.rpc.security.InvalidShortCodeException;
 import codeOrchestra.colt.core.rpc.security.TooManyFailedCodeTypeAttemptsException;
-import codeOrchestra.colt.core.session.LiveCodingSession;
 import codeOrchestra.colt.core.ui.components.log.LogMessage;
 import javafx.application.Platform;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Alexander Eliseyev
@@ -97,25 +95,6 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
                 return null;
             }
         });
-    }
-
-    @Override
-    public ColtState getState() {
-        Project currentProject = ColtProjectManager.getInstance().getCurrentProject();
-
-        if (currentProject != null) {
-            List<ColtConnection> coltConnections = new ArrayList<>();
-            List<LiveCodingSession> currentConnections = ServiceProvider.get(LiveCodingManager.class).getCurrentConnections();
-            for (LiveCodingSession session : currentConnections) {
-                if (!session.isDisposed()) {
-                    coltConnections.add(new ColtConnection(session));
-                }
-            }
-
-            return new ColtState();
-        }
-
-        return new ColtState();
     }
 
     @Override
