@@ -222,18 +222,6 @@ public class FileUtils {
         }
 
         copyFile(f, target);
-/*
-        byte[] bytes = new byte[(int) f.length()];
-
-        OutputStream os = new FileOutputStream(target);
-        FileInputStream is = new FileInputStream(f);
-
-        ReadUtil.read(bytes, is);
-        os.write(bytes);
-
-        is.close();
-        os.close();
-*/
     }
 
     /**
