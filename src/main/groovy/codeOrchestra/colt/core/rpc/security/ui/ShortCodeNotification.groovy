@@ -1,5 +1,4 @@
 package codeOrchestra.colt.core.rpc.security.ui
-
 import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityListener
 import codeOrchestra.colt.core.rpc.security.ColtRemoteSecurityManager
 import codeOrchestra.util.ThreadUtils
@@ -13,16 +12,14 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import org.controlsfx.control.NotificationPane
 import org.controlsfx.control.action.AbstractAction
-
 /**
  * @author Dima Kruk
  */
 class ShortCodeNotification {
-    private static NotificationPane  notificationPane = new NotificationPane()
+    private static NotificationPane notificationPane = new NotificationPane()
 
     static NotificationPane initNotification(FXNode content) {
         notificationPane.setContent(content)
-
         ColtRemoteSecurityManager.instance.addListener(new ColtRemoteSecurityListener() {
             @Override
             void onNewRequest(final String requestor, final String shortCode) {
@@ -31,14 +28,11 @@ class ShortCodeNotification {
                     textFlow.minWidth = Double.NEGATIVE_INFINITY
                     textFlow.padding = new Insets(7, 0, 0, 0)
                     textFlow.styleClass.add("notification-text")
-                    textFlow.children.add(new Text("'" + requestor + "' has requested authorization to use COLT API.\nTo authorize, enter the following code into that tool: "))
+                    textFlow.children.add(new Text("'$requestor' has requested authorization to use COLT API.\nTo authorize, enter the following code into that tool: "))
                     Text shortCodeText = new Text(shortCode)
-
                     shortCodeText.setFill(Color.BLUE)
                     textFlow.children.add(shortCodeText)
                     notificationPane.setGraphic(textFlow)
-
-
                     notificationPane.actions.clear()
                     AbstractAction action = new AbstractAction("Copy") {
                         @Override
@@ -62,7 +56,6 @@ class ShortCodeNotification {
                 } as Runnable)
             }
         })
-
         return notificationPane
     }
 }
