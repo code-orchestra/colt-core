@@ -18,13 +18,10 @@ class RadioButtonActionInput extends ActionInputBase implements MSelectable {
     RadioButtonActionInput() {
         setLeftAnchor(radioButton, 10)
         setRightAnchor(radioButton, 10)
-
         radioButton.textProperty().bindBidirectional(title())
         radioButton.selectedProperty().bindBidirectional(selected())
-
         textField.disableProperty().bind(selected().not())
         button.disableProperty().bind(selected().not())
-
         children.add(radioButton)
     }
 

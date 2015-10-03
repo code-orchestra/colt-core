@@ -12,12 +12,9 @@ class LabeledActionInput extends ActionInputBase implements MLabeled {
     protected final Label label = new Label()
 
     LabeledActionInput() {
-
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
-
         label.textProperty().bindBidirectional(title())
-
         children.add(label)
     }
 }

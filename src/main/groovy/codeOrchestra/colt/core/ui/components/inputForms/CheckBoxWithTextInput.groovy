@@ -18,15 +18,10 @@ class CheckBoxWithTextInput extends InputWithErrorBase implements MSelectable {
     CheckBoxWithTextInput() {
         setLeftAnchor(checkBox, 10)
         setRightAnchor(checkBox, 10)
-
         checkBox.textProperty().bindBidirectional(title())
         checkBox.selectedProperty().bindBidirectional(selected())
-
         textField.disableProperty().bind(selected().not())
-
-
         children.add(checkBox)
-
     }
 
     @Override

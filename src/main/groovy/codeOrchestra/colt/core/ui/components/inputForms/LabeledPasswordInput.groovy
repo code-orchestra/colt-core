@@ -10,12 +10,9 @@ class LabeledPasswordInput extends PasswordInputBase {
     protected final Label label = new Label()
 
     LabeledPasswordInput() {
-
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
-
         label.textProperty().bindBidirectional(title())
-
         children.add(label)
     }
 }

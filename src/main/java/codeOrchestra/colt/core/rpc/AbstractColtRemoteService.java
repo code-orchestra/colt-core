@@ -186,8 +186,7 @@ public abstract class AbstractColtRemoteService<P extends Project> implements Co
         synchronized (monitor) {
             try {
                 monitor.wait();
-            } catch (InterruptedException e) {
-                // ignore
+            } catch (InterruptedException ignored) {
             }
         }
 

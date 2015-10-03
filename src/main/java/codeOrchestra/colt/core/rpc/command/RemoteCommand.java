@@ -7,6 +7,5 @@ import codeOrchestra.colt.core.rpc.ColtRemoteException;
  */
 public interface RemoteCommand<T> {
     String getName();
-
     T execute() throws ColtRemoteException;
 }

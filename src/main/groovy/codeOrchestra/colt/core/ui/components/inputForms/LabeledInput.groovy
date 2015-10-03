@@ -12,12 +12,9 @@ class LabeledInput extends TitledInputBase implements MLabeled, MSimple {
     protected final Label label = new Label()
 
     LabeledInput() {
-
         setLeftAnchor(label, 19)
         setRightAnchor(label, 48)
-
         label.textProperty().bindBidirectional(title())
-
         children.add(label)
     }
 }

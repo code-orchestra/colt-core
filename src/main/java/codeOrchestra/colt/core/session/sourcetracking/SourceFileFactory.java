@@ -8,9 +8,6 @@ import java.io.File;
  * @author Alexander Eliseyev
  */
 public interface SourceFileFactory<S extends SourceFile> extends ColtService {
-
     S createSourceFile(File file, File baseDir);
-
     S getCached(File file);
-
 }
