@@ -104,8 +104,7 @@ public class TasksManager {
                         if (workerStarted || tasksQueue.isEmpty()) {
                             try {
                                 myLock.wait();
-                            } catch (InterruptedException e) {
-                                /* ignore */
+                            } catch (InterruptedException ignored) {
                             }
                         }
                         if (mustStop) {
