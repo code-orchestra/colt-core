@@ -53,7 +53,6 @@ abstract class ApplicationGUI extends BorderPane {
     protected ToggleButton runButton
     protected ToggleButton buildButton
     protected ToggleButton settingsButton
-    protected ToggleButton testButton
 
     protected Button popupMenuButton
 
@@ -144,20 +143,6 @@ abstract class ApplicationGUI extends BorderPane {
 
         initLog();
         init()
-
-        //for test mode
-        if (System.getProperty("colt.runType") == "test") {
-            testButton = new ToggleButton(contentDisplay: GRAPHIC_ONLY, focusTraversable: false, maxWidth: 1.7976931348623157E308, mnemonicParsing: false, prefHeight: 40.0, prefWidth: 60.0, selected: false, text: "Run", newStyleClass: "btn-run")
-            sidebar.children.add(3, testButton)
-            navigationToggleGroup.toggles.add(testButton)
-            testButton.onAction = {
-                showTestSettingsForm()
-            } as EventHandler
-        }
-    }
-
-    protected void showTestSettingsForm() {
-        root.center = testSettingsForm
     }
 
     LiveCodingManager get
@@ -203,7 +188,7 @@ abstract class ApplicationGUI extends BorderPane {
 
         navigationToggleGroup.selectedToggleProperty().addListener({ v, o, newValue ->
             int index = navigationToggleGroup.toggles.indexOf(navigationToggleGroup.selectedToggle)
-            applicationState = ["Log", "Production Build", "Project Settings", "Test"][index]
+            applicationState = ["Log", "Production Build", "Project Settings"][index]
         } as ChangeListener)
 
         logView.logMessages.addListener({ c ->

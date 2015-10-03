@@ -28,15 +28,12 @@ class RPCServicePublisher extends Thread {
     public void run() {
         while (!mustStop) {
             ThreadUtils.sleep(1000);
-
             Project project = ProjectHelper.currentProject
             if (project == null) {
                 return
             }
-
             File serviceInfoFile = new File(ProjectStorageManager.getOrCreateProjectStorageDir(), "rpc.info");
             FileUtils.write(serviceInfoFile, "localhost:" + CodeOrchestraRPCHttpServer.PORT);
         }
     }
-
 }
