@@ -19,7 +19,6 @@ public class ExecutionException extends Exception {
   public ExecutionException(final String s) {
     super(s);
   }
-
   public ExecutionException(final String s, Throwable cause) {
     super(s, cause);
   }

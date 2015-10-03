@@ -22,8 +22,7 @@ public abstract class AbstractSourceFile implements SourceFile {
     public void updateChecksum() {
         try {
             this.checkSum = FileUtils.getFileDigestMD5(file);
-        } catch (IOException e) {
-            // ignore
+        } catch (IOException ignored) {
         }
     }
 

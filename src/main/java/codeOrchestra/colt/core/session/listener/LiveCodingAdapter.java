@@ -24,10 +24,6 @@ public class LiveCodingAdapter implements LiveCodingListener {
     }
 
     @Override
-    public void onAutoPausedSessionResume() {
-    }
-
-    @Override
     public void onCodeUpdate() {
     }
 }

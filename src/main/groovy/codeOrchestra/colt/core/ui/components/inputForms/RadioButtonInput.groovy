@@ -18,10 +18,8 @@ class RadioButtonInput extends TitledInputBase implements MSelectable, MSimple {
     RadioButtonInput() {
         setLeftAnchor(radioButton, 10)
         setRightAnchor(radioButton, 10)
-
         radioButton.textProperty().bindBidirectional(title())
         radioButton.selectedProperty().bindBidirectional(selected())
-
         children.add(radioButton)
     }
 

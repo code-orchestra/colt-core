@@ -17,10 +17,8 @@ class CheckBoxInput extends TitledInputBase implements MSelectable, MSimple {
     CheckBoxInput() {
         setLeftAnchor(checkBox, 10)
         setRightAnchor(checkBox, 10)
-
         checkBox.textProperty().bindBidirectional(title())
         checkBox.selectedProperty().bindBidirectional(selected())
-
         children.add(checkBox)
     }
 

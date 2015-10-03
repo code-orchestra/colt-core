@@ -84,7 +84,7 @@ class FormGroup extends VBox {
         super.layoutChildren()
     }
 
-    public void initMargins(javafx.scene.Node prev, javafx.scene.Node cur) {
+    public static void initMargins(javafx.scene.Node prev, javafx.scene.Node cur) {
         if (prev instanceof Marked && cur instanceof Marked) {
             if (cur instanceof MSelectable) {
                 if (prev instanceof MSelectable) {
