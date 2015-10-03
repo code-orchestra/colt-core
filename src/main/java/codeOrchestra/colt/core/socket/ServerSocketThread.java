@@ -52,8 +52,7 @@ public abstract class ServerSocketThread extends Thread {
                 if (!allowMultipleConnections() && lastHandler != null) {
                     try {
                         lastHandler.close();
-                    } catch (IOException e) {
-                        // Ignore it
+                    } catch (IOException ignored) {
                     }
                 }
 
@@ -73,7 +72,6 @@ public abstract class ServerSocketThread extends Thread {
         if (socketOpen) {
             throw new IllegalStateException("Socket is open");
         }
-
         start();
     }
 
@@ -81,9 +79,7 @@ public abstract class ServerSocketThread extends Thread {
         if (!socketOpen) {
             throw new IllegalStateException("Socket is closed");
         }
-
         socketOpen = false;
-
         if (serverSocket != null) {
             try {
                 serverSocket.close();

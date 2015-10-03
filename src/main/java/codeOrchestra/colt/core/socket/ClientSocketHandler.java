@@ -38,8 +38,7 @@ public abstract class ClientSocketHandler implements Runnable, SocketWriter {
     public void closeSocket() {
         try {
             close();
-        } catch (IOException e) {
-            // ignore
+        } catch (IOException ignored) {
         }
     }
 
@@ -77,8 +76,7 @@ public abstract class ClientSocketHandler implements Runnable, SocketWriter {
             while (!shouldStop) {
                 try {
                     Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    // Ignore
+                } catch (InterruptedException ignored) {
                 }
 
                 // collect all the bytes waiting on the input stream

@@ -1,6 +1,5 @@
 package codeOrchestra.colt.core;
 
-import codeOrchestra.colt.core.model.Project;
 import codeOrchestra.colt.core.session.LiveCodingSession;
 import codeOrchestra.colt.core.session.listener.LiveCodingListener;
 import codeOrchestra.colt.core.socket.ClientSocketHandlerAdapter;
@@ -10,7 +9,7 @@ import java.util.*;
 /**
  * @author Alexander Eliseyev
  */
-public abstract class AbstractLiveCodingManager<P extends Project, S extends ClientSocketHandlerAdapter> implements LiveCodingManager<S> {
+public abstract class AbstractLiveCodingManager<S extends ClientSocketHandlerAdapter> implements LiveCodingManager<S> {
 
     private final Object listenerMonitor = new Object();
 
@@ -45,29 +44,17 @@ public abstract class AbstractLiveCodingManager<P extends Project, S extends Cli
     @Override
     public final void pause() {
         paused = true;
-
         fireSessionsPaused();
     }
 
     @Override
     public final void flush() {
         doFlush();
-
         paused = false;
         fireSessionsResumed();
     }
 
     protected abstract void doFlush();
-
-    @Override
-    public LiveCodingSession getSession(String clientId) {
-        return currentSessions.get(clientId);
-    }
-
-    @Override
-    public Set<String> getCurrentSessionsClientIds() {
-        return currentSessions.keySet();
-    }
 
     @Override
     public void addListener(LiveCodingListener listener) {
