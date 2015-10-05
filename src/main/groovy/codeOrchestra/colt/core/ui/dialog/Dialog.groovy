@@ -13,6 +13,7 @@ import javafx.scene.text.TextAlignment
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.Window
+import javafx.stage.WindowEvent
 import org.controlsfx.control.ButtonBar
 
 /**
@@ -28,6 +29,7 @@ class Dialog extends VBox {
 
     ButtonBar buttonBar
     Button okButton
+    Integer indexFocus = 0
 
     Dialog(Window owner) {
         VBox root = this
@@ -46,6 +48,14 @@ class Dialog extends VBox {
                 super.showAndWait();
             }
         }
+
+        stage.addEventHandler(WindowEvent.WINDOW_SHOWN, new EventHandler<WindowEvent>() {
+            @Override
+            void handle(WindowEvent event) {
+                buttonBar.buttons[indexFocus].requestFocus()
+            }
+        })
+
         stage.initModality(Modality.WINDOW_MODAL)
         stage.initOwner(owner)
         stage.resizable = false
@@ -54,8 +64,24 @@ class Dialog extends VBox {
         addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
             void handle(KeyEvent event) {
-                if (event.code == KeyCode.ESCAPE) {
-                    onCancel()
+                switch (event.code) {
+                    case KeyCode.ESCAPE:
+                        onCancel()
+                        break
+                    case KeyCode.LEFT:
+                        indexFocus--
+                        if (indexFocus < 0) {
+                            indexFocus = buttonBar.buttons.size() - 1
+                        }
+                        buttonBar.buttons[indexFocus].requestFocus()
+                        break
+                    case [KeyCode.TAB, KeyCode.RIGHT]:
+                        indexFocus++
+                        if (indexFocus > buttonBar.buttons.size() - 1) {
+                            indexFocus = 0
+                        }
+                        buttonBar.buttons[indexFocus].requestFocus()
+                        break
                 }
             }
         })
@@ -137,5 +163,4 @@ class Dialog extends VBox {
         stage.scene = new Scene(this)
         stage.showAndWait()
     }
-
 }
