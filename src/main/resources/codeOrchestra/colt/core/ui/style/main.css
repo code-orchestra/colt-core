@@ -1058,6 +1058,10 @@
 .h1 .text {
     -fx-font: bold 16px 'Arial'; }
 
+.button:focused {
+    -fx-focus-color: transparent;
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
 /*
 |-------------------------------------------------------------------------------
 | ProgressIndicator | Aquafx
