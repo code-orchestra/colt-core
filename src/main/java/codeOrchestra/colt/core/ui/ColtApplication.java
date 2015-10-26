@@ -14,7 +14,6 @@ import codeOrchestra.colt.core.ui.dialog.ColtDialogs;
 import codeOrchestra.colt.core.ui.dialog.UpdateDialog;
 import codeOrchestra.colt.core.update.tasks.UpdateManager;
 import codeOrchestra.colt.core.update.tasks.UpdateTask;
-import codeOrchestra.lcs.license.ColtRunningKey;
 import codeOrchestra.util.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -130,8 +129,6 @@ public class ColtApplication extends Application {
             return;
         }
 
-        ColtRunningKey.setRunning(false);
-
         TasksManager.getInstance().dispose();
         ColtProjectManager.getInstance().dispose();
         LiveCodingHandlerManager.getInstance().dispose();
@@ -179,7 +176,6 @@ public class ColtApplication extends Application {
         System.setProperty("jsse.enableSNIExtension", "false");
         System.setProperty("file.encoding", "UTF-8");
 
-        ColtRunningKey.setRunning(true);
         new Thread() {
             @Override
             public void run() {
